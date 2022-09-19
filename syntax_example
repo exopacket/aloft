@@ -1,0 +1,243 @@
+class MyClass {
+
+    ::myVar                 //static variable
+    (myVar) string get set  //private string variable with auto get and set functions (alternatively leave out)
+    (myVar) string get      //private string variable with only auto get
+    (::myVar)               //private static variable
+
+    myVar                   //public variable
+    myString string         //public string variable
+    anything dynamic        //public dynamic variable
+
+    myString string = "Hello World!"        //setting value
+
+    *myRequiredVariable;
+
+    create MyClass { //variables automatically set
+
+	canCallFunction();
+    	
+    }
+
+}
+
+string ::myFunction(...args) { //static function with dynamic number of arguments
+
+    switch(anytype) {
+        case "Hi":
+            return "Hey";
+        case 5:
+            return "Hello";
+        case isset:
+            return "What's up?";
+        case !isset:
+        default:
+            return null;
+    }
+
+    repeat through data as item {
+
+    }
+
+    repeat until i < 55 from 0 {
+
+    }
+
+    repeat until x == 5 {
+
+        break;
+        continue;
+
+    }
+
+    repeat {
+
+        break;
+        continue;
+
+    } until x == 5
+
+}
+
+void myFunction(title, num) { //regular function
+
+    if(!num isset) {
+
+    }
+
+    if(num !isset) {
+
+    }
+
+    if(num isset || title == "MyTitle") {
+
+    }
+
+}
+
+integer (myFunction)(params) {          //private function
+
+
+
+}
+
+component Template { //no static function or variables in template
+
+    counter int = 0;
+
+    theme: MyTheme //
+    object: Text("Val=$counter", style: Style(color: ((int > 0) ? Color.green : Color.red));
+
+    update increment() {
+        counter++;
+        result = shell cat /home/user/cache
+        counter += parseInt(result)
+    }
+
+}
+
+component UserDisplay { //no static function or variables in template
+
+    user User = new User("Ryan", "Fitzgerald");
+    username string;
+
+    object: Text(#counter-name, value: "Val=$counter",
+                style: Style(color: ((int > 0) ? Color.green : Color.red)), action: onblur(updateView, ...params)));
+                     // ** Style classname can be left out (inferred)
+
+    init() {
+        user->username = "ryfitzger227";
+        username = "@" + user->username;
+    }
+
+    update updateView() {
+        call api/user (user->username) {
+            user->firstName = "RYAN";
+            user->lastName = "FITZGERALD";
+            animate #counter-name with FadeIn(speed: 0.2s)
+            this.user = execute getUser(user->username, #textbox)
+            loggedInUser = execute query(username, password) {
+                select: first_name, last_name, username
+                from: my_table
+                where: id == 1
+                using: User
+            }
+        }
+    }
+
+    void increment() {
+        counter++;
+    }
+
+}
+
+element MyTextField {
+
+    object: TextField
+    border: 2px solid Color.blue
+    borderRadius: 25
+    backgroundColor: Color.grey.light
+    theme: MyTheme (//sort of like a namespace)
+
+}
+
+theme Dashboard {
+
+    redBase: #ff0000;
+    greenBase: #00ff00;
+    blueBase: #0000ff;
+    percentWhite: 50%;
+    percentBlack: 50%;
+    loader: MyLoader
+
+    myMainColor = Color.blue
+
+}
+
+model User {
+
+    *firstName first_name string;              //required field
+    *lastName last_name string;                //variable_name column_name type
+    username username string;
+
+}
+
+callable api/user {         //path is not important (just a valid name)
+
+    resource: api/user
+    using: User
+    with: username
+    format: json
+    method: get
+
+    main(...params) {
+
+    }
+
+}
+
+callable createReport {
+
+    main(...params) {
+        if(params.length == 0) return;
+        return shell java -jar report_software.jar "REPORT"
+    }
+
+}
+
+page index {
+
+    title:
+    meta:
+    urlBase:
+    favicon: ^/assets/img/favicon.ico           // ^/document root
+    
+    content: UserDisplay
+    
+    update nextPage() {
+        
+        goto pages/profile
+    
+    }
+
+}
+
+animation FadeIn {
+
+    /*
+
+        TODO
+
+    */
+
+}
+
+query (id) {
+
+    select: first_name, last_name, username
+    from: my_table
+    where: id == 1
+    using: User
+
+}
+
+query getUser(id) {
+
+    select: first_name, last_name, username
+    from: my_table
+    where: id == 1
+
+}
+
+module login {
+
+		
+
+}
+
+
+module crypto {
+
+
+
+}
