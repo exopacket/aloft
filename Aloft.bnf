@@ -14,6 +14,8 @@
 
 }
 
+//TODO FUNCTIONS AND INNER CLASS PROPERTIES
+
 root_unit ::= syntax*
 syntax ::= OPT_WHITESPACE? BUILTIN_KEYWORDS OPT_WHITESPACE?
 BUILTIN_KEYWORDS ::= CLASS_DECLARATION | SOURCE_DECLARATION | COMPONENT_DECLARATION | ELEMENT_DECLARATION | MODEL_DECLARATION | THEME_DECLARATION | CALLABLE_DECLARATION | PAGE_DECLARATION | ANIMATION_DECLARATION | MODULE_DECLARATION | QUERY_DECLARATION | VARIABLE_DECLARATION | COMMENT_BLOCK_DECLARATION
@@ -42,7 +44,7 @@ CALLABLE_KEYWORD ::= "regexp:(?i:callable)"
 VARIABLE_DECLARATION ::= VARIABLE VARIABLE_OPTIONS? (SEPARATOR EXPRESSION)? STATEMENT_END
 VARIABLE ::= ("::"? ((NAMED_PARENTHESIS | NAMED_VAR) ","?))
 VARIABLE_OPTIONS ::= VAR_TYPES | VAR_OPTIONS | VAR_TYPES VAR_OPTIONS
-VAR_TYPES ::= "regexp:(?i:string)" | "regexp:(?i:integer)" | "regexp:(?i:int)" | "regexp:(?i:function)" | "regexp:(?i:decimal)" | "regexp:(?i:bool)" |  "regexp:(?i:dynamic)" | "regexp:((?i:time)(\([\"'])([^\"'])*([\"']\))?)" | NAMED
+VAR_TYPES ::= "regexp:(?i:string)" | "regexp:(?i:integer)" | "regexp:(?i:int)" | "regexp:(?i:function)" | "regexp:(?i:decimal)" | "regexp:(?i:bool)" | "regexp:(?i:boolean)" |  "regexp:(?i:dynamic)" | "regexp:((?i:time)(\([\"'])([^\"'])*([\"']\))?)" | NAMED
 VAR_OPTIONS ::= "get" | "set" | "none"
 CURLY_BLOCK ::= ("regexp:\{(\s+)?") (syntax | ((((NUMBERS | QUOTED_STRING | NAMED_VAR | NULL_VALUE | CURLY_OBJECT_BLOCK | BRACES_ARRAY_BLOCK) (","))*)? (NUMBERS | QUOTED_STRING | NAMED_VAR | NULL_VALUE | BRACES_ARRAY_BLOCK)))* ("regexp:(\s+)?\}")
 EXPRESSION ::= (NULL_VALUE | BRACES_ARRAY_BLOCK | NAMED_VAR | QUOTED_STRING | NUMBERS | "." | "==" | "*" | "+" | "-" | "/" | "%" | "<" | ">" | "<=" | ">=" | "===" | "+=" | "-=" | "/=" | "*=" | "%=" | "(" | ")" | " ")+
@@ -61,9 +63,9 @@ NAMED_PARENTHESIS_SPECIAL ::= "(" (NAMED ","?)* ")"
 NAMED_PARENTHESIS_VAR ::= "(" (NAMED_VAR ","?)* ")"
 NAMED_VAR ::= NAMED | NAMED_OBJECT_ARRAY | NAMED_ARRAY | NAMED_OBJECT
 NAMED ::= ("regexp:(([a-zA-Z_](([a-zA-Z0-9_-]+))+)?[a-zA-Z_0-9]?)")
-NAMED_OBJECT ::= ("regexp:([a-zA-Z_](([a-zA-Z0-9_-]+))+)?[a-zA-Z_0-9]?[^\\ ]\-\>")
-NAMED_OBJECT_ARRAY ::= ("regexp:([a-zA-Z_](([a-zA-Z0-9_-]+)?)+)[a-zA-Z_0-9]?[^\\ ]\[(\d+)\]\-\>")
-NAMED_ARRAY ::= ("regexp:([a-zA-Z_](([a-zA-Z0-9_-]+))+)?[a-zA-Z_0-9]?[^\\ ]\[(\d+)\]")
+NAMED_OBJECT ::= ("regexp:((([a-zA-Z_](([a-zA-Z0-9_-]+)?)+)([a-zA-Z_0-9])?))(\-\>)")
+NAMED_OBJECT_ARRAY ::= ("regexp:((([a-zA-Z_](([a-zA-Z0-9_-]+)?)+)([a-zA-Z_0-9])?))(\[(\d+)\]\-\>)")
+NAMED_ARRAY ::= ("regexp:((([a-zA-Z_](([a-zA-Z0-9_-]+)?)+)([a-zA-Z_0-9])?))(\[(\d+)\])")
 NAMED_NUM_START ::= ("regexp:([a-zA-Z_0-9])((([a-zA-Z0-9_-]+)?)+)[a-zA-Z_0-9]?")
 STATEMENT_END ::= ";" | CRLF
 SEPARATOR ::= "regexp:((\\ )+)?\=((\\ )+)?"
