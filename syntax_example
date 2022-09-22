@@ -50,12 +50,12 @@ string ::myFunction(...args) { //static function with dynamic number of argument
 
     }
 
-    repeat {
+    repeat while x == 5 {
 
         break;
         continue;
 
-    } until x == 5
+    }
 
 }
 
