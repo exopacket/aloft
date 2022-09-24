@@ -14,11 +14,9 @@
 
 }
 
-//TODO FUNCTIONS AND INNER CLASS PROPERTIES
-
 root_unit ::= syntax*
 syntax ::= OPT_WHITESPACE? BUILTIN_KEYWORDS OPT_WHITESPACE?
-BUILTIN_KEYWORDS ::= CLASS_DECLARATION | SOURCE_DECLARATION | COMPONENT_DECLARATION | ELEMENT_DECLARATION | MODEL_DECLARATION | THEME_DECLARATION | CALLABLE_DECLARATION | PAGE_DECLARATION | ANIMATION_DECLARATION | MODULE_DECLARATION | QUERY_DECLARATION | VARIABLE_DECLARATION | COMMENT_BLOCK_DECLARATION
+BUILTIN_KEYWORDS ::=  FUNCTIONS | CLASS_DECLARATION | SOURCE_DECLARATION | COMPONENT_DECLARATION | ELEMENT_DECLARATION | MODEL_DECLARATION | THEME_DECLARATION | CALLABLE_DECLARATION | PAGE_DECLARATION | ANIMATION_DECLARATION | MODULE_DECLARATION | QUERY_DECLARATION | VARIABLE_DECLARATION | COMMENT_BLOCK_DECLARATION
 CLASS_DECLARATION ::= CLASS_KEYWORD NAMED OPT_WHITESPACE? CURLY_BLOCK STATEMENT_END
 CLASS_KEYWORD ::= "regexp:(?i:class)"
 COMPONENT_DECLARATION ::= COMPONENT_KEYWORD NAMED OPT_WHITESPACE? CURLY_BLOCK STATEMENT_END
@@ -44,8 +42,12 @@ CALLABLE_KEYWORD ::= "regexp:(?i:callable)"
 VARIABLE_DECLARATION ::= VARIABLE VARIABLE_OPTIONS? (SEPARATOR EXPRESSION)? STATEMENT_END
 VARIABLE ::= ("::"? ((NAMED_PARENTHESIS | NAMED_VAR) ","?))
 VARIABLE_OPTIONS ::= VAR_TYPES | VAR_OPTIONS | VAR_TYPES VAR_OPTIONS
-VAR_TYPES ::= "regexp:(?i:string)" | "regexp:(?i:integer)" | "regexp:(?i:int)" | "regexp:(?i:function)" | "regexp:(?i:decimal)" | "regexp:(?i:bool)" | "regexp:(?i:boolean)" |  "regexp:(?i:dynamic)" | "regexp:((?i:time)(\([\"'])([^\"'])*([\"']\))?)" | NAMED
 VAR_OPTIONS ::= "get" | "set" | "none"
+FUNCTIONS ::= (FUNCTION_TYPES "[]"? | NAMED_CLASS_ARRAY) FUNCTION NAMED_WITH_PARAMS CURLY_BLOCK STATEMENT_END
+FUNCTION ::= ("::"? (NAMED_PARENTHESIS_FUNCTIONS | NAMED))
+FUNCTION_TYPES::= TYPES | "regexp:(?i:update)"
+VAR_TYPES ::= TYPES | "regexp:(?i:function)" | "regexp:((?i:time)(\([\"'])([^\"'])*([\"']\))?)" | NAMED
+TYPES ::=  "regexp:(?i:string)" | "regexp:(?i:integer)" | "regexp:(?i:int)" | "regexp:(?i:decimal)" | "regexp:(?i:bool)" | "regexp:(?i:boolean)" | "regexp:(?i:dynamic)"
 CURLY_BLOCK ::= ("regexp:\{(\s+)?") (syntax | ((((NUMBERS | QUOTED_STRING | NAMED_VAR | NULL_VALUE | CURLY_OBJECT_BLOCK | BRACES_ARRAY_BLOCK) (","))*)? (NUMBERS | QUOTED_STRING | NAMED_VAR | NULL_VALUE | BRACES_ARRAY_BLOCK)))* ("regexp:(\s+)?\}")
 EXPRESSION ::= (NULL_VALUE | BRACES_ARRAY_BLOCK | NAMED_VAR | QUOTED_STRING | NUMBERS | "." | "==" | "*" | "+" | "-" | "/" | "%" | "<" | ">" | "<=" | ">=" | "===" | "+=" | "-=" | "/=" | "*=" | "%=" | "(" | ")" | " ")+
 BRACES_ARRAY_BLOCK ::= ("regexp:\[(\s+)?") (((NUMBERS | QUOTED_STRING | NAMED_VAR | NULL_VALUE | CURLY_OBJECT_BLOCK | BRACES_ARRAY_BLOCK) (","))*)? (NUMBERS | QUOTED_STRING | NAMED_VAR | NULL_VALUE | BRACES_ARRAY_BLOCK)? ("regexp:(\s+)?\]")
@@ -55,14 +57,16 @@ NULL_VALUE ::= "regexp:(?i:null)"
 PATH_STRING ::=  QUOTED_STRING | ("/" | "\\" | NAMED_NUM_START | NAMED | "regexp:(\d+)" | "_" | "." | "-")*
 QUOTED_STRING ::= "regexp:([\"'])([^\"'])*([\"'])"
 NAMED_WITH_PARAMS ::= (NAMED_WITH_PARAMS_SPECIAL | NAMED_WITH_PARAMS_VAR) | EMPTY_PARENTHESIS
-NAMED_WITH_PARAMS_SPECIAL ::= ("(" (NAMED ","?)* "..."? ")")
-NAMED_WITH_PARAMS_VAR ::= ("(" (NAMED_VAR ","?)* "..."? ")")
+NAMED_WITH_PARAMS_SPECIAL ::= ("(" (NAMED ","?)+ "..."? ")")
+NAMED_WITH_PARAMS_VAR ::= ("(" (NAMED_VAR ","?)+ "..."? ")")
 EMPTY_PARENTHESIS ::= "(" ")"
 NAMED_PARENTHESIS ::= NAMED_PARENTHESIS_SPECIAL | NAMED_PARENTHESIS_VAR
-NAMED_PARENTHESIS_SPECIAL ::= "(" (NAMED ","?)* ")"
-NAMED_PARENTHESIS_VAR ::= "(" (NAMED_VAR ","?)* ")"
+NAMED_PARENTHESIS_SPECIAL ::= "(" (NAMED ","?)+ ")"
+NAMED_PARENTHESIS_FUNCTIONS ::= "(" NAMED ")"
+NAMED_PARENTHESIS_VAR ::= "(" (NAMED_VAR ","?)+ ")"
 NAMED_VAR ::= NAMED | NAMED_OBJECT_ARRAY | NAMED_ARRAY | NAMED_OBJECT
 NAMED ::= ("regexp:(([a-zA-Z_](([a-zA-Z0-9_-]+))+)?[a-zA-Z_0-9]?)")
+NAMED_CLASS_ARRAY ::= ("regexp:(([a-zA-Z_](([a-zA-Z0-9_-]+))+)?[a-zA-Z_0-9]?)(\[\])?")
 NAMED_OBJECT ::= ("regexp:((([a-zA-Z_](([a-zA-Z0-9_-]+)?)+)([a-zA-Z_0-9])?))(\-\>)")
 NAMED_OBJECT_ARRAY ::= ("regexp:((([a-zA-Z_](([a-zA-Z0-9_-]+)?)+)([a-zA-Z_0-9])?))(\[(\d+)\]\-\>)")
 NAMED_ARRAY ::= ("regexp:((([a-zA-Z_](([a-zA-Z0-9_-]+)?)+)([a-zA-Z_0-9])?))(\[(\d+)\])")
