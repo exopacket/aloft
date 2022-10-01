@@ -14,11 +14,10 @@
 
 }
 
-//NO IF STATEMENT
 
 root_unit ::= syntax*
 syntax ::= OPT_WHITESPACE? BUILTIN_KEYWORDS OPT_WHITESPACE?
-BUILTIN_KEYWORDS ::=  SWITCH_BLOCK  | LOOP_DECLARATION | FUNCTIONS | QUERY_DECLARATION | CLASS_DECLARATION | CONSTRUCTOR_DECLARATION | SOURCE_DECLARATION | COMPONENT_DECLARATION | ELEMENT_DECLARATION | MODEL_DECLARATION | THEME_DECLARATION | CALLABLE_DECLARATION | PAGE_DECLARATION | ANIMATION_DECLARATION | MODULE_DECLARATION  | VARIABLE_DECLARATION | CONDITIONAL | COMMENT_BLOCK_DECLARATION
+BUILTIN_KEYWORDS ::=  SWITCH_BLOCK  | IF_DECLARATION | LOOP_DECLARATION | FUNCTIONS | QUERY_DECLARATION | CLASS_DECLARATION | CONSTRUCTOR_DECLARATION | SOURCE_DECLARATION | COMPONENT_DECLARATION | ELEMENT_DECLARATION | MODEL_DECLARATION | THEME_DECLARATION | CALLABLE_DECLARATION | PAGE_DECLARATION | ANIMATION_DECLARATION | MODULE_DECLARATION  | VARIABLE_DECLARATION | CONDITIONAL | COMMENT_BLOCK_DECLARATION
 CLASS_DECLARATION ::= CLASS_KEYWORD NAMED OPT_WHITESPACE? CURLY_BLOCK STATEMENT_END
 CLASS_KEYWORD ::= "regexp:(?i:class)"
 COMPONENT_DECLARATION ::= COMPONENT_KEYWORD NAMED OPT_WHITESPACE? CURLY_BLOCK STATEMENT_END
@@ -44,9 +43,10 @@ CALLABLE_KEYWORD ::= "regexp:(?i:callable)"
 CONSTRUCTOR_DECLARATION ::= CONSTRUCTOR_KEYWORD NAMED OPT_WHITESPACE? CURLY_BLOCK STATEMENT_END
 CONSTRUCTOR_KEYWORD ::= "regexp:(?i:create)"
 ISSET_KEYWORD ::= "regexp:(!)?(?i:isset)"
-LOOP_DECLARATION ::= "regexp:(?i:repeat)"  ((("regexp:(?i:through)" NAMED "regexp:(?i:as)" NAMED) | ("regexp:(?i:until)" EXPRESSION ("regexp:(?i:from)" NUMBERS)?) | ("regexp:(?i:while)" EXPRESSION))) CURLY_BLOCK
+IF_DECLARATION ::= "regexp:(?i:if)" "("? EXPRESSION+ ")"? CURLY_BLOCK (((("regexp:(?i:elseif)" | "regexp:(?i:else if)")) "("? EXPRESSION+ ")"? CURLY_BLOCK) | ("regexp:(?i:else)" CURLY_BLOCK))*
+LOOP_DECLARATION ::= "regexp:(?i:repeat)"  ((("regexp:(?i:through)" NAMED "regexp:(?i:as)" NAMED) | ("regexp:(?i:until)" "("? EXPRESSION ")"? ("regexp:(?i:from)" NUMBERS)?) | ("regexp:(?i:while)" "("? EXPRESSION ")"?))) CURLY_BLOCK
 SWITCH_BLOCK ::= "regexp:(?i:switch)" NAMED_PARENTHESIS_SWITCH SWITCH_CURLY_BLOCK
-SWITCH_CURLY_BLOCK ::= ("regexp:\{(\s+)?") ((("regexp:(?i:case)(\s+)((\d+)|([\"'])([^\"'])*([\"'])|null):") | ("regexp:(?i:default):" ) | "regexp:(?i:break);")* | ((syntax | (((GOTO_DECLARATION | PATH_STRING | LOOP_DECLARATION | NUMBERS | PROPERTY  | NAMED_VAR | NULL_VALUE | CURLY_OBJECT_BLOCK | BRACES_ARRAY_BLOCK) (","))*)? (PATH_STRING | NUMBERS | PROPERTY | NAMED_VAR | NULL_VALUE | BRACES_ARRAY_BLOCK)))* ("regexp:(\s+)?\}"))
+SWITCH_CURLY_BLOCK ::= ("regexp:\{(\s+)?") ((("regexp:(?i:case)(\s+)((\d+)|([\"'])([^\"'])*([\"'])|null):") | ("regexp:(?i:default):" ) | "regexp:(?i:break);")* | ((syntax | (((GOTO_DECLARATION | PATH_STRING | IF_DECLARATION | LOOP_DECLARATION | NUMBERS | PROPERTY  | NAMED_VAR | NULL_VALUE | CURLY_OBJECT_BLOCK | BRACES_ARRAY_BLOCK) (","))*)? (PATH_STRING | NUMBERS | PROPERTY | NAMED_VAR | NULL_VALUE | BRACES_ARRAY_BLOCK)))* ("regexp:(\s+)?\}"))
 VARIABLE_DECLARATION ::= VARIABLE VARIABLE_OPTIONS? (SEPARATOR EXPRESSION)? STATEMENT_END
 VARIABLE ::= ("*")? ("::"? ((NAMED_PARENTHESIS | NAMED_VAR) ","?))
 VARIABLE_OPTIONS ::= VAR_TYPES | VAR_OPTIONS | VAR_TYPES VAR_OPTIONS
@@ -56,7 +56,7 @@ FUNCTION ::= ("::"? (NAMED_PARENTHESIS_FUNCTIONS | NAMED))
 FUNCTION_TYPES::= TYPES | "regexp:(?i:update)" | "regexp:(?i:void)"
 VAR_TYPES ::= TYPES | "regexp:(?i:function)" | "regexp:((?i:time)(\([\"'])([^\"'])*([\"']\))?)" | NAMED
 TYPES ::=  "regexp:(?i:string)" | "regexp:(?i:integer)" | "regexp:(?i:int)" | "regexp:(?i:decimal)" | "regexp:(?i:bool)" | "regexp:(?i:boolean)" | "regexp:(?i:dynamic)"
-CURLY_BLOCK ::= ("regexp:\{(\s+)?") ("regexp:(?i:continue);" | "regexp:(?i:break);" | syntax | ((((GOTO_DECLARATION | LOOP_DECLARATION | NUMBERS | PROPERTY | PATH_STRING | NAMED_VAR | NULL_VALUE | CURLY_OBJECT_BLOCK | BRACES_ARRAY_BLOCK) (","))*)? (NUMBERS | PROPERTY | PATH_STRING | NAMED_VAR | NULL_VALUE | BRACES_ARRAY_BLOCK)))* ("regexp:(\s+)?\}")
+CURLY_BLOCK ::= ("regexp:\{(\s+)?") ("regexp:(?i:continue);" | "regexp:(?i:break);" | syntax | ((((GOTO_DECLARATION | IF_DECLARATION | LOOP_DECLARATION | NUMBERS | PROPERTY | PATH_STRING | NAMED_VAR | NULL_VALUE | CURLY_OBJECT_BLOCK | BRACES_ARRAY_BLOCK) (","))*)? (NUMBERS | PROPERTY | PATH_STRING | NAMED_VAR | NULL_VALUE | BRACES_ARRAY_BLOCK)))* ("regexp:(\s+)?\}")
 NAMED_WITH_PARAMS ::= NAMED_WITH_PARAMS_SPECIAL | EMPTY_PARENTHESIS
 NAMED_WITH_PARAMS_SPECIAL ::= "(" ((NAMED (("," "...args")?)) | ((("," NAMED)+) (("," "...args")?))) ")" //"...args"    //("(" (NAMED ","?)+ ("..." NAMED)? ")")
 NAMED_WITH_PARAMS_VAR ::= ("(" (NAMED_VAR ","?)+ ("..." NAMED) ")")
