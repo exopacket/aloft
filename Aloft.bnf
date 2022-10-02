@@ -58,10 +58,10 @@ VAR_TYPES ::= TYPES | "regexp:(?i:function)" | "regexp:((?i:time)(\([\"'])([^\"'
 TYPES ::=  "regexp:(?i:string)" | "regexp:(?i:integer)" | "regexp:(?i:int)" | "regexp:(?i:decimal)" | "regexp:(?i:bool)" | "regexp:(?i:boolean)" | "regexp:(?i:dynamic)"
 CURLY_BLOCK ::= ("regexp:\{(\s+)?") ("regexp:(?i:continue);" | "regexp:(?i:break);" | syntax | ((((GOTO_DECLARATION | IF_DECLARATION | LOOP_DECLARATION | NUMBERS | PROPERTY | PATH_STRING | NAMED_VAR | NULL_VALUE | CURLY_OBJECT_BLOCK | BRACES_ARRAY_BLOCK) (","))*)? (NUMBERS | PROPERTY | PATH_STRING | NAMED_VAR | NULL_VALUE | BRACES_ARRAY_BLOCK)))* ("regexp:(\s+)?\}")
 NAMED_WITH_PARAMS ::= NAMED_WITH_PARAMS_SPECIAL | EMPTY_PARENTHESIS
-NAMED_WITH_PARAMS_SPECIAL ::= "(" ((NAMED (("," "...args")?)) | ((("," NAMED)+) (("," "...args")?))) ")" //"...args"    //("(" (NAMED ","?)+ ("..." NAMED)? ")")
+NAMED_WITH_PARAMS_SPECIAL ::= "(" ((NAMED (("," "...args")?)) | ((("," NAMED)+) (("," "...args")?))) ")" 
 NAMED_WITH_PARAMS_VAR ::= ("(" (NAMED_VAR ","?)+ ("..." NAMED) ")")
 CONDITIONAL ::= EXPRESSION+ "?" EXPRESSION* ":" EXPRESSION* STATEMENT_END
-EXPRESSION ::= ISSET_KEYWORD | NULL_VALUE | BRACES_ARRAY_BLOCK | (("!")? NAMED_VAR) | PATH_STRING | NUMBERS | "." | "&&" | "||" | "==" | "*" | "+" | "-" | "/" | "%" | "<" | ">" | "<=" | ">=" | "===" | "+=" | "-=" | "/=" | "*=" | "%=" | "(" | ")" | " "
+EXPRESSION ::= ISSET_KEYWORD | SEPARATOR | NULL_VALUE | BRACES_ARRAY_BLOCK | (("!")? NAMED_VAR) | PATH_STRING | NUMBERS | "." | "&&" | "||" | "==" | "*" | "+" | "-" | "/" | "%" | "<" | ">" | "<=" | ">=" | "===" | "+=" | "-=" | "/=" | "*=" | "%=" | "(" | ")" | " "
 BRACES_ARRAY_BLOCK ::= ("regexp:\[(\s+)?") (((NUMBERS | PATH_STRING | NAMED_VAR | NULL_VALUE | CURLY_OBJECT_BLOCK | BRACES_ARRAY_BLOCK) (","))*)? (NUMBERS | PATH_STRING | NAMED_VAR | NULL_VALUE | BRACES_ARRAY_BLOCK)? ("regexp:(\s+)?\]")
 CURLY_OBJECT_BLOCK ::= ("regexp:\{(\s+)?") (((NUMBERS | PROPERTY | PATH_STRING | NAMED_VAR | NULL_VALUE | CURLY_OBJECT_BLOCK | BRACES_ARRAY_BLOCK) (","))*)? (NUMBERS | PROPERTY | PATH_STRING | NAMED_VAR | NULL_VALUE | BRACES_ARRAY_BLOCK)? ("regexp:(\s+)?\}")
 PROPERTY ::= NAMED_PROPERTY PROPERTY_VALUES STATEMENT_END
@@ -87,7 +87,6 @@ NAMED_ARRAY ::= ("regexp:(((\+\+)|(--))?)([a-zA-Z_])((([a-zA-Z0-9_-]*)([a-zA-Z_0
 GOTO_DECLARATION ::= GOTO_KEYWORD PATH_STRING STATEMENT_END
 GOTO_KEYWORD ::= "regexp:(?i:goto)"
 PATH_STRING ::=  QUOTED_STRING | (("^")? "regexp:[a-zA-Z\\/._0-9-]+")
-//NAMED_NUM_START ::= ("regexp:(((\+\+)|(--))?)([a-zA-Z_0-9])((([a-zA-Z0-9_-]*)([a-zA-Z_0-9]))?)(((\+\+)|(--))?)")
 QUOTED_STRING ::= "regexp:([\"'])([^\"'])*([\"'])"
 STATEMENT_END ::= ";" | CRLF
 SEPARATOR ::= "regexp:((\\ )+)?\=((\\ )+)?"
