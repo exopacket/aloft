@@ -60,7 +60,7 @@ CURLY_BLOCK ::= ("regexp:\{(\s+)?") ("regexp:(?i:continue);" | "regexp:(?i:break
 NAMED_WITH_PARAMS ::= NAMED_WITH_PARAMS_SPECIAL | EMPTY_PARENTHESIS
 NAMED_WITH_PARAMS_SPECIAL ::= "(" ((NAMED (("," "...args")?)) | ((("," NAMED)+) (("," "...args")?))) ")" //"...args"    //("(" (NAMED ","?)+ ("..." NAMED)? ")")
 NAMED_WITH_PARAMS_VAR ::= ("(" (NAMED_VAR ","?)+ ("..." NAMED) ")")
-CONDITIONAL ::= "(" EXPRESSION EXPRESSION EXPRESSION ")" "?" EXPRESSION* ":" EXPRESSION* STATEMENT_END
+CONDITIONAL ::= EXPRESSION+ "?" EXPRESSION* ":" EXPRESSION* STATEMENT_END
 EXPRESSION ::= ISSET_KEYWORD | NULL_VALUE | BRACES_ARRAY_BLOCK | (("!")? NAMED_VAR) | PATH_STRING | NUMBERS | "." | "&&" | "||" | "==" | "*" | "+" | "-" | "/" | "%" | "<" | ">" | "<=" | ">=" | "===" | "+=" | "-=" | "/=" | "*=" | "%=" | "(" | ")" | " "
 BRACES_ARRAY_BLOCK ::= ("regexp:\[(\s+)?") (((NUMBERS | PATH_STRING | NAMED_VAR | NULL_VALUE | CURLY_OBJECT_BLOCK | BRACES_ARRAY_BLOCK) (","))*)? (NUMBERS | PATH_STRING | NAMED_VAR | NULL_VALUE | BRACES_ARRAY_BLOCK)? ("regexp:(\s+)?\]")
 CURLY_OBJECT_BLOCK ::= ("regexp:\{(\s+)?") (((NUMBERS | PROPERTY | PATH_STRING | NAMED_VAR | NULL_VALUE | CURLY_OBJECT_BLOCK | BRACES_ARRAY_BLOCK) (","))*)? (NUMBERS | PROPERTY | PATH_STRING | NAMED_VAR | NULL_VALUE | BRACES_ARRAY_BLOCK)? ("regexp:(\s+)?\}")
