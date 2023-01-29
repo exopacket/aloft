@@ -1,6 +1,6 @@
 # aloft
 
-A programming language specifically for full stack development with simple syntax which will be built using PHP and bondedUI (my PHP+Vue.js framework). There will also be an adapted version of aloft for a new Linux OOP-based scripting language. Completely different ideas, but hopefully a very powerful language.
+A programming language for full stack development with simple object oriented syntax.
 
 This is a side project. Don't intend on it being done anytime soon. Feel free, if you're interested in the idea, to pass along ideas or contributions.
 
