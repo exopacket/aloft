@@ -2,7 +2,7 @@
 
 A programming language for full stack development with simple object oriented syntax.
 
-This is a side project. Don't intend on it being done anytime soon. Feel free, if you're interested in the idea, to pass along ideas or contributions.
+This is a side project. Don't intend on it being done anytime soon. Feel free, if you're interested in the idea, to pass along ideas or contributions. Missing some syntax. Based around the simple_language_plugin sample for IntelliJ. Using the case-sensitive version speeds up syntax highlighting and verification by a ton.
 
 ![icon](https://github.com/exopacket/aloft/blob/main/aloft_icon_sm.png)
 
@@ -26,4 +26,4 @@ This is a side project. Don't intend on it being done anytime soon. Feel free, i
   - Forgiving data types (int/integer, bool/boolean, time("format"))
   - Optional semicolon
   - Case insensitivity for keywords and types
-  - generates complete HTML, CSS, PHP, and Javascript files
+  - generates complete HTML, CSS, PHP, and Javascript files / or serves HTML file to client
