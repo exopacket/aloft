@@ -6,6 +6,10 @@ This is a side project. Don't intend on it being done anytime soon. Feel free, i
 
 ![icon](https://github.com/exopacket/aloft/blob/main/aloft_icon_sm.png)
 
+# progress
+
+I have began work on the aloft-server and aloft-cli. Both will be written 100% in Java. The server will run as a daemon and serve content in place of apache or nginx (still deciding on this, but the most likely route). There will be no build process this way and the aloft files alone will make up the application. Speed and performance is TBD, but a priority.
+
 # features
 
   - Object oriented focus with custom classes
