@@ -1,8 +1,8 @@
 package com.inteliense.aloft.server.html;
 
-import com.inteliense.aloft.compiler.Component;
-import com.inteliense.aloft.compiler.Element;
-import com.inteliense.aloft.compiler.Page;
+import com.inteliense.aloft.compiler.lang.keywords.Component;
+import com.inteliense.aloft.compiler.lang.keywords.Element;
+import com.inteliense.aloft.compiler.lang.keywords.Page;
 
 public class HtmlRenderer {
 
