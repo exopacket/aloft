@@ -1,9 +1,5 @@
 package com.inteliense.aloft.utils.exceptions.reporting;
 
-import com.inteliense.exceptions.reporting.types.*;
-import com.inteliense.lot.exceptions.reporting.types.*;
-import com.inteliense.lot.exceptions.types.ReportedException;
-
 public class ErrorReporter {
 
     private static boolean emailEnabled = true;
@@ -44,9 +40,7 @@ public class ErrorReporter {
 
     private static void checkConfigurations() {
         if(lockConfig) return;
-        if(!SMSReporter.hasConfiguration()) smsEnabled = false;
         if(!EmailReporter.hasConfiguration()) emailEnabled = false;
-        if(!GmailReporter.hasConfiguration()) gmailEnabled = false;
         if(!HttpEndpointReporter.hasConfiguration()) httpEndpointEnabled = false;
         if(!LogFileReporter.hasConfiguration()) logfileEnabled = false;
         if(!MySQLReporter.hasConfiguration()) mysqlEnabled = false;
