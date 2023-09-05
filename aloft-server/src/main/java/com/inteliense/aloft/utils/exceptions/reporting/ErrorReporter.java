@@ -1,13 +1,14 @@
 package com.inteliense.aloft.utils.exceptions.reporting;
 
+import com.inteliense.aloft.utils.exceptions.reporting.types.*;
+import com.inteliense.aloft.utils.exceptions.types.ReportedException;
+
 public class ErrorReporter {
 
     private static boolean emailEnabled = true;
-    private static boolean gmailEnabled = true;
     private static boolean httpEndpointEnabled = true;
     private static boolean logfileEnabled = true;
     private static boolean pushoverEnabled = true;
-    private static boolean smsEnabled = true;
     private static boolean mysqlEnabled = true;
     private static boolean sqliteEnabled = true;
 
@@ -22,12 +23,10 @@ public class ErrorReporter {
         boolean res = true;
 
         if(emailEnabled) EmailReporter.report(e);
-        if(gmailEnabled) GmailReporter.report(e);
         if(httpEndpointEnabled) HttpEndpointReporter.report(e);
         if(logfileEnabled) LogFileReporter.report(e);
         if(mysqlEnabled) MySQLReporter.report(e);
         if(pushoverEnabled) PushoverReporter.report(e);
-        if(smsEnabled) SMSReporter.report(e);
         if(sqliteEnabled) SQLiteReporter.report(e);
 
         return res;
@@ -47,6 +46,7 @@ public class ErrorReporter {
         if(!PushoverReporter.hasConfiguration()) pushoverEnabled = false;
         if(!SQLiteReporter.hasConfiguration()) sqliteEnabled = false;
         lockConfig = true;
+        initialized = true;
     }
 
 }

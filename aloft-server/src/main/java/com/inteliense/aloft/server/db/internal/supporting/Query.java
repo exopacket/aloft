@@ -3,6 +3,7 @@ package com.inteliense.aloft.server.db.internal.supporting;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Query {
 
@@ -10,6 +11,8 @@ public class Query {
     private String table;
     private ArrayList<String> select = new ArrayList<String>();
     private ArrayList<String[]> update = new ArrayList<String[]>();
+    private ArrayList<String[]> insert = new ArrayList<String[]>();
+    private boolean delete = false;
 
     private DbConnection connection;
 
@@ -44,6 +47,34 @@ public class Query {
         return this;
     }
 
+    public Query insert(HashMap<String, Object> toInsert) {
+        return this;
+    }
+
+    public Query insert(String column, String value) {
+        return this;
+    }
+
+    public Query insert(String column, int value) {
+        return this;
+    }
+
+    public Query insert(String column, boolean value) {
+        return this;
+    }
+
+    public Query insert(String column, LocalDateTime value) {
+        return this;
+    }
+
+    public Query insert(String column, LocalDate value) {
+        return this;
+    }
+
+    public Query update(HashMap<String, Object> toInsert) {
+        return this;
+    }
+
     public Query update(String column, String value) {
         return this;
     }
@@ -64,12 +95,16 @@ public class Query {
         return this;
     }
 
-    public void delete() {
-
+    public Query delete() {
+        return this;
     }
 
-    public QueryResults exec() {
+    public QueryResults get() {
         return new QueryResults();
+    }
+
+    public void exec() {
+
     }
 
 }

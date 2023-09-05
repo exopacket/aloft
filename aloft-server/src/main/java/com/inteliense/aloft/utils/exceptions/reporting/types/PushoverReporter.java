@@ -1,6 +1,6 @@
 package com.inteliense.aloft.utils.exceptions.reporting.types;
 
-import com.inteliense.lot.exceptions.types.ReportedException;
+import com.inteliense.aloft.utils.exceptions.types.ReportedException;
 
 public class PushoverReporter {
 
