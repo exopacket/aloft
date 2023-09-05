@@ -1,7 +1,5 @@
 package com.inteliense.aloft.server.db.internal.supporting;
 
-import com.inteliense.aloft.server.db.internal.supporting.qtypes.QueryTypes;
-
 import java.util.ArrayList;
 
 //QUERY PARAMS CLASS MAY BE UNNECESSARY
@@ -13,9 +11,13 @@ public class QueryParams {
     private String database;
     private String table;
     private boolean all = false;
+    private int currSelect = -1;
     private ArrayList<Field> select = new ArrayList<Field>();
+    private int currUpdate = -1;
     private ArrayList<Field> update = new ArrayList<Field>();
+    private int currInsert = -1;
     private ArrayList<Field> insert = new ArrayList<Field>();
+    private int currWhere = -1;
     private ArrayList<Field> where = new ArrayList<Field>();
     private QueryTypes type;
 
@@ -41,6 +43,62 @@ public class QueryParams {
 
     public boolean returns() {
         return all || !select.isEmpty() || type == QueryTypes.SELECT;
+    }
+
+    public String database() {
+        return database;
+    }
+
+    public String table() {
+        return table;
+    }
+
+    public QueryTypes type() {
+        return type;
+    }
+
+    public boolean all() {
+        return all;
+    }
+
+    public Field nextSelect() {
+        currSelect++;
+        if(currSelect < select.size()) return select.get(currSelect);
+        return null;
+    }
+
+    public Field nextInsert() {
+        currInsert++;
+        if(currInsert < insert.size()) return insert.get(currInsert);
+        return null;
+    }
+
+    public Field nextUpdate() {
+        currUpdate++;
+        if(currUpdate < update.size()) return update.get(currUpdate);
+        return null;
+    }
+
+    public Field nextWhere() {
+        currWhere++;
+        if(currWhere < where.size()) return where.get(currWhere);
+        return null;
+    }
+
+    public int selectSize() {
+        return select.size();
+    }
+
+    public int insertSize() {
+        return insert.size();
+    }
+
+    public int updateSize() {
+        return update.size();
+    }
+
+    public int whereSize() {
+        return where.size();
     }
 
 }

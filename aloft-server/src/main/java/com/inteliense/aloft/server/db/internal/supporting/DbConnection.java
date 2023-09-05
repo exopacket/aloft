@@ -1,6 +1,5 @@
 package com.inteliense.aloft.server.db.internal.supporting;
 
-import com.inteliense.aloft.server.db.internal.supporting.qtypes.ExecutesQueries;
 import com.inteliense.aloft.utils.exceptions.types.CriticalException;
 
 public abstract class DbConnection implements ExecutesQueries {

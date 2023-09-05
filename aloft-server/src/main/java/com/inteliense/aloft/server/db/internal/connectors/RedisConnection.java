@@ -1,10 +1,9 @@
 package com.inteliense.aloft.server.db.internal.connectors;
 
 import com.inteliense.aloft.server.db.internal.supporting.DbConnection;
-import com.inteliense.aloft.server.db.internal.supporting.QueryAdapter;
 import com.inteliense.aloft.server.db.internal.supporting.QueryParams;
 import com.inteliense.aloft.server.db.internal.supporting.QueryResults;
-import com.inteliense.aloft.server.db.internal.supporting.qtypes.ExecutesQueries;
+import com.inteliense.aloft.server.db.internal.supporting.ExecutesQueries;
 import com.inteliense.aloft.utils.exceptions.types.CriticalException;
 import redis.clients.jedis.Jedis;
 

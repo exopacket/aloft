@@ -1,9 +1,5 @@
 package com.inteliense.aloft.server.db.internal.supporting;
 
-import com.inteliense.aloft.server.db.internal.supporting.qtypes.QueryTypes;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 

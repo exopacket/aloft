@@ -1,4 +1,4 @@
-package com.inteliense.aloft.server.db.internal.supporting.qtypes;
+package com.inteliense.aloft.server.db.internal.supporting;
 
 public enum QueryTypes {
     SELECT,

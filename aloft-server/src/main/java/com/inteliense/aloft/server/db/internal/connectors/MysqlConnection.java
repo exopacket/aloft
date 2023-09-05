@@ -1,14 +1,9 @@
 package com.inteliense.aloft.server.db.internal.connectors;
 
-import com.inteliense.aloft.server.db.internal.supporting.DbConnection;
-import com.inteliense.aloft.server.db.internal.supporting.QueryAdapter;
-import com.inteliense.aloft.server.db.internal.supporting.QueryParams;
-import com.inteliense.aloft.server.db.internal.supporting.QueryResults;
-import com.inteliense.aloft.server.db.internal.supporting.qtypes.ExecutesQueries;
+import com.inteliense.aloft.server.db.internal.supporting.*;
 import com.inteliense.aloft.utils.exceptions.types.CriticalException;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.*;
 
 public class MysqlConnection extends DbConnection implements ExecutesQueries  {
 
@@ -52,11 +47,37 @@ public class MysqlConnection extends DbConnection implements ExecutesQueries  {
 
     @Override
     public QueryResults execute(QueryParams p) {
+
+        try {
+            SQLBuilder builder = new SQLBuilder(p);
+            String preparedSql = builder.getPreparedString();
+            PreparedStatement stmt = conn.prepareStatement(preparedSql);
+            for(int i=0;i< builder.preparedSize(); i++) {
+                SQLBuilder.set(stmt, i + 1, builder.next());
+            }
+            ResultSet resultSet = stmt.executeQuery();
+            return new QueryResults(resultSet);
+        } catch (Exception e) {
+            onError(new CriticalException("Failed to execute query.", e));
+        }
+
         return null;
     }
 
     @Override
     public void executeUpdate(QueryParams p) {
+
+        try {
+            SQLBuilder builder = new SQLBuilder(p);
+            String preparedSql = builder.getPreparedString();
+            PreparedStatement stmt = conn.prepareStatement(preparedSql);
+            for(int i=0;i< builder.preparedSize(); i++) {
+                SQLBuilder.set(stmt, i + 1, builder.next());
+            }
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            onError(new CriticalException("Failed to execute query.", e));
+        }
 
     }
 }
