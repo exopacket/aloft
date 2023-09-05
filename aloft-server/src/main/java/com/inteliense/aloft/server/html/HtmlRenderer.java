@@ -7,15 +7,15 @@ import com.inteliense.aloft.compiler.lang.keywords.Page;
 public class HtmlRenderer {
 
     public static Html render(Page page) {
-        return new Html(RenderedType.PAGE);
+        return new Html(RenderType.PAGE);
     }
 
     public static Html render(Component component) {
-        return new Html(RenderedType.COMPONENT);
+        return new Html(RenderType.COMPONENT);
     }
 
     public static Html render(Element element) {
-        return new Html(RenderedType.ELEMENT);
+        return new Html(RenderType.ELEMENT);
     }
 
 }

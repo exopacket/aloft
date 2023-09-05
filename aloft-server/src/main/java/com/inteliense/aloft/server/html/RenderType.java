@@ -1,6 +1,6 @@
 package com.inteliense.aloft.server.html;
 
-public enum RenderedType {
+public enum RenderType {
     PAGE,
     COMPONENT,
     ELEMENT

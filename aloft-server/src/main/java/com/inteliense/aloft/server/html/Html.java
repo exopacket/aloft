@@ -2,9 +2,9 @@ package com.inteliense.aloft.server.html;
 
 public class Html {
 
-    private RenderedType type;
+    private RenderType type;
 
-    public Html(RenderedType type) {
+    public Html(RenderType type) {
         this.type = type;
     }
 
