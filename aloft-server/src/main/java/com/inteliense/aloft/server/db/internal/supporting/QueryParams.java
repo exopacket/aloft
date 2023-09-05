@@ -61,6 +61,10 @@ public class QueryParams {
         return all;
     }
 
+    public ArrayList<Field> selectColumns() {
+        return select;
+    }
+
     public Field nextSelect() {
         currSelect++;
         if(currSelect < select.size()) return select.get(currSelect);

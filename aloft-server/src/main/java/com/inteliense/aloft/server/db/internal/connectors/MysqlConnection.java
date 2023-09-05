@@ -56,7 +56,7 @@ public class MysqlConnection extends DbConnection implements ExecutesQueries  {
                 SQLBuilder.set(stmt, i + 1, builder.next());
             }
             ResultSet resultSet = stmt.executeQuery();
-            return new QueryResults(resultSet);
+            return new QueryResults(resultSet, p.selectColumns());
         } catch (Exception e) {
             onError(new CriticalException("Failed to execute query.", e));
         }
