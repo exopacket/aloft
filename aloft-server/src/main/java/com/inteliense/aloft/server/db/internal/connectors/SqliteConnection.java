@@ -1,12 +1,16 @@
 package com.inteliense.aloft.server.db.internal.connectors;
 
 import com.inteliense.aloft.server.db.internal.supporting.DbConnection;
+import com.inteliense.aloft.server.db.internal.supporting.QueryAdapter;
+import com.inteliense.aloft.server.db.internal.supporting.QueryParams;
+import com.inteliense.aloft.server.db.internal.supporting.QueryResults;
+import com.inteliense.aloft.server.db.internal.supporting.qtypes.ExecutesQueries;
 import com.inteliense.aloft.utils.exceptions.types.CriticalException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-public class SqliteConnection extends DbConnection {
+public class SqliteConnection extends DbConnection implements ExecutesQueries  {
 
     private Connection conn = null;
     private String db = "";
@@ -46,4 +50,13 @@ public class SqliteConnection extends DbConnection {
         this.connect();
     }
 
+    @Override
+    public QueryResults execute(QueryParams p) {
+        return null;
+    }
+
+    @Override
+    public void executeUpdate(QueryParams p) {
+
+    }
 }

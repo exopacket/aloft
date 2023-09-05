@@ -1,5 +1,7 @@
 package com.inteliense.aloft.server.db.internal.supporting;
 
+import com.inteliense.aloft.server.db.internal.supporting.qtypes.QueryTypes;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -9,10 +11,12 @@ public class Query {
 
     private String database;
     private String table;
-    private ArrayList<String> select = new ArrayList<String>();
-    private ArrayList<String[]> update = new ArrayList<String[]>();
-    private ArrayList<String[]> insert = new ArrayList<String[]>();
-    private boolean delete = false;
+    private boolean all = false;
+    private ArrayList<Field> select = new ArrayList<Field>();
+    private ArrayList<Field> update = new ArrayList<Field>();
+    private ArrayList<Field> insert = new ArrayList<Field>();
+    private ArrayList<Field> where = new ArrayList<Field>();
+    private QueryTypes type;
 
     private DbConnection connection;
 
@@ -30,81 +34,103 @@ public class Query {
         return this;
     }
 
-    public Query database(String database, boolean create) {
-        this.database = table;
-        return this;
-    }
+//    public Query database(String database, boolean create) {
+//        this.database = table;
+//        if(create) {
+//
+//        }
+//        return this;
+//    }
 
-    public Query table(String table, boolean create) {
-        this.table = table;
+//    public Query table(String table, String[] fields) {
+//        this.table = table;
+//        if(fields.length > 0) {
+//
+//        }
+//        return this;
+//    }
+
+    public Query select() {
+        type = QueryTypes.SELECT;
+        all = true;
         return this;
     }
 
     public Query select(String... columns) {
+        type = QueryTypes.SELECT;
         for(String column: columns) {
-            select.add(column);
+            select.add(new Field(column, null));
         }
         return this;
     }
 
     public Query insert(HashMap<String, Object> toInsert) {
+
+        type = QueryTypes.INSERT;
+
+        for(String key : toInsert.keySet()) {
+            Object value = toInsert.get(key);
+            insert(key, value);
+        }
+
         return this;
     }
 
-    public Query insert(String column, String value) {
+    public Query insert(String column, Object value) {
+        type = QueryTypes.INSERT;
+
+        Field field = new Field(column, value);
+        insert.add(field);
         return this;
     }
 
-    public Query insert(String column, int value) {
+    public Query update(HashMap<String, Object> toUpdate) {
+
+        type = QueryTypes.UPDATE;
+
+        for(String key : toUpdate.keySet()) {
+            Object value = toUpdate.get(key);
+            update(key, value);
+        }
+
         return this;
     }
 
-    public Query insert(String column, boolean value) {
+    public Query update(String column, Object value) {
+        type = QueryTypes.UPDATE;
+
+        Field field = new Field(column, value);
+        update.add(field);
         return this;
     }
 
-    public Query insert(String column, LocalDateTime value) {
-        return this;
-    }
-
-    public Query insert(String column, LocalDate value) {
-        return this;
-    }
-
-    public Query update(HashMap<String, Object> toInsert) {
-        return this;
-    }
-
-    public Query update(String column, String value) {
-        return this;
-    }
-
-    public Query update(String column, int value) {
-        return this;
-    }
-
-    public Query update(String column, boolean value) {
-        return this;
-    }
-
-    public Query update(String column, LocalDateTime value) {
-        return this;
-    }
-
-    public Query update(String column, LocalDate value) {
-        return this;
-    }
-
-    public Query delete() {
-        return this;
+    public void delete() {
+        type = QueryTypes.DELETE;
+        run();
     }
 
     public QueryResults get() {
-        return new QueryResults();
+        QueryAdapter qa = new QueryAdapter(connection);
+        return qa.q(this);
     }
 
-    public void exec() {
+    public void run() {
+        QueryAdapter qa = new QueryAdapter(connection);
+        qa.q(this);
+    }
 
+    public QueryParams p() {
+        QueryParams params = new QueryParams(
+                database,
+                table,
+                all,
+                select,
+                update,
+                insert,
+                where,
+                type
+        );
+        return params;
     }
 
 }
