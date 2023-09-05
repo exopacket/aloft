@@ -24,7 +24,7 @@ public class SqliteConnection extends DbConnection {
     @Override
     protected void connect() throws Exception, CriticalException {
 
-        String jdbc = "jdbc:mysql://localhost:3306/" + db;
+        String jdbc = "jdbc:sqlite:" + db;
         String user = "root";
         String password = "secret";
 
