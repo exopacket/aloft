@@ -1,4 +1,4 @@
-package com.inteliense.aloft.server.db.internal;
+package com.inteliense.aloft.server.db.internal.supporting;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,6 +10,12 @@ public class Query {
     private String table;
     private ArrayList<String> select = new ArrayList<String>();
     private ArrayList<String[]> update = new ArrayList<String[]>();
+
+    private DbConnection connection;
+
+    public Query(DbConnection connection) {
+        this.connection = connection;
+    }
 
     public Query database(String database) {
         this.database = database;
@@ -58,8 +64,12 @@ public class Query {
         return this;
     }
 
-    public Query delete() {
-        return this;
+    public void delete() {
+
+    }
+
+    public QueryResults exec() {
+        return new QueryResults();
     }
 
 }

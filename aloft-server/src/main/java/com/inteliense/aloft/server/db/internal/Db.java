@@ -1,16 +1,20 @@
 package com.inteliense.aloft.server.db.internal;
 
-public class DB {
+import com.inteliense.aloft.server.db.internal.supporting.DbDriver;
+import com.inteliense.aloft.server.db.internal.supporting.DbType;
+import com.inteliense.aloft.server.db.internal.supporting.Query;
 
-    private DatabaseDriver driver;
+public class Db {
+
+    private DbDriver driver;
     private String database;
 
-    public DB(DbType type) {
-        this.driver = new DatabaseDriver(type);
+    public Db(DbType type) {
+        this.driver = new DbDriver(type);
     }
 
-    public DB(String database, DbType type) {
-        this.driver = new DatabaseDriver(type);
+    public Db(String database, DbType type) {
+        this.driver = new DbDriver(type);
         this.database = dbName(database);
     }
 
