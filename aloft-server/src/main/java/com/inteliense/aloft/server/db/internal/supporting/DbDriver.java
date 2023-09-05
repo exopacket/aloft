@@ -1,5 +1,9 @@
 package com.inteliense.aloft.server.db.internal.supporting;
 
+import com.inteliense.aloft.server.db.internal.connectors.MysqlConnection;
+import com.inteliense.aloft.server.db.internal.connectors.RedisConnection;
+import com.inteliense.aloft.server.db.internal.connectors.SqliteConnection;
+
 public class DbDriver {
 
     private DbType type;
@@ -8,6 +12,13 @@ public class DbDriver {
 
     public DbDriver(DbType type) {
         this.type = type;
+        if(type == DbType.REDIS) this.connection = new RedisConnection();
+        else if(type == DbType.MYSQL) this.connection = new MysqlConnection();
+        else if(type == DbType.SQLITE) this.connection = new SqliteConnection();
+    }
+
+    public DbConnection conn() {
+        return connection;
     }
 
     public Query buildQuery() {

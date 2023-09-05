@@ -1,6 +1,6 @@
 package com.inteliense.aloft.utils.encryption;
 
-import com.inteliense.datautils.Hex;
+import com.inteliense.aloft.utils.data.Hex;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;

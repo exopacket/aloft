@@ -3,6 +3,7 @@ package com.inteliense.aloft.server.db.internal;
 import com.inteliense.aloft.server.db.internal.supporting.DbDriver;
 import com.inteliense.aloft.server.db.internal.supporting.DbType;
 import com.inteliense.aloft.server.db.internal.supporting.Query;
+import com.inteliense.aloft.utils.exceptions.types.CriticalException;
 
 public class Db {
 
@@ -18,8 +19,9 @@ public class Db {
         this.database = dbName(database);
     }
 
-    public void setDatabase(String database) {
+    public void setDatabase(String database) throws CriticalException, Exception {
         this.database = dbName(database);
+        this.driver.conn().changeDb(database);
     }
 
     public Query query() {

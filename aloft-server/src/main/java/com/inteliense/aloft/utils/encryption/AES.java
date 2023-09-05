@@ -1,6 +1,6 @@
 package com.inteliense.aloft.utils.encryption;
 
-import com.inteliense.lot.data.Hex;
+import com.inteliense.aloft.utils.data.Hex;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.GCMParameterSpec;
