@@ -1,6 +1,7 @@
 package com.inteliense.aloft.server.db.internal.supporting;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Query {
@@ -11,7 +12,7 @@ public class Query {
     private ArrayList<Field> select = new ArrayList<Field>();
     private ArrayList<Field> update = new ArrayList<Field>();
     private ArrayList<Field> insert = new ArrayList<Field>();
-    private ArrayList<Field> where = new ArrayList<Field>();
+    private ArrayList<Condition> where = new ArrayList<Condition>();
     private QueryTypes type;
 
     private DbConnection connection;
@@ -97,6 +98,21 @@ public class Query {
 
         Field field = new Field(column, value);
         update.add(field);
+        return this;
+    }
+
+    public Query where(ArrayList<Condition> conditions) {
+        this.where.addAll(conditions);
+        return this;
+    }
+
+    public Query where(Condition[] conditions) {
+        this.where.addAll(Arrays.asList(conditions));
+        return this;
+    }
+
+    public Query where(Condition value) {
+        where.add(value);
         return this;
     }
 

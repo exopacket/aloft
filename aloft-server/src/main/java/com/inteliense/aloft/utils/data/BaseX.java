@@ -21,7 +21,11 @@ public class BaseX {
     }
 
     public static byte[] bytesFrom64(String input) {
-        return Base64.getDecoder().decode(input.getBytes());
+        try {
+            return Base64.getDecoder().decode(input.getBytes());
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public static byte[] bytesFrom64(byte[] input) {

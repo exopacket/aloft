@@ -18,7 +18,7 @@ public class QueryParams {
     private int currInsert = -1;
     private ArrayList<Field> insert = new ArrayList<Field>();
     private int currWhere = -1;
-    private ArrayList<Field> where = new ArrayList<Field>();
+    private ArrayList<Condition> where = new ArrayList<Condition>();
     private QueryTypes type;
 
     public QueryParams(
@@ -28,7 +28,7 @@ public class QueryParams {
             ArrayList<Field> select,
             ArrayList<Field> update,
             ArrayList<Field> insert,
-            ArrayList<Field> where,
+            ArrayList<Condition> where,
             QueryTypes type
     ) {
         this.database = database;
@@ -83,7 +83,7 @@ public class QueryParams {
         return null;
     }
 
-    public Field nextWhere() {
+    public Condition nextWhere() {
         currWhere++;
         if(currWhere < where.size()) return where.get(currWhere);
         return null;

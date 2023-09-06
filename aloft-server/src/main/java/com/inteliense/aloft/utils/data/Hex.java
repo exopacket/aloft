@@ -6,7 +6,7 @@ public class Hex {
 
     public static String getHex(byte[] data) {
 
-        final byte[] HEX_ARRAY = "0123456789ABCDEF".getBytes(StandardCharsets.US_ASCII);
+        final byte[] HEX_ARRAY = "0123456789abcdef".getBytes(StandardCharsets.US_ASCII);
 
         byte[] hexChars = new byte[data.length * 2];
         for(int j=0; j<data.length; j++) {
@@ -23,17 +23,25 @@ public class Hex {
 
     public static byte[] fromHex(String hex) {
 
-        byte[] val = new byte[hex.length() / 2];
+        try {
 
-        for(int i=0; i<val.length; i++) {
+            byte[] val = new byte[hex.length() / 2];
 
-            int index = i * 2;
-            int j = Integer.parseInt(hex.substring(index, index + 2), 16);
-            val[i] = (byte) j;
+            for (int i = 0; i < val.length; i++) {
+
+                int index = i * 2;
+                int j = Integer.parseInt(hex.substring(index, index + 2), 16);
+                val[i] = (byte) j;
+
+            }
+
+            return val;
+
+        } catch (Exception e) {
+
+            return null;
 
         }
-
-        return val;
 
     }
 
