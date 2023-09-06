@@ -10,11 +10,11 @@ public class DbDriver {
 
     private DbConnection connection;
 
-    public DbDriver(DbType type) {
+    public DbDriver(DbType type, String username, String password) {
         this.type = type;
-        if(type == DbType.REDIS) this.connection = new RedisConnection();
-        else if(type == DbType.MYSQL) this.connection = new MysqlConnection();
-        else if(type == DbType.SQLITE) this.connection = new SqliteConnection();
+        if(type == DbType.REDIS) this.connection = new RedisConnection(username, password);
+        else if(type == DbType.MYSQL) this.connection = new MysqlConnection(username, password);
+        else if(type == DbType.SQLITE) this.connection = new SqliteConnection(username, password);
     }
 
     public DbConnection conn() {

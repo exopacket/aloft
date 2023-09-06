@@ -11,7 +11,10 @@ import redis.clients.jedis.Jedis;
 public class RedisConnection extends DbConnection implements ExecutesQueries  {
 
     private Jedis conn = null;
-    private String db = "";
+
+    public RedisConnection(String username, String password) {
+        super(username, password);
+    }
 
     @Override
     public Object getConn() {

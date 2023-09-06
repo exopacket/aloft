@@ -17,6 +17,7 @@ public class Print {
         pw.print("\n");
     }
 
+
     public static void txt(String text, PrintWriter pw) {
         pw.print(text);
     }

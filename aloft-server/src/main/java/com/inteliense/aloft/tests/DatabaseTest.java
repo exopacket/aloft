@@ -6,7 +6,7 @@ import com.inteliense.aloft.server.db.internal.supporting.DbType;
 public class DatabaseTest {
 
     public static void main(String[] args) {
-        Db people = new Db("people", DbType.MYSQL);
+        Db people = new Db(DbType.MYSQL, "root", "secretpass", "aloft_test");
     }
 
 }

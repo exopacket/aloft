@@ -4,9 +4,15 @@ import com.inteliense.aloft.utils.exceptions.types.CriticalException;
 
 public abstract class DbConnection implements ExecutesQueries {
 
-    public DbConnection() {
+    protected String db = null;
+    protected String username;
+    protected String password;
+
+    public DbConnection(String username, String password) {
+        this.username = username;
+        this.password = password;
         try {
-            connect();
+            if(db != null) connect();
         } catch(Exception | CriticalException e) {
             if(e instanceof CriticalException) {
                 onError((CriticalException) e);

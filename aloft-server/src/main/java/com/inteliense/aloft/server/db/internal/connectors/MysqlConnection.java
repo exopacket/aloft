@@ -8,7 +8,10 @@ import java.sql.*;
 public class MysqlConnection extends DbConnection implements ExecutesQueries  {
 
     private Connection conn = null;
-    private String db = "";
+
+    public MysqlConnection(String username, String password) {
+        super(username, password);
+    }
 
     @Override
     public Object getConn() {
@@ -24,10 +27,8 @@ public class MysqlConnection extends DbConnection implements ExecutesQueries  {
     protected void connect() throws Exception, CriticalException {
 
         String jdbc = "jdbc:mysql://localhost:3306/" + db;
-        String user = "root";
-        String password = "secret";
 
-        conn = DriverManager.getConnection(jdbc, user, password);
+        conn = DriverManager.getConnection(jdbc, username, password);
         if(conn == null) throw new CriticalException("Failed to connect to mysql.");
 
     }
