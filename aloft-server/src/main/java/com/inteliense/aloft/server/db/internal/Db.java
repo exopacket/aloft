@@ -3,12 +3,13 @@ package com.inteliense.aloft.server.db.internal;
 import com.inteliense.aloft.server.db.internal.supporting.DbDriver;
 import com.inteliense.aloft.server.db.internal.supporting.DbType;
 import com.inteliense.aloft.server.db.internal.supporting.Query;
+import com.inteliense.aloft.utils.exceptions.types.CommonException;
 import com.inteliense.aloft.utils.exceptions.types.CriticalException;
 
 public class Db {
 
     private DbDriver driver;
-    private String database;
+    private String database = null;
 
     public Db(DbType type) {
         this.driver = new DbDriver(type);
@@ -25,6 +26,7 @@ public class Db {
     }
 
     public Query query() {
+        if(database == null) return null;
         return this.driver.buildQuery(dbName(database));
     }
 
