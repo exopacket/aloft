@@ -19,6 +19,8 @@ public class QueryParams {
     private ArrayList<Field> insert = new ArrayList<Field>();
     private int currWhere = -1;
     private ArrayList<Condition> where = new ArrayList<Condition>();
+    private int currJoin = -1;
+    private ArrayList<Join> join = new ArrayList<Join>();
     private QueryTypes type;
 
     public QueryParams(
@@ -29,6 +31,7 @@ public class QueryParams {
             ArrayList<Field> update,
             ArrayList<Field> insert,
             ArrayList<Condition> where,
+            ArrayList<Join> join,
             QueryTypes type
     ) {
         this.database = database;
@@ -38,6 +41,7 @@ public class QueryParams {
         this.update = update;
         this.insert = insert;
         this.where = where;
+        this.join = join;
         this.type = type;
     }
 
@@ -65,6 +69,14 @@ public class QueryParams {
         return select;
     }
 
+    public void resetIndexes() {
+        currSelect = -1;
+        currInsert = -1;
+        currUpdate = -1;
+        currWhere = -1;
+        currJoin = -1;
+    }
+
     public Field nextSelect() {
         currSelect++;
         if(currSelect < select.size()) return select.get(currSelect);
@@ -89,6 +101,12 @@ public class QueryParams {
         return null;
     }
 
+    public Join nextJoin() {
+        currJoin++;
+        if(currJoin < join.size()) return join.get(currJoin);
+        return null;
+    }
+
     public int selectSize() {
         return select.size();
     }
@@ -104,5 +122,7 @@ public class QueryParams {
     public int whereSize() {
         return where.size();
     }
+
+    public int joinSize() { return join.size(); }
 
 }

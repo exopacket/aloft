@@ -260,6 +260,7 @@ public class Query {
                 update,
                 insert,
                 where,
+                join,
                 type
         );
         return params;
