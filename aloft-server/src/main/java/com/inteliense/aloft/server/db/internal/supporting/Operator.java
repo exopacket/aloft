@@ -12,7 +12,8 @@ public enum Operator {
     TRUE,
     FALSE,
     NULL,
-    NOT_NULL;
+    NOT_NULL,
+    SOFT_DELETED;
 
     public static Operator parse(Object o) throws CommonException {
         if(o == null) return Operator.NULL;

@@ -13,7 +13,8 @@ public class Query {
     private ArrayList<Field> update = new ArrayList<Field>();
     private ArrayList<Field> insert = new ArrayList<Field>();
     private ArrayList<Condition> where = new ArrayList<Condition>();
-    private QueryTypes type;
+    private ArrayList<Join> join = new ArrayList<Join>();
+    private QueryTypes type; //TODO get rid of QueryTypes type
 
     private DbConnection connection;
 
@@ -116,8 +117,83 @@ public class Query {
         return this;
     }
 
+    public Query orWhere(ArrayList<Condition> conditions) {
+        for(Condition condition : conditions) {
+            condition.or();
+        }
+        this.where.addAll(conditions);
+        return this;
+    }
+
+    public Query orWhere(Condition[] conditions) {
+        for(Condition condition : conditions) {
+            condition.or();
+        }
+        this.where.addAll(Arrays.asList(conditions));
+        return this;
+    }
+
+    public Query orWhere(Condition value) {
+        value.or();
+        where.add(value);
+        return this;
+    }
+
+    public Query whereNull(String column) {
+        Condition c = new Condition(column, null);
+        where.add(c);
+        return this;
+    }
+
+    public Query orWhereNull(String column) {
+        Condition c = new Condition(column, null);
+        c.or();
+        where.add(c);
+        return this;
+    }
+
+    public Query whereSet(String column) {
+        Condition c = new Condition(column, Operator.NOT_NULL);
+        where.add(c);
+        return this;
+    }
+
+    public Query orWhereSet(String column) {
+        Condition c = new Condition(column, Operator.NOT_NULL);
+        c.or();
+        where.add(c);
+        return this;
+    }
+
+    public Query whereDeleted(String column) {
+        Condition c = new Condition(column, Operator.SOFT_DELETED);
+        where.add(c);
+        return this;
+    }
+
+    public Query orWhereDeleted(String column) {
+        Condition c = new Condition(column, Operator.SOFT_DELETED);
+        where.add(c);
+        where.add(c);
+        return this;
+    }
+
+    public Query beginGroup() {
+        where.add(Condition.GROUP_BEGIN());
+        return this;
+    }
+
+    public Query closeGroup() {
+        where.add(Condition.GROUP_END());
+        return this;
+    }
+
     public void delete() {
         type = QueryTypes.DELETE;
+        run();
+    }
+
+    public void softDelete() {
         run();
     }
 
