@@ -173,7 +173,7 @@ public class Query {
 
     public Query orWhereDeleted(String column) {
         Condition c = new Condition(column, Operator.SOFT_DELETED);
-        where.add(c);
+        c.or();
         where.add(c);
         return this;
     }
