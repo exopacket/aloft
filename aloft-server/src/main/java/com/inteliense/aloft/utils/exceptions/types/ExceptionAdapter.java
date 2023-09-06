@@ -52,7 +52,7 @@ public abstract class ExceptionAdapter extends Throwable {
             ((ReportedException) this).tryReport();
             return;
         }
-        ReportedException conversion = (ReportedException) this;
+        ReportedException conversion = new ReportedException(this);
         conversion.tryReport();
     }
 
