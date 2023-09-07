@@ -119,6 +119,10 @@ public class Query {
         return new Join(this, left, operator, right, type);
     }
 
+    public Query func(String name, Object... args) {
+        return null;
+    }
+
     public Query where(ArrayList<Condition> conditions) {
         this.where.addAll(conditions);
         return this;
@@ -199,6 +203,22 @@ public class Query {
         c.or();
         where.add(c);
         return this;
+    }
+
+    public Query whereLike() {
+        return null;
+    }
+
+    public Query orWhereLike() {
+        return null;
+    }
+
+    public Query orderBy() {
+        return null;
+    }
+
+    public Query groupBy() {
+        return null;
     }
 
     public Query beginGroup() {

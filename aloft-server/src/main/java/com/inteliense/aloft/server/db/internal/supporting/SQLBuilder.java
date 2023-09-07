@@ -26,7 +26,7 @@ public class SQLBuilder {
 
     public String getPreparedString() {
 
-        //TODO add support for sql functions, delete, order by, group by
+        //TODO add support for sql functions, delete, order by, group by, and LIKE
 
         String sql = "";
 
@@ -53,6 +53,7 @@ public class SQLBuilder {
                 sql += "?";
             }
             sql += ")";
+            p.resetIndexes();
             return sql;
         }
 
@@ -60,6 +61,17 @@ public class SQLBuilder {
     }
 
     public Object next() {
+        Object v;
+        v = p.nextSelect();
+        if(v != null) return v;
+        v = p.nextInsert();
+        if(v != null) return v;
+        v = p.nextUpdate();
+        if(v != null) return v;
+        v = p.nextJoin();
+        if(v != null) return v;
+        v = p.nextWhere();
+        if(v != null) return v;
         return null;
     }
 

@@ -53,8 +53,11 @@ public class MysqlConnection extends DbConnection implements ExecutesQueries  {
             SQLBuilder builder = new SQLBuilder(p);
             String preparedSql = builder.getPreparedString();
             PreparedStatement stmt = conn.prepareStatement(preparedSql);
-            for(int i=0;i< builder.preparedSize(); i++) {
-                SQLBuilder.set(stmt, i + 1, builder.next());
+            for(int i=0;i< builder.preparedSize() / 2; i++) {
+                Object v = builder.next();
+                if(v.getClass() == Field.class) v = ((Field) v).get();
+                if(v == null) break;
+                SQLBuilder.set(stmt, i + 1, v);
             }
             ResultSet resultSet = stmt.executeQuery();
             return new QueryResults(resultSet, p.selectColumns());
@@ -72,11 +75,15 @@ public class MysqlConnection extends DbConnection implements ExecutesQueries  {
             SQLBuilder builder = new SQLBuilder(p);
             String preparedSql = builder.getPreparedString();
             PreparedStatement stmt = conn.prepareStatement(preparedSql);
-            for(int i=0;i< builder.preparedSize(); i++) {
-                SQLBuilder.set(stmt, i + 1, builder.next());
+            for(int i=0;i< builder.preparedSize() / 2; i++) {
+                Object v = builder.next();
+                if(v.getClass() == Field.class) v = ((Field) v).get();
+                if(v == null) break;
+                SQLBuilder.set(stmt, i + 1, v);
             }
             stmt.executeUpdate();
         } catch (Exception e) {
+            e.printStackTrace();
             onError(new CriticalException("Failed to execute query.", e));
         }
 
