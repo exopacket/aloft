@@ -1,4 +1,4 @@
-package com.inteliense.aloft.server.db.internal.supporting;
+package com.inteliense.aloft.server.db.internal.supporting.sql;
 
 public enum JoinTypes {
     DEFAULT_JOIN,

@@ -1,6 +1,6 @@
-package com.inteliense.aloft.server.db.internal.supporting;
+package com.inteliense.aloft.server.db.internal.supporting.sql;
 
-public class Column {
+public class Column extends SQLColumnOrFunction {
 
     private String table;
     private String name;
@@ -18,4 +18,13 @@ public class Column {
         return "`" + this.name + "`";
     }
 
+    @Override
+    public Class getType() {
+        return Column.class;
+    }
+
+    @Override
+    public String getTypeString() {
+        return "Column";
+    }
 }

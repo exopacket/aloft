@@ -1,4 +1,6 @@
-package com.inteliense.aloft.server.db.internal.supporting;
+package com.inteliense.aloft.server.db.internal.supporting.sql;
+
+import com.inteliense.aloft.server.db.internal.supporting.QueryParams;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

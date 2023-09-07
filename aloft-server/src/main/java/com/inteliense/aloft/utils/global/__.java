@@ -1,6 +1,6 @@
 package com.inteliense.aloft.utils.global;
 
-import com.inteliense.aloft.server.db.internal.supporting.Operator;
+import com.inteliense.aloft.server.db.internal.supporting.sql.Operator;
 import com.inteliense.aloft.utils.data.BaseX;
 import com.inteliense.aloft.utils.data.Hex;
 

@@ -3,6 +3,7 @@ package com.inteliense.aloft.server.db.internal.supporting;
 import com.inteliense.aloft.server.db.internal.connectors.MysqlConnection;
 import com.inteliense.aloft.server.db.internal.connectors.RedisConnection;
 import com.inteliense.aloft.server.db.internal.connectors.SqliteConnection;
+import com.inteliense.aloft.server.db.internal.supporting.redis.RedisAdapter;
 
 public class DbDriver {
 

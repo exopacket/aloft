@@ -1,6 +1,7 @@
 package com.inteliense.aloft.server.db.internal.connectors;
 
 import com.inteliense.aloft.server.db.internal.supporting.*;
+import com.inteliense.aloft.server.db.internal.supporting.sql.SQLBuilder;
 import com.inteliense.aloft.utils.exceptions.types.CriticalException;
 
 import java.sql.Connection;

@@ -1,5 +1,7 @@
 package com.inteliense.aloft.server.db.internal.supporting;
 
+import com.inteliense.aloft.server.db.internal.supporting.sql.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -8,13 +10,21 @@ public class Query {
 
     private String database;
     private String table;
-    private boolean all = false;
+
     private ArrayList<Field> select = new ArrayList<Field>();
     private ArrayList<Field> update = new ArrayList<Field>();
     private ArrayList<Field> insert = new ArrayList<Field>();
     private ArrayList<Condition> where = new ArrayList<Condition>();
     private ArrayList<Join> join = new ArrayList<Join>();
-    private QueryTypes type; //TODO get rid of QueryTypes type
+
+    private boolean all = false;
+    private boolean delete = false;
+    private boolean softDelete = false;
+
+    private Column orderByColumn;
+    private OrderBy orderByDirection;
+
+    private Column groupByColumn;
 
     private DbConnection connection;
 
@@ -49,13 +59,11 @@ public class Query {
 //    }
 
     public Query select() {
-        type = QueryTypes.SELECT;
         all = true;
         return this;
     }
 
     public Query select(String... columns) {
-        type = QueryTypes.SELECT;
         for(String column: columns) {
             select.add(new Field(makeColumn(column), null));
         }
@@ -63,8 +71,6 @@ public class Query {
     }
 
     public Query insert(HashMap<String, Object> toInsert) {
-
-        type = QueryTypes.INSERT;
 
         for(String key : toInsert.keySet()) {
             Object value = toInsert.get(key);
@@ -75,7 +81,6 @@ public class Query {
     }
 
     public Query insert(String column, Object value) {
-        type = QueryTypes.INSERT;
 
         Field field = new Field(makeColumn(column), value);
         insert.add(field);
@@ -83,8 +88,6 @@ public class Query {
     }
 
     public Query update(HashMap<String, Object> toUpdate) {
-
-        type = QueryTypes.UPDATE;
 
         for(String key : toUpdate.keySet()) {
             Object value = toUpdate.get(key);
@@ -95,7 +98,6 @@ public class Query {
     }
 
     public Query update(String column, Object value) {
-        type = QueryTypes.UPDATE;
 
         Field field = new Field(makeColumn(column), value);
         update.add(field);
@@ -119,8 +121,12 @@ public class Query {
         return new Join(this, left, operator, right, type);
     }
 
-    public Query func(String name, Object... args) {
-        return null;
+    public SQLFunction func(String name, Object... args) {
+        return SQLFunction.create(name, args);
+    }
+
+    public SQLFunction func(String name, String storeAs, Object... args) {
+        return SQLFunction.createWithStoreAs(name, storeAs, args);
     }
 
     public Query where(ArrayList<Condition> conditions) {
@@ -232,7 +238,7 @@ public class Query {
     }
 
     public void delete() {
-        type = QueryTypes.DELETE;
+        this.delete = true;
         run();
     }
 
@@ -276,12 +282,16 @@ public class Query {
                 database,
                 table,
                 all,
+                delete,
+                softDelete,
+                orderByColumn,
+                orderByDirection,
+                groupByColumn,
                 select,
                 update,
                 insert,
                 where,
-                join,
-                type
+                join
         );
         return params;
     }

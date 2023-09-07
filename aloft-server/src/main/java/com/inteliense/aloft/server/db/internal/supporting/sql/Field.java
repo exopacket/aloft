@@ -1,4 +1,6 @@
-package com.inteliense.aloft.server.db.internal.supporting;
+package com.inteliense.aloft.server.db.internal.supporting.sql;
+
+import com.inteliense.aloft.server.db.internal.supporting.sql.Column;
 
 public class Field {
 
