@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class QueryResults {
 
+    private int currRecord = 0;
     private ArrayList<Record> records = new ArrayList<Record>();
 
     public QueryResults(ResultSet rs, ArrayList<Field> select) {
@@ -25,6 +26,21 @@ public class QueryResults {
         } catch (Exception e) {
             new CriticalException("Failed to get results from query.", e).report();
         }
+    }
+
+    public ArrayList<Record> getList() {
+        return records;
+    }
+
+    public Record next() {
+        if(currRecord == records.size()) return null;
+        Record r = records.get(currRecord);
+        currRecord++;
+        return r;
+    }
+
+    public int size() {
+        return records.size();
     }
 
 }
