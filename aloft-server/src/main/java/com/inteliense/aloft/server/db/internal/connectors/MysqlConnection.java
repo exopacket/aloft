@@ -57,7 +57,6 @@ public class MysqlConnection extends DbConnection implements ExecutesQueries  {
             PreparedStatement stmt = conn.prepareStatement(preparedSql);
             for(int i=0;i< builder.valueSize(); i++) {
                 Object v = builder.next();
-                //TODO there are more than fields
                 if(v == null) break;
                 if(v.getClass() == Field.class) v = ((Field) v).get();
                 if(v.getClass() == Condition.class) v = ((Condition) v).value();
@@ -66,7 +65,6 @@ public class MysqlConnection extends DbConnection implements ExecutesQueries  {
             ResultSet resultSet = stmt.executeQuery();
             return new QueryResults(resultSet, p.selectColumns(), p.tableName());
         } catch (Exception e) {
-            e.printStackTrace();
             onError(new CriticalException("Failed to execute query.", e));
         }
 
@@ -79,20 +77,16 @@ public class MysqlConnection extends DbConnection implements ExecutesQueries  {
         try {
             SQLBuilder builder = new SQLBuilder(p);
             String preparedSql = builder.getPreparedString();
-            System.out.println(preparedSql);
             PreparedStatement stmt = conn.prepareStatement(preparedSql);
             for(int i=0;i< builder.valueSize(); i++) {
                 Object v = builder.next();
                 if(v.getClass() == Field.class) v = ((Field) v).get();
                 if(v.getClass() == Condition.class) v = ((Condition) v).value();
-                if(v.getClass() == Join.class)
                 if(v == null) break;
-                System.out.println(v);
                 SQLBuilder.set(stmt, i + 1, v);
             }
             stmt.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
             onError(new CriticalException("Failed to execute query.", e));
         }
 
