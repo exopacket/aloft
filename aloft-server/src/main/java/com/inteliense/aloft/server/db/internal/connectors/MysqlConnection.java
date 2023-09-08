@@ -1,11 +1,18 @@
 package com.inteliense.aloft.server.db.internal.connectors;
 
-import com.inteliense.aloft.server.db.internal.supporting.*;
-import com.inteliense.aloft.server.db.internal.supporting.sql.*;
+import com.inteliense.aloft.server.db.internal.supporting.DbConnection;
+import com.inteliense.aloft.server.db.internal.supporting.ExecutesQueries;
+import com.inteliense.aloft.server.db.internal.supporting.QueryParams;
+import com.inteliense.aloft.server.db.internal.supporting.QueryResults;
+import com.inteliense.aloft.server.db.internal.supporting.sql.Condition;
+import com.inteliense.aloft.server.db.internal.supporting.sql.Field;
+import com.inteliense.aloft.server.db.internal.supporting.sql.SQLBuilder;
 import com.inteliense.aloft.utils.exceptions.types.CriticalException;
 
-import java.lang.reflect.Array;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class MysqlConnection extends DbConnection implements ExecutesQueries  {
 
