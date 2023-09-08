@@ -81,6 +81,8 @@ public class QueryParams {
         return "`" + table + "`";
     }
 
+    public String tableName() { return table; }
+
     public boolean all() {
         return all;
     }

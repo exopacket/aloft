@@ -14,7 +14,7 @@ public class QueryResults {
     private int currRecord = 0;
     private ArrayList<Record> records = new ArrayList<Record>();
 
-    public QueryResults(ResultSet rs, ArrayList<Field> select) {
+    public QueryResults(ResultSet rs, ArrayList<Field> select, String table) {
         try {
             while(rs.next()) {
                 ArrayList<Field> fields = new ArrayList<Field>();
@@ -22,7 +22,7 @@ public class QueryResults {
                     SQLColumnOrFunction col = select.get(i).column();
                     fields.add(new Field(col, rs.getObject(i + 1)));
                 }
-                records.add(new Record(fields));
+                records.add(new Record(fields, table));
             }
         } catch (Exception e) {
             new CriticalException("Failed to get results from query.", e).report();

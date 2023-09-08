@@ -60,7 +60,7 @@ public class SqliteConnection extends DbConnection implements ExecutesQueries  {
                 SQLBuilder.set(stmt, i + 1, builder.next());
             }
             ResultSet resultSet = stmt.executeQuery();
-            return new QueryResults(resultSet, p.selectColumns());
+            return new QueryResults(resultSet, p.selectColumns(), p.table());
         } catch (Exception e) {
             onError(new CriticalException("Failed to execute query.", e));
         }

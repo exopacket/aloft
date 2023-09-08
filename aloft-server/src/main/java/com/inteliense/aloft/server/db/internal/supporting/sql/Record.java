@@ -1,6 +1,9 @@
 package com.inteliense.aloft.server.db.internal.supporting.sql;
 
 import com.inteliense.aloft.server.db.internal.supporting.sql.Field;
+import com.inteliense.aloft.utils.data.JSON;
+import org.json.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,10 +12,12 @@ public class Record {
 
     Field[] fields;
     private int currField = 0;
+    private String table = "";
 
-    public Record(ArrayList<Field> fields) {
+    public Record(ArrayList<Field> fields, String table) {
         this.fields = new Field[fields.size()];
         this.fields = fields.toArray(this.fields);
+        this.table = table;
     }
 
     public Object[] pair(int index) {
@@ -31,6 +36,19 @@ public class Record {
 
     public String toString() {
         return Arrays.deepToString(toArray());
+    }
+
+    public String json() {
+        Object[][] objArr = toArray();
+        JSONObject root = new JSONObject();
+        JSONArray arr = new JSONArray();
+        for(int i=0; i< objArr.length; i++) {
+            JSONObject data = new JSONObject();
+            data.put((String) objArr[i][0].toString(), objArr[i][1]);
+            arr.put(data);
+        }
+        root.put(table, arr);
+        return JSON.getString(root);
     }
 
     public String column(int index) {

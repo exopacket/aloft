@@ -5,6 +5,9 @@ import com.inteliense.aloft.server.db.internal.supporting.DbType;
 import com.inteliense.aloft.server.db.internal.supporting.Query;
 import com.inteliense.aloft.server.db.internal.supporting.QueryResults;
 import com.inteliense.aloft.server.db.internal.supporting.sql.Record;
+import com.inteliense.aloft.utils.data.JSON;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.Arrays;
 
@@ -14,9 +17,12 @@ public class DatabaseTest {
         Db db = new Db(DbType.MYSQL, "root", "secretpass", "aloft_test");
         db.query().table("people").allRows().delete();
         db.query().table("people").insert("name", "Ryan").run();
-        QueryResults results = db.query().table("people").select("id").where("name", "=", "Ryan").get();
+        QueryResults results = db.query().table("people").select("id", "name").where("name", "=", "Ryan").get();
         System.out.println(results.size());
-        System.out.println(results.next().toString());
+        Record record = results.next();
+        System.out.println(record.toString());
+        System.out.println(record.json());
+
     }
 
 }
