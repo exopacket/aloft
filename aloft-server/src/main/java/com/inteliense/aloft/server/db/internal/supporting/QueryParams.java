@@ -177,6 +177,7 @@ public class QueryParams {
         int n = 0;
         for(int i=0; i<where.size(); i++) {
             Condition c = where.get(i);
+            if(c.isDualColumns()) continue;
             if(c.isNotForJoin()) continue;
             if(c.isForJoin()) n++;
         }
@@ -189,6 +190,7 @@ public class QueryParams {
         int n = 0;
         for(int i=0; i<where.size(); i++) {
             Condition c = where.get(i);
+            if(c.isDualColumns()) continue;
             if(c.isForJoin()) break;
             if(c.isNotForJoin()) n++;
         }
@@ -196,7 +198,7 @@ public class QueryParams {
         return n;
     }
 
-    public int whereSize() { return where.size(); }
+    public int whereSize() { return whereSizeForJoin() + whereSizeNotForJoin(); }
 
     public int joinSize() { return join.size(); }
 

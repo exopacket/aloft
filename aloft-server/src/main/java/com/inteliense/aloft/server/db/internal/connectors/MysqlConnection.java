@@ -1,11 +1,10 @@
 package com.inteliense.aloft.server.db.internal.connectors;
 
 import com.inteliense.aloft.server.db.internal.supporting.*;
-import com.inteliense.aloft.server.db.internal.supporting.sql.Condition;
-import com.inteliense.aloft.server.db.internal.supporting.sql.Field;
-import com.inteliense.aloft.server.db.internal.supporting.sql.SQLBuilder;
+import com.inteliense.aloft.server.db.internal.supporting.sql.*;
 import com.inteliense.aloft.utils.exceptions.types.CriticalException;
 
+import java.lang.reflect.Array;
 import java.sql.*;
 
 public class MysqlConnection extends DbConnection implements ExecutesQueries  {
@@ -67,6 +66,7 @@ public class MysqlConnection extends DbConnection implements ExecutesQueries  {
             ResultSet resultSet = stmt.executeQuery();
             return new QueryResults(resultSet, p.selectColumns(), p.tableName());
         } catch (Exception e) {
+            e.printStackTrace();
             onError(new CriticalException("Failed to execute query.", e));
         }
 
@@ -79,15 +79,20 @@ public class MysqlConnection extends DbConnection implements ExecutesQueries  {
         try {
             SQLBuilder builder = new SQLBuilder(p);
             String preparedSql = builder.getPreparedString();
+            System.out.println(preparedSql);
             PreparedStatement stmt = conn.prepareStatement(preparedSql);
             for(int i=0;i< builder.valueSize(); i++) {
                 Object v = builder.next();
                 if(v.getClass() == Field.class) v = ((Field) v).get();
+                if(v.getClass() == Condition.class) v = ((Condition) v).value();
+                if(v.getClass() == Join.class)
                 if(v == null) break;
+                System.out.println(v);
                 SQLBuilder.set(stmt, i + 1, v);
             }
             stmt.executeUpdate();
         } catch (Exception e) {
+            e.printStackTrace();
             onError(new CriticalException("Failed to execute query.", e));
         }
 

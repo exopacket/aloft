@@ -113,9 +113,13 @@ public class Condition {
         return singleValue;
     }
 
+    public boolean isDualColumns() {
+        return valuePos == 0;
+    }
+
     public Object value() {
         if(valuePos == -1) return left;
         if(valuePos == 1) return right;
-        return null;
+        return new SQLColumnOrFunction[]{(SQLColumnOrFunction) left, (SQLColumnOrFunction) right};
     }
 }

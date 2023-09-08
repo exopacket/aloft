@@ -111,6 +111,11 @@ public class SQLBuilder {
                         Operator.V operator = c.operator();
                         Object right = c.right();
                         SQLColumnOrFunction col = null;
+                        if(left instanceof SQLColumnOrFunction && right instanceof SQLColumnOrFunction) {
+                            sql += " " + ((SQLColumnOrFunction) left).full() + Operator.get(operator) + ((SQLColumnOrFunction) right).full() + " ";
+                            c = p.nextNotJoinWhere();
+                            continue;
+                        }
                         if (left instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) left;
                         else if (right instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) right;
                         if (col == null) {
@@ -127,6 +132,11 @@ public class SQLBuilder {
                         Operator.V operator = c.operator();
                         Object right = c.right();
                         SQLColumnOrFunction col = null;
+                        if(left instanceof SQLColumnOrFunction && right instanceof SQLColumnOrFunction) {
+                            sql += (c.isOr() ? " OR " : " AND ") + ((SQLColumnOrFunction) left).full() + Operator.get(operator) + ((SQLColumnOrFunction) right).full() + " ";
+                            c = p.nextNotJoinWhere();
+                            continue;
+                        }
                         if (left instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) left;
                         else if (right instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) right;
                         if (col == null) {
@@ -170,6 +180,11 @@ public class SQLBuilder {
                         Operator.V operator = c.operator();
                         Object right = c.right();
                         SQLColumnOrFunction col = null;
+                        if(left instanceof SQLColumnOrFunction && right instanceof SQLColumnOrFunction) {
+                            sql += " " + ((SQLColumnOrFunction) left).full() + Operator.get(operator) + ((SQLColumnOrFunction) right).full() + " ";
+                            c = j.nextCondition();
+                            continue;
+                        }
                         if (left instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) left;
                         else if (right instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) right;
                         if (col == null) {
@@ -186,6 +201,11 @@ public class SQLBuilder {
                         Operator.V operator = c.operator();
                         Object right = c.right();
                         SQLColumnOrFunction col = null;
+                        if(left instanceof SQLColumnOrFunction && right instanceof SQLColumnOrFunction) {
+                            sql += (c.isOr() ? " OR " : " AND ") + ((SQLColumnOrFunction) left).full() + Operator.get(operator) + ((SQLColumnOrFunction) right).full() + " ";
+                            c = j.nextCondition();
+                            continue;
+                        }
                         if (left instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) left;
                         else if (right instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) right;
                         if (col == null) {
@@ -231,6 +251,11 @@ public class SQLBuilder {
                         Operator.V operator = c.operator();
                         Object right = c.right();
                         SQLColumnOrFunction col = null;
+                        if(left instanceof SQLColumnOrFunction && right instanceof SQLColumnOrFunction) {
+                            sql += " " + ((SQLColumnOrFunction) left).full() + Operator.get(operator) + ((SQLColumnOrFunction) right).full() + " ";
+                            c = p.nextJoinWhere();
+                            continue;
+                        }
                         if (left instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) left;
                         else if (right instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) right;
                         if (col == null) {
@@ -247,6 +272,11 @@ public class SQLBuilder {
                         Operator.V operator = c.operator();
                         Object right = c.right();
                         SQLColumnOrFunction col = null;
+                        if(left instanceof SQLColumnOrFunction && right instanceof SQLColumnOrFunction) {
+                            sql += (c.isOr() ? " OR " : " AND ") + ((SQLColumnOrFunction) left).full() + Operator.get(operator) + ((SQLColumnOrFunction) right).full() + " ";
+                            c = p.nextJoinWhere();
+                            continue;
+                        }
                         if (left instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) left;
                         else if (right instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) right;
                         if (col == null) {
@@ -289,10 +319,13 @@ public class SQLBuilder {
         v = p.nextUpdate();
         if(v != null) return v;
         v = p.nextNotJoinWhere();
+        if(v != null && ((Condition) v).isDualColumns()) return next();
         if(v != null) return v;
-        v = p.nextJoin();
+        v = p.nextJoin().nextCondition();
+        if(v != null && ((Condition) v).isDualColumns()) return next();
         if(v != null) return v;
         v = p.nextJoinWhere();
+        if(v != null && ((Condition) v).isDualColumns()) return next();
         if(v != null) return v;
         return null;
     }
