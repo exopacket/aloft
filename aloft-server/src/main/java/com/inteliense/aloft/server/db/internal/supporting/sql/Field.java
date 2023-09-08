@@ -4,24 +4,47 @@ import com.inteliense.aloft.server.db.internal.supporting.sql.Column;
 
 public class Field {
 
-    private Column column;
+    private SQLColumnOrFunction key;
     private Object value;
 
-    public Field(Column column, Object value) {
-        this.column = column;
+    public Field(SQLColumnOrFunction key, Object value) {
+        this.key = key;
         this.value = value;
     }
 
+    public Class getType() {
+        return key.getType();
+    }
+
     public Column column() {
-        return column;
+        return (Column) key;
+    }
+
+    public SQLFunction function() {
+        return (SQLFunction) key;
+    }
+
+    public String name() {
+        if(key.getType() == Column.class) return column().name();
+        else if(key.getType() == SQLFunction.class) return function().full();
+        return null;
+    }
+
+    public String label() {
+        return name();
     }
 
     public <Any> Any get() {
+        if(value == null) return null;
         if(value.getClass() == String.class) return (Any) ((String) value);
         else if(value.getClass() == Integer.class) return (Any) ((Integer) (int) value);
         else if(value.getClass() == Boolean.class) return (Any) ((Boolean)(boolean) value);
         else if(value.getClass() == Float.class) return (Any) ((Float) (float) value);
         else return (Any) value;
+    }
+
+    public <Any> Any value() {
+        return get();
     }
 
 }

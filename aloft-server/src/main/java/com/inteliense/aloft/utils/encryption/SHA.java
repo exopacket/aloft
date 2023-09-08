@@ -29,7 +29,6 @@ public class SHA {
         }
 
         catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
         }
 
         return "";
@@ -55,7 +54,6 @@ public class SHA {
         }
 
         catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
         }
 
         return "";
@@ -81,7 +79,6 @@ public class SHA {
         }
 
         catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
         }
 
         return "";
@@ -107,7 +104,6 @@ public class SHA {
         }
 
         catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
         }
 
         return "";
@@ -133,7 +129,6 @@ public class SHA {
         }
 
         catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
         }
 
         return "";

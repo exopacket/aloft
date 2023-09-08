@@ -8,17 +8,22 @@ public class Condition {
     private Object right = null;
     private Operator.V operator = null;
     private boolean or = false;
+    private int valuePos = 0;
 
     private boolean notForJoin = false;
     private boolean forJoin = false;
 
-    private int groupIndex = 0;
+    private int groupIndex = -2;
 
     private String matchStr = null;
 
+    private boolean singleValue = false;
+
     public Condition(Object left, Object operator, Object right) {
-        if(!(left.getClass() == Column.class || right.getClass() == Column.class))
+        if(!(left instanceof SQLColumnOrFunction || right instanceof SQLColumnOrFunction))
             new CommonException("At least one side of the condition must be a column object.").report();
+        if(!(left instanceof SQLColumnOrFunction)) valuePos = -1;
+        if(!(right instanceof SQLColumnOrFunction)) valuePos = 1;
         this.left = left;
         try {
             this.operator = (operator.getClass() == Operator.V.class) ? (Operator.V) operator : Operator.parse(operator);
@@ -29,14 +34,18 @@ public class Condition {
     }
 
     public Condition(Object column, Object v) {
-        if(!(left.getClass() == Column.class || right.getClass() == Column.class))
-            new CommonException("At least one side of the condition must be a column object.").report();
+        this.valuePos = -1;
         this.left = column;
         try {
             this.operator = (operator.getClass() == Operator.V.class) ? (Operator.V) v : Operator.parse(v);
         } catch (CommonException e) {
             e.report();
         }
+    }
+
+    public Condition(String value) {
+        this.singleValue = true;
+        this.left = value;
     }
 
     public Condition(boolean closeGroup) {
@@ -98,5 +107,15 @@ public class Condition {
 
     public boolean isNotForJoin() {
         return notForJoin;
+    }
+
+    public boolean isSingleValue() {
+        return singleValue;
+    }
+
+    public Object value() {
+        if(valuePos == -1) return left;
+        if(valuePos == 1) return right;
+        return null;
     }
 }

@@ -22,7 +22,6 @@ public class JSON {
 
         } catch (Exception ex) {
 
-            ex.printStackTrace();
 
         }
 
@@ -42,7 +41,6 @@ public class JSON {
 
         } catch (Exception ex) {
 
-            ex.printStackTrace();
 
         }
 
@@ -59,7 +57,6 @@ public class JSON {
             return out.toString();
 
         } catch (Exception ex) {
-            ex.printStackTrace();
         }
 
         return "{}";

@@ -32,10 +32,10 @@ public class QueryParams {
     private boolean softDelete = false;
     private boolean setTimestamps = false;
 
-    private Column orderByColumn = null;
+    private SQLColumnOrFunction orderByColumn = null;
     private OrderBy orderByDirection = null;
 
-    private Column groupByColumn = null;
+    private SQLColumnOrFunction groupByColumn = null;
 
     public QueryParams(
             String database,
@@ -43,9 +43,9 @@ public class QueryParams {
             boolean all,
             boolean delete,
             boolean softDelete,
-            Column orderByColumn,
+            SQLColumnOrFunction orderByColumn,
             OrderBy orderByDirection,
-            Column groupByColumn,
+            SQLColumnOrFunction groupByColumn,
             ArrayList<Field> select,
             ArrayList<Field> update,
             ArrayList<Field> insert,
@@ -70,7 +70,7 @@ public class QueryParams {
     }
 
     public boolean returns() {
-        return all || !select.isEmpty();
+        return all || select.size() > 0;
     }
 
     public String database() {
@@ -97,7 +97,7 @@ public class QueryParams {
         return groupByColumn != null;
     }
 
-    public Column getOrderByColumn() {
+    public SQLColumnOrFunction getOrderByColumn() {
         return orderByColumn;
     }
 
@@ -105,7 +105,7 @@ public class QueryParams {
         return orderByDirection;
     }
 
-    public Column getGroupByColumn() {
+    public SQLColumnOrFunction getGroupByColumn() {
         return groupByColumn;
     }
 
@@ -142,7 +142,7 @@ public class QueryParams {
     public Condition nextNotJoinWhere() {
         currWhere++;
         if(currWhere < whereSizeNotForJoin()) return where.get(currWhere);
-        currWhere = whereSizeForJoin() - 1;
+        else currWhere = whereSizeForJoin() - 1;
         return null;
     }
 

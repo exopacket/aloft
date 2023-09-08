@@ -31,11 +31,12 @@ public class SQLFunction extends SQLColumnOrFunction {
         return new SQLFunction(name, args);
     }
 
-    public String get() {
+    private String get() {
         String call = this.name.toUpperCase() + "(";
         for(int i=0; i<args.length; i++) {
             call += (i > 0) ? ", " : "";
             Object arg = args[i];
+            if(arg.getClass() == Column.class) call += "" + ((Column) arg).full();
             if(arg.getClass() == Integer.class) call += "" + ((int) arg);
             if(arg.getClass() == String.class) call += "\"" + stripColumnChars((String) arg) + "\"";
             if(arg.getClass() == Column.class) call += "\"" + ((Column) arg).full() + "\"";
@@ -77,13 +78,19 @@ public class SQLFunction extends SQLColumnOrFunction {
     }
 
 
-    @Override
     public Class getType() {
         return SQLFunction.class;
     }
 
-    @Override
     public String getTypeString() {
         return "Function";
+    }
+
+    public String full() {
+        return get();
+    }
+
+    public String name() {
+        return get();
     }
 }

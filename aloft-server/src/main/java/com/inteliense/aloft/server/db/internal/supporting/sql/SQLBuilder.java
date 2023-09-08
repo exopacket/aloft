@@ -39,7 +39,8 @@ public class SQLBuilder {
                 sql += "SELECT";
                 for(int i=0; i<p.selectSize(); i++) {
                     sql += (i > 0) ? ", " : " ";
-                    sql += p.nextSelect().column().full();
+                    sql += getColumnOrFunctionKey(p.nextSelect());
+                    if(p.selectSize() == 1) sql += " ";
                 }
                 sql += "FROM " + p.table() + " ";
             }
@@ -47,7 +48,7 @@ public class SQLBuilder {
             sql += "INSERT INTO " + p.table() + " (";
             for (int i = 0; i < p.insertSize(); i++) {
                 sql += (i > 0) ? ", " : "";
-                sql += p.nextInsert().column().full();
+                sql += getColumnOrFunctionKey(p.nextInsert());
             }
             if(p.setTimestamps()) {
                 sql += p.table() + ".`created_at`";
@@ -71,7 +72,8 @@ public class SQLBuilder {
                 sql += "UPDATE " + p.table() + " SET ";
                 for(int i=0; i<p.updateSize(); i++) {
                     sql += (i > 0) ? ", " : "";
-                    sql += p.nextUpdate().column().full() + "=?";
+                    sql += getColumnOrFunctionKey(p.nextUpdate())+ "=?";
+                    if(p.updateSize() == 1) sql += " ";
                 }
                 if(p.setTimestamps()) {
                     sql += p.table() + ".`updated_at`=now() ";
@@ -85,92 +87,38 @@ public class SQLBuilder {
             sql += " WHERE ";
             int s = p.whereSizeNotForJoin();
             Condition c = p.nextNotJoinWhere();
-            if(c.isGroup() && c.isOpen()) {
-                sql += "(";
-                s--;
-            }
-            for(int i=0; i<s; i++) {
-                if(c.isGroup()) {
-                    if(c.isOpen()) {
-                        sql += "(";
-                    } else if(c.isClose()) {
-                        sql += ")";
-                    }
-                    c = p.nextNotJoinWhere();
-                    continue;
-                }
-
-                if(i == 0) {
-                    Object left = c.left();
-                    Operator.V operator = c.operator();
-                    Object right = c.right();
-                    Column col = null;
-                    if(left.getClass() == Column.class) col = (Column) left;
-                    else if(right.getClass() == Column.class) col = (Column) right;
-                    if(col == null) {
-                        c = p.nextNotJoinWhere();
-                        continue;
-                    }
-                    if(Operator.hasRight(operator)) {
-                        sql += col.full() + Operator.get(operator) + "?";
-                    } else {
-                        sql += col.full() + Operator.get(operator);
-                    }
-                } else {
-                    Object left = c.left();
-                    Operator.V operator = c.operator();
-                    Object right = c.right();
-                    Column col = null;
-                    if(left.getClass() == Column.class) col = (Column) left;
-                    else if(right.getClass() == Column.class) col = (Column) right;
-                    if(col == null) {
-                        c = p.nextNotJoinWhere();
-                        continue;
-                    }
-                    if(Operator.hasRight(operator)) {
-                        sql += (c.isOr() ? " OR " : " AND ") + col.full() + Operator.get(operator) + "?";
-                    } else {
-                        sql += (c.isOr() ? " OR " : " AND ") + col.full() + Operator.get(operator);
-                    }
-                }
-                c = p.nextNotJoinWhere();
-            }
-        }
-
-        if(p.joinSize() > 0) {
-            for(int i=0; i< p.joinSize(); i++) {
-                Join j = p.nextJoin();
-                sql += " " + j.getType() + " " + j.getTable() + " ON ";
-                int s = j.conditionsSize();
-                Condition c = j.nextCondition();
-                if(c.isGroup() && c.isOpen()) {
+            if(c.isSingleValue()) {
+                if(c.left().getClass() == String.class) sql += c.left() + " ";
+                else if(c.left() instanceof SQLColumnOrFunction) sql += ((SQLColumnOrFunction) c.left()).full() + " ";
+            } else {
+                if (c.isGroup() && c.isOpen()) {
                     sql += "(";
                     s--;
                 }
-                for(int x=0; x<s; x++) {
-                    if(c.isGroup()) {
-                        if(c.isOpen()) {
+                for (int i = 0; i < s; i++) {
+                    if (c.isGroup()) {
+                        if (c.isOpen()) {
                             sql += "(";
-                        } else if(c.isClose()) {
+                        } else if (c.isClose()) {
                             sql += ")";
                         }
-                        c = j.nextCondition();
+                        c = p.nextNotJoinWhere();
                         continue;
                     }
 
-                    if(i == 0) {
+                    if (i == 0) {
                         Object left = c.left();
                         Operator.V operator = c.operator();
                         Object right = c.right();
-                        Column col = null;
-                        if(left.getClass() == Column.class) col = (Column) left;
-                        else if(right.getClass() == Column.class) col = (Column) right;
-                        if(col == null) {
-                            c = j.nextCondition();
+                        SQLColumnOrFunction col = null;
+                        if (left instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) left;
+                        else if (right instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) right;
+                        if (col == null) {
+                            c = p.nextNotJoinWhere();
                             continue;
                         }
-                        if(Operator.hasRight(operator)) {
-                            sql += col.full() + Operator.get(operator) + "?";
+                        if (Operator.hasRight(operator)) {
+                            sql += col.full() + Operator.get(operator) + "? ";
                         } else {
                             sql += col.full() + Operator.get(operator);
                         }
@@ -178,15 +126,74 @@ public class SQLBuilder {
                         Object left = c.left();
                         Operator.V operator = c.operator();
                         Object right = c.right();
-                        Column col = null;
-                        if(left.getClass() == Column.class) col = (Column) left;
-                        else if(right.getClass() == Column.class) col = (Column) right;
-                        if(col == null) {
+                        SQLColumnOrFunction col = null;
+                        if (left instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) left;
+                        else if (right instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) right;
+                        if (col == null) {
+                            c = p.nextNotJoinWhere();
+                            continue;
+                        }
+                        if (Operator.hasRight(operator)) {
+                            sql += (c.isOr() ? " OR " : " AND ") + col.full() + Operator.get(operator) + "? ";
+                        } else {
+                            sql += (c.isOr() ? " OR " : " AND ") + col.full() + Operator.get(operator);
+                        }
+                    }
+                    c = p.nextNotJoinWhere();
+                }
+            }
+        }
+
+        if (p.joinSize() > 0) {
+            for (int i = 0; i < p.joinSize(); i++) {
+                Join j = p.nextJoin();
+                sql += " " + j.getType() + " " + j.getTable() + " ON ";
+                int s = j.conditionsSize();
+                Condition c = j.nextCondition();
+                if (c.isGroup() && c.isOpen()) {
+                    sql += "(";
+                    s--;
+                }
+                for (int x = 0; x < s; x++) {
+                    if (c.isGroup()) {
+                        if (c.isOpen()) {
+                            sql += "(";
+                        } else if (c.isClose()) {
+                            sql += ")";
+                        }
+                        c = j.nextCondition();
+                        continue;
+                    }
+
+                    if (i == 0) {
+                        Object left = c.left();
+                        Operator.V operator = c.operator();
+                        Object right = c.right();
+                        SQLColumnOrFunction col = null;
+                        if (left instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) left;
+                        else if (right instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) right;
+                        if (col == null) {
                             c = j.nextCondition();
                             continue;
                         }
-                        if(Operator.hasRight(operator)) {
-                            sql += (c.isOr() ? " OR " : " AND ") + col.full() + Operator.get(operator) + "?";
+                        if (Operator.hasRight(operator)) {
+                            sql += col.full() + Operator.get(operator) + "? ";
+                        } else {
+                            sql += col.full() + Operator.get(operator);
+                        }
+                    } else {
+                        Object left = c.left();
+                        Operator.V operator = c.operator();
+                        Object right = c.right();
+                        SQLColumnOrFunction col = null;
+                        if (left instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) left;
+                        else if (right instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) right;
+                        if (col == null) {
+                            c = j.nextCondition();
+                            continue;
+                        }
+                        if (Operator.hasRight(operator)) {
+                            sql += (c.isOr() ? " OR " : " AND ") + col.full() + Operator.get(operator) + "? ";
                         } else {
                             sql += (c.isOr() ? " OR " : " AND ") + col.full() + Operator.get(operator);
                         }
@@ -200,55 +207,60 @@ public class SQLBuilder {
             sql += " WHERE ";
             int s = p.whereSizeForJoin();
             Condition c = p.nextJoinWhere();
-            if(c.isGroup() && c.isOpen()) {
-                sql += "(";
-                s--;
-            }
-            for(int i=0; i<s; i++) {
-                if(c.isGroup()) {
-                    if(c.isOpen()) {
-                        sql += "(";
-                    } else if(c.isClose()) {
-                        sql += ")";
+            if(c.isSingleValue()) {
+                if(c.left().getClass() == String.class) sql += c.left() + " ";
+                else if(c.left() instanceof SQLColumnOrFunction) sql += ((SQLColumnOrFunction) c.left()).full() + " ";
+            } else {
+                if (c.isGroup() && c.isOpen()) {
+                    sql += "(";
+                    s--;
+                }
+                for (int i = 0; i < s; i++) {
+                    if (c.isGroup()) {
+                        if (c.isOpen()) {
+                            sql += "(";
+                        } else if (c.isClose()) {
+                            sql += ")";
+                        }
+                        c = p.nextJoinWhere();
+                        continue;
+                    }
+
+                    if (i == 0) {
+                        Object left = c.left();
+                        Operator.V operator = c.operator();
+                        Object right = c.right();
+                        SQLColumnOrFunction col = null;
+                        if (left instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) left;
+                        else if (right instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) right;
+                        if (col == null) {
+                            c = p.nextJoinWhere();
+                            continue;
+                        }
+                        if (Operator.hasRight(operator)) {
+                            sql += col.full() + Operator.get(operator) + "? ";
+                        } else {
+                            sql += col.full() + Operator.get(operator);
+                        }
+                    } else {
+                        Object left = c.left();
+                        Operator.V operator = c.operator();
+                        Object right = c.right();
+                        SQLColumnOrFunction col = null;
+                        if (left instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) left;
+                        else if (right instanceof SQLColumnOrFunction) col = (SQLColumnOrFunction) right;
+                        if (col == null) {
+                            c = p.nextJoinWhere();
+                            continue;
+                        }
+                        if (Operator.hasRight(operator)) {
+                            sql += (c.isOr() ? " OR " : " AND ") + col.full() + Operator.get(operator) + "? ";
+                        } else {
+                            sql += (c.isOr() ? " OR " : " AND ") + col.full() + Operator.get(operator);
+                        }
                     }
                     c = p.nextJoinWhere();
-                    continue;
                 }
-
-                if(i == 0) {
-                    Object left = c.left();
-                    Operator.V operator = c.operator();
-                    Object right = c.right();
-                    Column col = null;
-                    if(left.getClass() == Column.class) col = (Column) left;
-                    else if(right.getClass() == Column.class) col = (Column) right;
-                    if(col == null) {
-                        c = p.nextJoinWhere();
-                        continue;
-                    }
-                    if(Operator.hasRight(operator)) {
-                        sql += col.full() + Operator.get(operator) + "?";
-                    } else {
-                        sql += col.full() + Operator.get(operator);
-                    }
-                } else {
-                    Object left = c.left();
-                    Operator.V operator = c.operator();
-                    Object right = c.right();
-                    Column col = null;
-                    if(left.getClass() == Column.class) col = (Column) left;
-                    else if(right.getClass() == Column.class) col = (Column) right;
-                    if(col == null) {
-                        c = p.nextJoinWhere();
-                        continue;
-                    }
-                    if(Operator.hasRight(operator)) {
-                        sql += (c.isOr() ? " OR " : " AND ") + col.full() + Operator.get(operator) + "?";
-                    } else {
-                        sql += (c.isOr() ? " OR " : " AND ") + col.full() + Operator.get(operator);
-                    }
-                }
-                c = p.nextJoinWhere();
             }
         }
 
@@ -264,10 +276,14 @@ public class SQLBuilder {
         return cleanQuery(sql);
     }
 
+    private static String getColumnOrFunctionKey(Field field) {
+        if(field.getType() == Column.class) return field.column().full();
+        else if(field.getType() == SQLFunction.class) return field.function().full();
+        return null;
+    }
+
     public Object next() {
         Object v;
-        v = p.nextSelect();
-        if(v != null) return v;
         v = p.nextInsert();
         if(v != null) return v;
         v = p.nextUpdate();
@@ -283,6 +299,13 @@ public class SQLBuilder {
 
     public int preparedSize() {
         return preparedSize;
+    }
+
+    public int valueSize() {
+        return p.insertSize()
+                + p.updateSize()
+                + p.whereSize()
+                + p.joinSize();
     }
 
     public static void set(PreparedStatement stmt, int pos, Object value) throws SQLException {

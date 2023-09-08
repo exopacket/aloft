@@ -353,8 +353,6 @@ public class AES {
 
         } catch (Exception ex) {
 
-            ex.printStackTrace();
-
         }
 
         return null;
@@ -373,7 +371,6 @@ public class AES {
 
         } catch (Exception ex) {
 
-            ex.printStackTrace();
 
         }
 
@@ -396,7 +393,6 @@ public class AES {
 
         } catch (Exception ex) {
 
-            ex.printStackTrace();
 
         }
 

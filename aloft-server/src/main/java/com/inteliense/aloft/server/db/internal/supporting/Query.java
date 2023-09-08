@@ -1,6 +1,7 @@
 package com.inteliense.aloft.server.db.internal.supporting;
 
 import com.inteliense.aloft.server.db.internal.supporting.sql.*;
+import com.inteliense.aloft.utils.exceptions.types.CommonException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,10 +24,11 @@ public class Query {
     private boolean softDelete = false;
     private boolean setTimestamps = false;
 
-    private Column orderByColumn;
+    private SQLColumnOrFunction orderByColumn;
     private OrderBy orderByDirection;
 
-    private Column groupByColumn;
+    private SQLColumnOrFunction groupByColumn;
+
 
     private DbConnection connection;
 
@@ -161,6 +163,16 @@ public class Query {
         return this;
     }
 
+    public Query where(String column, String operator, Object value) {
+        try {
+            Condition c = new Condition(makeColumn(column), Operator.parse(operator), value);
+            addWhere(c);
+        } catch (CommonException e) {
+            throw new RuntimeException(e);
+        }
+        return this;
+    }
+
     public Query orWhere(ArrayList<Condition> conditions) {
         for(Condition condition : conditions) {
             condition.or();
@@ -180,6 +192,17 @@ public class Query {
     public Query orWhere(Condition value) {
         value.or();
         addWhere(value);
+        return this;
+    }
+
+    public Query orWhere(String column, String operator, Object value) {
+        try {
+            Condition c = new Condition(makeColumn(column), Operator.parse(operator), value);
+            c.or();
+            addWhere(c);
+        } catch (CommonException e) {
+            throw new RuntimeException(e);
+        }
         return this;
     }
 
@@ -270,6 +293,11 @@ public class Query {
 
     public Query groupBy(String column) {
         this.groupByColumn = makeColumn(column);
+        return this;
+    }
+
+    public Query allRows() {
+        addWhere(new Condition("1"));
         return this;
     }
 

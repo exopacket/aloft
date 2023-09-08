@@ -15,15 +15,13 @@ public class Column extends SQLColumnOrFunction {
     }
 
     public String name() {
-        return "`" + this.name + "`";
+        return this.name;
     }
 
-    @Override
     public Class getType() {
         return Column.class;
     }
 
-    @Override
     public String getTypeString() {
         return "Column";
     }

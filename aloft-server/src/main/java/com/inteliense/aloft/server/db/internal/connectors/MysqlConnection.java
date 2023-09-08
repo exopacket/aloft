@@ -1,6 +1,7 @@
 package com.inteliense.aloft.server.db.internal.connectors;
 
 import com.inteliense.aloft.server.db.internal.supporting.*;
+import com.inteliense.aloft.server.db.internal.supporting.sql.Condition;
 import com.inteliense.aloft.server.db.internal.supporting.sql.Field;
 import com.inteliense.aloft.server.db.internal.supporting.sql.SQLBuilder;
 import com.inteliense.aloft.utils.exceptions.types.CriticalException;
@@ -55,10 +56,12 @@ public class MysqlConnection extends DbConnection implements ExecutesQueries  {
             SQLBuilder builder = new SQLBuilder(p);
             String preparedSql = builder.getPreparedString();
             PreparedStatement stmt = conn.prepareStatement(preparedSql);
-            for(int i=0;i< builder.preparedSize() / 2; i++) {
+            for(int i=0;i< builder.valueSize(); i++) {
                 Object v = builder.next();
-                if(v.getClass() == Field.class) v = ((Field) v).get();
+                //TODO there are more than fields
                 if(v == null) break;
+                if(v.getClass() == Field.class) v = ((Field) v).get();
+                if(v.getClass() == Condition.class) v = ((Condition) v).value();
                 SQLBuilder.set(stmt, i + 1, v);
             }
             ResultSet resultSet = stmt.executeQuery();
@@ -77,7 +80,7 @@ public class MysqlConnection extends DbConnection implements ExecutesQueries  {
             SQLBuilder builder = new SQLBuilder(p);
             String preparedSql = builder.getPreparedString();
             PreparedStatement stmt = conn.prepareStatement(preparedSql);
-            for(int i=0;i< builder.preparedSize() / 2; i++) {
+            for(int i=0;i< builder.valueSize(); i++) {
                 Object v = builder.next();
                 if(v.getClass() == Field.class) v = ((Field) v).get();
                 if(v == null) break;

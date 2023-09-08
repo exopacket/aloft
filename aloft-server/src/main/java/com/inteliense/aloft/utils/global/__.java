@@ -38,12 +38,13 @@ public class __ {
     public static boolean same(String str1, String str2) {
         return str1.equals(str2);
     }
-    public static Operator isset() {
-        return Operator.NOT_NULL;
+
+    public static Operator.V isset() {
+        return Operator.V.NOT_NULL;
     }
 
-    public static Operator notset() {
-        return Operator.NULL;
+    public static Operator.V notset() {
+        return Operator.V.NULL;
     }
 
 }
