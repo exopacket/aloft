@@ -24,14 +24,18 @@ public class QueryParams {
     private int currJoin = -1;
     private ArrayList<Join> join = new ArrayList<Join>();
 
+    private int whereSizeForJoin = -1;
+    private int whereSizeNotForJoin = -1;
+
     private boolean all = false;
     private boolean delete = false;
     private boolean softDelete = false;
+    private boolean setTimestamps = false;
 
-    private Column orderByColumn;
-    private OrderBy orderByDirection;
+    private Column orderByColumn = null;
+    private OrderBy orderByDirection = null;
 
-    private Column groupByColumn;
+    private Column groupByColumn = null;
 
     public QueryParams(
             String database,
@@ -46,7 +50,8 @@ public class QueryParams {
             ArrayList<Field> update,
             ArrayList<Field> insert,
             ArrayList<Condition> where,
-            ArrayList<Join> join
+            ArrayList<Join> join,
+            boolean setTimestamps
     ) {
         this.database = database;
         this.table = table;
@@ -61,6 +66,7 @@ public class QueryParams {
         this.insert = insert;
         this.where = where;
         this.join = join;
+        this.setTimestamps = setTimestamps;
     }
 
     public boolean returns() {
@@ -72,11 +78,35 @@ public class QueryParams {
     }
 
     public String table() {
-        return table;
+        return "`" + table + "`";
     }
 
     public boolean all() {
         return all;
+    }
+
+    public boolean softDelete() { return softDelete; }
+
+    public boolean delete() { return delete; }
+
+    public boolean hasOrderBy() {
+        return (orderByDirection != null) && (orderByColumn != null);
+    }
+
+    public boolean hasGroupBy() {
+        return groupByColumn != null;
+    }
+
+    public Column getOrderByColumn() {
+        return orderByColumn;
+    }
+
+    public OrderBy getOrderByDirection() {
+        return orderByDirection;
+    }
+
+    public Column getGroupByColumn() {
+        return groupByColumn;
     }
 
     public ArrayList<Field> selectColumns() {
@@ -109,7 +139,14 @@ public class QueryParams {
         return null;
     }
 
-    public Condition nextWhere() {
+    public Condition nextNotJoinWhere() {
+        currWhere++;
+        if(currWhere < whereSizeNotForJoin()) return where.get(currWhere);
+        currWhere = whereSizeForJoin() - 1;
+        return null;
+    }
+
+    public Condition nextJoinWhere() {
         currWhere++;
         if(currWhere < where.size()) return where.get(currWhere);
         return null;
@@ -133,10 +170,36 @@ public class QueryParams {
         return update.size();
     }
 
-    public int whereSize() {
-        return where.size();
+    public int whereSizeForJoin() {
+        if(whereSizeForJoin >= 0) return whereSizeForJoin;
+        int n = 0;
+        for(int i=0; i<where.size(); i++) {
+            Condition c = where.get(i);
+            if(c.isNotForJoin()) continue;
+            if(c.isForJoin()) n++;
+        }
+        whereSizeForJoin = n;
+        return n;
     }
 
+    public int whereSizeNotForJoin() {
+        if(whereSizeNotForJoin >= 0) return whereSizeNotForJoin;
+        int n = 0;
+        for(int i=0; i<where.size(); i++) {
+            Condition c = where.get(i);
+            if(c.isForJoin()) break;
+            if(c.isNotForJoin()) n++;
+        }
+        whereSizeNotForJoin = n;
+        return n;
+    }
+
+    public int whereSize() { return where.size(); }
+
     public int joinSize() { return join.size(); }
+
+    public boolean setTimestamps() {
+        return setTimestamps;
+    }
 
 }

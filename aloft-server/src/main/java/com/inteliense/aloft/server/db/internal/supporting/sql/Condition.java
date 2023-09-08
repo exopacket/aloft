@@ -6,8 +6,12 @@ public class Condition {
 
     private Object left = null;
     private Object right = null;
-    private Operator operator = null;
+    private Operator.V operator = null;
     private boolean or = false;
+
+    private boolean forSelect = false;
+    private boolean forJoin = false;
+
     private int groupIndex = 0;
 
     public Condition(Object left, Object operator, Object right) {
@@ -15,7 +19,7 @@ public class Condition {
             new CommonException("At least one side of the condition must be a column object.").report();
         this.left = left;
         try {
-            this.operator = (operator.getClass() == Operator.class) ? (Operator) operator : Operator.parse(operator);
+            this.operator = (operator.getClass() == Operator.V.class) ? (Operator.V) operator : Operator.parse(operator);
         } catch (CommonException e) {
             e.report();
         }
@@ -27,7 +31,7 @@ public class Condition {
             new CommonException("At least one side of the condition must be a column object.").report();
         this.left = column;
         try {
-            this.operator = (operator.getClass() == Operator.class) ? (Operator) v : Operator.parse(v);
+            this.operator = (operator.getClass() == Operator.V.class) ? (Operator.V) v : Operator.parse(v);
         } catch (CommonException e) {
             e.report();
         }
@@ -54,7 +58,7 @@ public class Condition {
         return this.right;
     }
 
-    public Operator operator() {
+    public Operator.V operator() {
         return this.operator;
     }
 
@@ -62,4 +66,35 @@ public class Condition {
         or = true;
     }
 
+    public boolean isGroup() {
+        return groupIndex == 0;
+    }
+
+    public boolean isClose() {
+        return groupIndex == 1;
+    }
+
+    public boolean isOpen() {
+        return groupIndex == -1;
+    }
+
+    public boolean isOr() {
+        return or;
+    }
+
+    public void forSelect() {
+        forSelect = true;
+    }
+
+    public void forJoin() {
+        forJoin = true;
+    }
+
+    public boolean isForJoin() {
+        return forJoin;
+    }
+
+    public boolean isNotForJoin() {
+        return forSelect;
+    }
 }

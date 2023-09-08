@@ -5,6 +5,7 @@ import com.inteliense.aloft.server.db.internal.supporting.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class Query {
 
@@ -20,6 +21,7 @@ public class Query {
     private boolean all = false;
     private boolean delete = false;
     private boolean softDelete = false;
+    private boolean setTimestamps = false;
 
     private Column orderByColumn;
     private OrderBy orderByDirection;
@@ -109,6 +111,11 @@ public class Query {
         return this;
     }
 
+    public Query timestamps() {
+        setTimestamps = true;
+        return this;
+    }
+
     public Join join(JoinTypes type) {
         return new Join(this, type);
     }
@@ -128,19 +135,31 @@ public class Query {
     public SQLFunction func(String name, String storeAs, Object... args) {
         return SQLFunction.createWithStoreAs(name, storeAs, args);
     }
+    
+    private void addAllWhere(List<Condition> conditions) {
+        if(join.isEmpty()) for (Condition condition : conditions) condition.forSelect();
+        else for (Condition condition : conditions) condition.forJoin();
+        where.addAll(conditions);
+    }
+    
+    private void addWhere(Condition condition) {
+        if(join.isEmpty()) condition.forSelect();
+        else condition.forJoin();
+        where.add(condition);
+    }
 
     public Query where(ArrayList<Condition> conditions) {
-        this.where.addAll(conditions);
+        addAllWhere(conditions);
         return this;
     }
 
     public Query where(Condition[] conditions) {
-        this.where.addAll(Arrays.asList(conditions));
+        addAllWhere(Arrays.asList(conditions));
         return this;
     }
 
     public Query where(Condition value) {
-        where.add(value);
+        addWhere(value);
         return this;
     }
 
@@ -148,7 +167,7 @@ public class Query {
         for(Condition condition : conditions) {
             condition.or();
         }
-        this.where.addAll(conditions);
+        addAllWhere(conditions);
         return this;
     }
 
@@ -156,20 +175,20 @@ public class Query {
         for(Condition condition : conditions) {
             condition.or();
         }
-        this.where.addAll(Arrays.asList(conditions));
+        addAllWhere(Arrays.asList(conditions));
         return this;
     }
 
     public Query orWhere(Condition value) {
         value.or();
-        where.add(value);
+        addWhere(value);
         return this;
     }
 
     public Query whereNull(String column) {
         Column col = makeColumn(column);
         Condition c = new Condition(col, null);
-        where.add(c);
+        addWhere(c);
         return this;
     }
 
@@ -177,37 +196,37 @@ public class Query {
         Column col = makeColumn(column);
         Condition c = new Condition(col, null);
         c.or();
-        where.add(c);
+        addWhere(c);
         return this;
     }
 
     public Query whereSet(String column) {
         Column col = makeColumn(column);
-        Condition c = new Condition(col, Operator.NOT_NULL);
-        where.add(c);
+        Condition c = new Condition(col, Operator.V.NOT_NULL);
+        addWhere(c);
         return this;
     }
 
     public Query orWhereSet(String column) {
         Column col = makeColumn(column);
-        Condition c = new Condition(col, Operator.NOT_NULL);
+        Condition c = new Condition(col, Operator.V.NOT_NULL);
         c.or();
-        where.add(c);
+        addWhere(c);
         return this;
     }
 
     public Query whereDeleted(String column) {
         Column col = makeColumn(column);
-        Condition c = new Condition(col, Operator.SOFT_DELETED);
-        where.add(c);
+        Condition c = new Condition(col, Operator.V.SOFT_DELETED);
+        addWhere(c);
         return this;
     }
 
     public Query orWhereDeleted(String column) {
         Column col = makeColumn(column);
-        Condition c = new Condition(col, Operator.SOFT_DELETED);
+        Condition c = new Condition(col, Operator.V.SOFT_DELETED);
         c.or();
-        where.add(c);
+        addWhere(c);
         return this;
     }
 
@@ -243,6 +262,7 @@ public class Query {
     }
 
     public void softDelete() {
+        this.softDelete = true;
         run();
     }
 
@@ -278,7 +298,7 @@ public class Query {
     }
 
     public QueryParams p() {
-        QueryParams params = new QueryParams(
+        return new QueryParams(
                 database,
                 table,
                 all,
@@ -291,9 +311,9 @@ public class Query {
                 update,
                 insert,
                 where,
-                join
+                join,
+                setTimestamps
         );
-        return params;
     }
 
 }

@@ -45,18 +45,113 @@ public class SQLBuilder {
             }
         } else if(p.insertSize() > 0) {
             sql += "INSERT INTO " + p.table() + " (";
-            for(int i=0; i<p.insertSize(); i++) {
+            for (int i = 0; i < p.insertSize(); i++) {
                 sql += (i > 0) ? ", " : "";
                 sql += p.nextInsert().column().full();
             }
+            if(p.setTimestamps()) {
+                sql += p.table() + ".`created_at`";
+            }
             sql += ") VALUES (";
-            for(int i=0; i<p.insertSize(); i++) {
+            for (int i = 0; i < p.insertSize(); i++) {
                 sql += (i > 0) ? ", " : "";
                 sql += "?";
+            }
+            if(p.setTimestamps()) {
+                sql += ", now()";
             }
             sql += ")";
             p.resetIndexes();
             return sql;
+        } else if(p.updateSize() > 0 || p.softDelete()) {
+            if(p.softDelete()) {
+                sql += "UPDATE " + p.table() + " SET ";
+                sql += p.table() + ".`deleted_at`=now() ";
+            } else {
+                sql += "UPDATE " + p.table() + " SET ";
+                for(int i=0; i<p.updateSize(); i++) {
+                    sql += (i > 0) ? ", " : "";
+                    sql += p.nextUpdate().column().full() + "=?";
+                }
+                if(p.setTimestamps()) {
+                    sql += p.table() + ".`updated_at`=now() ";
+                }
+                p.resetIndexes();
+            }
+        } else if(p.delete()) {
+            sql += "DELETE FROM " + p.table() + " ";
+        }
+
+        if(p.whereSizeNotForJoin() > 0) {
+            sql += "WHERE ";
+            int s = p.whereSizeNotForJoin();
+            Condition c = p.nextNotJoinWhere();
+            if(c.isGroup() && c.isOpen()) {
+                sql += "(";
+                s--;
+            }
+            for(int i=0; i<s; i++) {
+                if(c.isGroup()) {
+                    if(c.isOpen()) {
+                        sql += "(";
+                    } else if(c.isClose()) {
+                        sql += ")";
+                    }
+                    c = p.nextNotJoinWhere();
+                    continue;
+                }
+
+                if(i == 0) {
+                    Object left = c.left();
+                    Operator.V operator = c.operator();
+                    Object right = c.right();
+                    Column col = null;
+                    if(left.getClass() == Column.class) col = (Column) left;
+                    else if(right.getClass() == Column.class) col = (Column) right;
+                    if(col == null) {
+                        c = p.nextNotJoinWhere();
+                        continue;
+                    }
+                    if(Operator.hasRight(operator)) {
+                        sql += col.full() + Operator.get(operator) + "?";
+                    } else {
+                        sql += col.full() + Operator.get(operator);
+                    }
+                } else {
+                    Object left = c.left();
+                    Operator.V operator = c.operator();
+                    Object right = c.right();
+                    Column col = null;
+                    if(left.getClass() == Column.class) col = (Column) left;
+                    else if(right.getClass() == Column.class) col = (Column) right;
+                    if(col == null) {
+                        c = p.nextNotJoinWhere();
+                        continue;
+                    }
+                    if(Operator.hasRight(operator)) {
+                        sql += (c.isOr() ? " OR " : " AND ") + col.full() + Operator.get(operator) + "?";
+                    } else {
+                        sql += (c.isOr() ? " OR " : " AND ") + col.full() + Operator.get(operator);
+                    }
+                }
+                c = p.nextNotJoinWhere();
+            }
+        }
+
+        if(p.joinSize() > 0) {
+
+        }
+
+        if(p.whereSizeForJoin() > 0) {
+
+        }
+
+        if(p.hasOrderBy()) {
+
+        }
+
+        if(p.hasGroupBy()) {
+
         }
 
         return "";
@@ -70,9 +165,11 @@ public class SQLBuilder {
         if(v != null) return v;
         v = p.nextUpdate();
         if(v != null) return v;
+        v = p.nextNotJoinWhere();
+        if(v != null) return v;
         v = p.nextJoin();
         if(v != null) return v;
-        v = p.nextWhere();
+        v = p.nextJoinWhere();
         if(v != null) return v;
         return null;
     }
