@@ -9,7 +9,7 @@ public class Condition {
     private Operator.V operator = null;
     private boolean or = false;
 
-    private boolean forSelect = false;
+    private boolean notForJoin = false;
     private boolean forJoin = false;
 
     private int groupIndex = 0;
@@ -82,8 +82,8 @@ public class Condition {
         return or;
     }
 
-    public void forSelect() {
-        forSelect = true;
+    public void notForJoin() {
+        notForJoin = true;
     }
 
     public void forJoin() {
@@ -95,6 +95,6 @@ public class Condition {
     }
 
     public boolean isNotForJoin() {
-        return forSelect;
+        return notForJoin;
     }
 }

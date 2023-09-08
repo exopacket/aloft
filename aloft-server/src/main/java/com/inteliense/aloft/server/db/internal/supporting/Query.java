@@ -137,13 +137,13 @@ public class Query {
     }
     
     private void addAllWhere(List<Condition> conditions) {
-        if(join.isEmpty()) for (Condition condition : conditions) condition.forSelect();
+        if(join.isEmpty()) for (Condition condition : conditions) condition.notForJoin();
         else for (Condition condition : conditions) condition.forJoin();
         where.addAll(conditions);
     }
     
     private void addWhere(Condition condition) {
-        if(join.isEmpty()) condition.forSelect();
+        if(join.isEmpty()) condition.notForJoin();
         else condition.forJoin();
         where.add(condition);
     }
