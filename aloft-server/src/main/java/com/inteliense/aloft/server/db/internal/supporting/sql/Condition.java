@@ -14,6 +14,8 @@ public class Condition {
 
     private int groupIndex = 0;
 
+    private String matchStr = null;
+
     public Condition(Object left, Object operator, Object right) {
         if(!(left.getClass() == Column.class || right.getClass() == Column.class))
             new CommonException("At least one side of the condition must be a column object.").report();

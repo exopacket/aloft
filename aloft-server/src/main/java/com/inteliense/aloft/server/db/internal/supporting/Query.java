@@ -120,12 +120,10 @@ public class Query {
         return new Join(this, type);
     }
 
-    public Join join(JoinTypes type, Column left, Object operator, Column right) {
-        return new Join(this, left, operator, right, type);
-    }
-
-    public Join join(JoinTypes type, Object left, Object operator, Object right) {
-        return new Join(this, left, operator, right, type);
+    public Join join(JoinTypes type, String table) {
+        Join j = new Join(this, type);
+        j.table(makeTable(table));
+        return j;
     }
 
     public SQLFunction func(String name, Object... args) {
@@ -230,20 +228,49 @@ public class Query {
         return this;
     }
 
-    public Query whereLike() {
-        return null;
+    public Query whereLike(String column, String match) {
+        Column col = makeColumn(column);
+        Condition c = new Condition(col, Operator.V.LIKE, match);
+        addWhere(c);
+        return this;
     }
 
-    public Query orWhereLike() {
-        return null;
+    public Query orWhereLike(String column, String match) {
+        Column col = makeColumn(column);
+        Condition c = new Condition(col, Operator.V.LIKE, match);
+        c.or();
+        addWhere(c);
+        return this;
     }
 
-    public Query orderBy() {
-        return null;
+    public Query whereNotLike(String column, String match) {
+        Column col = makeColumn(column);
+        Condition c = new Condition(col, Operator.V.NOT_LIKE, match);
+        addWhere(c);
+        return this;
     }
 
-    public Query groupBy() {
-        return null;
+    public Query orWhereNotLike(String column, String match) {
+        Column col = makeColumn(column);
+        Condition c = new Condition(col, Operator.V.NOT_LIKE, match);
+        c.or();
+        addWhere(c);
+        return this;
+    }
+
+    public Query orderBy(String column) {
+        return orderBy(column, OrderBy.ASC);
+    }
+
+    public Query orderBy(String column, OrderBy direction) {
+        this.orderByColumn = makeColumn(column);
+        this.orderByDirection = direction;
+        return this;
+    }
+
+    public Query groupBy(String column) {
+        this.groupByColumn = makeColumn(column);
+        return this;
     }
 
     public Query beginGroup() {
@@ -295,6 +322,10 @@ public class Query {
             input = stripColumnChars(input);
             return new Column(table, input);
         }
+    }
+
+    private String makeTable(String input) {
+        return "`" + table + "`";
     }
 
     public QueryParams p() {

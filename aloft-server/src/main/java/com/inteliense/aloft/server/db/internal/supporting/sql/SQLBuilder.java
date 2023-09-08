@@ -62,7 +62,7 @@ public class SQLBuilder {
             }
             sql += ")";
             p.resetIndexes();
-            return sql;
+            return cleanQuery(sql);
         } else if(p.updateSize() > 0 || p.softDelete()) {
             if(p.softDelete()) {
                 sql += "UPDATE " + p.table() + " SET ";
@@ -76,14 +76,13 @@ public class SQLBuilder {
                 if(p.setTimestamps()) {
                     sql += p.table() + ".`updated_at`=now() ";
                 }
-                p.resetIndexes();
             }
         } else if(p.delete()) {
             sql += "DELETE FROM " + p.table() + " ";
         }
 
         if(p.whereSizeNotForJoin() > 0) {
-            sql += "WHERE ";
+            sql += " WHERE ";
             int s = p.whereSizeNotForJoin();
             Condition c = p.nextNotJoinWhere();
             if(c.isGroup() && c.isOpen()) {
@@ -139,22 +138,130 @@ public class SQLBuilder {
         }
 
         if(p.joinSize() > 0) {
+            for(int i=0; i< p.joinSize(); i++) {
+                Join j = p.nextJoin();
+                sql += " " + j.getType() + " " + j.getTable() + " ON ";
+                int s = j.conditionsSize();
+                Condition c = j.nextCondition();
+                if(c.isGroup() && c.isOpen()) {
+                    sql += "(";
+                    s--;
+                }
+                for(int x=0; x<s; x++) {
+                    if(c.isGroup()) {
+                        if(c.isOpen()) {
+                            sql += "(";
+                        } else if(c.isClose()) {
+                            sql += ")";
+                        }
+                        c = j.nextCondition();
+                        continue;
+                    }
 
+                    if(i == 0) {
+                        Object left = c.left();
+                        Operator.V operator = c.operator();
+                        Object right = c.right();
+                        Column col = null;
+                        if(left.getClass() == Column.class) col = (Column) left;
+                        else if(right.getClass() == Column.class) col = (Column) right;
+                        if(col == null) {
+                            c = j.nextCondition();
+                            continue;
+                        }
+                        if(Operator.hasRight(operator)) {
+                            sql += col.full() + Operator.get(operator) + "?";
+                        } else {
+                            sql += col.full() + Operator.get(operator);
+                        }
+                    } else {
+                        Object left = c.left();
+                        Operator.V operator = c.operator();
+                        Object right = c.right();
+                        Column col = null;
+                        if(left.getClass() == Column.class) col = (Column) left;
+                        else if(right.getClass() == Column.class) col = (Column) right;
+                        if(col == null) {
+                            c = j.nextCondition();
+                            continue;
+                        }
+                        if(Operator.hasRight(operator)) {
+                            sql += (c.isOr() ? " OR " : " AND ") + col.full() + Operator.get(operator) + "?";
+                        } else {
+                            sql += (c.isOr() ? " OR " : " AND ") + col.full() + Operator.get(operator);
+                        }
+                    }
+                    c = j.nextCondition();
+                }
+            }
         }
 
         if(p.whereSizeForJoin() > 0) {
+            sql += " WHERE ";
+            int s = p.whereSizeForJoin();
+            Condition c = p.nextJoinWhere();
+            if(c.isGroup() && c.isOpen()) {
+                sql += "(";
+                s--;
+            }
+            for(int i=0; i<s; i++) {
+                if(c.isGroup()) {
+                    if(c.isOpen()) {
+                        sql += "(";
+                    } else if(c.isClose()) {
+                        sql += ")";
+                    }
+                    c = p.nextJoinWhere();
+                    continue;
+                }
 
-        }
-
-        if(p.hasOrderBy()) {
-
+                if(i == 0) {
+                    Object left = c.left();
+                    Operator.V operator = c.operator();
+                    Object right = c.right();
+                    Column col = null;
+                    if(left.getClass() == Column.class) col = (Column) left;
+                    else if(right.getClass() == Column.class) col = (Column) right;
+                    if(col == null) {
+                        c = p.nextJoinWhere();
+                        continue;
+                    }
+                    if(Operator.hasRight(operator)) {
+                        sql += col.full() + Operator.get(operator) + "?";
+                    } else {
+                        sql += col.full() + Operator.get(operator);
+                    }
+                } else {
+                    Object left = c.left();
+                    Operator.V operator = c.operator();
+                    Object right = c.right();
+                    Column col = null;
+                    if(left.getClass() == Column.class) col = (Column) left;
+                    else if(right.getClass() == Column.class) col = (Column) right;
+                    if(col == null) {
+                        c = p.nextJoinWhere();
+                        continue;
+                    }
+                    if(Operator.hasRight(operator)) {
+                        sql += (c.isOr() ? " OR " : " AND ") + col.full() + Operator.get(operator) + "?";
+                    } else {
+                        sql += (c.isOr() ? " OR " : " AND ") + col.full() + Operator.get(operator);
+                    }
+                }
+                c = p.nextJoinWhere();
+            }
         }
 
         if(p.hasGroupBy()) {
-
+            sql += " GROUP BY " + p.getGroupByColumn().full();
         }
 
-        return "";
+        if(p.hasOrderBy()) {
+            sql += " ORDER BY " + p.getOrderByColumn().full() + (p.getOrderByDirection() == OrderBy.ASC ? " ASC" : " DESC");
+        }
+
+        p.resetIndexes();
+        return cleanQuery(sql);
     }
 
     public Object next() {
@@ -208,6 +315,10 @@ public class SQLBuilder {
 
     private static java.sql.Time getTime(LocalTime lt) {
         return new java.sql.Time(lt.getLong(ChronoField.MILLI_OF_SECOND));
+    }
+
+    private static String cleanQuery(String sql) {
+        return sql.replaceAll("\s+", " ").replaceAll("\s$", "");
     }
 
 }

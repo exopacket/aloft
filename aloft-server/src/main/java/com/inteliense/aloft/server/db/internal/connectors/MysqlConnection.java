@@ -85,7 +85,6 @@ public class MysqlConnection extends DbConnection implements ExecutesQueries  {
             }
             stmt.executeUpdate();
         } catch (Exception e) {
-            e.printStackTrace();
             onError(new CriticalException("Failed to execute query.", e));
         }
 

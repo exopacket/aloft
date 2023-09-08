@@ -14,14 +14,16 @@ public class Operator {
         FALSE,
         NULL,
         NOT_NULL,
-        SOFT_DELETED
+        SOFT_DELETED,
+        LIKE,
+        NOT_LIKE
     }
 
     public static boolean hasRight(V v) {
         switch(v) {
             case EQUALS, NOT_EQUAL, GREATER_THAN,
                     LESS_THAN, GREATER_THAN_OR_EQUAL,
-                    LESS_THAN_OR_EQUAL -> {
+                    LESS_THAN_OR_EQUAL, LIKE, NOT_LIKE -> {
                 return true;
             }
             default -> {
@@ -62,6 +64,12 @@ public class Operator {
             case NOT_NULL, SOFT_DELETED -> {
                 return "IS NOT NULL";
             }
+            case LIKE -> {
+                return "LIKE ";
+            }
+            case NOT_LIKE -> {
+                return "NOT LIKE ";
+            }
             default -> {
                 return "";
             }
@@ -95,10 +103,12 @@ public class Operator {
         if (str.equals(">=")) return V.GREATER_THAN_OR_EQUAL;
         if (str.equals("<=")) return V.LESS_THAN_OR_EQUAL;
         if (str.equals("==") || str.equals("=") || str.equals("===")) return V.EQUALS;
-        if (str.equals("!")) return V.NOT_NULL;
-        if (str.isEmpty() || str == null) return V.NULL;
+        if (str.equals("!") || str.toLowerCase().equals("not null") || str.toLowerCase().equals("!null")) return V.NOT_NULL;
+        if (str.isEmpty() || str == null || str.toLowerCase().equals("null")) return V.NULL;
         if (str.toLowerCase().equals("true")) return V.TRUE;
         if (str.toLowerCase().equals("false")) return V.FALSE;
+        if(str.toLowerCase().equals("like")) return V.LIKE;
+        if(str.toLowerCase().equals("not like") || str.toLowerCase().equals("!like")) return V.NOT_LIKE;
         return null;
     }
 
