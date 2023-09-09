@@ -1,19 +1,7 @@
 {
-  parserClass="com.exopacket.aloft.language.AloftParser"
-
-  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
-
-  psiClassPrefix="Aloft"
-  psiImplClassSuffix="Impl"
-  psiPackage="com.exopacket.aloft.psi"
-  psiImplPackage="com.exopacket.aloft.psi.impl"
-
-  elementTypeHolderClass="com.exopacket.aloft.psi.AloftTypes"
-  elementTypeClass="com.exopacket.aloft.psi.AloftElementType"
-  tokenTypeClass="com.exopacket.aloft.psi.AloftTokenType"
-
+  parserUtilClass="com.inteliense.aloft.grammar.AloftParserUtil"
+    extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 }
-
 
 root_unit ::= syntax*
 syntax ::= OPT_WHITESPACE? BUILTIN_KEYWORDS OPT_WHITESPACE?

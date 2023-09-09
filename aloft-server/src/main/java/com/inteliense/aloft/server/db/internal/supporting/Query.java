@@ -29,7 +29,6 @@ public class Query {
 
     private SQLColumnOrFunction groupByColumn;
 
-
     private DbConnection connection;
 
     public Query(DbConnection connection) {
