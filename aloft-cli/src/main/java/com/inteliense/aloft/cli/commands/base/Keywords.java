@@ -37,7 +37,7 @@ public class Keywords {
 
     public static boolean requiresValue(String cmd) {
         try {
-            return Arrays.asList(required).contains(Class.forName(cmd.substring(0, 1).toUpperCase() + cmd.substring(1)));
+            return Arrays.asList(required).contains(getClass(cmd));
         } catch (Exception ignored) {}
         return false;
     }

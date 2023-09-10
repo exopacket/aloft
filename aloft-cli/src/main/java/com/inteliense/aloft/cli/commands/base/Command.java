@@ -23,4 +23,12 @@ public class Command {
         return this.cmdClass;
     }
 
+    public Arg getBase() {
+        return cmd;
+    }
+
+    public Arg[] getArgs() {
+        return this.args;
+    }
+
 }

@@ -26,7 +26,9 @@ public class Parser {
                 if(!needValue) argList.add(new Arg(arg));
             }
         }
-        return argList.toArray(new Arg[0]);
+        Arg[] arr = new Arg[argList.size()];
+        arr = argList.toArray(arr);
+        return arr;
     }
 
     private static boolean flagCheck(String v) {

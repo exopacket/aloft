@@ -13,7 +13,7 @@ public class Create extends HandlesCommands {
 
     @Override
     public void run(AppConfig config) {
-
+        System.out.println("TESTING [create " + this.command.getBase().getValue() +"]");
     }
 
     @Override
