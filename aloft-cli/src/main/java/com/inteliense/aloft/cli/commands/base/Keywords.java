@@ -12,10 +12,10 @@ public class Keywords {
     };
 
     private static final Class[] required = new Class[]{
-            Create.class
+        Create.class
     };
 
-    private static final String[] flags = new String[]{
+    private static final Object[] flags = new String[]{
 
     };
 

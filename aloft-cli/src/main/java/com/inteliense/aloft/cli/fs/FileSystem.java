@@ -1,5 +1,7 @@
 package com.inteliense.aloft.cli.fs;
 
+import com.inteliense.aloft.cli.config.AppConfig;
+
 import java.io.File;
 
 public class FileSystem {
@@ -21,6 +23,10 @@ public class FileSystem {
     }
 
     public void createFile(String path) {
+
+    }
+
+    public void printConfig(String config) {
 
     }
 
