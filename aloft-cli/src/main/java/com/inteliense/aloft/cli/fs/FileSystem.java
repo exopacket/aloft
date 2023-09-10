@@ -9,12 +9,19 @@ public class FileSystem {
     private File projectDir;
     private File globalConfig;
     private File srcDir;
+    private File resourcesDir;
 
-    public FileSystem(String projectDir, String globalConfig, String srcDir) {
+    public FileSystem() {
+        this.globalConfig = new File("/etc/aloft/projects.json");
+        if(!this.globalConfig.exists()) createBase();
+        loadProjects();
+    }
+
+    private void loadProjects() {
 
     }
 
-    public void createBase() {
+    private void createBase() {
 
     }
 

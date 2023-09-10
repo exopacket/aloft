@@ -1,6 +1,5 @@
 package com.inteliense.aloft.server.db.internal.supporting;
 
-import com.inteliense.aloft.server.db.internal.supporting.sql.Column;
 import com.inteliense.aloft.server.db.internal.supporting.sql.Field;
 import com.inteliense.aloft.server.db.internal.supporting.sql.Record;
 import com.inteliense.aloft.server.db.internal.supporting.sql.SQLColumnOrFunction;
