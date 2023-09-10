@@ -26,7 +26,7 @@ public class Print {
     }
 
     public static void tab(PrintWriter pw) {
-        pw.print("\n");
+        pw.print("\t");
     }
 
     public static void tab(int num, PrintWriter pw) {
