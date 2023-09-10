@@ -2,23 +2,21 @@ package com.inteliense.aloft.cli.commands.keywords;
 
 import com.inteliense.aloft.cli.Help;
 import com.inteliense.aloft.cli.commands.base.Command;
+import com.inteliense.aloft.cli.commands.base.HandlesCommands;
 
-public class Create extends Command implements ImplementsCommand {
+public class Create extends HandlesCommands {
 
-    private String[] childSignature;
-    private Command subcommand;
-
-    public Create(String[] args) {
-        super(args);
-        subcommand = parseArgs(args);
-        childSignature = parseChildren(args);
+    public Create(Command command) {
+        super(command);
     }
 
-    public static String[] signature() {
-        return null;
+    @Override
+    public void run() {
+
     }
 
-    public static Help help() {
+    @Override
+    public Help help() {
         return null;
     }
 

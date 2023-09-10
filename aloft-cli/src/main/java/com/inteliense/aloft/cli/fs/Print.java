@@ -1,5 +1,8 @@
 package com.inteliense.aloft.cli.fs;
 
+import com.inteliense.aloft.cli.utils.data.JSON;
+import org.json.simple.JSONObject;
+
 import java.io.PrintWriter;
 
 public class Print {
@@ -30,6 +33,10 @@ public class Print {
         for(int i=0; i<num; i++) {
             tab(pw);
         }
+    }
+
+    public static String json(JSONObject json, PrintWriter pw) {
+        return JSON.getString(json, true);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.inteliense.aloft.utils.data;
+package com.inteliense.aloft.cli.utils.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -57,7 +57,7 @@ public class JSON {
             Gson gson = (format) ? (new GsonBuilder().setPrettyPrinting().create()) : (new GsonBuilder().create());
             JsonObject jsonObject = JsonParser.parseString(jsonStr).getAsJsonObject();
             return gson.toJson(jsonObject);
-
+            
         } catch (Exception ignored) { }
 
         return "{}";

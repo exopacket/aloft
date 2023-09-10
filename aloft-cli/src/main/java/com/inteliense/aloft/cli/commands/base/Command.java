@@ -1,20 +1,20 @@
 package com.inteliense.aloft.cli.commands.base;
 
 
-public abstract class Command {
+import java.util.Arrays;
 
-    protected String[] args;
+@SuppressWarnings("rawtypes")
+public class Command {
+
+    private Arg cmd = null;
+    private Arg[] args = null;
+    private Class cmdClass = null;
 
     public Command(String[] args) {
-        this.args = args;
-    }
-
-    protected Command parseArgs(String[] args) {
-        return null;
-    }
-
-    protected String[] parseChildren(String[] args) {
-        return null;
+        Arg[] arr = Parser.getArgs(args);
+        cmd = arr[0];
+        cmdClass = Keywords.getClass(cmd.getName());
+        this.args = Arrays.copyOfRange(arr, 1, arr.length);
     }
 
 }
