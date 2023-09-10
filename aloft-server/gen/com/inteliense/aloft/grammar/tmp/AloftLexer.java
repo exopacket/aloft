@@ -1,4 +1,5 @@
-// Generated from Aloft.g4 by ANTLR 4.13.1
+// Generated from /home/ryan/aloft/aloft-server/src/main/java/com/inteliense/aloft/grammar/tmp/Aloft.g4 by ANTLR 4.12.0
+package com.inteliense.aloft.grammar.tmp;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -8,9 +9,9 @@ import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.*;
 
-@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue", "this-escape"})
+@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue"})
 public class AloftLexer extends Lexer {
-	static { RuntimeMetaData.checkVersion("4.13.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.12.0", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -267,7 +268,7 @@ public class AloftLexer extends Lexer {
 		"==\u0006\u0000%%*+--<<>>\\\\\u0001\u0000<<\u0001\u0000>>\u0001\u0000+"+
 		"+\u0001\u0000--\u0001\u0000//\u0001\u0000%%\u0003\u0000AZ__az\u0005\u0000"+
 		"--09AZ__az\u0004\u000009AZ__az\u0001\u000009\u0001\u0000##\u0002\u0000"+
-		"AZaz\u0001\u0000^^\u0005\u0000-9AZ\\\\__az\u0002\u0000\"\"\'\'\u0003\u0000"+
+		"aazz\u0001\u0000^^\u0005\u0000-9AZ\\\\__az\u0002\u0000\"\"\'\'\u0003\u0000"+
 		"**//^^\u0003\u0000\t\n\r\r  \u03a3\u0000\u0001\u0001\u0000\u0000\u0000"+
 		"\u0000\u0003\u0001\u0000\u0000\u0000\u0000\u0005\u0001\u0000\u0000\u0000"+
 		"\u0000\u0007\u0001\u0000\u0000\u0000\u0000\t\u0001\u0000\u0000\u0000\u0000"+
