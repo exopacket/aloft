@@ -2,7 +2,7 @@ package com.inteliense.aloft.cli.config;
 
 import com.inteliense.aloft.cli.fs.FileSystem;
 import com.inteliense.aloft.cli.project.AloftProject;
-import com.inteliense.aloft.cli.utils.data.JSON;
+import com.inteliense.aloft.utils.data.JSON;
 import org.json.simple.JSONObject;
 
 public class AppConfig {

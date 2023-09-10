@@ -13,7 +13,7 @@ public class Init extends HandlesCommands {
 
     @Override
     public void run(AppConfig config) {
-
+        System.out.println("TESTING [init]");
     }
 
     @Override

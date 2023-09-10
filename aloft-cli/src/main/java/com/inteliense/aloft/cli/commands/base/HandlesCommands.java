@@ -12,8 +12,8 @@ public abstract class HandlesCommands {
     public static HandlesCommands create(Command command, AppConfig config) {
         try {
             Class<?> _class = command.getCommandClass();
-            Constructor<?> construct = _class.getConstructor(Command.class);
-            Object __class = construct.newInstance(command);
+            Constructor<?> construct = _class.getConstructor(Command.class, AppConfig.class);
+            Object __class = construct.newInstance(command, config);
             return (HandlesCommands) __class;
         } catch (Exception ignored) {}
         return null;

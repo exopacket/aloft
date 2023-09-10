@@ -1,6 +1,6 @@
 package com.inteliense.aloft.cli.fs;
 
-import com.inteliense.aloft.cli.utils.data.JSON;
+import com.inteliense.aloft.utils.data.JSON;
 import org.json.simple.JSONObject;
 
 import java.io.PrintWriter;
