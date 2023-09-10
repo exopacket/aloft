@@ -25,7 +25,7 @@ public abstract class HandlesCommands {
 
     }
 
-    public abstract Help help();
+    protected abstract Help help();
     public abstract void run();
 
 }
