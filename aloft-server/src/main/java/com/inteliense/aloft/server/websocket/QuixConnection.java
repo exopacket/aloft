@@ -1,4 +1,4 @@
 package com.inteliense.aloft.server.websocket;
 
-public class QuikConnection {
+public class QuixConnection {
 }
