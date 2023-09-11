@@ -167,15 +167,25 @@ public interface AloftListener extends ParseTreeListener {
 	 */
 	void exitConstructor(AloftParser.ConstructorContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link AloftParser#keyword}.
+	 * Enter a parse tree produced by {@link AloftParser#path}.
 	 * @param ctx the parse tree
 	 */
-	void enterKeyword(AloftParser.KeywordContext ctx);
+	void enterPath(AloftParser.PathContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link AloftParser#keyword}.
+	 * Exit a parse tree produced by {@link AloftParser#path}.
 	 * @param ctx the parse tree
 	 */
-	void exitKeyword(AloftParser.KeywordContext ctx);
+	void exitPath(AloftParser.PathContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AloftParser#string}.
+	 * @param ctx the parse tree
+	 */
+	void enterString(AloftParser.StringContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#string}.
+	 * @param ctx the parse tree
+	 */
+	void exitString(AloftParser.StringContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AloftParser#expression}.
 	 * @param ctx the parse tree
@@ -386,24 +396,4 @@ public interface AloftListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitEnclosed_vars(AloftParser.Enclosed_varsContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link AloftParser#path}.
-	 * @param ctx the parse tree
-	 */
-	void enterPath(AloftParser.PathContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AloftParser#path}.
-	 * @param ctx the parse tree
-	 */
-	void exitPath(AloftParser.PathContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link AloftParser#string}.
-	 * @param ctx the parse tree
-	 */
-	void enterString(AloftParser.StringContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AloftParser#string}.
-	 * @param ctx the parse tree
-	 */
-	void exitString(AloftParser.StringContext ctx);
 }
