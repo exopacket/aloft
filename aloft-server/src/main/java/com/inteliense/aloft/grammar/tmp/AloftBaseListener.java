@@ -244,6 +244,18 @@ public class AloftBaseListener implements AloftListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterVar_name(AloftParser.Var_nameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVar_name(AloftParser.Var_nameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterVariable_options(AloftParser.Variable_optionsContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -263,6 +275,30 @@ public class AloftBaseListener implements AloftListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitVar_options(AloftParser.Var_optionsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterProperty(AloftParser.PropertyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitProperty(AloftParser.PropertyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterProperty_value(AloftParser.Property_valueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitProperty_value(AloftParser.Property_valueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
