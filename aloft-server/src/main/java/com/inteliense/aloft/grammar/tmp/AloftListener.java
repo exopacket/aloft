@@ -37,6 +37,26 @@ public interface AloftListener extends ParseTreeListener {
 	 */
 	void exitClass(AloftParser.ClassContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AloftParser#class_declaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterClass_declaration(AloftParser.Class_declarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#class_declaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitClass_declaration(AloftParser.Class_declarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AloftParser#class_access}.
+	 * @param ctx the parse tree
+	 */
+	void enterClass_access(AloftParser.Class_accessContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#class_access}.
+	 * @param ctx the parse tree
+	 */
+	void exitClass_access(AloftParser.Class_accessContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AloftParser#component}.
 	 * @param ctx the parse tree
 	 */
@@ -147,6 +167,16 @@ public interface AloftListener extends ParseTreeListener {
 	 */
 	void exitConstructor(AloftParser.ConstructorContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AloftParser#keyword}.
+	 * @param ctx the parse tree
+	 */
+	void enterKeyword(AloftParser.KeywordContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#keyword}.
+	 * @param ctx the parse tree
+	 */
+	void exitKeyword(AloftParser.KeywordContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AloftParser#expression}.
 	 * @param ctx the parse tree
 	 */
@@ -166,6 +196,16 @@ public interface AloftListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIsset(AloftParser.IssetContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AloftParser#empty_function}.
+	 * @param ctx the parse tree
+	 */
+	void enterEmpty_function(AloftParser.Empty_functionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#empty_function}.
+	 * @param ctx the parse tree
+	 */
+	void exitEmpty_function(AloftParser.Empty_functionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AloftParser#if}.
 	 * @param ctx the parse tree
@@ -196,6 +236,16 @@ public interface AloftListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVariable(AloftParser.VariableContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AloftParser#any_var}.
+	 * @param ctx the parse tree
+	 */
+	void enterAny_var(AloftParser.Any_varContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#any_var}.
+	 * @param ctx the parse tree
+	 */
+	void exitAny_var(AloftParser.Any_varContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AloftParser#var_name}.
 	 * @param ctx the parse tree
