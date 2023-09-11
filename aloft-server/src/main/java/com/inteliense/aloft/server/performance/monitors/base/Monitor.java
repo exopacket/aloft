@@ -1,9 +1,9 @@
-package com.inteliense.aloft.server.performance;
+package com.inteliense.aloft.server.performance.monitors.base;
 
 public abstract class Monitor {
 
     private Thread thr = null;
-    private Threshold threshold = null;
+    protected Threshold threshold = null;
 
     protected abstract void alert(MonitorAlert info);
     protected abstract void update(MonitorValues values);
