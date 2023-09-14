@@ -13,9 +13,12 @@ public abstract class AloftElement {
     protected String uniqueId;
     protected String name;
 
+    protected ArrayList<AloftElement> children = new ArrayList<>();
+
     protected boolean acceptsIterator;
     protected AloftIterator iterator;
 
+    protected boolean acceptsBuilder;
     protected boolean requiresBuilder;
     protected AloftBuilder builder = null;
 
@@ -33,17 +36,24 @@ public abstract class AloftElement {
         setupIterator();
     }
 
+    protected abstract Object value();
     protected abstract String friendlyId();
     protected abstract String uniqueId();
     protected abstract String name();
     protected abstract boolean acceptsIterator();
+    protected abstract boolean acceptsBuilder();
     protected abstract boolean requiresBuilder();
     protected abstract boolean isExtensible();
     protected abstract boolean hasMultipleSubtypes();
+    protected abstract boolean acceptsChild();
 
     protected abstract AloftStyle style();
     protected abstract AloftListener[] listeners();
-    protected abstract AloftHtml html();
+    protected abstract AloftElementHtml base();
+
+    protected void appendChild(AloftElement child) {
+        if(acceptsChild()) this.children.add(child);
+    }
 
     private void setupSubtypes() {
         this.hasMultipleSubtypes = hasMultipleSubtypes();
@@ -71,6 +81,7 @@ public abstract class AloftElement {
 
     private void setupBuilder() {
         this.requiresBuilder = requiresBuilder();
+        this.acceptsBuilder = this.requiresBuilder || acceptsBuilder();
     }
 
     protected void setupBuilder(AloftBuilder builder) {
