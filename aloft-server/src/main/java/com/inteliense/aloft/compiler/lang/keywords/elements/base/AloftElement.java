@@ -28,12 +28,12 @@ public abstract class AloftElement {
     protected boolean hasMultipleSubtypes;
     protected ArrayList<AloftElementSubtype> subtypes;
 
+    protected boolean isSensitive;
+
     public AloftElement() {
         uniqueId = uniqueId();
         uniqueId = (uniqueId == null) ? createId(String.valueOf(System.currentTimeMillis())) : uniqueId;
-        friendlyId = friendlyId() == null ? uniqueId : friendlyId();
-        setupBuilder();
-        setupIterator();
+        refresh();
     }
 
     protected abstract Object value();
@@ -46,6 +46,7 @@ public abstract class AloftElement {
     protected abstract boolean isExtensible();
     protected abstract boolean hasMultipleSubtypes();
     protected abstract boolean acceptsChild();
+    protected abstract boolean isSensitive();
 
     protected abstract AloftStyle style();
     protected abstract AloftListener[] listeners();
@@ -60,7 +61,8 @@ public abstract class AloftElement {
     }
 
     protected void setupSubtypes(AloftElementSubtype... subtypes) {
-        this.subtypes = new ArrayList<>(Arrays.asList(subtypes));
+        this.hasMultipleSubtypes = hasMultipleSubtypes();
+        if(this.hasMultipleSubtypes) this.subtypes = new ArrayList<>(Arrays.asList(subtypes));
     }
 
     private void setupExtensions() {
@@ -68,7 +70,8 @@ public abstract class AloftElement {
     }
 
     protected void setupExtensions(AloftElementExtension... extensions) {
-        this.extensions = new ArrayList<>(Arrays.asList(extensions));
+        this.isExtensible = isExtensible();
+        if(this.isExtensible) this.extensions = new ArrayList<>(Arrays.asList(extensions));
     }
 
     private void setupIterator() {
@@ -76,6 +79,7 @@ public abstract class AloftElement {
     }
 
     protected void setupIterator(AloftIterator iterator) {
+        this.acceptsIterator = acceptsIterator();
         if(this.acceptsIterator) this.iterator = iterator;
     }
 
@@ -86,13 +90,21 @@ public abstract class AloftElement {
 
     protected void setupBuilder(AloftBuilder builder) {
         this.requiresBuilder = requiresBuilder();
-        if(this.requiresBuilder) this.builder = builder;
+        this.acceptsBuilder = this.requiresBuilder || acceptsBuilder();
+        if(this.requiresBuilder || this.acceptsBuilder) this.builder = builder;
     }
 
     private String createId(String seed) {
         String v = this.getClass().getName() + "_" + this.name + "_" + seed + "_" + __.hex(Rand.secure(32));
         String hash = SHA.getSha1(v);
         return Rand.caseify(hash);
+    }
+
+    public void refresh() {
+        friendlyId = friendlyId() == null ? uniqueId : friendlyId();
+        setupBuilder();
+        setupIterator();
+        isSensitive = isSensitive();
     }
 
 }

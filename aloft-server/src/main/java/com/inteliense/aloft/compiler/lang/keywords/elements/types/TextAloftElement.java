@@ -13,6 +13,12 @@ public abstract class TextAloftElement extends AloftElement {
 
     protected abstract Object value();
 
+    protected abstract boolean isSensitive();
+
+    public TextAloftElement() {
+        super();
+    }
+
     protected String name() {
         return "Text";
     }
@@ -50,6 +56,11 @@ public abstract class TextAloftElement extends AloftElement {
     protected AloftElementHtml base() {
         AloftElementHtml obj = new AloftElementHtml();
         return obj;
+    }
+
+    @Override
+    protected boolean acceptsChild() {
+        return false;
     }
 
 }

@@ -44,7 +44,7 @@ public class __ {
             full += seeds[i];
         }
         full += String.valueOf(System.currentTimeMillis());
-        return Rand.randomCase(SHA.getSha1("fahfjk"));
+        return Rand.randomCase(SHA.getSha1(full));
     }
 
     public static Object nothing() {
