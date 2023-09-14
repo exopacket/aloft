@@ -13,7 +13,9 @@ public class Create extends HandlesCommands {
 
     @Override
     public void run(AppConfig config) {
-        System.out.println("TESTING [create " + this.command.getBase().getValue() +"]");
+        System.out.println("Creating new project in directory './" + command.getBase().getValue() + "'...");
+        config.createTemplate(command.getBase().getValue());
+        System.out.println("Project '" + command.getBase().getValue() + "' created successfully!");
     }
 
     @Override

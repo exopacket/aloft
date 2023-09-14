@@ -3,6 +3,8 @@ package com.inteliense.aloft.cli.fs;
 import com.inteliense.aloft.cli.config.AppConfig;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 public class FileSystem {
 
@@ -12,6 +14,16 @@ public class FileSystem {
     private File resourcesDir;
 
     public FileSystem() {
+        this.projectDir = new File("./");
+        setup();
+    }
+
+    public FileSystem(String projectDir) {
+        this.projectDir = new File(projectDir);
+        setup();
+    }
+
+    private void setup() {
         this.globalConfig = new File("/etc/aloft/projects.json");
         if(!this.globalConfig.exists()) createBase();
         loadProjects();
@@ -33,8 +45,17 @@ public class FileSystem {
 
     }
 
-    public void printConfig(String config) {
-
+    public void printConfig(String appName, String config) throws Exception {
+        projectDir = new File(projectDir.getPath() + "/" + appName);
+        if(!projectDir.exists()) projectDir.mkdir();
+        else throw new RuntimeException("directory already exists.");
+        File file = new File(projectDir.getPath() + "/" + appName + ".json");
+        System.out.println(projectDir.getPath() + appName + ".json");
+        file.createNewFile();
+        PrintWriter pw = new PrintWriter(file);
+        Print.txt(config, pw);
+        pw.close();
+        pw.flush();
     }
 
 }

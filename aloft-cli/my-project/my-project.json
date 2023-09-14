@@ -1,0 +1,29 @@
+{
+  "project": {
+    "author": "",
+    "name": "my-project",
+    "description": "",
+    "version": "1.0.0",
+    "key": "6d91d428ae7105042df38fb48768a89b45b8d90d520d1303d4b50ffaac908a97"
+  },
+  "modules": [
+    {
+      "aloft/tailwindcss": {
+        "git": "git://path/to/repo",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "aloft/base-components": {
+        "git": "git://path/to/repo",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "aloft/crypto": {
+        "git": "git://path/to/repo",
+        "version": "1.0.0"
+      }
+    }
+  ]
+}
