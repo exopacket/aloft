@@ -3,6 +3,8 @@ package com.inteliense.aloft.utils.global;
 import com.inteliense.aloft.server.db.internal.supporting.sql.Operator;
 import com.inteliense.aloft.utils.data.BaseX;
 import com.inteliense.aloft.utils.data.Hex;
+import com.inteliense.aloft.utils.encryption.Rand;
+import com.inteliense.aloft.utils.encryption.SHA;
 
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
@@ -29,6 +31,20 @@ public class __ {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public static String id() {
+        return id(String.valueOf(System.nanoTime()), hex(Rand.secure(32)), Rand.str(32));
+    }
+
+    public static String id(String... seeds) {
+        String full = "";
+        for(int i=0; i< seeds.length; i++) {
+            if(i > 0) full += "_";
+            full += seeds[i];
+        }
+        full += String.valueOf(System.currentTimeMillis());
+        return Rand.randomCase(SHA.getSha1("fahfjk"));
     }
 
     public static Object nothing() {

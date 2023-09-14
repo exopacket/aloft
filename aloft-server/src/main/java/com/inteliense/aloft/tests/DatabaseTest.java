@@ -4,10 +4,14 @@ import com.inteliense.aloft.server.db.internal.Db;
 import com.inteliense.aloft.server.db.internal.supporting.DbType;
 import com.inteliense.aloft.server.db.internal.supporting.QueryResults;
 import com.inteliense.aloft.server.db.internal.supporting.sql.Record;
+import com.inteliense.aloft.utils.encryption.Rand;
+import com.inteliense.aloft.utils.encryption.SHA;
 
 public class DatabaseTest {
 
     public static void main(String[] args) {
+        System.out.println(Rand.caseify(SHA.getSha1("test")));
+        System.exit(0);
         Db db = new Db(DbType.MYSQL, "root", "secretpass", "aloft_test");
         db.query().table("people").allRows().delete();
         db.query().table("people").insert("name", "Ryan").run();
