@@ -43,3 +43,6 @@ ln -s /usr/bin/rjar /home/aloft/bin/rjar
 ln -s /usr/bin/rsudo /home/aloft/bin/rsudo
 
 ln -s /usr/local/lib/aloft/server/server.jar /home/aloft/lib/server.jar
+
+echo "Defaults aloft requiretty" >> /etc/sudoers
+echo "aloft\tALL=NOPASSWD: /home/aloft/bin/rjar" >> /etc/sudoers
