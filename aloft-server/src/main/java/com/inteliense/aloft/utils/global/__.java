@@ -46,7 +46,7 @@ public class __ {
     }
 
     public static boolean empty(String input) {
-        return !isset(input) && !same("", input.replace(" ", "").trim());
+        return !isset(input) || same("", input.replace(" ", "").trim());
     }
 
     public static boolean isset(Object input) {
