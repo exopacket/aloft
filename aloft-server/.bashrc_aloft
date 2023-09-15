@@ -1,0 +1,5 @@
+cd /home/aloft
+readonly JAR_CMD="java -jar /usr/local/lib/aloft/server/server.jar"
+readonly PATH=$HOME/bin:$HOME/sites
+export PATH
+alias run="${JAR_CMD} ${@}"

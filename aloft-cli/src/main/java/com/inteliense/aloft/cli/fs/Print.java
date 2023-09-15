@@ -39,7 +39,6 @@ public class Print {
         pw.print("\n");
     }
 
-
     public static void txt(String text) {
         pw.print(text);
     }

@@ -6,7 +6,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.File;
-import java.io.PrintWriter;
 
 public class FileSystem {
 
@@ -26,8 +25,12 @@ public class FileSystem {
     }
 
     private void setup() {
-        this.globalConfig = new File("/etc/aloft/projects.json");
-        if(!this.globalConfig.exists()) { LimitedEscalate.createConfigFile(); createBase(); return; }
+        this.globalConfig = new File("./projects.json");
+        if(!this.globalConfig.exists()) {
+            //LimitedEscalate.createConfigFile();
+            createBase();
+            return;
+        }
         loadProjects();
     }
 
@@ -41,7 +44,7 @@ public class FileSystem {
         JSONArray apps = new JSONArray();
         root.put("server", server);
         root.put("apps", apps);
-        this.globalConfig = createFile("/etc/aloft/projects.json");
+        this.globalConfig = createFile("./projects.json");
         Print.setPrinter(this.globalConfig);
         Print.txt(JSON.getString(root, true));
         Print.reset();

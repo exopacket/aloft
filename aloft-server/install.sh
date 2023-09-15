@@ -40,4 +40,9 @@ if [ "$STATUS" -ne 0 ]; then
   exit;
 fi
 
+#useradd aloft
+#mkdir /home/aloft
+#chown/chmod ...
+#ln -s /usr/bin/java /home/aloft/bin
+
 echo "aloft server successfully installed."

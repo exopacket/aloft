@@ -17,4 +17,5 @@ if [[ "$_java" ]]; then
     fi
 fi
 
+#sudo -u aloft -D /home/aloft run ...
 java -jar /usr/local/lib/aloft/server/server.jar "$@"

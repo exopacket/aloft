@@ -22,6 +22,7 @@ public class AppConfig {
 
         JSONObject project = new JSONObject();
         project.put("name", projectName);
+        project.put("package", "abc.yourdomain." + projectName.replaceAll("[\s-.]", "_"));
         project.put("author", "");
         project.put("description", "");
         project.put("key", __.hex(Rand.secure(32)));
