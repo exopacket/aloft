@@ -20,7 +20,13 @@ public class Main {
 
         try {
             config = loadConfig();
-            cmd = new Command(args, config);
+            cmd = new Command(args, config) {
+                @Override
+                protected void exit() {
+                    System.err.println("Command not found.");
+                    System.exit(1);
+                }
+            };
             container = HandlesCommands.create(cmd, config);
         } catch (Exception e) {
             e.printStackTrace();

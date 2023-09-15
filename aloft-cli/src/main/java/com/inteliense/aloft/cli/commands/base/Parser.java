@@ -10,7 +10,7 @@ public class Parser {
         String prevName = "";
         for(int i=0; i<args.length; i++) {
             String arg = args[i];
-            if(flagCheck(arg) && Keywords.flagExists(arg)) {
+            if(flagCheck(arg) && Keywords.flagExists(argList.get(0).getName(), arg)) {
                 argList.add(new Arg(arg));
                 continue;
             }

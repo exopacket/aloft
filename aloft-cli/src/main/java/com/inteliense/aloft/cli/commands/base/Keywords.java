@@ -1,25 +1,29 @@
 package com.inteliense.aloft.cli.commands.base;
 
-import com.inteliense.aloft.cli.commands.keywords.Create;
-import com.inteliense.aloft.cli.commands.keywords.Init;
+import com.inteliense.aloft.cli.commands.keywords.*;
 
+import java.sql.Array;
 import java.util.Arrays;
+import java.util.HashMap;
 
 @SuppressWarnings("ALL")
 public class Keywords {
 
     private static final Class[] commands = new Class[]{
         Create.class,
-        Init.class
+        Init.class,
+        Debug.class,
+        Serve.class,
+        Publish.class
     };
 
     private static final Class[] required = new Class[]{
         Create.class
     };
 
-    private static final Object[] flags = new String[]{
-
-    };
+    private static final HashMap<String, Object[]> flags = new HashMap<String, Object[]>() {{
+        put("--public", new Object[]{ (new Arg("--public")), Debug.class });
+    }};
 
     public static Class getClass(String cmd) {
         try {
@@ -42,9 +46,19 @@ public class Keywords {
         return false;
     }
 
-    public static boolean flagExists(String flag) {
+    public static boolean flagExists(String className, String flag) {
         try {
-            return Arrays.asList(flags).contains(flag.toLowerCase());
+            Class<?> c = Class.forName(className);
+            if(flags.containsKey(flag.toLowerCase())) {
+                Object[] v = flags.get(flag.toLowerCase());
+                if(v[1].getClass() == Array.class) {
+                    for (Class _c : (Class[]) v[1]) {
+                        if(_c == c) return true;
+                    }
+                } else {
+                    if(((Class) v[1]) == c) return true;
+                }
+            }
         } catch (Exception ignored) {}
         return false;
     }

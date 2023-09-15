@@ -5,8 +5,7 @@ import com.inteliense.aloft.run.cli.config.AppConfig;
 
 import java.util.Arrays;
 
-@SuppressWarnings("rawtypes")
-public class Command {
+public abstract class Command {
 
     private Arg cmd = null;
     private Arg[] args = null;
@@ -14,6 +13,10 @@ public class Command {
 
     public Command(String[] args, AppConfig config) {
         Arg[] arr = Parser.getArgs(args);
+        if(arr.length == 0) {
+            exit();
+            return;
+        }
         cmd = arr[0];
         cmdClass = Keywords.getClass(cmd.getName());
         this.args = Arrays.copyOfRange(arr, 1, arr.length);
@@ -30,5 +33,7 @@ public class Command {
     public Arg[] getArgs() {
         return this.args;
     }
+
+    protected abstract void exit();
 
 }
