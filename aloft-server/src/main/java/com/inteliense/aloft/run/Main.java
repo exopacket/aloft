@@ -23,7 +23,7 @@ public class Main {
             cmd = new Command(args, config) {
                 @Override
                 protected void exit() {
-                    System.err.println("Command not found.");
+                    System.err.println("Command not found. (1)");
                     System.exit(1);
                 }
             };
@@ -36,10 +36,10 @@ public class Main {
 
         try {
             if (container != null) container.run(config);
-            else throw new Exception("Command not found");
+            else throw new Exception("Command not found (2)");
             System.exit(0);
         } catch(Exception e) {
-            System.err.println("Command not found.");
+            System.err.println("Command not found. (3)");
             e.printStackTrace();
             if (container != null) container.printHelp(); //TODO better handling of help
             System.exit(1);

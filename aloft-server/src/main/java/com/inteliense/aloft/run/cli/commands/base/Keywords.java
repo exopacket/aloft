@@ -13,7 +13,8 @@ public class Keywords {
 
     private static final Class[] commands = new Class[]{
         Daemon.class,
-        Build.class
+        Build.class,
+        Debug.class
     };
 
     private static final Class[] required = new Class[]{
@@ -25,6 +26,7 @@ public class Keywords {
             put("--ipv6", new Object[]{ new Arg("--ipv6"), Daemon.class });
             put("--balanced", new Object[]{ (new Arg("--balanced")), Daemon.class });
             put("--public", new Object[]{ (new Arg("--public")), Debug.class });
+            put("--port", new Object[]{ (new Arg("--public")).requiresValue(), Debug.class });
     }};
 
     public static Class getClass(String cmd) {

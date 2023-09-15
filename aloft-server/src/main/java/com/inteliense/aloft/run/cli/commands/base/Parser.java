@@ -9,6 +9,7 @@ public class Parser {
         boolean needValue = false;
         String prevName = "";
         for(int i=0; i<args.length; i++) {
+
             String arg = args[i];
             if(flagCheck(arg) && Keywords.flagExists(argList.get(0).getName(), arg)) {
                 argList.add(new Arg(arg));
