@@ -14,7 +14,7 @@ public abstract class Command {
     public Command(String[] args, AppConfig config) {
         Arg[] arr = Parser.getArgs(args);
         if(arr.length == 0) {
-            exit();
+            exit("Command not found.", 1);
             return;
         }
         cmd = arr[0];
@@ -34,6 +34,6 @@ public abstract class Command {
         return this.args;
     }
 
-    protected abstract void exit();
+    public abstract void exit(String message, int code);
 
 }

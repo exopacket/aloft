@@ -22,9 +22,9 @@ public class Main {
             config = loadConfig();
             cmd = new Command(args, config) {
                 @Override
-                protected void exit() {
-                    System.err.println("Command not found. (1)");
-                    System.exit(1);
+                public void exit(String message, int code) {
+                    System.err.println(message);
+                    System.exit(code);
                 }
             };
             container = HandlesCommands.create(cmd, config);
@@ -36,10 +36,10 @@ public class Main {
 
         try {
             if (container != null) container.run(config);
-            else throw new Exception("Command not found (2)");
+            else throw new Exception("Command not found.");
             System.exit(0);
         } catch(Exception e) {
-            System.err.println("Command not found. (3)");
+            System.err.println("Command not found.");
             e.printStackTrace();
             if (container != null) container.printHelp(); //TODO better handling of help
             System.exit(1);

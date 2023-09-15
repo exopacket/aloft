@@ -18,6 +18,8 @@ public class Debug extends HandlesCommands {
     @Override
     public void run(AppConfig config) {
         try {
+            if(!hasFlag("src") || __.empty(flagValue("src"))) command.exit("Source directory [--src] is required.", 1);
+            if(!hasFlag("config") || __.empty(flagValue("config"))) command.exit("Config filepath [--config] is required.", 1);
             int port = 8181;
             if(!__.empty(flagValue("port"))) port = Integer.parseInt(flagValue("port"));
             DebugServer server = new DebugServer(port, hasFlag("secure"), true);
