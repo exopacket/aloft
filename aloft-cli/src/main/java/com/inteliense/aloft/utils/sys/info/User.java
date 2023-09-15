@@ -6,6 +6,8 @@ public class User {
         return System.getProperty("user.name");
     }
 
+    public static String getUID() { return System.getProperty("user.id"); }
+
 //    public static int getUID() {
 //
 //        try {

@@ -6,12 +6,20 @@ import java.nio.charset.StandardCharsets;
 
 public abstract class Command {
 
-    public abstract Status lineRead(byte[] bytes, String string);
+    public abstract void lineRead(byte[] bytes, String string);
+
+    private static String clean(String cmd) {
+        cmd = cmd.replace("sudo", "");
+        cmd = cmd.replace("su", "");
+        cmd = cmd.replace("passwd", "");
+        //TODO ...
+        return cmd;
+    }
 
     public static void noOut(String cmd) throws Exception {
 
         ProcessBuilder builder = new ProcessBuilder();
-        builder.command("/bin/sh", "-c", cmd);
+        builder.command("/bin/sh", "-c", clean(cmd));
         builder.start();
 
     }
@@ -19,7 +27,7 @@ public abstract class Command {
     public static void runAndWait(String cmd) throws Exception {
 
         ProcessBuilder builder = new ProcessBuilder();
-        builder.command("/bin/sh", "-c", cmd);
+        builder.command("/bin/sh", "-c", clean(cmd));
         Process process = builder.start();
 
         process.waitFor();
@@ -29,7 +37,7 @@ public abstract class Command {
     public Status exec(String cmd) throws Exception {
 
         ProcessBuilder builder = new ProcessBuilder();
-        builder.command("/bin/sh", "-c", cmd);
+        builder.command("/bin/sh", "-c", clean(cmd));
         Process process = builder.start();
 
         StringBuilder output = new StringBuilder();
@@ -50,7 +58,7 @@ public abstract class Command {
     public static int runThread(String cmd) throws Exception {
 
         ProcessBuilder builder = new ProcessBuilder();
-        builder.command("/bin/sh", "-c", cmd, "&");
+        builder.command("/bin/sh", "-c", clean(cmd), "&");
         Process process = builder.start();
 
         StringBuilder output = new StringBuilder();

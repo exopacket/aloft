@@ -33,7 +33,6 @@ public class __ {
         System.out.print(color + output + ANSI_RESET);
     }
 
-
     public static String hex(byte[] arr) {
         return Hex.getHex(arr);
     }

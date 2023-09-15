@@ -1,5 +1,10 @@
 package com.inteliense.aloft.cli.fs;
 
+import com.inteliense.aloft.utils.data.JSON;
+import com.inteliense.aloft.utils.sys.uid.LimitedEscalate;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import java.io.File;
 import java.io.PrintWriter;
 
@@ -22,7 +27,7 @@ public class FileSystem {
 
     private void setup() {
         this.globalConfig = new File("/etc/aloft/projects.json");
-        if(!this.globalConfig.exists()) createBase();
+        if(!this.globalConfig.exists()) { LimitedEscalate.createConfigFile(); createBase(); return; }
         loadProjects();
     }
 
@@ -31,28 +36,50 @@ public class FileSystem {
     }
 
     private void createBase() {
-
+        JSONObject root = new JSONObject();
+        JSONObject server = new JSONObject();
+        JSONArray apps = new JSONArray();
+        root.put("server", server);
+        root.put("apps", apps);
+        this.globalConfig = createFile("/etc/aloft/projects.json");
+        Print.setPrinter(this.globalConfig);
+        Print.txt(JSON.getString(root, true));
+        Print.reset();
     }
 
-    public void createDir(String path) {
-
+    public File createDir(String path) {
+        return createDir(path, false);
     }
 
-    public void createFile(String path) {
+    public File createFile(String path) {
+        return createFile(path, false);
+    }
 
+    public File createDir(String path, boolean nullOnExists) {
+        File dir = new File(path);
+        if(dir.exists() && nullOnExists) return null;
+        else if(dir.exists()) return dir;
+        dir.mkdirs();
+        return dir;
+    }
+
+    public File createFile(String path, boolean nullOnExists) {
+        File file = new File(path);
+        if(file.exists() && nullOnExists) return null;
+        else if(file.exists()) return file;
+        try {
+            file.createNewFile();
+        } catch (Exception ignored) { }
+        return file;
     }
 
     public void printConfig(String appName, String config) throws Exception {
-        projectDir = new File(projectDir.getPath() + "/" + appName);
-        if(!projectDir.exists()) projectDir.mkdir();
-        else throw new RuntimeException("directory already exists.");
-        File file = new File(projectDir.getPath() + "/" + appName + ".json");
-        System.out.println(projectDir.getPath() + appName + ".json");
-        file.createNewFile();
-        PrintWriter pw = new PrintWriter(file);
-        Print.txt(config, pw);
-        pw.close();
-        pw.flush();
+        projectDir = createDir(projectDir.getPath() + "/" + appName, true);
+        if(projectDir == null) throw new RuntimeException("directory already exists.");
+        File file = createFile(projectDir.getPath() + "/" + appName + ".json", false);
+        Print.setPrinter(file);
+        Print.txt(config);
+        Print.reset();
     }
 
 }
