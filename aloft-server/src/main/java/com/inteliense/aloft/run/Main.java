@@ -4,15 +4,10 @@ import com.inteliense.aloft.run.cli.commands.base.Command;
 import com.inteliense.aloft.run.cli.commands.base.HandlesCommands;
 import com.inteliense.aloft.run.cli.config.AppConfig;
 import com.inteliense.aloft.run.cli.fs.FileSystem;
-import com.inteliense.aloft.utils.sys.shell.Run;
 
 public class Main {
 
-    public static void main(String[] args) throws Exception {
-
-        Run.runAndWait("touch /etc/test.conf");
-        System.out.println("EXITING");
-        System.exit(1);
+    public static void main(String[] args) {
 
         Command cmd = null;
         HandlesCommands container = null;

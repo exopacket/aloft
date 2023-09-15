@@ -33,7 +33,7 @@ ENCRYPTED_PASSWD=$(openssl passwd -1 "$RAND_PASSWD")
 
 useradd aloft -s /bin/rbash
 usermod -d /home/aloft aloft
-usermod -p "$ENCRYPTED_PASSWD"
+usermod -p "$ENCRYPTED_PASSWD" aloft
 usermod -L aloft
 
 chown -R aloft:aloft /home/aloft
