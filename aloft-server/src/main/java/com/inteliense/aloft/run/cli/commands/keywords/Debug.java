@@ -20,7 +20,7 @@ public class Debug extends HandlesCommands {
         try {
             int port = 8181;
             if(!__.empty(flagValue("port"))) port = Integer.parseInt(flagValue("port"));
-            DebugServer server = new DebugServer(port, false, true);
+            DebugServer server = new DebugServer(port, hasFlag("secure"), true);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

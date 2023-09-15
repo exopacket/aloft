@@ -29,6 +29,10 @@ public abstract class HandlesCommands {
 
     }
 
+    protected boolean hasFlag(String flag) {
+        return findFlag(flag) != null;
+    }
+
     protected String flagValue(String flag) {
         Arg arg = findFlag(flag);
         if(arg == null) return "";

@@ -26,6 +26,7 @@ public class Keywords {
             put("--ipv6", new Object[]{ new Arg("--ipv6"), Daemon.class });
             put("--balanced", new Object[]{ (new Arg("--balanced")), Daemon.class });
             put("--public", new Object[]{ (new Arg("--public")), Debug.class });
+            put("--secure", new Object[]{ (new Arg("--secure")), Debug.class });
             put("--port", new Object[]{ (new Arg("--port", true)), Debug.class });
             put("--src", new Object[]{ (new Arg("--src", true)), Debug.class });
             put("--config", new Object[]{ (new Arg("--config", true)), Debug.class });
