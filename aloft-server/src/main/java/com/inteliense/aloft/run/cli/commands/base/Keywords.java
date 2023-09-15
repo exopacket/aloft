@@ -26,7 +26,9 @@ public class Keywords {
             put("--ipv6", new Object[]{ new Arg("--ipv6"), Daemon.class });
             put("--balanced", new Object[]{ (new Arg("--balanced")), Daemon.class });
             put("--public", new Object[]{ (new Arg("--public")), Debug.class });
-            put("--port", new Object[]{ (new Arg("--public")).requiresValue(), Debug.class });
+            put("--port", new Object[]{ (new Arg("--port", true)), Debug.class });
+            put("--src", new Object[]{ (new Arg("--src", true)), Debug.class });
+            put("--config", new Object[]{ (new Arg("--config", true)), Debug.class });
     }};
 
     public static Class getClass(String cmd) {
@@ -52,7 +54,7 @@ public class Keywords {
 
     public static boolean flagExists(String className, String flag) {
         try {
-            Class<?> c = Class.forName(className);
+            Class<?> c = getClass(className);
             if(flags.containsKey(flag.toLowerCase())) {
                 Object[] v = flags.get(flag.toLowerCase());
                 if(v[1].getClass() == Array.class) {
@@ -65,6 +67,16 @@ public class Keywords {
             }
         } catch (Exception ignored) {}
         return false;
+    }
+
+    public static Arg getFlagArg(String flag) {
+        try {
+            if(flags.containsKey(flag.toLowerCase())) {
+                Object[] v = flags.get(flag.toLowerCase());
+                return (Arg) v[0];
+            }
+        } catch (Exception ignored) {}
+        return null;
     }
 
 }

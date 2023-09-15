@@ -7,15 +7,23 @@ public class Parser {
     public static Arg[] getArgs(String[] args) {
         ArrayList<Arg> argList = new ArrayList<>();
         boolean needValue = false;
+        int prevFlagIndex = -1;
         String prevName = "";
         for(int i=0; i<args.length; i++) {
-
             String arg = args[i];
             if(flagCheck(arg) && Keywords.flagExists(argList.get(0).getName(), arg)) {
-                argList.add(new Arg(arg));
+                Arg flag = Keywords.getFlagArg(arg);
+                if(flag == null) continue;
+                argList.add(flag);
+                if(flag.requiresValue()) prevFlagIndex = argList.size() - 1;
                 continue;
             }
-            if(needValue && !flagCheck(arg)) {
+            if(!flagCheck(arg) && prevFlagIndex > 0) {
+                argList.get(prevFlagIndex).setValue(arg);
+                prevFlagIndex = -1;
+                continue;
+            }
+            if(!flagCheck(arg) && needValue) {
                 argList.add(new Arg(prevName, arg));
                 prevName = "";
                 needValue = false;

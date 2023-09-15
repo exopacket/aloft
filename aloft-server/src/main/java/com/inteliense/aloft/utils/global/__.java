@@ -45,6 +45,14 @@ public class __ {
         System.err.println(output);
     }
 
+    public static boolean empty(String input) {
+        return !isset(input) && !same("", input.replace(" ", "").trim());
+    }
+
+    public static boolean isset(Object input) {
+        return input != null;
+    }
+
     public static String hex(byte[] arr) {
         return Hex.getHex(arr);
     }

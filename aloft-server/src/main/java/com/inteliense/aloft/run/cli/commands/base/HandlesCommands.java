@@ -2,8 +2,10 @@ package com.inteliense.aloft.run.cli.commands.base;
 
 import com.inteliense.aloft.run.cli.Help;
 import com.inteliense.aloft.run.cli.config.AppConfig;
+import com.inteliense.aloft.utils.global.__;
 
 import java.lang.reflect.Constructor;
+import java.util.List;
 
 public abstract class HandlesCommands {
 
@@ -25,6 +27,21 @@ public abstract class HandlesCommands {
 
     public void printHelp() {
 
+    }
+
+    protected String flagValue(String flag) {
+        Arg arg = findFlag(flag);
+        if(arg == null) return "";
+        return arg.getValue();
+    }
+
+    private Arg findFlag(String flag) {
+        flag = flag.replace("-", "");
+        Arg[] args = command.getArgs();
+        for(int i=0; i<args.length; i++) {
+            if(__.same(args[i].getName(), flag)) return args[i];
+        }
+        return null;
     }
 
     protected abstract Help help();
