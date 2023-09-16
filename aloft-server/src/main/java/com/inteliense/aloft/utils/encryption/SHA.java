@@ -35,6 +35,31 @@ public class SHA {
 
     }
 
+    public static String getSha1(byte[] input)
+    {
+        try {
+
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+
+            byte[] messageDigest = md.digest(input);
+
+            BigInteger num = new BigInteger(1, messageDigest);
+            String hashtext = num.toString(16);
+
+            while (hashtext.length() < 40) {
+                hashtext = "0" + hashtext;
+            }
+
+            return hashtext;
+        }
+
+        catch (NoSuchAlgorithmException e) {
+        }
+
+        return "";
+
+    }
+
     public static String get512(String input)
     {
         try {
@@ -204,6 +229,38 @@ public class SHA {
 
         }
 
+    }
+
+    public class Bites {
+        public static byte[] getSha1(byte[] input) {
+            try {
+
+                MessageDigest md = MessageDigest.getInstance("SHA-1");
+
+                byte[] messageDigest = md.digest(input);
+
+                BigInteger num = new BigInteger(1, messageDigest);
+                return num.toByteArray();
+            } catch (NoSuchAlgorithmException e) {
+            }
+
+            return new byte[0];
+        }
+
+        public static byte[] getSha1(String input) {
+            try {
+
+                MessageDigest md = MessageDigest.getInstance("SHA-1");
+
+                byte[] messageDigest = md.digest(input.getBytes());
+
+                BigInteger num = new BigInteger(1, messageDigest);
+                return num.toByteArray();
+            } catch (NoSuchAlgorithmException e) {
+            }
+
+            return new byte[0];
+        }
     }
 
 }

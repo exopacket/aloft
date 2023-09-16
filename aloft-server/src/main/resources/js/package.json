@@ -2,10 +2,11 @@
   "name": "com.inteliense.aloft.js",
   "version": "1.0.0",
   "description": "com.inteliense.aloft.js",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node main.js"
   },
+  "type": "module",
   "author": "Ryan Fitzgerald",
   "license": "ISC",
   "dependencies": {

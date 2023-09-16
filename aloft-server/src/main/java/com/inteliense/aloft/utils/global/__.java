@@ -86,7 +86,7 @@ public class __ {
             full += seeds[i];
         }
         full += String.valueOf(System.currentTimeMillis());
-        return Rand.randomCase(SHA.getSha1(full));
+        return Rand.randomCase(b64(SHA.Bites.getSha1(full)).replaceAll("[/=+]", ""));
     }
 
     public static Object nothing() {

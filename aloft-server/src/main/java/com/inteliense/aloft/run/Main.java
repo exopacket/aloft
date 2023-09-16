@@ -4,10 +4,42 @@ import com.inteliense.aloft.run.cli.commands.base.Command;
 import com.inteliense.aloft.run.cli.commands.base.HandlesCommands;
 import com.inteliense.aloft.run.cli.config.AppConfig;
 import com.inteliense.aloft.run.cli.fs.FileSystem;
+import com.inteliense.aloft.server.websocket.WebSockServer;
+import org.eclipse.jetty.websocket.api.Session;
+import org.json.simple.JSONObject;
 
 public class Main {
 
     public static void main(String[] args) {
+
+//        try {
+//            WebSockServer server = new WebSockServer("127.0.0.1", 3030, "debug") {
+//                @Override
+//                protected boolean validateConnection(Session session) {
+//                    return true;
+//                }
+//
+//                @Override
+//                protected void onConnect(String sessionId) {
+//                    System.out.println("Connection Successful.");
+//                    System.out.println(sessionId);
+//                }
+//
+//                @Override
+//                protected void onMessage(String sessionId, JSONObject json) {
+//                    System.out.println("MESSAGE RECEIVED");
+//                }
+//
+//                @Override
+//                protected void onClose(String sessionId) {
+//                    System.out.println("SESSION " + sessionId + " CLOSED.");
+//                }
+//            };
+//            server.start();
+//            server.join();
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
 
         Command cmd = null;
         HandlesCommands container = null;

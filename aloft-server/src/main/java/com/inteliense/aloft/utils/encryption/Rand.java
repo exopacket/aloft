@@ -89,7 +89,7 @@ public class Rand {
             byte res = secure(1)[0];
             int bool = res % 2;
             boolean capitalize = bool == 1;
-            String c = input.substring(i, 1);
+            String c = input.substring(i, i + 1);
             if(capitalize) c = c.toUpperCase();
             ret.append(c);
         }
