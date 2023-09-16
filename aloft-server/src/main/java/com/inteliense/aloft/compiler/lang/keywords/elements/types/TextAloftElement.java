@@ -43,7 +43,7 @@ public abstract class TextAloftElement extends AloftElement {
 
     @Override
     public HtmlElement html() {
-        HtmlElement root = createElement("p", "message");
+        HtmlElement root = createElement("p");
         Content rootContent = new Content(text);
         root.addChild(rootContent);
         for(int i=0; i<textSpans.size(); i++) {
