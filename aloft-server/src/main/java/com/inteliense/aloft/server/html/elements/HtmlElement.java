@@ -1,5 +1,7 @@
 package com.inteliense.aloft.server.html.elements;
 
+import com.inteliense.aloft.utils.global.__;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -93,7 +95,7 @@ public abstract class HtmlElement {
             String value = this.attributes.get(key);
             attrs += key + "=\"" + value + "\" ";
         }
-        attrs += "id=\"" + this.id + "\"";
+        if(!__.empty(getId())) attrs += "id=\"" + getId() + "\"";
         return attrs;
     }
 

@@ -83,7 +83,7 @@ public abstract class TextAloftElement extends AloftElement {
 
     @Override
     protected boolean acceptsChild() {
-        return false;
+        return true;
     }
 
 }
