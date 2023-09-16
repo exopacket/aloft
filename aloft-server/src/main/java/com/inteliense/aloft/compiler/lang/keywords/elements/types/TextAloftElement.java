@@ -37,7 +37,7 @@ public abstract class TextAloftElement extends AloftElement {
 
     @Override
     public HtmlElement html() {
-        HtmlElement root = new HtmlElement() {
+        HtmlElement root = new HtmlElement(this.friendlyId) {
             @Override
             protected String getKey() {
                 return "p";
