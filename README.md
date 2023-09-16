@@ -2,13 +2,17 @@
 
 A programming language for full stack development with simple object oriented syntax.
 
-This is a side project. Don't intend on it being done anytime soon. Feel free, if you're interested in the idea, to pass along ideas or contributions. Missing some syntax. Based around the simple_language_plugin sample for IntelliJ. Using the case-sensitive version speeds up syntax highlighting and verification by a ton.
+This is a side project. Don't intend on it being done anytime soon. Feel free, if you're interested in the idea, to pass along ideas or contributions.
 
 ![icon](https://github.com/exopacket/aloft/blob/main/aloft_icon_sm.png)
 
 # progress
 
 I have began work on the aloft-server and aloft-cli. Both will be written 100% in Java. The server will run as a daemon and serve content in place of apache or nginx.. Speed and performance is TBD, but a priority.
+
+# security
+
+Security is of upmost importance with aloft. Sites and modules will be bundled in signed jars called 'cans' which will be loaded dynamically at runtime into the server. They will not allow any extended java classes other than the predefined classes for the aloft library package. The server runs in a jailed environment (as root) where capability to damage the system is minimized.  
 
 # features
 
@@ -29,5 +33,3 @@ I have began work on the aloft-server and aloft-cli. Both will be written 100% i
   - Framework modules for things like cryptography, different database types, and cookie/session/login logic)
   - Forgiving data types (int/integer, bool/boolean, time("format"))
   - Optional semicolon
-  - Case insensitivity for keywords and types
-  - generates complete HTML, CSS, PHP, and Javascript files / or serves HTML file to client
