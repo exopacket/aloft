@@ -30,7 +30,7 @@ public abstract class WebSockServerEndpoint extends WebSocketAdapter
     {
         super.onWebSocketText(message);
         if(__.empty(JSON.verify(message))) { this.getSession().disconnect(); return; }
-        if(!onMessage(JSON.getObject(message))) this.getSession().disconnect();
+        if(!onMessage(JSON.getObject(JSON.verify(message)))) this.getSession().disconnect();
     }
 
     @Override

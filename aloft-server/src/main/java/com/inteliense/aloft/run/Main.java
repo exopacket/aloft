@@ -4,9 +4,6 @@ import com.inteliense.aloft.run.cli.commands.base.Command;
 import com.inteliense.aloft.run.cli.commands.base.HandlesCommands;
 import com.inteliense.aloft.run.cli.config.AppConfig;
 import com.inteliense.aloft.run.cli.fs.FileSystem;
-import com.inteliense.aloft.server.websocket.WebSockServer;
-import org.eclipse.jetty.websocket.api.Session;
-import org.json.simple.JSONObject;
 
 public class Main {
 
