@@ -12,7 +12,7 @@ import java.io.OutputStream;
 public class DebugServerHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange t) throws IOException {
-        TextAloftElement textElement = new TextAloftElement("Hello World!\n\nSincerely yours,\n- Server.", "message") {
+        TextAloftElement textElement = new TextAloftElement("Hello World!\n\nSincerely yours,\n- Server.") {
             @Override
             protected AloftListener[] listeners() {
                 return new AloftListener[0];

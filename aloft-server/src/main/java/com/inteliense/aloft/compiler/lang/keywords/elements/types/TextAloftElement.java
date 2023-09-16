@@ -16,6 +16,12 @@ public abstract class TextAloftElement extends AloftElement {
 
     protected abstract AloftListener[] listeners();
 
+    public TextAloftElement(String text) {
+        super();
+        this.text = text;
+        init();
+    }
+
     public TextAloftElement(String text, String friendlyId) {
         super();
         this.friendlyId = friendlyId;
@@ -37,12 +43,7 @@ public abstract class TextAloftElement extends AloftElement {
 
     @Override
     public HtmlElement html() {
-        HtmlElement root = new HtmlElement(this.friendlyId) {
-            @Override
-            protected String getKey() {
-                return "p";
-            }
-        };
+        HtmlElement root = createElement("p", "message");
         Content rootContent = new Content(text);
         root.addChild(rootContent);
         for(int i=0; i<textSpans.size(); i++) {

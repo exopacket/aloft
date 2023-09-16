@@ -31,7 +31,6 @@ public abstract class AloftElement implements BuildsHtml {
     protected ArrayList<AloftElementSubtype> subtypes;
 
     protected void init() {
-        uniqueId = uniqueId();
         uniqueId = (uniqueId == null) ? createId(String.valueOf(System.currentTimeMillis())) : uniqueId;
         refresh();
     }
@@ -46,13 +45,10 @@ public abstract class AloftElement implements BuildsHtml {
 
     protected abstract AloftListener[] listeners();
 
-    protected String friendlyId() {
-        return this.friendlyId;
+    protected String id() {
+        return this.friendlyId == null ? this.uniqueId : this.friendlyId;
     }
 
-    protected String uniqueId() {
-        return this.uniqueId;
-    }
 
     protected void appendChild(AloftElement child) {
         if(acceptsChild()) this.children.add(child);
@@ -102,8 +98,20 @@ public abstract class AloftElement implements BuildsHtml {
         return Rand.caseify(hash);
     }
 
+    protected HtmlElement createElement(String key) {
+        return createElement(key, id());
+    }
+
+    protected HtmlElement createElement(String key, String id) {
+        return new HtmlElement(id) {
+            @Override
+            protected String getKey() {
+                return key;
+            }
+        };
+    }
+
     public void refresh() {
-        friendlyId = friendlyId() == null ? uniqueId : friendlyId();
         setupBuilder();
         setupIterator();
     }
