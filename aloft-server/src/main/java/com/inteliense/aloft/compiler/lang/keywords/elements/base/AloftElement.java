@@ -1,6 +1,7 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.base;
 
 import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
+import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.utils.encryption.Rand;
 import com.inteliense.aloft.utils.encryption.SHA;
@@ -48,7 +49,6 @@ public abstract class AloftElement implements BuildsHtml {
     protected String id() {
         return this.friendlyId == null ? this.uniqueId : this.friendlyId;
     }
-
 
     protected void appendChild(AloftElement child) {
         if(acceptsChild()) this.children.add(child);

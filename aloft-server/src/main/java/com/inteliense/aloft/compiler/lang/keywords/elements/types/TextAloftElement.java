@@ -1,9 +1,7 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
-import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
-import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftListener;
-import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftStyle;
+import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.types.Content;
 
