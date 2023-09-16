@@ -60,13 +60,6 @@
             <artifactId>websocket-jetty-client</artifactId>
             <version>11.0.15</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-slf4j-impl</artifactId>
-            <version>11.0.15</version>
-        </dependency>
-
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4</artifactId>
