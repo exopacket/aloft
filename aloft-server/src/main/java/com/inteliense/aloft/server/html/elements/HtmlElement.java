@@ -13,12 +13,14 @@ public abstract class HtmlElement {
 
     protected abstract String getKey();
 
-    public HtmlElement() {
-        id = createId();
+    public HtmlElement() { this.id = null; }
+
+    public HtmlElement(String id) {
+        this.id = id;
     }
 
     public String getId() {
-        return id;
+        return id == null ? "" : id;
     }
 
     public void addChild(HtmlElement element) {
@@ -62,10 +64,6 @@ public abstract class HtmlElement {
             }
             return html + this.buildTag(true);
         }
-    }
-
-    private String createId() {
-        return "";
     }
 
     private String buildTag(boolean close) {

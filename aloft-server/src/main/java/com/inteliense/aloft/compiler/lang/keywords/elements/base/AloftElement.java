@@ -1,5 +1,7 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.base;
 
+import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
+import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.utils.encryption.Rand;
 import com.inteliense.aloft.utils.encryption.SHA;
 import com.inteliense.aloft.utils.global.__;
@@ -7,38 +9,33 @@ import com.inteliense.aloft.utils.global.__;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public abstract class AloftElement {
+public abstract class AloftElement implements BuildsHtml {
 
-    protected String friendlyId;
-    protected String uniqueId;
-    protected String name;
+    protected String friendlyId = null;
+    protected String uniqueId = null;
+    protected String name = null;
 
     protected ArrayList<AloftElement> children = new ArrayList<>();
 
-    protected boolean acceptsIterator;
+    protected boolean acceptsIterator = false;
     protected AloftIterator iterator;
 
-    protected boolean acceptsBuilder;
-    protected boolean requiresBuilder;
+    protected boolean acceptsBuilder = false;
+    protected boolean requiresBuilder = false;
     protected AloftBuilder builder = null;
 
-    protected boolean isExtensible;
+    protected boolean isExtensible = false;
     protected ArrayList<AloftElementExtension> extensions;
 
     protected boolean hasMultipleSubtypes;
     protected ArrayList<AloftElementSubtype> subtypes;
 
-    protected boolean isSensitive;
-
-    public AloftElement() {
+    protected void init() {
         uniqueId = uniqueId();
         uniqueId = (uniqueId == null) ? createId(String.valueOf(System.currentTimeMillis())) : uniqueId;
         refresh();
     }
 
-    protected abstract Object value();
-    protected abstract String friendlyId();
-    protected abstract String uniqueId();
     protected abstract String name();
     protected abstract boolean acceptsIterator();
     protected abstract boolean acceptsBuilder();
@@ -46,11 +43,16 @@ public abstract class AloftElement {
     protected abstract boolean isExtensible();
     protected abstract boolean hasMultipleSubtypes();
     protected abstract boolean acceptsChild();
-    protected abstract boolean isSensitive();
 
-    protected abstract AloftStyle style();
     protected abstract AloftListener[] listeners();
-    protected abstract AloftElementHtml base();
+
+    protected String friendlyId() {
+        return this.friendlyId;
+    }
+
+    protected String uniqueId() {
+        return this.uniqueId;
+    }
 
     protected void appendChild(AloftElement child) {
         if(acceptsChild()) this.children.add(child);
@@ -104,7 +106,6 @@ public abstract class AloftElement {
         friendlyId = friendlyId() == null ? uniqueId : friendlyId();
         setupBuilder();
         setupIterator();
-        isSensitive = isSensitive();
     }
 
 }

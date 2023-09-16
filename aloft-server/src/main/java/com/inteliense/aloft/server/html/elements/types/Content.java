@@ -4,7 +4,13 @@ import com.inteliense.aloft.server.html.elements.HtmlElement;
 
 public class Content extends HtmlElement {
 
-    private String raw;
+    private String value;
+
+    public Content(String value) {
+        super();
+        value = value.replaceAll("\n", "<br>");
+        this.value = value;
+    }
 
     @Override
     protected String getKey() {
@@ -13,11 +19,7 @@ public class Content extends HtmlElement {
 
     @Override
     public String getHtml() {
-        return raw;
-    }
-
-    public void setContent(String raw) {
-        this.raw = raw;
+        return value;
     }
 
 }

@@ -1,24 +1,57 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
+import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
-import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElementHtml;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftListener;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftStyle;
+import com.inteliense.aloft.server.html.elements.HtmlElement;
+import com.inteliense.aloft.server.html.elements.types.Content;
+
+import java.util.ArrayList;
 
 public abstract class TextAloftElement extends AloftElement {
 
-    protected abstract String friendlyId();
+    private ArrayList<TextAloftElement> textSpans = new ArrayList<>();
+    private String text = "";
 
-    protected abstract String uniqueId();
+    protected abstract AloftListener[] listeners();
 
-    protected abstract Object value();
-
-    protected abstract boolean isSensitive();
-
-    public TextAloftElement() {
+    public TextAloftElement(String text, String friendlyId) {
         super();
+        this.friendlyId = friendlyId;
+        this.text = text;
+        init();
     }
 
+    public TextAloftElement(String text, String friendlyId, String uniqueId) {
+        super();
+        this.friendlyId = friendlyId;
+        this.uniqueId = uniqueId;
+        this.text = text;
+        init();
+    }
+
+    public void addSpan(TextAloftElement element) {
+        textSpans.add(element);
+    }
+
+    @Override
+    public HtmlElement html() {
+        HtmlElement root = new HtmlElement() {
+            @Override
+            protected String getKey() {
+                return "p";
+            }
+        };
+        Content rootContent = new Content(text);
+        root.addChild(rootContent);
+        for(int i=0; i<textSpans.size(); i++) {
+            root.addChild(textSpans.get(i).html());
+        }
+        return root;
+    }
+
+    @Override
     protected String name() {
         return "Text";
     }
@@ -46,16 +79,6 @@ public abstract class TextAloftElement extends AloftElement {
     @Override
     protected boolean hasMultipleSubtypes() {
         return false;
-    }
-
-    protected abstract AloftStyle style();
-
-    protected abstract AloftListener[] listeners();
-
-    @Override
-    protected AloftElementHtml base() {
-        AloftElementHtml obj = new AloftElementHtml();
-        return obj;
     }
 
     @Override
