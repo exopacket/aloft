@@ -14,21 +14,12 @@ public class DebugServer {
         httpServer = HttpServer.create(buildBindAddr(port, localhostOnly), 0);
         httpServer.createContext("/", new DebugServerHandler());
         httpServer.setExecutor(null);
-        try {
-            Thread thr = new Thread(()  -> {
-                httpServer.start();
-                while(true) {
-                    try {
-                        Thread.sleep(1500);
-                    } catch (InterruptedException e) {
-                        break;
-                    }
-                }
-            });
-            thr.start();
-            thr.join();
-        } catch (Exception ignored) {}
+        httpServer.start();
 
+    }
+
+    public void stop() {
+        httpServer.stop(0);
     }
 
     private InetSocketAddress buildBindAddr(int port, boolean localhostOnly) {

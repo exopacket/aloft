@@ -8,6 +8,12 @@ public abstract class DetachedThread extends DetachesThread {
 
     private boolean active = false;
 
+    protected void onStart() {  }
+
+    protected void onStop() { }
+
+    public DetachedThread() { }
+
     public DetachedThread(int idleMiilis) {
         this.idleMillis = idleMiilis;
     }
@@ -16,6 +22,7 @@ public abstract class DetachedThread extends DetachesThread {
     public void start() {
         thread = new Thread(() -> {
             active = true;
+            onStart();
             boolean keepExecuting = true;
             while(keepExecuting && !Thread.currentThread().isInterrupted()) {
                 keepExecuting = execute();
@@ -25,6 +32,7 @@ public abstract class DetachedThread extends DetachesThread {
                     } catch (InterruptedException e) { break; }
                 }
             }
+            onStop();
             active = false;
         });
         thread.start();

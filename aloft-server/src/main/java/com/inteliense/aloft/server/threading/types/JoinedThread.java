@@ -8,6 +8,12 @@ public abstract class JoinedThread extends JoinsThread {
 
     protected abstract boolean execute();
 
+    protected void onStart() {  }
+
+    protected void onStop() { }
+
+    public JoinedThread() { }
+
     public JoinedThread(int idleMiilis) {
         this.idleMillis = idleMiilis;
     }
@@ -16,6 +22,7 @@ public abstract class JoinedThread extends JoinsThread {
     public void start() {
         thread = new Thread(() -> {
             active = true;
+            onStart();
             boolean keepExecuting = true;
             while(keepExecuting && !Thread.currentThread().isInterrupted()) {
                 keepExecuting = execute();
@@ -26,6 +33,7 @@ public abstract class JoinedThread extends JoinsThread {
                 }
             }
             active = false;
+            onStop();
         });
         thread.start();
         try {
