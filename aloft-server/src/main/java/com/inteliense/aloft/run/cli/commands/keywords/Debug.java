@@ -6,7 +6,6 @@ import com.inteliense.aloft.run.cli.commands.base.HandlesCommands;
 import com.inteliense.aloft.run.cli.config.AppConfig;
 import com.inteliense.aloft.server.http.debug.DebugServer;
 import com.inteliense.aloft.server.threading.types.DetachedThread;
-import com.inteliense.aloft.server.threading.types.JoinedThread;
 import com.inteliense.aloft.utils.global.__;
 import com.inteliense.aloft.server.threading.ThreadGroup;
 
@@ -20,11 +19,17 @@ public class Debug extends HandlesCommands {
 
     @Override
     public void run(AppConfig config) {
-        if (!hasFlag("src") || __.empty(flagValue("src"))) command.exit("Source directory [--src] is required.", 1);
-        if (!hasFlag("config") || __.empty(flagValue("config")))
-            command.exit("Config filepath [--config] is required.", 1);
+        requiredFlag("src");
+        requiredFlag("config");
         int port = 8181;
-        if (!__.empty(flagValue("port"))) port = Integer.parseInt(flagValue("port"));
+        if (!__.empty(flagValue("port"))) {
+            try {
+                port = Integer.parseInt(flagValue("port"));
+                if(port <= 0) command.exit("Invalid port [--port] value.", 1);
+            } catch (Exception e) {
+                command.exit("Invalid port [--port] value.", 1);
+            }
+        }
         ThreadGroup threadGroup = new ThreadGroup(true);
         threadGroup.appendThread(getServerThread(port));
         threadGroup.joinGroup(true);
@@ -51,7 +56,7 @@ public class Debug extends HandlesCommands {
             }
             @Override
             protected void onStop() {
-                if(!__.isset(getVar("server"))) return;
+                if(!issetVar("server")) return;
                 ((DebugServer) getVar("server")).stop();
                 removeVar("server");
             }

@@ -29,6 +29,11 @@ public abstract class HandlesCommands {
 
     }
 
+    protected void requiredFlag(String flag) {
+        if (!hasFlag(flag) || __.empty(flagValue(flag)))
+            command.exit("[--" + flag + "] is required for this command.", 1);
+    }
+
     protected boolean hasFlag(String flag) {
         return findFlag(flag) != null;
     }
