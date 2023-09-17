@@ -8,7 +8,7 @@ This is a side project. Don't intend on it being done anytime soon. Feel free, i
 
 # progress
 
-I have began work on the aloft-server and aloft-cli. Both will be written 100% in Java. The server will run as a daemon and serve content in place of apache or nginx.. Speed and performance is TBD, but a priority.
+I have began work on the aloft-server and aloft-cli. Both will be written 100% in Java. The server will run as a daemon and serve content in place of apache or nginx.. Speed and performance is TBD, but a priority. There's some weird algos in the code.. Just ignore them; they're for internal use only.
 
 # security
 
