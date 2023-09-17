@@ -21,8 +21,6 @@ public class DebugServerHandler implements HttpHandler {
                 return new AloftListener[0];
             }
         };
-        String js = new JavaScript(JavaScriptWriterType.ELEMENT, new AloftJavaScript("js/main")).getTag();
-        System.out.println(js);
         String response = HtmlRenderer.render(textElement).get();
         t.sendResponseHeaders(200, response.length());
         OutputStream os = t.getResponseBody();
