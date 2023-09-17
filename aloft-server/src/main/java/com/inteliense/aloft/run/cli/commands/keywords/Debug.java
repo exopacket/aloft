@@ -4,6 +4,7 @@ import com.inteliense.aloft.run.cli.Help;
 import com.inteliense.aloft.run.cli.commands.base.Command;
 import com.inteliense.aloft.run.cli.commands.base.HandlesCommands;
 import com.inteliense.aloft.run.cli.config.AppConfig;
+import com.inteliense.aloft.server.debug.ReloadServer;
 import com.inteliense.aloft.server.http.debug.DebugServer;
 import com.inteliense.aloft.server.threading.types.DetachedThread;
 import com.inteliense.aloft.utils.global.__;
@@ -32,12 +33,41 @@ public class Debug extends HandlesCommands {
         }
         ThreadGroup threadGroup = new ThreadGroup(true);
         threadGroup.appendThread(getServerThread(port));
+        threadGroup.appendThread(getHotReloadThread());
         threadGroup.joinGroup(true);
     }
 
     @Override
     public Help help() {
         return null;
+    }
+
+    private DetachedThread getHotReloadThread() {
+        DetachedThread thr = new DetachedThread(5000) {
+            @Override
+            protected boolean execute() {
+                return true;
+            }
+            @Override
+            protected void onStart() {
+                try {
+                    ReloadServer server = new ReloadServer("127.0.0.1", 8282, "debug");
+                    server.start();
+                    setVar("server", server);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            @Override
+            protected void onStop() {
+                if(!issetVar("server")) return;
+                try {
+                    ((ReloadServer) getVar("server")).stop();
+                } catch (Exception ignored) { }
+                removeVar("server");
+            }
+        };
+        return thr;
     }
 
     private DetachedThread getServerThread(int port) {
