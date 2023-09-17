@@ -55,7 +55,7 @@ public class ThreadGroup {
         if(mainThread && joinContainer) {
             Runtime.getRuntime().addShutdownHook(new Thread() {
                 public void run() {
-                    System.out.println("Shutting down all threads...");
+                    __.printPrettyLn("Shutting down all application threads...", __.ANSI_YELLOW);
                     stopGroup();
                 }
             });
