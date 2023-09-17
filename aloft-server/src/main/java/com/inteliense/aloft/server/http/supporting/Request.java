@@ -21,7 +21,7 @@ public class Request {
     }
 
     public Response handle() {
-        return new Response(t);
+        return this.location.get();
     }
 
 }

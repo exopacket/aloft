@@ -79,7 +79,7 @@ public class Debug extends HandlesCommands {
             @Override
             protected void onStart() {
                 try {
-                    setVar("server", new DebugServer((int) getVar("port"), hasFlag("secure"), true));
+                    setVar("server", new DebugServer((int) getVar("port"), hasFlag("secure"), !hasFlag("public")));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

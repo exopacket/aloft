@@ -6,8 +6,14 @@ import com.sun.net.httpserver.HttpExchange;
 
 public class DirectRequest {
 
-    public DirectRequest(HttpExchange t, HeaderList headers, ClientInfo client, AppConfig config) {
+    private HttpExchange t;
 
+    public DirectRequest(HttpExchange t, HeaderList headers, ClientInfo client, AppConfig config) {
+        this.t = t;
+    }
+
+    public Response get() {
+        return new Response(t);
     }
 
 }
