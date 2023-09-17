@@ -6,7 +6,7 @@ public class App extends HtmlElement {
 
     @Override
     protected String getKey() {
-        return "body";
+        return "main";
     }
 
 }

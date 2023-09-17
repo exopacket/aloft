@@ -15,20 +15,21 @@ public class AloftJavaScript extends JavaScriptElement {
         if(resource.charAt(0) != '/') resource = "/" + resource;
         addAttribute("type", "application/javascript");
         URL url = this.getClass().getResource(resource + ".js");
-        addChild(loadContent(getFile(url)));
+        value = readFile(getFile(url));
+        addChild(new Content(value, false));
     }
 
-    private Content loadContent(File file) {
-        if(file == null) { return new Content("//empty script"); }
+    private String readFile(File file) {
+        if(file == null) { return "//empty script"; }
         try {
             Scanner scnr = new Scanner(file);
             StringBuilder sb = new StringBuilder();
             while(scnr.hasNextLine()) {
                 sb.append(scnr.nextLine()).append("\n");
             }
-            return new Content(sb.toString(), false);
+            return sb.toString();
         } catch (FileNotFoundException e) {
-            return new Content("//empty script");
+            return "//empty script";
         }
     }
 

@@ -1,6 +1,6 @@
 package com.inteliense.aloft.server.html.elements.js;
 
-import com.inteliense.aloft.server.html.elements.HtmlElement;
+import com.inteliense.aloft.utils.global.__;
 
 public class JavaScript {
 
@@ -12,15 +12,19 @@ public class JavaScript {
         this.js = js;
     }
 
-    public String getContent() {
-        return getElement().getHtml();
+    public String getTag() {
+        if(type == JavaScriptWriterType.ELEMENT && __.isset(getElement())) return getElement().getHtml();
+        else if(type == JavaScriptWriterType.FILE && __.isset(getFile())) return getFile().getHtml();
+        return "";
     }
 
-    public JavaScriptWriterType getType() {
-        return type;
+    public String getValue() {
+        if(type == JavaScriptWriterType.ELEMENT && __.isset(getElement())) return getElement().getValue();
+        else if(type == JavaScriptWriterType.FILE && __.isset(getFile())) return getFile().getValue();
+        return "";
     }
 
-    public JavaScriptElement getElement() {
+    private JavaScriptElement getElement() {
         if(type == JavaScriptWriterType.ELEMENT)
             return (JavaScriptElement) js;
         return null;
