@@ -6,7 +6,7 @@ public class Head extends HtmlElement {
 
     @Override
     protected String getKey() {
-        return "body";
+        return "head";
     }
 
 }

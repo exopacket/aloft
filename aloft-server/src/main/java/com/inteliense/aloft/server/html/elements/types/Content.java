@@ -12,6 +12,12 @@ public class Content extends HtmlElement {
         this.value = value;
     }
 
+    public Content(String value, boolean replaceLineBreaks) {
+        super();
+        if(replaceLineBreaks) value = value.replaceAll("\n", "<br>");
+        this.value = value;
+    }
+
     @Override
     protected String getKey() {
         return null;
