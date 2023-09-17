@@ -8,13 +8,8 @@ public abstract class DetachedThread extends DetachesThread {
 
     private boolean active = false;
 
-    public DetachedThread() {
-        start();
-    }
-
     public DetachedThread(int idleMiilis) {
         this.idleMillis = idleMiilis;
-        start();
     }
 
     @Override
