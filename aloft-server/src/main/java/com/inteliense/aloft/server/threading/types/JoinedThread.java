@@ -4,6 +4,8 @@ import com.inteliense.aloft.server.threading.base.JoinsThread;
 
 public abstract class JoinedThread extends JoinsThread {
 
+    private boolean active = false;
+
     protected abstract boolean execute();
 
     public JoinedThread(int idleMiilis) {
@@ -13,6 +15,7 @@ public abstract class JoinedThread extends JoinsThread {
     @Override
     public void start() {
         thread = new Thread(() -> {
+            active = true;
             boolean keepExecuting = true;
             while(keepExecuting && !Thread.currentThread().isInterrupted()) {
                 keepExecuting = execute();
@@ -22,6 +25,7 @@ public abstract class JoinedThread extends JoinsThread {
                     } catch (InterruptedException e) { break; }
                 }
             }
+            active = false;
         });
         thread.start();
         try {
@@ -31,7 +35,7 @@ public abstract class JoinedThread extends JoinsThread {
 
     @Override
     public void stop() {
-        thread.interrupt();
+        if(active) thread.interrupt();
     }
 
 }

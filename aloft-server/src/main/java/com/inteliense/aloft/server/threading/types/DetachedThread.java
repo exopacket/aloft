@@ -6,6 +6,8 @@ public abstract class DetachedThread extends DetachesThread {
 
     protected abstract boolean execute();
 
+    private boolean active = false;
+
     public DetachedThread() {
         start();
     }
@@ -18,6 +20,7 @@ public abstract class DetachedThread extends DetachesThread {
     @Override
     public void start() {
         thread = new Thread(() -> {
+            active = true;
             boolean keepExecuting = true;
             while(keepExecuting && !Thread.currentThread().isInterrupted()) {
                 keepExecuting = execute();
@@ -27,13 +30,14 @@ public abstract class DetachedThread extends DetachesThread {
                     } catch (InterruptedException e) { break; }
                 }
             }
+            active = false;
         });
         thread.start();
     }
 
     @Override
     public void stop() {
-        thread.interrupt();
+        if(active) thread.interrupt();
     }
 
 }
