@@ -1,5 +1,6 @@
 package com.inteliense.aloft.server.http.debug;
 
+import com.inteliense.aloft.compiler.application.config.AppConfig;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
@@ -12,7 +13,7 @@ public class DebugServer {
     public DebugServer(int port, boolean secure, boolean localhostOnly) throws IOException {
 
         httpServer = HttpServer.create(buildBindAddr(port, localhostOnly), 0);
-        httpServer.createContext("/", new DebugServerHandler());
+        httpServer.createContext("/", new DebugServerHandler(new AppConfig()));
         httpServer.setExecutor(null);
         httpServer.start();
 

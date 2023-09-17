@@ -1,6 +1,6 @@
 package com.inteliense.aloft.compiler.application.config;
 
-public class Config {
+public class AppConfig {
 
     //SERVER CONFIGURATION
     private static boolean localhostOnly = false;

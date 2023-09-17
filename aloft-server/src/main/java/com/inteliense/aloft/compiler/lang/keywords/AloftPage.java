@@ -1,6 +1,6 @@
 package com.inteliense.aloft.compiler.lang.keywords;
 
-import com.inteliense.aloft.compiler.application.config.Config;
+import com.inteliense.aloft.compiler.application.config.AppConfig;
 import com.inteliense.aloft.compiler.lang.base.AssertsLanguage;
 import com.inteliense.aloft.compiler.lang.base.BuildsJava;
 import com.inteliense.aloft.compiler.lang.supporting.FunctionDecipher;
@@ -20,7 +20,7 @@ public class AloftPage implements BuildsJava, AssertsLanguage {
 
     private FunctionDecipher decipher;
     
-    public AloftPage(String path, Config appConfig) {
+    public AloftPage(String path, AppConfig appConfig) {
         this.path = path;
     }
     
