@@ -33,10 +33,18 @@ public class MiddlewareResultCollection {
     }
 
     public JSONObject getJson() {
+        for(int i=0; i<results.size(); i++) {
+            MiddlewareResult result = results.get(i);
+            if(result.failedValidation()) return result.getJson();
+        }
         return new JSONObject();
     }
 
     public int getCode() {
+        for(int i=0; i<results.size(); i++) {
+            MiddlewareResult result = results.get(i);
+            if(result.failedValidation()) return result.getCode();
+        }
         return 0;
     }
 

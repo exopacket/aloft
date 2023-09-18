@@ -25,7 +25,9 @@ public class AppConfig {
     public AppConfig() {
         //FIXME ....FOR TESTING
         MiddlewareList list = new MiddlewareList();
-        list.appendAppMiddleware(new HasHeaders());
+        HasHeaders m = new HasHeaders();
+        m.appendAppliesTo(ApplyTo.PUBLIC_API);
+        list.appendAppMiddleware(m);
         this.middleware = list;
     }
 

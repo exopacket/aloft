@@ -19,7 +19,7 @@ public class Request {
         this.headers = HeaderParser.getHeaders(t);
         this.client = ClientParser.getClientInfo(t, this.headers);
         this.location = new DirectRequest(t, this.headers, this.client, this.config);
-        this.validated = true;
+        this.validated = this.location.validate();
     }
 
     public Response handle() {

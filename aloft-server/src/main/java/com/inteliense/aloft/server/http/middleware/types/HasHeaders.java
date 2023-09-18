@@ -29,6 +29,6 @@ public class HasHeaders extends Middleware {
 
     @Override
     protected MiddlewareResult validate(RequestParams params) {
-        return new MiddlewareFailure(new JSONObject(), 500);
+        return new MiddlewareFailure(buildErrorJson(403), 403);
     }
 }

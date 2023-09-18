@@ -16,6 +16,7 @@ public class DirectRequest {
     private AppConfig config;
     private AloftRequestType internalRequestType;
     private RequestType requestType;
+    private boolean exited = false;
 
     public DirectRequest(HttpExchange t, HeaderList headers, ClientInfo client, AppConfig config) {
         this.t = t;
@@ -24,8 +25,6 @@ public class DirectRequest {
         this.config = config;
         this.requestType = getRequestType();
         this.internalRequestType = getInternalRequestType();
-        MiddlewareResultCollection middlewareResult = middleware();
-        if(!middlewareResult.passed()) exit(middlewareResult.getJson(), middlewareResult.getCode());
     }
 
     private RequestParams buildParams() {
@@ -48,7 +47,7 @@ public class DirectRequest {
     }
 
     private AloftRequestType getInternalRequestType() {
-        return null;
+        return AloftRequestType.PUBLIC_API;
     }
 
     private RequestType getRequestType() {
@@ -64,14 +63,18 @@ public class DirectRequest {
     }
 
     private void exit(JSONObject json, int code) {
+        exited = true;
         (new Response(t, json, code)).send();
     }
 
     public boolean validate() {
-        return true;
+        MiddlewareResultCollection middlewareResult = middleware();
+        if(!middlewareResult.passed()) exit(middlewareResult.getJson(), middlewareResult.getCode());
+        return !exited;
     }
 
     public Response get() {
+        if(exited) return null;
         return new Response(t, "Hello World", 200);
     }
 

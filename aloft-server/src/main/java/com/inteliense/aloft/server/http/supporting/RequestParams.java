@@ -34,7 +34,7 @@ public class RequestParams {
     }
 
     public ApplyTo getAppliedMiddleware() {
-        return null;
+        return ApplyTo.PUBLIC_API;
     }
 
     public JSONObject getJson() {
