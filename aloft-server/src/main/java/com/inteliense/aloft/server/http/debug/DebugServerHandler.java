@@ -21,8 +21,8 @@ public class DebugServerHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange t) throws IOException {
         try {
-            test(t);
-            //app(t);
+            //test(t);
+            app(t);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -44,8 +44,10 @@ public class DebugServerHandler implements HttpHandler {
 
     private void app(HttpExchange t) {
         Request req = new Request(t, config);
-        Response resp = req.handle();
-        resp.send();
+        if(req.validated()) {
+            Response resp = req.handle();
+            resp.send();
+        }
     }
 
 }

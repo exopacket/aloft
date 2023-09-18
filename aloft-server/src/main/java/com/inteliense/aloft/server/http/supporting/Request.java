@@ -10,6 +10,7 @@ public class Request {
     private ClientInfo client;
     private HeaderList headers;
     private DirectRequest location;
+    private boolean validated = false;
     private AppConfig config;
 
     public Request(HttpExchange t, AppConfig config) {
@@ -18,10 +19,17 @@ public class Request {
         this.headers = HeaderParser.getHeaders(t);
         this.client = ClientParser.getClientInfo(t, this.headers);
         this.location = new DirectRequest(t, this.headers, this.client, this.config);
+        this.validated = true;
     }
 
     public Response handle() {
-        return this.location.get();
+        if(this.validated)
+            return this.location.get();
+        return null;
+    }
+
+    public boolean validated() {
+        return this.validated;
     }
 
 }

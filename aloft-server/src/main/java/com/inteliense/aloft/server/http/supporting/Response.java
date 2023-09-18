@@ -1,6 +1,8 @@
 package com.inteliense.aloft.server.http.supporting;
 
+import com.inteliense.aloft.utils.data.JSON;
 import com.sun.net.httpserver.HttpExchange;
+import org.json.simple.JSONObject;
 
 import java.io.OutputStream;
 
@@ -11,8 +13,25 @@ public class Response {
     private String content;
     private int len;
 
-    public Response(HttpExchange t) {
+    public Response(HttpExchange t, String content, int code) {
+        this.t = t;
+        this.code = code;
+        this.content = content;
+        this.len = this.content.length();
+    }
 
+    public Response(HttpExchange t, String[] content, int code) {
+        this.t = t;
+        this.code = code;
+        this.content = strFromArr(content);
+        this.len = this.content.length();
+    }
+
+    public Response(HttpExchange t, JSONObject content, int code) {
+        this.t = t;
+        this.code = code;
+        this.content = JSON.getString(content);
+        this.len = this.content.length();
     }
 
     public boolean send() {
@@ -23,6 +42,14 @@ public class Response {
             os.close();
             return true;
         } catch (Exception e) { return false; }
+    }
+
+    private String strFromArr(String[] arr) {
+        StringBuilder builder = new StringBuilder();
+        for(int i=0; i< arr.length; i++) {
+            builder.append(" [ ").append(i + 1).append(" ]   ").append(arr[i]).append("\n");
+        }
+        return builder.toString();
     }
 
 }
