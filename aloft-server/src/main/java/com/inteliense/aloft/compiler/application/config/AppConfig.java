@@ -1,5 +1,8 @@
 package com.inteliense.aloft.compiler.application.config;
 
+import com.inteliense.aloft.server.http.middleware.base.ApplyTo;
+import com.inteliense.aloft.server.http.middleware.types.HasHeaders;
+
 public class AppConfig {
 
     //SERVER CONFIGURATION
@@ -16,5 +19,14 @@ public class AppConfig {
 
     //MIDDLEWARE
     private MiddlewareList middleware;
+
+    public MiddlewareList getMiddleware() { return this.middleware; }
+
+    public AppConfig() {
+        //FIXME ....FOR TESTING
+        MiddlewareList list = new MiddlewareList();
+        list.appendAppMiddleware(new HasHeaders());
+        this.middleware = list;
+    }
 
 }
