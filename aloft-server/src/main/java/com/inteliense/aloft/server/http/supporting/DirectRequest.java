@@ -44,7 +44,7 @@ public class DirectRequest {
     private MiddlewareResultCollection middleware() {
         MiddlewareList middlewareList = this.config.getMiddleware();
         RequestParams params = buildParams();
-        return middlewareList.validateAgainstMiddleware(buildParams());
+        return middlewareList.validateAgainstMiddleware(params);
     }
 
     private AloftRequestType getInternalRequestType() {

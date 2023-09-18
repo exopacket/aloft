@@ -9,9 +9,7 @@ public abstract class MiddlewareResult {
     protected JSONObject json;
     protected int code;
 
-    protected abstract boolean failedValidation();
-    protected abstract int getCode();
-    protected abstract JSONObject getJson();
+    public abstract boolean failedValidation();
 
     public MiddlewareResult(String result, int code) {
         build(JSON.getObject(result), code);
@@ -32,6 +30,14 @@ public abstract class MiddlewareResult {
 
     public boolean wasSilentlyChecked() {
         return this.silentlyChecked;
+    }
+
+    public JSONObject getJson() {
+        return this.json;
+    }
+
+    public int getCode() {
+        return this.code;
     }
 
 }

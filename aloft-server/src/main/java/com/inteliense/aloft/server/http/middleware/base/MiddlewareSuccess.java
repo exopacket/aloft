@@ -13,17 +13,7 @@ public class MiddlewareSuccess extends MiddlewareResult {
     }
 
     @Override
-    public JSONObject getJson() {
-        return new JSONObject();
-    }
-
-    @Override
-    public int getCode() {
-        return 0;
-    }
-
-    @Override
-    protected boolean failedValidation() {
+    public boolean failedValidation() {
         return false;
     }
 }

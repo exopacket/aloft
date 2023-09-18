@@ -23,6 +23,10 @@ public class MiddlewareResultCollection {
         return hasFailed;
     }
 
+    public void fail() {
+        hasFailed = true;
+    }
+
     public MiddlewareResultCollection appendResult(MiddlewareResult result) {
         if(__.isset(result)) this.results.add(result);
         return this;
