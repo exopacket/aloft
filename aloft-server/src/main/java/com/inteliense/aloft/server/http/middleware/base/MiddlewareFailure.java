@@ -10,6 +10,14 @@ public class MiddlewareFailure extends MiddlewareResult {
         super(code);
     }
 
+    public MiddlewareFailure(String[] problems, int code) {
+        super(problems, code);
+    }
+
+    public MiddlewareFailure(String message, String[] problems, int code) {
+        super(message, problems, code);
+    }
+
     @Override
     public boolean failedValidation() {
         return true;

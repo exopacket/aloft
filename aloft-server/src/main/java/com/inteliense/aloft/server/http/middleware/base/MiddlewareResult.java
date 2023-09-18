@@ -1,6 +1,8 @@
 package com.inteliense.aloft.server.http.middleware.base;
 
 import com.inteliense.aloft.server.http.supporting.HttpErrorMessages;
+import com.inteliense.aloft.utils.data.JSON;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public abstract class MiddlewareResult {
@@ -15,6 +17,26 @@ public abstract class MiddlewareResult {
 
     public MiddlewareResult(String message, int code) {
         build(buildErrorJson(message, code), code);
+    }
+
+    public MiddlewareResult(String[] problems, int code) {
+        JSONObject root = new JSONObject();
+        JSONArray arr = new JSONArray();
+        for(int i=0; i<problems.length; i++) {
+            arr.add(problems[i]);
+        }
+        root.put("errors", arr);
+        build(buildErrorJson("There were multiple errors with your request.", root, code), code);
+    }
+
+    public MiddlewareResult(String message, String[] problems, int code) {
+        JSONObject root = new JSONObject();
+        JSONArray arr = new JSONArray();
+        for(int i=0; i<problems.length; i++) {
+            arr.add(problems[i]);
+        }
+        root.put("errors", arr);
+        build(buildErrorJson(message, root, code), code);
     }
 
     public MiddlewareResult(int code) {
