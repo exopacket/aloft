@@ -1,6 +1,6 @@
 package com.inteliense.aloft.server.http.middleware.base;
 
-import com.inteliense.aloft.utils.data.JSON;
+import com.inteliense.aloft.server.http.supporting.HttpErrorMessages;
 import org.json.simple.JSONObject;
 
 public abstract class MiddlewareResult {
@@ -11,12 +11,14 @@ public abstract class MiddlewareResult {
 
     public abstract boolean failedValidation();
 
-    public MiddlewareResult(String result, int code) {
-        build(JSON.getObject(result), code);
+    public MiddlewareResult() { build(new JSONObject(), 0); }
+
+    public MiddlewareResult(String message, int code) {
+        build(buildErrorJson(message, code), code);
     }
 
-    public MiddlewareResult(JSONObject object, int code) {
-        build(object, code);
+    public MiddlewareResult(int code) {
+        build(buildErrorJson(code), code);
     }
 
     private void build(JSONObject object, int code) {
@@ -38,6 +40,55 @@ public abstract class MiddlewareResult {
 
     public int getCode() {
         return this.code;
+    }
+
+    protected JSONObject buildErrorJson(JSONObject json, int code) {
+        JSONObject root = new JSONObject();
+        JSONObject status = new JSONObject();
+        JSONObject error = json;
+        status.put("code", code);
+        status.put("reason", HttpErrorMessages.getMessage(code));
+        root.put("error", error);
+        root.put("status", status);
+        return root;
+    }
+
+    protected JSONObject buildErrorJson(String message, JSONObject json, int code) {
+        JSONObject root = new JSONObject();
+        JSONObject status = new JSONObject();
+        JSONObject error = json;
+        if(!error.containsKey("message")) error.put("message", message);
+        else error.replace("message", message);
+        status.put("code", code);
+        status.put("reason", HttpErrorMessages.getMessage(code));
+        error.put("message", message);
+        root.put("error", error);
+        root.put("status", status);
+        return root;
+    }
+
+    protected JSONObject buildErrorJson(String message, int code) {
+        JSONObject root = new JSONObject();
+        JSONObject status = new JSONObject();
+        JSONObject error = new JSONObject();
+        status.put("code", code);
+        status.put("reason", HttpErrorMessages.getMessage(code));
+        error.put("message", message);
+        root.put("error", error);
+        root.put("status", status);
+        return root;
+    }
+
+    protected JSONObject buildErrorJson(int code) {
+        JSONObject root = new JSONObject();
+        JSONObject status = new JSONObject();
+        JSONObject error = new JSONObject();
+        status.put("code", code);
+        status.put("reason", HttpErrorMessages.getMessage(code));
+        error.put("message", HttpErrorMessages.getMessage(code));
+        root.put("error", error);
+        root.put("status", status);
+        return root;
     }
 
 }

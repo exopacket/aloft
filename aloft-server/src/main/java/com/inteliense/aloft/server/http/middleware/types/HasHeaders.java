@@ -4,7 +4,6 @@ import com.inteliense.aloft.server.http.middleware.base.Middleware;
 import com.inteliense.aloft.server.http.middleware.base.MiddlewareFailure;
 import com.inteliense.aloft.server.http.middleware.base.MiddlewareResult;
 import com.inteliense.aloft.server.http.supporting.RequestParams;
-import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +28,6 @@ public class HasHeaders extends Middleware {
 
     @Override
     protected MiddlewareResult validate(RequestParams params) {
-        return new MiddlewareFailure(buildErrorJson(403), 403);
+        return new MiddlewareFailure("You are not permitted to perform this action.",403);
     }
 }

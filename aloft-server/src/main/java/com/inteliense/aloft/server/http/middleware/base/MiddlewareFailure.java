@@ -1,15 +1,13 @@
 package com.inteliense.aloft.server.http.middleware.base;
 
-import org.json.simple.JSONObject;
-
 public class MiddlewareFailure extends MiddlewareResult {
 
-    public MiddlewareFailure(String result, int code) {
-        super(result, code);
+    public MiddlewareFailure(String message, int code) {
+        super(message, code);
     }
 
-    public MiddlewareFailure(JSONObject object, int code) {
-        super(object, code);
+    public MiddlewareFailure(int code) {
+        super(code);
     }
 
     @Override

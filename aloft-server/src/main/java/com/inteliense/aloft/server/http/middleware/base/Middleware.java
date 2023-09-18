@@ -1,8 +1,7 @@
 package com.inteliense.aloft.server.http.middleware.base;
 
-import com.inteliense.aloft.server.http.supporting.HttpErrorMessages;
 import com.inteliense.aloft.server.http.supporting.RequestParams;
-import org.json.simple.JSONObject;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,55 +44,6 @@ public abstract class Middleware {
         MiddlewareResult middlewareResult = null;
         if(this.appliesTo(appliesTo)) middlewareResult = validate(params);
         return middlewareResult;
-    }
-
-    protected JSONObject buildErrorJson(JSONObject json, int code) {
-        JSONObject root = new JSONObject();
-        JSONObject status = new JSONObject();
-        JSONObject error = json;
-        status.put("code", code);
-        status.put("reason", HttpErrorMessages.getMessage(code));
-        root.put("error", error);
-        root.put("status", status);
-        return root;
-    }
-    
-    protected JSONObject buildErrorJson(String message, JSONObject json, int code) {
-        JSONObject root = new JSONObject();
-        JSONObject status = new JSONObject();
-        JSONObject error = json;
-        if(!error.containsKey("message")) error.put("message", message);
-        else error.replace("message", message);
-        status.put("code", code);
-        status.put("reason", HttpErrorMessages.getMessage(code));
-        error.put("message", message);
-        root.put("error", error);
-        root.put("status", status);
-        return root;
-    }
-    
-    protected JSONObject buildErrorJson(String message, int code) {
-        JSONObject root = new JSONObject();
-        JSONObject status = new JSONObject();
-        JSONObject error = new JSONObject();
-        status.put("code", code);
-        status.put("reason", HttpErrorMessages.getMessage(code));
-        error.put("message", message);
-        root.put("error", error);
-        root.put("status", status);
-        return root;
-    }
-
-    protected JSONObject buildErrorJson(int code) {
-        JSONObject root = new JSONObject();
-        JSONObject status = new JSONObject();
-        JSONObject error = new JSONObject();
-        status.put("code", code);
-        status.put("reason", HttpErrorMessages.getMessage(code));
-        error.put("message", HttpErrorMessages.getMessage(code));
-        root.put("error", error);
-        root.put("status", status);
-        return root;
     }
 
 }
