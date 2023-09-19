@@ -1,10 +1,21 @@
 package com.inteliense.aloft.utils.sys.shell;
 
-public class Run extends Command {
+public abstract class Run extends Command {
 
-    @Override
-    public void lineRead(byte[] bytes, String string) {
+    public abstract void lineRead(byte[] bytes, String line);
 
+    private Status status;
+
+    public Run(String command) throws Exception {
+        status = exec(command);
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public String getStatusString() {
+        return "\nProcess exited with exit code ?";
     }
 
 }

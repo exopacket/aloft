@@ -18,7 +18,6 @@ public class FileSystem {
 
     public FileSystem() {
         this.projectDir = new File("");
-        System.out.println(projectDir.getAbsolutePath());
         setup();
     }
 
