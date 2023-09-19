@@ -27,7 +27,7 @@ public class AppConfig {
         //FIXME ....FOR TESTING
         MiddlewareList list = new MiddlewareList();
         HasHeaders m = new HasHeaders(new String[]{"X-Test-Header"});
-        m.appendAppliesTo(ApplyToType.PUBLIC_API, new Route[]{new Route("test2")});
+        m.appendAppliesTo(ApplyToType.PUBLIC_API, new Route[]{new Route("/index/main", "GET")});
         list.appendAppMiddleware(m);
         this.middleware = list;
     }

@@ -4,6 +4,7 @@ import com.inteliense.aloft.compiler.application.config.AppConfig;
 import com.inteliense.aloft.compiler.application.config.MiddlewareList;
 import com.inteliense.aloft.server.client.ClientInfo;
 import com.inteliense.aloft.server.http.middleware.base.MiddlewareResultCollection;
+import com.inteliense.aloft.utils.global.__;
 import com.sun.net.httpserver.HttpExchange;
 import org.json.simple.JSONObject;
 
@@ -29,7 +30,7 @@ public class DirectRequest {
     }
 
     private Route buildRoute() {
-        return new Route("test");
+        return new Route(t.getRequestURI().getPath(), requestType, t.getRequestMethod().toUpperCase());
     }
 
     private RequestParams buildParams() {
@@ -57,6 +58,13 @@ public class DirectRequest {
     }
 
     private RequestType getRequestType() {
+        String reqType = t.getRequestMethod().toUpperCase();
+        if(__.same(reqType, "GET")) return RequestType.GET;
+        if(__.same(reqType, "POST")) return RequestType.POST;
+        if(__.same(reqType, "PUT")) return RequestType.PUT;
+        if(__.same(reqType, "PATCH")) return RequestType.PATCH;
+        if(__.same(reqType, "DELETE")) return RequestType.DELETE;
+        if(__.same(reqType, "OPTIONS")) return RequestType.OPTIONS;
         return null;
     }
 
