@@ -33,9 +33,7 @@ public class Html {
         return "";
     }
 
-    private String renderPage(AloftPage page) {
-        return "";
-    }
+    private String renderPage(AloftPage page) { return page.html().getHtml(); }
 
     private String renderComponent(AloftComponent component) {
         return "";

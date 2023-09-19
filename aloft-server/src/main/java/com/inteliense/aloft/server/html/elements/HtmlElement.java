@@ -1,5 +1,6 @@
 package com.inteliense.aloft.server.html.elements;
 
+import com.inteliense.aloft.server.html.elements.types.Content;
 import com.inteliense.aloft.utils.global.__;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ public abstract class HtmlElement {
     private ArrayList<String[]> styles = new ArrayList<String[]>();
     private HashMap<String, String> attributes = new HashMap<String, String>();
     private String id;
+    protected String prependHtml = "";
 
     protected abstract String getKey();
 
@@ -27,6 +29,26 @@ public abstract class HtmlElement {
 
     public void addChild(HtmlElement element) {
         this.children.add(element);
+    }
+
+    public static HtmlElement builder(String tag, String content) {
+        return builder(tag, content, null);
+    }
+
+    public static HtmlElement builder(String tag, String content, String id) {
+        return builder(tag, content, id, new String[][]{});
+    }
+
+    public static HtmlElement builder(String tag, String content, String id, String[][] attrs) {
+        HtmlElement element = new HtmlElement(id) {
+            @Override
+            protected String getKey() {
+                return tag;
+            }
+        };
+        if(!__.empty(content)) element.addChild(new Content(content));
+        for (String[] attr : attrs) element.addAttribute(attr[0], attr[1]);
+        return element;
     }
     
     public void addAttribute(String key, String value) {
@@ -58,9 +80,10 @@ public abstract class HtmlElement {
     }
 
     public String getHtml() {
-        if(this.children.isEmpty()) return this.buildTag();
+        if(!__.empty(prependHtml)) prependHtml += "\n";
+        if(this.children.isEmpty()) return prependHtml + this.buildTag();
         else {
-            String html = this.buildTag(false);
+            String html = prependHtml + this.buildTag(false);
             for(int i=0; i<this.children.size(); i++) {
                 html += this.children.get(i).getHtml();
             }

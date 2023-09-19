@@ -1,5 +1,7 @@
 package com.inteliense.aloft.server.http.supporting;
 
+import com.inteliense.aloft.compiler.lang.keywords.AloftPage;
+import com.inteliense.aloft.server.html.HtmlRenderer;
 import com.inteliense.aloft.utils.data.BaseX;
 import com.inteliense.aloft.utils.encryption.SHA;
 import com.inteliense.aloft.utils.global.__;
@@ -14,6 +16,9 @@ public class Route {
 
     private String requestTypeStr;
     private RequestType requestType;
+
+    private AloftRequestType aloftType;
+    private Object object;
 
     public Route(String path, RequestType type, String typeStr) {
         if(!__.isset(type)) return;
@@ -42,9 +47,22 @@ public class Route {
         return this.id;
     }
 
+    public void buildFromRequest(AloftRequestType type, Object data) {
+        this.aloftType = type;
+        this.object = buildObject(data);
+    }
+
+    private Object buildObject(Object data) {
+        return null;
+    }
+
     public Response go(HttpExchange t) {
         if(!valid) return new Response(t, "Page not found.", 404);
-        return new Response(t, "Hello World!", 200);
+        return new Response(t, HtmlRenderer.render(testPage()).get(), 200);
+    }
+
+    private AloftPage testPage() {
+        return new AloftPage("/api", null, null);
     }
 
     public RequestType getRequestType() {
