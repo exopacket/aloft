@@ -1,6 +1,6 @@
 package com.inteliense.aloft.server.http.debug;
 
-import com.inteliense.aloft.compiler.application.config.AppConfig;
+import com.inteliense.aloft.application.config.AppConfig;
 import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
 import com.inteliense.aloft.compiler.lang.keywords.elements.types.TextAloftElement;
 import com.inteliense.aloft.server.html.HtmlRenderer;

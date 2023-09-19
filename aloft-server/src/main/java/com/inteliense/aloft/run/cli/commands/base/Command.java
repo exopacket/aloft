@@ -1,7 +1,7 @@
 package com.inteliense.aloft.run.cli.commands.base;
 
 
-import com.inteliense.aloft.run.cli.config.AppConfig;
+import com.inteliense.aloft.application.config.AppConfig;
 
 import java.util.Arrays;
 

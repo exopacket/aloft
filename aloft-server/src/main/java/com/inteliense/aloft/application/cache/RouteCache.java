@@ -1,6 +1,6 @@
-package com.inteliense.aloft.compiler.application.cache;
+package com.inteliense.aloft.application.cache;
 
-import com.inteliense.aloft.compiler.application.config.RouteList;
+import com.inteliense.aloft.application.config.RouteList;
 import com.inteliense.aloft.server.http.supporting.Route;
 import com.inteliense.aloft.utils.global.__;
 

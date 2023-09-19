@@ -1,11 +1,10 @@
 package com.inteliense.aloft.run.cli.commands.base;
 
 import com.inteliense.aloft.run.cli.Help;
-import com.inteliense.aloft.run.cli.config.AppConfig;
+import com.inteliense.aloft.application.config.AppConfig;
 import com.inteliense.aloft.utils.global.__;
 
 import java.lang.reflect.Constructor;
-import java.util.List;
 
 public abstract class HandlesCommands {
 

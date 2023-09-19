@@ -1,4 +1,4 @@
-package com.inteliense.aloft.compiler.application.config;
+package com.inteliense.aloft.application.config;
 
 import com.inteliense.aloft.server.http.middleware.base.Middleware;
 import com.inteliense.aloft.server.http.middleware.base.MiddlewareResult;

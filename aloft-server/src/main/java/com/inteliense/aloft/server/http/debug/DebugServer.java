@@ -1,6 +1,6 @@
 package com.inteliense.aloft.server.http.debug;
 
-import com.inteliense.aloft.compiler.application.config.AppConfig;
+import com.inteliense.aloft.application.config.AppConfig;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;

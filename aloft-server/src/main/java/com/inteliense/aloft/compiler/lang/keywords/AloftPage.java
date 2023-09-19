@@ -1,6 +1,6 @@
 package com.inteliense.aloft.compiler.lang.keywords;
 
-import com.inteliense.aloft.compiler.application.config.AppConfig;
+import com.inteliense.aloft.application.config.AppConfig;
 import com.inteliense.aloft.compiler.lang.base.AssertsLanguage;
 import com.inteliense.aloft.compiler.lang.base.BuildsJava;
 import com.inteliense.aloft.compiler.lang.supporting.FunctionDecipher;

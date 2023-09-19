@@ -1,7 +1,7 @@
 package com.inteliense.aloft.server.http.supporting;
 
-import com.inteliense.aloft.compiler.application.config.AppConfig;
-import com.inteliense.aloft.compiler.application.config.MiddlewareList;
+import com.inteliense.aloft.application.config.AppConfig;
+import com.inteliense.aloft.application.config.MiddlewareList;
 import com.inteliense.aloft.server.client.ClientInfo;
 import com.inteliense.aloft.server.http.middleware.base.MiddlewareResultCollection;
 import com.inteliense.aloft.utils.global.__;

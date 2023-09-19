@@ -3,7 +3,7 @@ package com.inteliense.aloft.run.cli.commands.keywords;
 import com.inteliense.aloft.run.cli.Help;
 import com.inteliense.aloft.run.cli.commands.base.Command;
 import com.inteliense.aloft.run.cli.commands.base.HandlesCommands;
-import com.inteliense.aloft.run.cli.config.AppConfig;
+import com.inteliense.aloft.application.config.AppConfig;
 
 public class Build extends HandlesCommands {
 

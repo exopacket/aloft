@@ -2,7 +2,7 @@ package com.inteliense.aloft.run;
 
 import com.inteliense.aloft.run.cli.commands.base.Command;
 import com.inteliense.aloft.run.cli.commands.base.HandlesCommands;
-import com.inteliense.aloft.run.cli.config.AppConfig;
+import com.inteliense.aloft.application.config.AppConfig;
 import com.inteliense.aloft.run.cli.fs.FileSystem;
 
 public class Main {
@@ -85,7 +85,7 @@ public class Main {
     }
 
     private static AppConfig loadConfig() {
-        return new AppConfig(createFs());
+        return new AppConfig();
     }
 
 }

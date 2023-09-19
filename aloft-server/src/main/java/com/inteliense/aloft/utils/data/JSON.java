@@ -144,7 +144,6 @@ public class JSON {
 
                 if(mNum.find()) {
                     String tmp = match.substring(mNum.start(), mNum.end());
-
                     if(tmp.length() == match.length()) {
                         numValVerified = 1;
                     } else {
