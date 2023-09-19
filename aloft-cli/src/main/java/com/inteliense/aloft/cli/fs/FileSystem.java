@@ -10,12 +10,15 @@ import java.io.File;
 public class FileSystem {
 
     private File projectDir;
+    private File projectConfig;
     private File globalConfig;
     private File srcDir;
+    private File packageDir;
     private File resourcesDir;
 
     public FileSystem() {
-        this.projectDir = new File("./");
+        this.projectDir = new File("");
+        System.out.println(projectDir.getAbsolutePath());
         setup();
     }
 
@@ -77,11 +80,42 @@ public class FileSystem {
     }
 
     public void printConfig(String appName, String config) throws Exception {
-        projectDir = createDir(projectDir.getPath() + "/" + appName, true);
-        if(projectDir == null) throw new RuntimeException("directory already exists.");
-        File file = createFile(projectDir.getPath() + "/" + appName + ".json", false);
-        Print.setPrinter(file);
+        projectDir = createDir(projectDir.getAbsolutePath() + "/" + appName, true);
+        if(projectDir == null) throw new RuntimeException("Project already exists.");
+        projectConfig = createFile(projectDir.getAbsolutePath() + "/" + appName + ".json", false);
+        Print.setPrinter(projectConfig);
         Print.txt(config);
+        Print.reset();
+    }
+
+    public void createProjectDirs(String pkg) {
+        srcDir = createDir(projectDir.getAbsolutePath() + "/src");
+        resourcesDir = createDir(projectDir.getAbsolutePath() + "/resources");
+        String[] parts = pkg.split("\\.");
+        String path = srcDir.getAbsolutePath();
+        for(int i=0; i<parts.length; i++) {
+            path += "/" + parts[i];
+            packageDir = createDir(path);
+        }
+        path = srcDir.getAbsolutePath();
+        for(int i=0; i<parts.length; i++) {
+            path += "/" + parts[i];
+            createDotFile(path);
+        }
+        createDotFile(projectDir.getAbsolutePath());
+        createDotFile(srcDir.getAbsolutePath());
+        createDotFile(resourcesDir.getAbsolutePath());
+        createFile(packageDir.getAbsolutePath() + "/main.aloft");
+    }
+
+    public void createDotFile(String path) {
+        File dotFile = createFile(path + "/.aconf", false);
+        Print.setPrinter(dotFile);
+        Print.ln(projectDir.getAbsolutePath());
+        Print.ln(projectConfig.getAbsolutePath());
+        Print.ln(srcDir.getAbsolutePath());
+        Print.ln(resourcesDir.getAbsolutePath());
+        Print.ln(packageDir.getAbsolutePath());
         Print.reset();
     }
 

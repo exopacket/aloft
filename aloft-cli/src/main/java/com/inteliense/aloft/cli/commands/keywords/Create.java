@@ -13,8 +13,11 @@ public class Create extends HandlesCommands {
 
     @Override
     public void run(AppConfig config) {
+        requiredFlag("group-id");
         System.out.println("Creating new project in directory './" + command.getBase().getValue() + "'...");
-        config.createTemplate(command.getBase().getValue());
+        config.setPackageName(flagValue("group-id") + "." + command.getBase().getValue());
+        config.createTemplate(command.getBase().getValue(), flagValue("group-id"));
+        config.createProjectDirs();
         System.out.println("Project '" + command.getBase().getValue() + "' created successfully!");
     }
 

@@ -1,6 +1,7 @@
 package com.inteliense.aloft.cli.commands.base;
 
 import com.inteliense.aloft.cli.Help;
+import com.inteliense.aloft.utils.global.__;
 import com.inteliense.aloft.cli.config.AppConfig;
 
 import java.lang.reflect.Constructor;
@@ -25,6 +26,30 @@ public abstract class HandlesCommands {
 
     public void printHelp() {
 
+    }
+
+    protected void requiredFlag(String flag) {
+        if (!hasFlag(flag) || __.empty(flagValue(flag)))
+            command.exit("[--" + flag + "] is required for this command.", 1);
+    }
+
+    protected boolean hasFlag(String flag) {
+        return findFlag(flag) != null;
+    }
+
+    protected String flagValue(String flag) {
+        Arg arg = findFlag(flag);
+        if(arg == null) return "";
+        return arg.getValue();
+    }
+
+    private Arg findFlag(String flag) {
+        flag = flag.replace("-", "");
+        Arg[] args = command.getArgs();
+        for(int i=0; i<args.length; i++) {
+            if(__.same(args[i].getName(), flag)) return args[i];
+        }
+        return null;
     }
 
     protected abstract Help help();

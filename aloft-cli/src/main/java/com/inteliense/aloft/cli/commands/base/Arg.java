@@ -12,6 +12,12 @@ public class Arg {
         this.name = name.replace("-", "");
     }
 
+    public Arg(String name, boolean requiresValue) {
+        if(name.contains("--")) this.flag = true;
+        this.name = name.replace("-", "");
+        this.required = requiresValue;
+    }
+
     public Arg(String name, String value) {
         this.name = name;
         this.value = value;
@@ -21,9 +27,8 @@ public class Arg {
         this.value = value;
     }
 
-    public Arg requiresValue() {
-        this.required = true;
-        return this;
+    public boolean requiresValue() {
+        return required;
     }
 
     public boolean isFlag() {

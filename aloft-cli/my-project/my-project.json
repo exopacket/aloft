@@ -1,10 +1,13 @@
 {
   "project": {
-    "author": "",
     "name": "my-project",
+    "package": "com.inteliense.my_project",
+    "author": "",
     "description": "",
+    "key": "70db94aaf24e63a20e43637f8d98acb1909da81964d6e18b00ce129ef2916ea8",
     "version": "1.0.0",
-    "key": "6d91d428ae7105042df38fb48768a89b45b8d90d520d1303d4b50ffaac908a97"
+    "build-type": "debug",
+    "aloft-version": "1.0.0"
   },
   "modules": [
     {
@@ -25,5 +28,68 @@
         "version": "1.0.0"
       }
     }
-  ]
+  ],
+  "middleware": [
+    {
+      "HasHeader": {
+        "apply": "*",
+        "hard-fail": false,
+        "route-specific": false
+      }
+    },
+    {
+      "has-api-key": {
+        "apply": "api/*",
+        "hard-fail": false,
+        "route-specific": false
+      }
+    },
+    {
+      "SessionExists": {
+        "hard-fail": false,
+        "route-specific": true
+      }
+    }
+  ],
+  "server": {
+    "debug": {
+      "https": false,
+      "enable-hot-reload": true,
+      "ports": {
+        "http": 8181,
+        "https": 8182,
+        "hot-reload": 3030
+      },
+      "bind-all": false
+    },
+    "public": {
+      "public-domain": "mydomain.com",
+      "content-root": "/home/aloft/sites/my-project",
+      "https": true,
+      "ssl": {
+        "certificate-filepath": "/path/to/ssl/certificate",
+        "certificate-key-filepath": "/path/to/ssl/certificate/key",
+        "certificate-chain-filepath": "/path/to/ssl/certificate/chain"
+      },
+      "ports": {
+        "http": 80,
+        "https": 443
+      }
+    },
+    "routes": {
+      "api": "/ajax",
+      "public-api": "/api",
+      "update-state": "/state",
+      "javascript": "/js",
+      "stylesheets": "/css",
+      "images": "/image",
+      "files": "/attachments"
+    },
+    "load-balancing": {},
+    "proxies": {},
+    "cloud": {
+      "provider": "aws",
+      "secret-key": "SECRET_KEY"
+    }
+  }
 }

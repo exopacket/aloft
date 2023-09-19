@@ -10,19 +10,20 @@ import java.util.HashMap;
 public class Keywords {
 
     private static final Class[] commands = new Class[]{
-        Create.class,
-        Init.class,
-        Debug.class,
-        Serve.class,
-        Publish.class
+            Create.class,
+            Init.class,
+            Debug.class,
+            Serve.class,
+            Publish.class
     };
 
     private static final Class[] required = new Class[]{
-        Create.class
+            Create.class
     };
 
     private static final HashMap<String, Object[]> flags = new HashMap<String, Object[]>() {{
         put("--public", new Object[]{ (new Arg("--public")), Debug.class });
+        put("--group-id", new Object[]{ (new Arg("--group-id", true)), Create.class});
     }};
 
     public static Class getClass(String cmd) {
@@ -48,7 +49,7 @@ public class Keywords {
 
     public static boolean flagExists(String className, String flag) {
         try {
-            Class<?> c = Class.forName(className);
+            Class<?> c = getClass(className);
             if(flags.containsKey(flag.toLowerCase())) {
                 Object[] v = flags.get(flag.toLowerCase());
                 if(v[1].getClass() == Array.class) {
@@ -63,4 +64,15 @@ public class Keywords {
         return false;
     }
 
+    public static Arg getFlagArg(String flag) {
+        try {
+            if(flags.containsKey(flag.toLowerCase())) {
+                Object[] v = flags.get(flag.toLowerCase());
+                return (Arg) v[0];
+            }
+        } catch (Exception ignored) {}
+        return null;
+    }
+
 }
+

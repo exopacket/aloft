@@ -4,7 +4,6 @@ import com.inteliense.aloft.server.http.middleware.base.Middleware;
 import com.inteliense.aloft.server.http.middleware.base.MiddlewareFailure;
 import com.inteliense.aloft.server.http.middleware.base.MiddlewareResult;
 import com.inteliense.aloft.server.http.middleware.base.MiddlewareSuccess;
-import com.inteliense.aloft.server.http.supporting.HeaderList;
 import com.inteliense.aloft.server.http.supporting.RequestParams;
 
 import java.util.ArrayList;

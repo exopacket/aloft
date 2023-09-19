@@ -22,9 +22,9 @@ public class Main {
             config = loadConfig();
             cmd = new Command(args, config) {
                 @Override
-                protected void exit() {
-                    System.err.println("Command not found.");
-                    System.exit(1);
+                public void exit(String message, int code) {
+                    System.err.println(message);
+                    System.exit(code);
                 }
             };
             container = HandlesCommands.create(cmd, config);

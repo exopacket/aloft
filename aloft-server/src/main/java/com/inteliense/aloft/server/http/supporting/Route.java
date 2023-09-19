@@ -10,8 +10,16 @@ public class Route {
     private String id;
     private boolean valid = false;
 
+    private String path;
+
+    private String requestTypeStr;
+    private RequestType requestType;
+
     public Route(String path, RequestType type, String typeStr) {
         if(!__.isset(type)) return;
+        this.path = path;
+        this.requestTypeStr = typeStr;
+        this.requestType = type;
         this.id = BaseX.encode64(SHA.Bites.getSha1(typeStr.toUpperCase() + ":" + path));
         this.valid = endpointExists();
     }
@@ -19,10 +27,12 @@ public class Route {
     public Route(String path, String typeStr) {
         typeStr = typeStr.toUpperCase();
         if(!__.isset(getRequestType(typeStr))) return;
+        this.path = path;
+        this.requestTypeStr = typeStr;
+        this.requestType = getRequestType(typeStr);
         this.id = BaseX.encode64(SHA.Bites.getSha1(typeStr + ":" + path));
         this.valid = endpointExists();
     }
-
 
     public boolean isValid() {
         return valid;
@@ -35,6 +45,18 @@ public class Route {
     public Response go(HttpExchange t) {
         if(!valid) return new Response(t, "Page not found.", 404);
         return new Response(t, "Hello World!", 200);
+    }
+
+    public RequestType getRequestType() {
+        return requestType;
+    }
+
+    public String getRequestTypeString() {
+        return requestTypeStr;
+    }
+
+    public String getPath() {
+        return path;
     }
 
     private boolean endpointExists() {
