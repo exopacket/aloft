@@ -3,7 +3,6 @@ package com.inteliense.aloft.server.http.supporting;
 import com.inteliense.aloft.compiler.application.config.AppConfig;
 import com.inteliense.aloft.compiler.application.config.MiddlewareList;
 import com.inteliense.aloft.server.client.ClientInfo;
-import com.inteliense.aloft.server.http.middleware.base.ApplyTo;
 import com.inteliense.aloft.server.http.middleware.base.MiddlewareResultCollection;
 import com.sun.net.httpserver.HttpExchange;
 import org.json.simple.JSONObject;
@@ -55,10 +54,12 @@ public class DirectRequest {
     }
 
     private void exit(String message, int code) {
+        exited = true;
         (new Response(t, message, code)).send();
     }
 
     private void exit(String[] stacktrace, int code) {
+        exited = true;
         (new Response(t, stacktrace, code)).send();
     }
 

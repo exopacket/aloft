@@ -27,7 +27,7 @@ public class MiddlewareList {
         MiddlewareResultCollection results = new MiddlewareResultCollection();
         for(int i=0; i<list.size(); i++) {
             Middleware current = list.get(i);
-            MiddlewareResult result = current.apply(params.getAppliedMiddleware(), params, results);
+            MiddlewareResult result = current.apply(params, results);
             if(!__.isset(result)) continue;
             if(current.hardFails() && result.failedValidation()) {
                 results.fail();

@@ -1,7 +1,6 @@
 package com.inteliense.aloft.server.http.supporting;
 
 import com.inteliense.aloft.server.client.ClientInfo;
-import com.inteliense.aloft.server.http.middleware.base.ApplyTo;
 import com.inteliense.aloft.utils.data.JSON;
 import com.inteliense.aloft.utils.global.__;
 import com.sun.net.httpserver.HttpContext;
@@ -13,6 +12,7 @@ import java.util.Scanner;
 
 public class RequestParams {
 
+    private Route route = new Route("test");
     private HeaderList headers;
     private ClientInfo client;
     private AloftRequestType internalRequestType;
@@ -31,10 +31,6 @@ public class RequestParams {
         this.client = client;
         this.internalRequestType = internalRequestType;
         this.requestType = requestType;
-    }
-
-    public ApplyTo getAppliedMiddleware() {
-        return ApplyTo.PUBLIC_API;
     }
 
     public JSONObject getJson() {
@@ -64,6 +60,10 @@ public class RequestParams {
 
     public boolean hasHeader(String header) {
         return headers.has(header);
+    }
+
+    public Route route() {
+        return this.route;
     }
 
     private String bodyFromStream(InputStream bodyInput) {

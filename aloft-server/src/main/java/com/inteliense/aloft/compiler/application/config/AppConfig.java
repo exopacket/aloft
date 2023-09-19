@@ -1,7 +1,8 @@
 package com.inteliense.aloft.compiler.application.config;
 
-import com.inteliense.aloft.server.http.middleware.base.ApplyTo;
+import com.inteliense.aloft.server.http.middleware.base.ApplyToType;
 import com.inteliense.aloft.server.http.middleware.types.HasHeaders;
+import com.inteliense.aloft.server.http.supporting.Route;
 
 public class AppConfig {
 
@@ -26,7 +27,7 @@ public class AppConfig {
         //FIXME ....FOR TESTING
         MiddlewareList list = new MiddlewareList();
         HasHeaders m = new HasHeaders(new String[]{"X-Test-Header"});
-        m.appendAppliesTo(ApplyTo.PUBLIC_API);
+        m.appendAppliesTo(ApplyToType.PUBLIC_API, new Route[]{new Route("test2")});
         list.appendAppMiddleware(m);
         this.middleware = list;
     }

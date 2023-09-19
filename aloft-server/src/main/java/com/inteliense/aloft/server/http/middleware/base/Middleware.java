@@ -1,7 +1,8 @@
 package com.inteliense.aloft.server.http.middleware.base;
 
+import com.inteliense.aloft.server.http.supporting.AloftRequestType;
 import com.inteliense.aloft.server.http.supporting.RequestParams;
-
+import com.inteliense.aloft.server.http.supporting.Route;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,18 +33,36 @@ public abstract class Middleware {
         return hardFail;
     }
 
-    public void appendAppliesTo(ApplyTo appliesTo) {
-        if(!this.appliesTo.contains(appliesTo)) this.appliesTo.add(appliesTo);
+    public void appendAppliesTo(ApplyToType type) {
+        ApplyTo applyTo = new ApplyTo(type);
+        if(!contains(applyTo)) this.appliesTo.add(applyTo);
     }
 
-    public boolean appliesTo(ApplyTo appliesTo) {
-        return this.appliesTo.contains(appliesTo);
+    public void appendAppliesTo(ApplyToType type, Route[] routes) {
+        ApplyTo applyTo = new ApplyTo(type, routes);
+        if(!contains(applyTo)) this.appliesTo.add(applyTo);
     }
 
-    public MiddlewareResult apply(ApplyTo appliesTo, RequestParams params, MiddlewareResultCollection previous) {
+    public boolean appliesTo(AloftRequestType type, Route appliesTo) {
+        ApplyToType appliesToType = getType(type);
+        for(int i=0; i<this.appliesTo.size(); i++)
+            if(this.appliesTo.get(i).applies(appliesToType, appliesTo)) return true;
+        return false;
+    }
+
+    public MiddlewareResult apply(RequestParams params, MiddlewareResultCollection previous) {
         MiddlewareResult middlewareResult = null;
-        if(this.appliesTo(appliesTo)) middlewareResult = validate(params);
+        if(this.appliesTo(params.getInternalRequestType(), params.route())) middlewareResult = validate(params);
         return middlewareResult;
+    }
+
+    private boolean contains(ApplyTo toCheck) {
+        for(int i=0; i<appliesTo.size(); i++) if(appliesTo.get(i).isEqual(toCheck)) return true;
+        return false;
+    }
+
+    private ApplyToType getType(AloftRequestType requestType) {
+        return ApplyToType.PUBLIC_API;
     }
 
 }
