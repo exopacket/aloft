@@ -52,7 +52,7 @@ public class Route {
     }
 
     public String getRequestTypeString() {
-        return requestTypeStr;
+        return requestTypeStr.toUpperCase();
     }
 
     public String getPath() {

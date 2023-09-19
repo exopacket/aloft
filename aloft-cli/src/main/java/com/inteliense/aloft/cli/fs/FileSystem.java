@@ -104,11 +104,11 @@ public class FileSystem {
         createDotFile(projectDir.getAbsolutePath());
         createDotFile(srcDir.getAbsolutePath());
         createDotFile(resourcesDir.getAbsolutePath());
-        createFile(packageDir.getAbsolutePath() + "/main.aloft");
+        createFile(packageDir.getAbsolutePath() + "/main.ss");
     }
 
     public void createDotFile(String path) {
-        File dotFile = createFile(path + "/.aconf", false);
+        File dotFile = createFile(path + "/.tt", false);
         Print.setPrinter(dotFile);
         Print.ln(projectDir.getAbsolutePath());
         Print.ln(projectConfig.getAbsolutePath());

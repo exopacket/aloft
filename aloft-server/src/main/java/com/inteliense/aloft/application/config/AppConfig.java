@@ -1,5 +1,6 @@
 package com.inteliense.aloft.application.config;
 
+import com.inteliense.aloft.application.cache.AppCache;
 import com.inteliense.aloft.server.http.middleware.base.ApplyToType;
 import com.inteliense.aloft.server.http.middleware.types.HasHeaders;
 import com.inteliense.aloft.server.http.supporting.Route;
@@ -28,6 +29,9 @@ public class AppConfig {
     //MODULES
     private ModuleList modules;
 
+    //APPLICATION CACHE
+    private AppCache cache;
+
     //MIDDLEWARE
     private MiddlewareList middleware;
 
@@ -40,6 +44,7 @@ public class AppConfig {
         m.appendAppliesTo(ApplyToType.PUBLIC_API, new Route[]{new Route("/index/main", "GET")});
         list.appendAppMiddleware(m);
         this.middleware = list;
+        cache = new AppCache();
     }
 
     public AppConfig(String configPath) throws FileNotFoundException {
