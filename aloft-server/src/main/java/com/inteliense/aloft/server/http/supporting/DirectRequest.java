@@ -15,6 +15,7 @@ public class DirectRequest {
     private AppConfig config;
     private AloftRequestType internalRequestType;
     private RequestType requestType;
+    private Route route;
     private boolean exited = false;
 
     public DirectRequest(HttpExchange t, HeaderList headers, ClientInfo client, AppConfig config) {
@@ -24,11 +25,17 @@ public class DirectRequest {
         this.config = config;
         this.requestType = getRequestType();
         this.internalRequestType = getInternalRequestType();
+        this.route = buildRoute();
+    }
+
+    private Route buildRoute() {
+        return new Route("test");
     }
 
     private RequestParams buildParams() {
         return new RequestParams(
                 t.getRequestBody(),
+                this.route,
                 t.getRequestURI(),
                 t.getProtocol(),
                 t.getHttpContext(),
@@ -76,7 +83,7 @@ public class DirectRequest {
 
     public Response get() {
         if(exited) return null;
-        return new Response(t, "Hello World", 200);
+        return this.route.go(t);
     }
 
 }

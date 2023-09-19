@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class RequestParams {
 
-    private Route route = new Route("test");
+    private Route route;
     private HeaderList headers;
     private ClientInfo client;
     private AloftRequestType internalRequestType;
@@ -22,7 +22,7 @@ public class RequestParams {
     private String protocol;
     private HttpContext context;
 
-    public RequestParams(InputStream body, URI requestUri, String protocol, HttpContext context, HeaderList headers, ClientInfo client, AloftRequestType internalRequestType, RequestType requestType) {
+    public RequestParams(InputStream body, Route route, URI requestUri, String protocol, HttpContext context, HeaderList headers, ClientInfo client, AloftRequestType internalRequestType, RequestType requestType) {
         this.body = bodyFromStream(body);
         this.requestUri = requestUri;
         this.protocol = protocol;
@@ -31,6 +31,7 @@ public class RequestParams {
         this.client = client;
         this.internalRequestType = internalRequestType;
         this.requestType = requestType;
+        this.route = route;
     }
 
     public JSONObject getJson() {
