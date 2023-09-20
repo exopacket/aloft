@@ -52,7 +52,7 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
 //        this.title = title;
 //    }
     
-    public void setPath(String path) {
+    public void setPath(RoutePath path) {
         this.path = path;
     }
     
@@ -76,7 +76,7 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
                 return new AloftListener[0];
             }
         };
-        TextAloftElement textElement = new TextAloftElement("Hello World!\n\nSincerely yours,\n- Server.") {
+        TextAloftElement textElement = new TextAloftElement(this.vars.getByIndex(0).getValue() + "\n\nSincerely yours,\n- Server.") {
             @Override
             protected AloftListener[] listeners() {
                 return new AloftListener[0];

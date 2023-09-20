@@ -17,6 +17,7 @@ public class DirectRequest {
     private AloftRequestType internalRequestType;
     private RequestType requestType;
     private Route route;
+    private Endpoint endpoint;
     private boolean exited = false;
 
     public DirectRequest(HttpExchange t, HeaderList headers, ClientInfo client, AppConfig config) {
@@ -30,6 +31,7 @@ public class DirectRequest {
         if(path.length() > 256) exit("Request path length is too large.", 403);
         this.route = config.getRoute(path, t.getRequestMethod().toUpperCase());
         if(!__.isset(this.route)) exit("Page not found.", 404);
+        this.endpoint = Endpoint.create(path, route, requestType, internalRequestType);
     }
 
     private RequestParams buildParams() {
@@ -90,7 +92,7 @@ public class DirectRequest {
 
     public Response get() {
         if(exited) return null;
-        return this.route.go(t);
+        return this.route.go(t, endpoint);
     }
 
 }

@@ -2,6 +2,7 @@ package com.inteliense.aloft.application.cache;
 
 import com.inteliense.aloft.application.config.RouteList;
 import com.inteliense.aloft.server.http.supporting.Route;
+import com.inteliense.aloft.server.http.supporting.RoutePath;
 import com.inteliense.aloft.utils.global.__;
 import org.apache.logging.log4j.core.util.ArrayUtils;
 
@@ -77,17 +78,17 @@ public class RouteCache {
         int currentRequestType = 0;
         int reqTypeStart = 0;
         int pathStart = 0;
-        String currentPath = routes.get(0).getPath();
+        String currentPath = routes.get(0).getPath().getPathString();
         ArrayList<CacheEntry> entries = new ArrayList<>();
         boolean wasLast = false;
         int i;
         for(i=0; i<routes.size(); i++) {
             wasLast = false;
             Route route = routes.get(i);
-            String path = trimPath(route.getPath());
+            String path = trimPath(route.getPath().getPathString());
             String reqType = route.getRequestTypeString();
             if(!__.same(currentPath, path) || !__.same(reqType, requestTypeOrder[currentRequestType])) {
-                entries.add(new CacheEntry(currentPath, new int[]{ pathStart, i }));
+                entries.add(new CacheEntry(new RoutePath(currentPath), new int[]{ pathStart, i }));
                 pathStart = i;
                 currentPath = path;
             }
@@ -100,7 +101,7 @@ public class RouteCache {
                 entries.clear();
                 cacheByRequestType.put(requestTypeOrder[currentRequestType], new int[] { reqTypeStart, i });
                 reqTypeStart = i;
-                currentPath = routes.get(routes.size() - 1).getPath();
+                currentPath = routes.get(routes.size() - 1).getPath().getPathString();
                 currentRequestType = getOrder(reqType);
                 wasLast = true;
             }
@@ -125,15 +126,15 @@ public class RouteCache {
     }
 
     private class CacheEntry {
-        private String path;
+        private RoutePath path;
         private int[] range;
 
-        public CacheEntry(String path, int[] range) {
+        public CacheEntry(RoutePath path, int[] range) {
             this.path = path;
             this.range = range;
         }
 
-        public boolean match(String path) { return __.same(path, this.path); }
+        public boolean match(String path) { return this.path.matches(trimPath(path)); }
 
         public int[] range() {
             return range;

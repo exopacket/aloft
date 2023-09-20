@@ -4,7 +4,7 @@ import com.inteliense.aloft.compiler.lang.keywords.AloftPage;
 
 public class Endpoint {
 
-    protected String path;
+    protected RoutePath path;
     protected RequestType type;
     protected AloftRequestType internalType;
     protected VariableTree vars;
@@ -16,8 +16,8 @@ public class Endpoint {
         this.vars = vars;
     }
 
-    public static Endpoint create(Route route, RequestType type, AloftRequestType internalType, VariableTree vars) {
-        return new AloftPage(route, type, internalType, vars);
+    public static Endpoint create(String requestPath, Route route, RequestType type, AloftRequestType internalType) {
+        return new AloftPage(route, type, internalType, route.getPath().getVariables(requestPath));
     }
 
 }

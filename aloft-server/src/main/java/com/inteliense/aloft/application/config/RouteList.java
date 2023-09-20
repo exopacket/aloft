@@ -43,7 +43,7 @@ public abstract class RouteList {
     public Route find(String path, String requestType, int startIndex, int endIndex) {
         for(int i=startIndex; i<endIndex; i++) {
             Route route = this.routes.get(i);
-            if(__.same(route.getPath(), path) && __.same(route.getRequestTypeString(), requestType.toUpperCase())) return route;
+            if(route.getPath().matches(path)) return route;
         }
         return null;
     }
@@ -77,7 +77,7 @@ public abstract class RouteList {
             byTypeList.sort(new Comparator<Route>() {
                 @Override
                 public int compare(Route o1, Route o2) {
-                    return trimPath(o1.getPath()).compareTo(trimPath(o2.getPath()));
+                    return trimPath(o1.getPath().getPathString()).compareTo(trimPath(o2.getPath().getPathString()));
                 }
             });
             collection.put(s, byTypeList);

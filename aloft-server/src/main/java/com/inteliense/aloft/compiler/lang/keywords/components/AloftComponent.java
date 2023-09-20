@@ -1,7 +1,6 @@
 package com.inteliense.aloft.compiler.lang.keywords.components;
 
 import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
-import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 
 import java.util.ArrayList;

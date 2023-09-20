@@ -12,53 +12,49 @@ public class Route {
     private String id;
     private boolean valid = false;
 
-    private String path;
+    private RoutePath path;
 
     private String requestTypeStr;
     private RequestType requestType;
 
-    private Endpoint endpoint;
+    private VariableTree vars;
 
     public Route(String path, RequestType type, String typeStr) {
         if(!__.isset(type)) return;
-        this.path = path;
+        this.path = new RoutePath(path);
         this.requestTypeStr = typeStr;
         this.requestType = type;
         this.id = BaseX.encode64(SHA.Bites.getSha1(typeStr.toUpperCase() + ":" + path));
         this.valid = endpointExists();
-        this.endpoint = Endpoint.create(this, requestType, null, null);
     }
 
     public Route(String path, String typeStr) {
         typeStr = typeStr.toUpperCase();
         if(!__.isset(getRequestType(typeStr))) return;
-        this.path = path;
+        this.path = new RoutePath(path);
         this.requestTypeStr = typeStr;
         this.requestType = getRequestType(typeStr);
         this.id = BaseX.encode64(SHA.Bites.getSha1(typeStr + ":" + path));
         this.valid = endpointExists();
-        this.endpoint = Endpoint.create(this, requestType, null, null);
     }
 
     public Route(String path, RequestType type, String typeStr, VariableTree vars) {
         if(!__.isset(type)) return;
-        this.path = path;
+        this.path = new RoutePath(path, vars);
         this.requestTypeStr = typeStr;
         this.requestType = type;
         this.id = BaseX.encode64(SHA.Bites.getSha1(typeStr.toUpperCase() + ":" + path));
         this.valid = endpointExists();
-        this.endpoint = Endpoint.create(this, requestType, null, null);
     }
 
     public Route(String path, String typeStr, VariableTree vars) {
         typeStr = typeStr.toUpperCase();
         if(!__.isset(getRequestType(typeStr))) return;
-        this.path = path;
+        this.path = new RoutePath(path, vars);
         this.requestTypeStr = typeStr;
         this.requestType = getRequestType(typeStr);
         this.id = BaseX.encode64(SHA.Bites.getSha1(typeStr + ":" + path));
         this.valid = endpointExists();
-        this.endpoint = Endpoint.create(this, requestType, null, vars);
     }
 
     public boolean isValid() {
@@ -69,8 +65,8 @@ public class Route {
         return this.id;
     }
 
-    public Response go(HttpExchange t) {
-        if(!valid) return new Response(t, "Page not found.", 404);
+    public Response go(HttpExchange t, Endpoint endpoint) {
+        if(!valid) return new Response(t, "Page not found...", 404);
         return new Response(t, HtmlRenderer.render(((AloftPage) endpoint)).get(), 200);
     }
 
@@ -82,9 +78,10 @@ public class Route {
         return requestTypeStr.toUpperCase();
     }
 
-    public String getPath() {
+    public RoutePath getPath() {
         return path;
     }
+
 
     private boolean endpointExists() {
         return true;
