@@ -2,18 +2,18 @@ package com.inteliense.aloft.server.http.supporting;
 
 import com.inteliense.aloft.compiler.lang.types.base.T;
 
-public class StateVariableNode {
+public class VariableNode {
 
     private String key;
     private T type;
     private StateVariableValue value = null;
 
-    public StateVariableNode(String key, T type) {
+    public VariableNode(String key, T type) {
         this.key = key;
         this.type = type;
     }
 
-    public StateVariableNode(String key, T type, Object value) {
+    public VariableNode(String key, T type, Object value) {
         this.key = key;
         this.type = type;
         this.value = new StateVariableValue(value);
@@ -28,7 +28,7 @@ public class StateVariableNode {
         private boolean inTree = false;
         private Object v;
 
-        public StateVariableValue(StateVariableNode v) {
+        public StateVariableValue(VariableNode v) {
             inTree = true;
             this.v = v;
         }

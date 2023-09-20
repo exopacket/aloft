@@ -32,6 +32,14 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
     protected boolean hasMultipleSubtypes;
     protected ArrayList<AloftElementSubtype> subtypes;
 
+    public AloftElement() {
+        super();
+    }
+
+    public AloftElement(String name) {
+        super(name);
+    }
+
     protected void init() {
         uniqueId = (uniqueId == null) ? createId(String.valueOf(System.currentTimeMillis())) : uniqueId;
         refresh();

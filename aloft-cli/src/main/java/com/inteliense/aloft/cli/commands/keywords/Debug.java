@@ -19,17 +19,23 @@ public class Debug extends HandlesCommands {
 
     @Override
     public void run(AppConfig config) {
-        File dot = new File(".yy");
+        File dot = new File(".tt");
         if (!dot.exists()) {
             File cwd = new File("");
             String fullPath = cwd.getAbsolutePath();
             if (fullPath.contains("/src/")) {
-                int index = fullPath.indexOf("/src/") + 5;
-                String _dot = fullPath.substring(0, index) + ".tt";
+                String[] parts = fullPath.split("/src/");
+                String path = "";
+                for(int i=0; i<parts.length; i++) {
+                    if(i == parts.length - 1) break;
+                    path += parts[i] + "/src/";
+                }
+                String _dot = path + ".tt";
                 dot = new File(_dot);
                 if (!dot.exists()) command.exit("Could not find the aloft project from this directory.", 1);
             } else {
-                command.exit("Could not find the aloft project from this directory.", 1);
+                dot = new File("src/.tt");
+                if (!dot.exists()) command.exit("Could not find the aloft project from this directory.", 1);
             }
         }
         try {

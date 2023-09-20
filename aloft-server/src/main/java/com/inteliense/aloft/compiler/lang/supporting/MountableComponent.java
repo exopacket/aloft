@@ -15,7 +15,9 @@ public class MountableComponent extends AloftComponent {
     private ArrayList<AloftComponent> components = new ArrayList<>();
     private boolean layout;
 
-    public MountableComponent() { }
+    public MountableComponent() {
+        super(null);
+    }
 
     public boolean isLayout() {
         return layout;

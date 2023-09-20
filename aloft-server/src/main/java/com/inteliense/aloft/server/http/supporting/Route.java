@@ -40,6 +40,27 @@ public class Route {
         this.endpoint = Endpoint.create(this, requestType, null, null);
     }
 
+    public Route(String path, RequestType type, String typeStr, VariableTree vars) {
+        if(!__.isset(type)) return;
+        this.path = path;
+        this.requestTypeStr = typeStr;
+        this.requestType = type;
+        this.id = BaseX.encode64(SHA.Bites.getSha1(typeStr.toUpperCase() + ":" + path));
+        this.valid = endpointExists();
+        this.endpoint = Endpoint.create(this, requestType, null, null);
+    }
+
+    public Route(String path, String typeStr, VariableTree vars) {
+        typeStr = typeStr.toUpperCase();
+        if(!__.isset(getRequestType(typeStr))) return;
+        this.path = path;
+        this.requestTypeStr = typeStr;
+        this.requestType = getRequestType(typeStr);
+        this.id = BaseX.encode64(SHA.Bites.getSha1(typeStr + ":" + path));
+        this.valid = endpointExists();
+        this.endpoint = Endpoint.create(this, requestType, null, vars);
+    }
+
     public boolean isValid() {
         return valid;
     }
@@ -51,10 +72,6 @@ public class Route {
     public Response go(HttpExchange t) {
         if(!valid) return new Response(t, "Page not found.", 404);
         return new Response(t, HtmlRenderer.render(((AloftPage) endpoint)).get(), 200);
-    }
-
-    private AloftPage testPage() {
-        return new AloftPage("/api", null, null);
     }
 
     public RequestType getRequestType() {

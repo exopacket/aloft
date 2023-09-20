@@ -28,9 +28,39 @@ public abstract class HandlesCommands {
 
     }
 
-    protected void requiredFlag(String flag) {
-        if (!hasFlag(flag) || __.empty(flagValue(flag)))
-            command.exit("[--" + flag + "] is required for this command.", 1);
+    protected Arg requiredFlag(String flag) {
+        Arg arg = Keywords.getFlagArg(flag);
+        if(arg.isFlag() && hasFlag(flag) && ((arg.requiresValue() && !__.empty(flagValue(flag))) || !arg.requiresValue()))
+            return arg;
+        command.exit("[--" + flag + "] is required for this command.", 1);
+        return null;
+    }
+
+    protected Arg orOptionalFlag(String ...flags) {
+        for(int i=0; i<flags.length; i++) {
+            Arg flag = Keywords.getFlagArg(flags[i]);
+            if(!flag.isFlag()) continue;
+            if(hasFlag(flags[i]) && ((flag.requiresValue() && !__.empty(flagValue(flags[i]))) || !flag.requiresValue()))
+                return flag;
+        }
+        return null;
+    }
+
+    protected Arg orRequiredFlag(String ...flags) {
+        for(int i=0; i<flags.length; i++) {
+            Arg flag = Keywords.getFlagArg(flags[i]);
+            if(!flag.isFlag()) continue;
+            if(hasFlag(flags[i]) && ((flag.requiresValue() && !__.empty(flagValue(flags[i]))) || !flag.requiresValue()))
+                return flag;
+        }
+        String error = "[";
+        for(int i=0; i<flags.length; i++) {
+            if(i > 0) error += " | ";
+            error += "--" + flags[i];
+        }
+        error += "] One of these flags are required for this command.";
+        command.exit(error, 1);
+        return null;
     }
 
     protected boolean hasFlag(String flag) {

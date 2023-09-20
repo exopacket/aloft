@@ -1,7 +1,6 @@
 package com.inteliense.aloft.cli.fs;
 
 import com.inteliense.aloft.utils.data.JSON;
-import com.inteliense.aloft.utils.sys.uid.LimitedEscalate;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -96,14 +95,7 @@ public class FileSystem {
             path += "/" + parts[i];
             packageDir = createDir(path);
         }
-        path = srcDir.getAbsolutePath();
-        for(int i=0; i<parts.length; i++) {
-            path += "/" + parts[i];
-            createDotFile(path);
-        }
-        createDotFile(projectDir.getAbsolutePath());
         createDotFile(srcDir.getAbsolutePath());
-        createDotFile(resourcesDir.getAbsolutePath());
         createFile(packageDir.getAbsolutePath() + "/main.ss");
     }
 

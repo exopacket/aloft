@@ -1,6 +1,7 @@
 package com.inteliense.aloft.cli.commands.base;
 
 import com.inteliense.aloft.cli.commands.keywords.*;
+import com.inteliense.aloft.cli.commands.keywords.Module;
 
 import java.sql.Array;
 import java.util.Arrays;
@@ -14,7 +15,11 @@ public class Keywords {
             Init.class,
             Debug.class,
             Serve.class,
-            Publish.class
+            Publish.class,
+            Middleware.class,
+            Module.class,
+            Cache.class,
+            New.class
     };
 
     private static final Class[] required = new Class[]{
@@ -24,6 +29,14 @@ public class Keywords {
     private static final HashMap<String, Object[]> flags = new HashMap<String, Object[]>() {{
         put("--public", new Object[]{ (new Arg("--public")), Debug.class });
         put("--group-id", new Object[]{ (new Arg("--group-id", true)), Create.class});
+        put("--add", new Object[]{ (new Arg("--add", true)), Middleware.class});
+        put("--remove", new Object[]{ (new Arg("--remove", true)), Middleware.class});
+        put("--install", new Object[]{ (new Arg("--install", true)), Middleware.class});
+        put("--configure", new Object[]{ (new Arg("--configure", true)), Middleware.class});
+        put("--add", new Object[]{ (new Arg("--add", true)), Module.class});
+        put("--remove", new Object[]{ (new Arg("--remove", true)), Module.class});
+        put("--install", new Object[]{ (new Arg("--install", true)), Module.class});
+        put("--configure", new Object[]{ (new Arg("--configure", true)), Module.class});
     }};
 
     public static Class getClass(String cmd) {

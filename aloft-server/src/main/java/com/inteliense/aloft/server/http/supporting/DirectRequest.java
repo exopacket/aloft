@@ -26,7 +26,9 @@ public class DirectRequest {
         this.config = config;
         this.requestType = getRequestType();
         this.internalRequestType = getInternalRequestType();
-        this.route = config.getRoute(t.getRequestURI().getPath(), t.getRequestMethod().toUpperCase());
+        String path = t.getRequestURI().getPath();
+        if(path.length() > 256) exit("Request path length is too large.", 403);
+        this.route = config.getRoute(path, t.getRequestMethod().toUpperCase());
         if(!__.isset(this.route)) exit("Page not found.", 404);
     }
 

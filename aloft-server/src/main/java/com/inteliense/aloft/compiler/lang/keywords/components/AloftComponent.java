@@ -1,6 +1,7 @@
 package com.inteliense.aloft.compiler.lang.keywords.components;
 
 import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
+import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 
 import java.util.ArrayList;
@@ -9,7 +10,9 @@ public class AloftComponent implements BuildsHtml {
 
     private ArrayList<AloftComponent> children = new ArrayList<>();
     private int currentIndex = 0;
-    private String name;
+    private String name = null;
+
+    public AloftComponent() { this.name = getName(); }
 
     public AloftComponent(String name) { this.name = name; }
 
