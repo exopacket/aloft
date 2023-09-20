@@ -26,11 +26,8 @@ public class DirectRequest {
         this.config = config;
         this.requestType = getRequestType();
         this.internalRequestType = getInternalRequestType();
-        this.route = buildRoute();
-    }
-
-    private Route buildRoute() {
-        return new Route(t.getRequestURI().getPath(), requestType, t.getRequestMethod().toUpperCase());
+        this.route = config.getRoute(t.getRequestURI().getPath(), t.getRequestMethod().toUpperCase());
+        if(!__.isset(this.route)) exit("Page not found.", 404);
     }
 
     private RequestParams buildParams() {

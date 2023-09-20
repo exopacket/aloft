@@ -9,8 +9,9 @@ public class AloftComponent implements BuildsHtml {
 
     private ArrayList<AloftComponent> children = new ArrayList<>();
     private int currentIndex = 0;
+    private String name;
 
-    public AloftComponent() { }
+    public AloftComponent(String name) { this.name = name; }
 
     public void addChild(AloftComponent component) { this.children.add(component); }
 
@@ -22,7 +23,7 @@ public class AloftComponent implements BuildsHtml {
     }
 
     public String getName() {
-        return "MyComponent";
+        return this.name;
     }
 
     @Override

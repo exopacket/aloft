@@ -1,4 +1,6 @@
 package com.inteliense.aloft.server.api;
 
-public class ComponentEndpoint {
+import com.inteliense.aloft.server.http.supporting.Endpoint;
+
+public class ComponentEndpoint extends Endpoint {
 }

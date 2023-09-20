@@ -19,8 +19,6 @@ public class AppCache {
 
     public Route fetchRoute(String path, String requestType) {
         int[] range = this.routeCache.fetchRange(path, requestType);
-        System.out.println("[0]=" + range[0]);
-        System.out.println("[1]=" + range[1]);
         return this.routeCache.getRouteList().find(path, requestType, range[0], range[1]);
     }
 

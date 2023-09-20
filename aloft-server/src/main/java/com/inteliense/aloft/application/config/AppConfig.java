@@ -56,6 +56,10 @@ public class AppConfig {
         parseObjects(JSON.getObject(content));
     }
 
+    public Route getRoute(String path, String requestType) {
+        return this.cache.fetchRoute(path, requestType);
+    }
+
     private void parseObjects(JSONObject json) {
         JSONObject project = (JSONObject) json.get("project");
         JSONArray modules = (JSONArray) json.get("modules");

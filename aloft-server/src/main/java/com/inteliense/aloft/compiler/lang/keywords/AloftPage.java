@@ -14,11 +14,13 @@ import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.types.Body;
 import com.inteliense.aloft.server.html.elements.types.Head;
 import com.inteliense.aloft.server.html.elements.types.Page;
+import com.inteliense.aloft.server.http.supporting.Endpoint;
+import com.inteliense.aloft.server.http.supporting.Route;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class AloftPage implements BuildsJava, AssertsLanguage, BuildsHtml {
+public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, BuildsHtml {
 
     private String path = null;
     private String favicon = null;
@@ -26,8 +28,12 @@ public class AloftPage implements BuildsJava, AssertsLanguage, BuildsHtml {
     private ArrayList<Meta> meta = new ArrayList<>();
     private MountableComponent root;
 
-    public AloftPage(String path, AppConfig appConfig) {
-        this.path = path;
+    public AloftPage(Route route) {
+        this.path = route.getPath();
+    }
+
+    public AloftPage(Route route, AppConfig appConfig) {
+        this.path = route.getPath();
     }
     
     public AloftPage(String path, String favicon, String title) {

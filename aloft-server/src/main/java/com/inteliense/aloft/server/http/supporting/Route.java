@@ -17,8 +17,7 @@ public class Route {
     private String requestTypeStr;
     private RequestType requestType;
 
-    private AloftRequestType aloftType;
-    private Object object;
+    private Endpoint endpoint;
 
     public Route(String path, RequestType type, String typeStr) {
         if(!__.isset(type)) return;
@@ -27,6 +26,7 @@ public class Route {
         this.requestType = type;
         this.id = BaseX.encode64(SHA.Bites.getSha1(typeStr.toUpperCase() + ":" + path));
         this.valid = endpointExists();
+        this.endpoint = Endpoint.create(this, requestType, null, null);
     }
 
     public Route(String path, String typeStr) {
@@ -37,6 +37,7 @@ public class Route {
         this.requestType = getRequestType(typeStr);
         this.id = BaseX.encode64(SHA.Bites.getSha1(typeStr + ":" + path));
         this.valid = endpointExists();
+        this.endpoint = Endpoint.create(this, requestType, null, null);
     }
 
     public boolean isValid() {
@@ -47,18 +48,9 @@ public class Route {
         return this.id;
     }
 
-    public void buildFromRequest(AloftRequestType type, Object data) {
-        this.aloftType = type;
-        this.object = buildObject(data);
-    }
-
-    private Object buildObject(Object data) {
-        return null;
-    }
-
     public Response go(HttpExchange t) {
         if(!valid) return new Response(t, "Page not found.", 404);
-        return new Response(t, HtmlRenderer.render(testPage()).get(), 200);
+        return new Response(t, HtmlRenderer.render(((AloftPage) endpoint)).get(), 200);
     }
 
     private AloftPage testPage() {
