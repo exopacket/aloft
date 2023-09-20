@@ -1,7 +1,6 @@
 package com.inteliense.aloft.server.http.debug;
 
 import com.inteliense.aloft.application.config.AppConfig;
-import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
 import com.inteliense.aloft.compiler.lang.keywords.elements.types.TextAloftElement;
 import com.inteliense.aloft.server.html.HtmlRenderer;
 import com.inteliense.aloft.server.http.supporting.Request;
@@ -30,10 +29,6 @@ public class DebugServerHandler implements HttpHandler {
 
     private void test(HttpExchange t) throws Exception {
         TextAloftElement textElement = new TextAloftElement("Hello World!\n\nSincerely yours,\n- Server.") {
-            @Override
-            protected AloftListener[] listeners() {
-                return new AloftListener[0];
-            }
         };
         String response = HtmlRenderer.render(textElement).get();
         t.sendResponseHeaders(200, response.length());

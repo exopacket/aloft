@@ -5,11 +5,15 @@ import com.inteliense.aloft.utils.global.__;
 public class JavaScript {
 
     JavaScriptWriterType type;
-    Object js;
+    JavaScriptBuilder js;
 
-    public JavaScript(JavaScriptWriterType type, Object js) {
+    public JavaScript(JavaScriptWriterType type, JavaScriptBuilder js) {
         this.type = type;
         this.js = js;
+    }
+
+    public JavaScriptWriterType getType() {
+        return type;
     }
 
     public String getTag() {
@@ -26,13 +30,13 @@ public class JavaScript {
 
     private JavaScriptElement getElement() {
         if(type == JavaScriptWriterType.ELEMENT)
-            return (JavaScriptElement) js;
+            return js.getElement();
         return null;
     }
 
     public JavaScriptFile getFile() {
         if(type == JavaScriptWriterType.FILE)
-            return (JavaScriptFile) js;
+            return js.getFile();
         return null;
     }
 

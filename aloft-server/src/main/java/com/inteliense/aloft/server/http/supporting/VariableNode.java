@@ -3,19 +3,22 @@ package com.inteliense.aloft.server.http.supporting;
 import com.inteliense.aloft.compiler.lang.types.base.T;
 import com.inteliense.aloft.utils.global.__;
 
-public class VariableNode {
+import java.util.Arrays;
+import java.util.List;
+
+public class VariableNode extends ReturnsVariableNodes {
 
     private String key;
-    private StateVariableValue value = null;
+    private VariableValue value = null;
 
     public VariableNode(String key, T type) {
         this.key = key;
-        this.value = new StateVariableValue(type);
+        this.value = new VariableValue(type);
     }
 
     public VariableNode(String key, T type, Object value) {
         this.key = key;
-        this.value = new StateVariableValue(value, type);
+        this.value = new VariableValue(value, type);
     }
 
     public void setValue(Object v) {;
@@ -28,28 +31,50 @@ public class VariableNode {
     }
 
     public <Any> Any getValue() {
-        if(!__.isset(value)) return null;
+        if (!__.isset(value)) return null;
         return value.get();
     }
 
-    private static class StateVariableValue {
+    @Override
+    public VariableNode getByPath(String path) {
+        boolean multiple = path.contains(".");
+        String[] parents;
+        if(!multiple) parents = new String[]{path};
+        else parents = path.split("\\.");
+        if(!multiple && __.same(parents[0], key)) return this;
+        List<String> list = Arrays.asList(parents);
+        list.remove(0);
+        if(list.isEmpty()) return null;
+        String next = "";
+        for(int i=0; i<list.size(); i++) {
+            if(i > 0) next += ".";
+            next += list.get(i);
+        }
+        return this.getByPath(next);
+    }
+
+    private static class VariableValue {
 
         private boolean inTree = false;
         private Object v;
         private T t;
 
-        public StateVariableValue(VariableNode v) {
+        public VariableValue(VariableTree v) {
             inTree = true;
             this.v = v;
         }
 
-        public StateVariableValue(T type) {
+        public VariableValue(T type) {
             this.t = type;
         }
 
-        public StateVariableValue(Object v, T t) {
+        public VariableValue(Object v, T t) {
             this.v = v;
             this.t = t;
+        }
+
+        public boolean isInTree() {
+            return inTree;
         }
 
         public void setValue(Object v) {

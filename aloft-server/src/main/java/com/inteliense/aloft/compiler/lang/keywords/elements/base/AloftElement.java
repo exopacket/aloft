@@ -27,10 +27,10 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
     protected AloftBuilder builder = null;
 
     protected boolean isExtensible = false;
-    protected ArrayList<AloftElementExtension> extensions;
+    protected ArrayList<AloftElementExtension> extensions = new ArrayList<>();
 
     protected boolean hasMultipleSubtypes;
-    protected ArrayList<AloftElementSubtype> subtypes;
+    protected ArrayList<AloftElementSubtype> subtypes = new ArrayList<>();
 
     public AloftElement() {
         super();
@@ -52,8 +52,6 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
     protected abstract boolean isExtensible();
     protected abstract boolean hasMultipleSubtypes();
     protected abstract boolean acceptsChild();
-
-    protected abstract AloftListener[] listeners();
 
     protected String id() {
         return this.friendlyId == null ? this.uniqueId : this.friendlyId;

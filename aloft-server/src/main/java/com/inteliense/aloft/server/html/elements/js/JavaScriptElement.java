@@ -1,10 +1,18 @@
 package com.inteliense.aloft.server.html.elements.js;
 
 import com.inteliense.aloft.server.html.elements.HtmlElement;
+import com.inteliense.aloft.server.html.elements.types.Content;
 
-public abstract class JavaScriptElement extends HtmlElement {
+public class JavaScriptElement extends HtmlElement {
 
     protected String value = "";
+
+    public JavaScriptElement() { }
+
+    public JavaScriptElement(String v) {
+        this.value = v;
+        addChild(new Content(value, false));
+    }
 
     @Override
     protected String getKey() {

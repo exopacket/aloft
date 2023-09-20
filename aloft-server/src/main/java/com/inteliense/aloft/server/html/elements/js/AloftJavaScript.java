@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.Scanner;
 
+//Internal JS that is static
 public class AloftJavaScript extends JavaScriptElement {
 
     public AloftJavaScript(String resource) {

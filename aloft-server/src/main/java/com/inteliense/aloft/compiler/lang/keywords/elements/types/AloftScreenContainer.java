@@ -7,7 +7,7 @@ import com.inteliense.aloft.server.html.elements.types.Content;
 
 import java.util.ArrayList;
 
-public abstract class AloftScreenContainer extends AloftElement {
+public class AloftScreenContainer extends AloftElement {
 
     public AloftScreenContainer() {
         super("__screen_");
@@ -19,6 +19,7 @@ public abstract class AloftScreenContainer extends AloftElement {
     public HtmlElement html() {
         HtmlElement root = createElement("div");
         root.addAttribute("style", "width:100vw; height: 100vh;");
+//        root.addAttribute("test", getState().getByPath("test").getValue());
         root.addChild(super.html());
         return root;
     }

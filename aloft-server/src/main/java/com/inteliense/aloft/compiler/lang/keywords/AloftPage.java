@@ -1,14 +1,12 @@
 package com.inteliense.aloft.compiler.lang.keywords;
 
-import com.inteliense.aloft.application.config.AppConfig;
 import com.inteliense.aloft.compiler.lang.base.AssertsLanguage;
 import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
 import com.inteliense.aloft.compiler.lang.base.BuildsJava;
-import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
 import com.inteliense.aloft.compiler.lang.keywords.components.AloftScreen;
 import com.inteliense.aloft.compiler.lang.keywords.elements.types.AloftScreenContainer;
 import com.inteliense.aloft.compiler.lang.keywords.elements.types.TextAloftElement;
-import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
+import com.inteliense.aloft.compiler.lang.keywords.listeners.types.AloftOnClickListener;
 import com.inteliense.aloft.compiler.lang.supporting.MountableComponent;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.types.Body;
@@ -17,7 +15,6 @@ import com.inteliense.aloft.server.html.elements.types.Page;
 import com.inteliense.aloft.server.http.supporting.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, BuildsHtml {
 
@@ -70,18 +67,10 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
 
     public void testAppend() {
         AloftScreen screen = new AloftScreen();
-        AloftScreenContainer container = new AloftScreenContainer() {
-            @Override
-            protected AloftListener[] listeners() {
-                return new AloftListener[0];
-            }
-        };
-        TextAloftElement textElement = new TextAloftElement(this.vars.getByIndex(0).getValue() + "\n\nSincerely yours,\n- Server.") {
-            @Override
-            protected AloftListener[] listeners() {
-                return new AloftListener[0];
-            }
-        };
+//        screen.appendState("__root__.test", new StringT(), "value");
+        AloftScreenContainer container = new AloftScreenContainer();
+        TextAloftElement textElement = new TextAloftElement(this.vars.getByIndex(0).getValue() + "\n\nSincerely yours,\n- Server.");
+        textElement.addListener(new AloftOnClickListener());
         container.addChild(textElement);
         screen.addChild(container);
         this.root = screen;
@@ -106,7 +95,6 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
     private Body buildBody() {
         testAppend();
         Body body = new Body();
-        String[] arr = new String[]{"__root__"};
         body.addChild(root.html());
         return body;
     }
