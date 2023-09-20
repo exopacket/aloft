@@ -1,4 +1,10 @@
 package com.inteliense.aloft.compiler.lang.supporting;
 
-public class MountPoint {
+import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
+
+public class MountPoint extends AloftComponent {
+    @Override
+    public String getName() {
+        return null;
+    }
 }
