@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class AloftScreenContainer extends AloftElement {
 
     public AloftScreenContainer() {
-        super("__screen_");
+        super("__screen__");
         this.friendlyId = "__root__";
         init();
     }

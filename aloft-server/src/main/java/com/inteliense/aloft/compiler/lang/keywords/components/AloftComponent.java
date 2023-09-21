@@ -6,6 +6,8 @@ import com.inteliense.aloft.compiler.lang.types.base.T;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.http.supporting.VariableNode;
 import com.inteliense.aloft.server.http.supporting.VariableTree;
+import com.inteliense.aloft.utils.encryption.Rand;
+import com.inteliense.aloft.utils.encryption.SHA;
 import com.inteliense.aloft.utils.global.__;
 
 import java.util.ArrayList;
@@ -16,12 +18,19 @@ public class AloftComponent implements BuildsHtml {
     private int currentIndex = 0;
     private String name = null;
     private VariableTree state = new VariableTree();
+    protected String veryUniqueId = null;
 
     protected ArrayList<AloftListener> listeners = new ArrayList<>();
 
-    public AloftComponent() { this.name = getName(); }
+    public AloftComponent() {
+        this.name = getName();
+        veryUniqueId = createId(String.valueOf(System.currentTimeMillis()));
+    }
 
-    public AloftComponent(String name) { this.name = name; }
+    public AloftComponent(String name) {
+        this.name = name;
+        veryUniqueId = createId(String.valueOf(System.currentTimeMillis()));
+    }
 
     public void addChild(AloftComponent component) {
 //        VariableTree tree = this.getState().getByPath(component.getName()).getValue();
@@ -68,9 +77,17 @@ public class AloftComponent implements BuildsHtml {
         return this.name;
     }
 
+    protected String createId(String seed) {
+        String v = this.getClass().getName() + "_" + this.name + "_" + seed + "_" + __.hex(Rand.secure(32));
+        String hash = SHA.getSha1(v);
+        return Rand.caseify(hash);
+    }
+
     @Override
     public HtmlElement html() {
         if(this.children.size() == 1) {
+            HtmlElement element = children.get(0).html();
+            element.addAttribute("data-aid", Rand.caseify(SHA.getSha1(getName())));
             return children.get(0).html();
         } else if(this.children.size() > 1) {
             HtmlElement container = new HtmlElement() {
@@ -80,7 +97,9 @@ public class AloftComponent implements BuildsHtml {
                 }
             };
             for(int i=0; i< children.size(); i++) {
-                container.addChild(children.get(i).html());
+                HtmlElement element = children.get(i).html();
+                element.addAttribute("data-aid", Rand.caseify(SHA.getSha1(getName())));
+                container.addChild(element);
             }
             container.addChild(listeners.get(0).getObject().getJs());
             return container;

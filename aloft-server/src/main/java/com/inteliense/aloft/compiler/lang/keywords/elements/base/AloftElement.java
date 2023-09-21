@@ -14,7 +14,6 @@ import java.util.Arrays;
 public abstract class AloftElement extends AloftComponent implements BuildsHtml {
 
     protected String friendlyId = null;
-    protected String uniqueId = null;
     protected String name = null;
 
     protected ArrayList<AloftElement> children = new ArrayList<>();
@@ -41,7 +40,7 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
     }
 
     protected void init() {
-        uniqueId = (uniqueId == null) ? createId(String.valueOf(System.currentTimeMillis())) : uniqueId;
+        veryUniqueId = (veryUniqueId == null) ? createId(String.valueOf(System.currentTimeMillis())) : veryUniqueId;
         refresh();
     }
 
@@ -54,7 +53,7 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
     protected abstract boolean acceptsChild();
 
     protected String id() {
-        return this.friendlyId == null ? this.uniqueId : this.friendlyId;
+        return this.friendlyId == null ? this.veryUniqueId : this.friendlyId;
     }
 
     protected void appendChild(AloftElement child) {
@@ -97,12 +96,6 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
         this.requiresBuilder = requiresBuilder();
         this.acceptsBuilder = this.requiresBuilder || acceptsBuilder();
         if(this.requiresBuilder || this.acceptsBuilder) this.builder = builder;
-    }
-
-    private String createId(String seed) {
-        String v = this.getClass().getName() + "_" + this.name + "_" + seed + "_" + __.hex(Rand.secure(32));
-        String hash = SHA.getSha1(v);
-        return Rand.caseify(hash);
     }
 
     protected HtmlElement createElement(String key) {

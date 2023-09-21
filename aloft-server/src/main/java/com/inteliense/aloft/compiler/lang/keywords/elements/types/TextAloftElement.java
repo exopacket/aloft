@@ -4,12 +4,15 @@ import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptObject;
 import com.inteliense.aloft.server.html.elements.types.Content;
+import com.inteliense.aloft.utils.encryption.Rand;
+import com.inteliense.aloft.utils.encryption.SHA;
 
 import java.util.ArrayList;
 
 public class TextAloftElement extends AloftElement {
 
     private ArrayList<TextAloftElement> textSpans = new ArrayList<>();
+    protected String veryUniqueId = null;
     private String text = "";
 
     public TextAloftElement(String text) {
@@ -28,7 +31,7 @@ public class TextAloftElement extends AloftElement {
     public TextAloftElement(String text, String friendlyId, String uniqueId) {
         super();
         this.friendlyId = friendlyId;
-        this.uniqueId = uniqueId;
+        this.veryUniqueId = uniqueId;
         this.text = text;
         init();
     }
@@ -40,10 +43,13 @@ public class TextAloftElement extends AloftElement {
     @Override
     public HtmlElement html() {
         HtmlElement root = createElement("p");
+        root.addAttribute("data-aid", Rand.caseify(SHA.getSha1(getName())));
         Content rootContent = new Content(text);
         root.addChild(rootContent);
         for(int i=0; i<textSpans.size(); i++) {
-            root.addChild(textSpans.get(i).html());
+            HtmlElement element = textSpans.get(i).html();
+            element.addAttribute("data-aid", Rand.caseify(SHA.getSha1(getName())));
+            root.addChild(element);
         }
         root.addChild(listeners.get(0).getObject().getJs());
         return root;
@@ -51,7 +57,7 @@ public class TextAloftElement extends AloftElement {
 
     @Override
     protected String name() {
-        return "Text";
+        return "__text__";
     }
 
     @Override
