@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public abstract class JavaScriptObject {
 
     private ArrayList<Object> lines = new ArrayList<>();
+    private int slotIndex = -1;
 
     public JavaScriptObject build() {
         this.lines.clear();
@@ -16,13 +17,14 @@ public abstract class JavaScriptObject {
 
     protected abstract void create();
 
-    public void setSlot(JavaScriptObject slot) {
+    public JavaScriptObject setSlot(JavaScriptObject slot) {
         for(int i=0; i<lines.size(); i++) {
-            if(!__.isset(lines.get(i))) {
+            if(slotIndex == i) {
                 lines.set(i, slot);
                 break;
             }
         }
+        return slot;
     }
 
     public JavaScriptElement getJs() {
@@ -37,6 +39,7 @@ public abstract class JavaScriptObject {
     }
 
     protected void slot() {
+        slotIndex = this.lines.size();
         this.lines.add(null);
     }
 
