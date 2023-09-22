@@ -16,6 +16,7 @@ public class Route {
 
     private String requestTypeStr;
     private RequestType requestType;
+    private AloftRequestType aloftRequestType;
 
     private VariableTree vars;
 
