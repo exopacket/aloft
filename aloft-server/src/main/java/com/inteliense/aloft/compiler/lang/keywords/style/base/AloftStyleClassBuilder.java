@@ -34,6 +34,7 @@ public class AloftStyleClassBuilder {
                 AloftStyleClass newClass = new AloftStyleClass(A32.casified(toMergeHash), new AloftStyle(toMerge.get(i).getStyles()));
                 classes.add(newClass);
                 matches.add(newClass);
+                break;
             }
         }
         return new ArrayList[]{matches, classes};
