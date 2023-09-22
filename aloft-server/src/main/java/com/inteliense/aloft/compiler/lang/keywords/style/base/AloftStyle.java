@@ -77,7 +77,7 @@ public class AloftStyle implements BuildsCss {
     public String css() {
         String v = "";
         for(int i=0;i<styles.size(); i++) {
-            v += styles.get(i).getCss() + " ";
+            v += styles.get(i).css() + " ";
         }
         return v;
     }

@@ -15,7 +15,7 @@ import com.inteliense.aloft.utils.global.__;
 
 import java.util.ArrayList;
 
-public class AloftComponent implements BuildsHtml, BuildsCss {
+public class AloftComponent implements BuildsHtml {
 
     private ArrayList<AloftComponent> children = new ArrayList<>();
     private int currentIndex = 0;

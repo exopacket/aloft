@@ -1,8 +1,9 @@
 package com.inteliense.aloft.compiler.lang.keywords.style.base;
 
+import com.inteliense.aloft.compiler.lang.base.BuildsCss;
 import com.inteliense.aloft.utils.encryption.SHA;
 
-public class AloftStylePair {
+public class AloftStylePair implements BuildsCss {
 
     private String property;
     private String value;
@@ -35,11 +36,11 @@ public class AloftStylePair {
         return important;
     }
 
-    public String getCss() {
+    public String css() {
         return property + ":" + value + ((important) ? " !important" : "") + ";";
     }
 
     public String getHash() {
-        return SHA.get256(getCss());
+        return SHA.get256(css());
     }
 }

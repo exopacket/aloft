@@ -10,14 +10,12 @@ import java.util.ArrayList;
 
 // add 'default MyElement.color: #ff000' to syntax
 
-public class AloftTheme implements BuildsJava, BuildsCss {
+public class AloftTheme implements BuildsJava {
 
     private AloftStyleClassBuilder classBuilder = new AloftStyleClassBuilder();
     private ArrayList<AloftStyleClass> classes = new ArrayList<>();
 
-    public AloftTheme() {
-
-    }
+    public AloftTheme() { }
 
     public ArrayList<AloftStyleClass> mergeByHash(ArrayList<AloftStyleHashList> hashes) {
             ArrayList[] v = this.classBuilder.merge(this.classes, hashes);

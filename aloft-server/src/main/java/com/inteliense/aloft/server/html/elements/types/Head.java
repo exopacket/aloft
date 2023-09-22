@@ -17,7 +17,7 @@ public class Head extends HtmlElement {
     }
 
     public void addCss(AloftStyleCss css) {
-        this.addChild(HtmlElement.builder("style", css.toString()));
+        this.addChild(HtmlElement.builder("style", css.css()));
     }
 
     public void addFavicon(String filepath) {

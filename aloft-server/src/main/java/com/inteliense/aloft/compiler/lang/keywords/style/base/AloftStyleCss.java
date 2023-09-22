@@ -1,8 +1,10 @@
 package com.inteliense.aloft.compiler.lang.keywords.style.base;
 
+import com.inteliense.aloft.compiler.lang.base.BuildsCss;
+
 import java.util.ArrayList;
 
-public class AloftStyleCss {
+public class AloftStyleCss implements BuildsCss {
 
     private ArrayList<AloftStyleClass> classes = new ArrayList<>();
 
@@ -20,7 +22,7 @@ public class AloftStyleCss {
         return this.classes.size();
     }
 
-    public String toString() {
+    public String css() {
         String v = "";
         for(int i=0; i<size(); i++) {
             v += this.classes.get(i).css();
