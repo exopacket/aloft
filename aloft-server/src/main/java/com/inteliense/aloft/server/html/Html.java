@@ -6,6 +6,10 @@ import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.lib._AloftComponent;
 import com.inteliense.aloft.compiler.lang.lib._AloftElement;
 import com.inteliense.aloft.compiler.lang.lib._AloftPage;
+import com.inteliense.aloft.server.http.supporting.Response;
+import com.sun.net.httpserver.HttpExchange;
+
+import java.util.ArrayList;
 
 public class Html {
 
@@ -17,7 +21,20 @@ public class Html {
         this.object = object;
     }
 
-    public String get() {
+    public Response get(HttpExchange t) {
+        return buildResponse(t);
+    }
+
+    private Response buildResponse(HttpExchange t) {
+        Response response = new Response(t, string(), 200);
+        ArrayList<String> values = new ArrayList<>();
+        values.add("text/html");
+        values.add("charset=utf-8");
+        response.addHeader("Content-Type", values);
+        return response;
+    }
+
+    public String string() {
         if(type == RenderType.PAGE && object.getClass() == AloftPage.class)
             return renderPage((AloftPage) object);
         if(type == RenderType.PAGE && object.getClass() == _AloftPage.class)

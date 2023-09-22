@@ -10,8 +10,6 @@ import com.sun.net.httpserver.HttpExchange;
 public class Route {
 
     private String id;
-    private boolean valid = false;
-
     private RoutePath path;
 
     private String requestTypeStr;
@@ -26,7 +24,6 @@ public class Route {
         this.requestTypeStr = typeStr;
         this.requestType = type;
         this.id = BaseX.encode64(SHA.Bites.getSha1(typeStr.toUpperCase() + ":" + path));
-        this.valid = endpointExists();
     }
 
     public Route(String path, String typeStr) {
@@ -36,7 +33,6 @@ public class Route {
         this.requestTypeStr = typeStr;
         this.requestType = getRequestType(typeStr);
         this.id = BaseX.encode64(SHA.Bites.getSha1(typeStr + ":" + path));
-        this.valid = endpointExists();
     }
 
     public Route(String path, RequestType type, String typeStr, VariableTree vars) {
@@ -45,7 +41,7 @@ public class Route {
         this.requestTypeStr = typeStr;
         this.requestType = type;
         this.id = BaseX.encode64(SHA.Bites.getSha1(typeStr.toUpperCase() + ":" + path));
-        this.valid = endpointExists();
+        this.vars = vars;
     }
 
     public Route(String path, String typeStr, VariableTree vars) {
@@ -55,11 +51,7 @@ public class Route {
         this.requestTypeStr = typeStr;
         this.requestType = getRequestType(typeStr);
         this.id = BaseX.encode64(SHA.Bites.getSha1(typeStr + ":" + path));
-        this.valid = endpointExists();
-    }
-
-    public boolean isValid() {
-        return valid;
+        this.vars = vars;
     }
 
     public String getId() {
@@ -67,8 +59,9 @@ public class Route {
     }
 
     public Response go(HttpExchange t, Endpoint endpoint) {
-        if(!valid) return new Response(t, "Page not found...", 404);
-        return new Response(t, HtmlRenderer.render(((AloftPage) endpoint)).get(), 200);
+        if(endpoint.getClass() == AloftPage.class)
+            return HtmlRenderer.render((AloftPage) endpoint).get(t);
+        return new Response(t, "Page not found", 404);
     }
 
     public RequestType getRequestType() {
@@ -81,11 +74,6 @@ public class Route {
 
     public RoutePath getPath() {
         return path;
-    }
-
-
-    private boolean endpointExists() {
-        return true;
     }
 
     private RequestType getRequestType(String reqType) {

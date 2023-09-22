@@ -85,7 +85,11 @@ public class Main {
     }
 
     private static AppConfig loadConfig() {
-        return new AppConfig();
+        try {
+            return new AppConfig();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

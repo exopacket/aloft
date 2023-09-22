@@ -20,6 +20,7 @@ public class AppCache {
         routes.add(new Route("/images", "GET"));
         routes.add(new Route("/api/*", "GET", vars));
         routes.add(new Route("/", "GET"));
+        routes.add(new Route("/js/bootstrap.js", "GET"));
         routeCache = new RouteCache(routes);
     }
 

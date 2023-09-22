@@ -4,8 +4,8 @@ import com.inteliense.aloft.utils.global.__;
 
 public class JavaScript {
 
-    JavaScriptWriterType type;
-    JavaScriptBuilder js;
+    private JavaScriptWriterType type;
+    private JavaScriptBuilder js;
 
     public JavaScript(JavaScriptWriterType type, JavaScriptBuilder js) {
         this.type = type;

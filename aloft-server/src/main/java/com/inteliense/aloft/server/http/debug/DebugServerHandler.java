@@ -30,11 +30,8 @@ public class DebugServerHandler implements HttpHandler {
     private void test(HttpExchange t) throws Exception {
         TextAloftElement textElement = new TextAloftElement("Hello World!\n\nSincerely yours,\n- Server.") {
         };
-        String response = HtmlRenderer.render(textElement).get();
-        t.sendResponseHeaders(200, response.length());
-        OutputStream os = t.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+        Response response = HtmlRenderer.render(textElement).get(t);
+        response.send();
     }
 
     private void app(HttpExchange t) {

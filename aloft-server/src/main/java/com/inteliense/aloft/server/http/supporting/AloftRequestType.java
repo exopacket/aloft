@@ -8,5 +8,7 @@ public enum AloftRequestType {
     CLIENT_SIDE_ASYNC_API,
     PUBLIC_ASYNC_API,
     JAVASCRIPT_FILE,
-    STYLESHEET_FILE
+    STYLESHEET_FILE,
+    IMAGE,
+    FILE
 }

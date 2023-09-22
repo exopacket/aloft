@@ -1,5 +1,6 @@
 package com.inteliense.aloft.server.http.supporting;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Header {
@@ -8,6 +9,13 @@ public class Header {
     private String[] values;
     private int maxValues;
     private int currentIndex = 0;
+
+    public Header(String key, String value) {
+        this.key = key;
+        ArrayList<String> values = new ArrayList<>();
+        values.add(value);
+        setVars(key, values, 1);
+    }
 
     public Header(String key, List<String> values) {
         setVars(key, values, 1);

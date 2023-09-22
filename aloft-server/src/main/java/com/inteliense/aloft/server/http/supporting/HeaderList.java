@@ -19,4 +19,18 @@ public class HeaderList {
         return false;
     }
 
+    public String[] get(String header) {
+        for(int i=0; i< headers.size(); i++) {
+            if(__.same(headers.get(i).getKey(), header)) return headers.get(i).getArray();
+        }
+        return new String[]{};
+    }
+
+    public String next(String header) {
+        for(int i=0; i< headers.size(); i++) {
+            if(__.same(headers.get(i).getKey(), header)) return headers.get(i).next();
+        }
+        return null;
+    }
+
 }

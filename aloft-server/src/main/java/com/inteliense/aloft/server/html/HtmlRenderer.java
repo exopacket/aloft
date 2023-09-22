@@ -3,6 +3,7 @@ package com.inteliense.aloft.server.html;
 import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.AloftPage;
+import com.inteliense.aloft.server.http.supporting.Endpoint;
 
 public class HtmlRenderer {
 

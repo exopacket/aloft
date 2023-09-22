@@ -43,6 +43,17 @@ public class AppConfig {
 
     public AppConfig() {
         //FIXME ....FOR TESTING
+        File file = new File("/Users/ryanfitzgerald/aloft/aloft-cli/my-project/my-project.json");
+        if(!file.exists()) throw new RuntimeException("Config does not exist");
+        Scanner scnr = null;
+        try {
+            scnr = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        String content = "";
+        while(scnr.hasNextLine()) content += scnr.nextLine();
+        parseObjects(JSON.getObject(content));
         MiddlewareList list = new MiddlewareList();
         HasHeaders m = new HasHeaders(new String[]{"X-Test-Header"});
         m.appendAppliesTo(ApplyToType.PUBLIC_API, new Route[]{new Route("/index/main", "GET")});
@@ -67,6 +78,10 @@ public class AppConfig {
 
     public Route getRoute(String path, String requestType) {
         return this.cache.fetchRoute(path, requestType);
+    }
+
+    public RoutesConfig getRoutesConfig() {
+        return routes;
     }
 
     private void parseObjects(JSONObject json) {

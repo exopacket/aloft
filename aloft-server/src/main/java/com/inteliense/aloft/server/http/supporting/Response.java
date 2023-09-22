@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpExchange;
 import org.json.simple.JSONObject;
 
 import java.io.OutputStream;
+import java.util.List;
 
 public class Response {
 
@@ -12,6 +13,7 @@ public class Response {
     private int code;
     private String content;
     private int len;
+    private HeaderList headers = new HeaderList();
 
     public Response(HttpExchange t, String content, int code) {
         this.t = t;
@@ -33,7 +35,6 @@ public class Response {
         this.content = JSON.getString(content);
         this.len = this.content.length();
     }
-
     public boolean send() {
         try {
             t.sendResponseHeaders(code, len);
@@ -42,6 +43,14 @@ public class Response {
             os.close();
             return true;
         } catch (Exception e) { return false; }
+    }
+
+    public void addHeader(String key, String value) {
+        headers.addHeader(new Header(key, value));
+    }
+
+    public void addHeader(String key, List<String> value) {
+        headers.addHeader(new Header(key, value));
     }
 
     private String strFromArr(String[] arr) {

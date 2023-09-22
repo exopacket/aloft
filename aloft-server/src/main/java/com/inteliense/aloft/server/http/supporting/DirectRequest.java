@@ -25,10 +25,10 @@ public class DirectRequest {
         this.headers = headers;
         this.client = client;
         this.config = config;
-        this.requestType = getRequestType();
-        this.internalRequestType = getInternalRequestType();
         String path = t.getRequestURI().getPath();
         if(path.length() > 256) exit("Request path length is too large.", 403);
+        this.requestType = getRequestType();
+        this.internalRequestType = getInternalRequestType(path);
         this.route = config.getRoute(path, t.getRequestMethod().toUpperCase());
         if(!__.isset(this.route)) exit("Page not found.", 404);
         this.endpoint = Endpoint.create(path, route, requestType, internalRequestType, config.getTheme());
@@ -54,8 +54,8 @@ public class DirectRequest {
         return middlewareList.validateAgainstMiddleware(params);
     }
 
-    private AloftRequestType getInternalRequestType() {
-        return AloftRequestType.PUBLIC_API;
+    private AloftRequestType getInternalRequestType(String path) {
+        return AloftRequestTypeParser.get(headers, path, requestType, config);
     }
 
     private RequestType getRequestType() {
