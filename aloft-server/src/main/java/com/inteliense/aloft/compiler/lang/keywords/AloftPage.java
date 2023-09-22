@@ -4,9 +4,13 @@ import com.inteliense.aloft.compiler.lang.base.AssertsLanguage;
 import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
 import com.inteliense.aloft.compiler.lang.base.BuildsJava;
 import com.inteliense.aloft.compiler.lang.keywords.components.AloftScreen;
+import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.types.AloftScreenContainer;
 import com.inteliense.aloft.compiler.lang.keywords.elements.types.TextAloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.listeners.types.AloftOnClickListener;
+import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleClass;
+import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleCss;
+import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleHashList;
 import com.inteliense.aloft.compiler.lang.supporting.MountableComponent;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.types.Body;
@@ -22,9 +26,14 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
     private String title = null;
     private ArrayList<Meta> meta = new ArrayList<>();
     private MountableComponent root;
+    private AloftStyleCss css = new AloftStyleCss();
 
     public AloftPage(Route route, RequestType type, AloftRequestType internalType, VariableTree vars) {
         super(route, type, internalType, vars);
+    }
+
+    public AloftPage(Route route, RequestType type, AloftRequestType internalType, VariableTree vars, AloftTheme theme) {
+        super(route, type, internalType, vars, theme);
     }
 
 //    public AloftPage(Route route) {
@@ -71,9 +80,21 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
         AloftScreenContainer container = new AloftScreenContainer();
         TextAloftElement textElement = new TextAloftElement(this.vars.getByIndex(0).getValue() + "\n\nSincerely yours,\n- Server.");
         textElement.addListener(new AloftOnClickListener());
+        TextAloftElement textSpan = new TextAloftElement("THIS IS A TEST PAGE.");
+        textElement.addSpan(textSpan);
+        textElement.addStyle("color", "blue");
+        textElement.addStyle("font-weight", "bold");
+        textElement.addStyle("text-decoration", "underline");
+        textElement.addStyle("font-style", "italic");
+        textElement.setClasses(this.theme.mergeByHash(textElement.getStyle().getHashes()));
         container.addChild(textElement);
         screen.addChild(container);
         this.root = screen;
+        this.root.appendCss(this.css);
+    }
+
+    public AloftStyleCss getCss() {
+        return css;
     }
 
     public String getTitle() {
@@ -85,10 +106,16 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
         return buildPage();
     }
 
+
+    private void buildCss() {
+        this.root.appendCss(this.css);
+    }
+
     private Page buildPage() {
         Page page = new Page();
+        Body body = buildBody();
         page.addChild(buildHead("Hello World!", null, new ArrayList<>()));
-        page.addChild(buildBody());
+        page.addChild(body);
         return page;
     }
 
@@ -102,6 +129,7 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
     private Head buildHead(String title, String favicon, ArrayList<AloftPage.Meta> meta) {
         Head head = new Head();
         head.addTitle(title);
+        head.addCss(css);
         return head;
     }
 

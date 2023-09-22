@@ -1,6 +1,7 @@
 package com.inteliense.aloft.application.config;
 
 import com.inteliense.aloft.application.cache.AppCache;
+import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.server.http.middleware.base.ApplyToType;
 import com.inteliense.aloft.server.http.middleware.types.HasHeaders;
 import com.inteliense.aloft.server.http.supporting.Route;
@@ -35,6 +36,9 @@ public class AppConfig {
     //MIDDLEWARE
     private MiddlewareList middleware;
 
+    //CLASSES AND STYLES
+    private AloftTheme theme;
+
     public MiddlewareList getMiddleware() { return this.middleware; }
 
     public AppConfig() {
@@ -45,6 +49,7 @@ public class AppConfig {
         list.appendAppMiddleware(m);
         this.middleware = list;
         cache = new AppCache();
+        theme = new AloftTheme();
     }
 
     public AppConfig(String configPath) throws FileNotFoundException {
@@ -54,6 +59,10 @@ public class AppConfig {
         String content = "";
         while(scnr.hasNextLine()) content += scnr.nextLine();
         parseObjects(JSON.getObject(content));
+    }
+
+    public AloftTheme getTheme() {
+        return this.theme;
     }
 
     public Route getRoute(String path, String requestType) {

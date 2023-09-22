@@ -31,7 +31,7 @@ public class DirectRequest {
         if(path.length() > 256) exit("Request path length is too large.", 403);
         this.route = config.getRoute(path, t.getRequestMethod().toUpperCase());
         if(!__.isset(this.route)) exit("Page not found.", 404);
-        this.endpoint = Endpoint.create(path, route, requestType, internalRequestType);
+        this.endpoint = Endpoint.create(path, route, requestType, internalRequestType, config.getTheme());
     }
 
     private RequestParams buildParams() {

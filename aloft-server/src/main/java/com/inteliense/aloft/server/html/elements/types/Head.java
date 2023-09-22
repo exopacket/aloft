@@ -1,5 +1,6 @@
 package com.inteliense.aloft.server.html.elements.types;
 
+import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleCss;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptElement;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptFile;
@@ -13,6 +14,10 @@ public class Head extends HtmlElement {
 
     public void addTitle(String title) {
         this.addChild(HtmlElement.builder("title", title));
+    }
+
+    public void addCss(AloftStyleCss css) {
+        this.addChild(HtmlElement.builder("style", css.toString()));
     }
 
     public void addFavicon(String filepath) {

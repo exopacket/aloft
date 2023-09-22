@@ -4,6 +4,7 @@ import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptObject;
 import com.inteliense.aloft.server.html.elements.types.Content;
+import com.inteliense.aloft.utils.encryption.A32;
 import com.inteliense.aloft.utils.encryption.Rand;
 import com.inteliense.aloft.utils.encryption.SHA;
 
@@ -43,15 +44,19 @@ public class TextAloftElement extends AloftElement {
     @Override
     public HtmlElement html() {
         HtmlElement root = createElement("p");
-        root.addAttribute("data-aid", Rand.caseify(SHA.getSha1(getName())));
+        root.addAttribute("data-aid", A32.casified(SHA.getSha1(getName())));
+        for(int i=0; i<this.classes.size(); i++) {
+            root.addAttribute("class", this.classes.get(i).getClassName());
+        }
         Content rootContent = new Content(text);
         root.addChild(rootContent);
         for(int i=0; i<textSpans.size(); i++) {
             HtmlElement element = textSpans.get(i).html();
-            element.addAttribute("data-aid", Rand.caseify(SHA.getSha1(getName())));
             root.addChild(element);
         }
-        root.addChild(listeners.get(0).getObject().getJs());
+        for(int i=0; i< listeners.size(); i++) {
+            root.addChild(listeners.get(i).getObject().getJs());
+        }
         return root;
     }
 
