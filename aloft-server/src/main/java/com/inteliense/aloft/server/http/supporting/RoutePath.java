@@ -8,7 +8,7 @@ public class RoutePath {
 
     private ArrayList<RouteSegment> segments = new ArrayList<>();
     private boolean hasWildcard = false;
-    private VariableTree vars;
+    private VariableTree vars = new VariableTree();
 
     public RoutePath(String path) {
         this.segments.addAll(getList(path));

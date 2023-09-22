@@ -1,20 +1,20 @@
-package com.inteliense.aloft.server.html.elements.js;
+package com.inteliense.aloft.server.html.elements.css;
 
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 
-public class JavaScriptFile extends HtmlElement {
+public class StylesheetFile extends HtmlElement {
 
     private String value;
     private String path;
 
     @Override
     protected String getKey() {
-        return "script";
+        return "link";
     }
 
-    public JavaScriptFile(String endpoint, String js) {
-        addAttribute("type", "application/javascript");
-        addAttribute("src", endpoint);
+    public StylesheetFile(String endpoint, String js) {
+        addAttribute("rel", "stylesheet");
+        addAttribute("href", endpoint);
         path = endpoint;
         value = js;
     }

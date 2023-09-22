@@ -2,6 +2,8 @@ package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftIconPlacement;
+import com.inteliense.aloft.compiler.lang.lib.ModuleElementAttributes;
+import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.types.Content;
 
@@ -21,10 +23,11 @@ public class ButtonAloftElement extends AloftElement {
     }
 
     @Override
-    public HtmlElement html() {
+    public HtmlElement html(StyleModule module) {
         HtmlElement root = createElement("button");
         Content content = new Content(this.text);
         root.addChild(content);
+        module.get(this.getClass()).apply(root, getModuleSubclasses());
         for(int i=0; i< listeners.size(); i++) {
             root.addChild(listeners.get(i).getObject().getJs());
         }

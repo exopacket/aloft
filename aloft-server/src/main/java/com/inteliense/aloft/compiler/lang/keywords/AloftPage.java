@@ -1,5 +1,6 @@
 package com.inteliense.aloft.compiler.lang.keywords;
 
+import com.inteliense.aloft.application.config.AppConfig;
 import com.inteliense.aloft.compiler.lang.base.AssertsLanguage;
 import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
 import com.inteliense.aloft.compiler.lang.base.BuildsJava;
@@ -12,6 +13,7 @@ import com.inteliense.aloft.compiler.lang.keywords.listeners.types.AloftOnClickL
 import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleClass;
 import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleCss;
 import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleHashList;
+import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.compiler.lang.supporting.MountableComponent;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.types.Body;
@@ -34,8 +36,8 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
         super(route, type, internalType, vars);
     }
 
-    public AloftPage(Route route, RequestType type, AloftRequestType internalType, VariableTree vars, AloftTheme theme) {
-        super(route, type, internalType, vars, theme);
+    public AloftPage(Route route, RequestType type, AloftRequestType internalType, VariableTree vars, AppConfig config) {
+        super(route, type, internalType, vars, config);
     }
 
 //    public AloftPage(Route route) {
@@ -91,6 +93,7 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
         textElement.setClasses(this.theme.mergeByHash(textElement.getStyle().getHashes()));
         container.addChild(textElement);
         ButtonAloftElement btn = new ButtonAloftElement("This button does nothing.");
+        btn.addSubclass("primary");
         container.addChild(btn);
         screen.addChild(container);
         this.root = screen;
@@ -106,7 +109,7 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
     }
 
     @Override
-    public HtmlElement html() {
+    public HtmlElement html(StyleModule module) {
         return buildPage();
     }
 
@@ -126,7 +129,7 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
     private Body buildBody() {
         testAppend();
         Body body = new Body();
-        body.addChild(root.html());
+        body.addChild(root.html(this.theme.getStyleModule()));
         return body;
     }
 
@@ -134,6 +137,9 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
         Head head = new Head();
         head.addTitle(title);
         head.addCss(css);
+        for(int i=0; i<this.staticFiles.size(); i++) {
+            head.addChild(this.staticFiles.get(i));
+        }
         return head;
     }
 

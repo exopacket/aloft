@@ -4,6 +4,7 @@ import com.inteliense.aloft.compiler.lang.base.BuildsCss;
 import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
 import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
 import com.inteliense.aloft.compiler.lang.keywords.style.base.*;
+import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.compiler.lang.types.base.T;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.http.supporting.VariableNode;
@@ -23,6 +24,7 @@ public class AloftComponent implements BuildsHtml {
     private VariableTree state = new VariableTree();
     protected String veryUniqueId = null;
 
+    protected ArrayList<String> moduleSubclasses = new ArrayList<>();
     protected ArrayList<AloftStyleClass> classes = new ArrayList<>();
     protected AloftStyle style = new AloftStyle();
     protected ArrayList<AloftListener> listeners = new ArrayList<>();
@@ -49,7 +51,7 @@ public class AloftComponent implements BuildsHtml {
     public AloftStyleCss appendCss(AloftStyleCss css) {
         for(int i=0; i< children.size(); i++) {
             AloftComponent component = children.get(i);
-            ArrayList<AloftStyleClass> classes = component.getClasses();
+            ArrayList<AloftStyleClass> classes = component.getAloftClasses();
             for(int x=0; x<classes.size(); x++) css.append(classes.get(x));
             css = component.appendCss(css);
         }
@@ -68,7 +70,7 @@ public class AloftComponent implements BuildsHtml {
         this.classes = classes;
     }
 
-    public ArrayList<AloftStyleClass> getClasses() {
+    public ArrayList<AloftStyleClass> getAloftClasses() {
         return this.classes;
     }
 
@@ -78,6 +80,12 @@ public class AloftComponent implements BuildsHtml {
 
     public AloftStyle getStyle() {
         return this.style;
+    }
+
+    protected String[] getModuleSubclasses() {
+        String[] arr = new String[moduleSubclasses.size()];
+        moduleSubclasses.toArray(arr);
+        return arr;
     }
 
     public void appendState(String path, String key, T t, Object v) {
@@ -102,6 +110,10 @@ public class AloftComponent implements BuildsHtml {
         return component;
     }
 
+    public void addSubclass(String key) {
+        this.moduleSubclasses.add(key);
+    }
+
     public String getName() {
         return this.name;
     }
@@ -113,11 +125,11 @@ public class AloftComponent implements BuildsHtml {
     }
 
     @Override
-    public HtmlElement html() {
+    public HtmlElement html(StyleModule module) {
         if(this.children.size() == 1) {
-            HtmlElement element = children.get(0).html();
+            HtmlElement element = children.get(0).html(module);
             element.addAttribute("data-aid", A32.casified(SHA.getSha1(getName())));
-            return children.get(0).html();
+            return element;
         } else if(this.children.size() > 1) {
             HtmlElement container = new HtmlElement() {
                 @Override
@@ -126,7 +138,7 @@ public class AloftComponent implements BuildsHtml {
                 }
             };
             for(int i=0; i< children.size(); i++) {
-                HtmlElement element = children.get(i).html();
+                HtmlElement element = children.get(i).html(module);
                 element.addAttribute("data-aid", A32.casified(SHA.getSha1(getName())));
                 container.addChild(element);
             }

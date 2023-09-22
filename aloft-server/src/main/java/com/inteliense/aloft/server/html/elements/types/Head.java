@@ -33,12 +33,4 @@ public class Head extends HtmlElement {
         }));
     }
 
-    public void addJs(JavaScriptElement element) {
-        addChild(element);
-    }
-
-    public void addJs(JavaScriptFile file) {
-        addChild(file);
-    }
-
 }

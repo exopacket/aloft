@@ -37,14 +37,14 @@ public class MountableComponent extends AloftComponent {
         String current = null;
         if(arr.size() > 0) current = arr.get(0);
         MountableComponent toMount = (__.isset(current)) ? child.getActive(current) : null;
-        if(components.size() == 1) return components.get(0).html();
+        if(components.size() == 1) return components.get(0).html(null);
         for(int i=0; i< components.size(); i++) {
             AloftComponent component = components.get(i);
             if(__.isset(toMount) && component instanceof MountPoint) {
                 arr.remove(0);
-                root.addChild(toMount.get(arr, toMount.html()));
+                root.addChild(toMount.get(arr, toMount.html(null)));
             } else {
-                root.addChild(component.html());
+                root.addChild(component.html(null));
             }
         }
         return root;

@@ -3,6 +3,7 @@ package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
+import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.types.Content;
 
@@ -16,11 +17,11 @@ public class AloftScreenContainer extends AloftElement {
     }
 
     @Override
-    public HtmlElement html() {
+    public HtmlElement html(StyleModule styleModule) {
         HtmlElement root = createElement("div");
         root.addAttribute("style", "width:100vw; height: 100vh;");
         for(int i=0;i<children.size(); i++) {
-            root.addChild(children.get(i).html());
+            root.addChild(children.get(i).html(styleModule));
         }
         return root;
     }

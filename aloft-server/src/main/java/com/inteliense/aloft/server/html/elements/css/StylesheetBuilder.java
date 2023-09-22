@@ -1,5 +1,6 @@
-package com.inteliense.aloft.server.html.elements.js;
+package com.inteliense.aloft.server.html.elements.css;
 
+import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleCss;
 import com.inteliense.aloft.utils.global.__;
 
 import java.io.File;
@@ -7,29 +8,29 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class JavaScriptBuilder {
+public class StylesheetBuilder {
 
     private String id;
     private File file;
 
-    private ArrayList<JavaScriptObject> objects = new ArrayList<>();
-    private String jsPath;
+    private AloftStyleCss css;
+    private String stylesheetPath;
 
-    public JavaScriptBuilder(String path, File file) {
+    public StylesheetBuilder(String path, File file) {
         this.file = file;
-        this.jsPath = path;
+        this.stylesheetPath = path;
         this.id = getId();
     }
 
-    public void addObject(JavaScriptObject object) {
-        objects.add(object);
+    public void addObject(AloftStyleCss object) {
+        this.css = object;
     }
 
-    public JavaScriptElement getElement() {
+    public StylesheetElement getElement() {
         return null;
     }
 
-    public JavaScriptFile getFile() {
+    public StylesheetFile getFile() {
         if(!__.isset(file)) return null;
         if(!file.exists()) return null;
         try {
@@ -38,14 +39,14 @@ public class JavaScriptBuilder {
             while(scnr.hasNext()) {
                 builder.append(scnr.nextLine() + "\n");
             }
-            return new JavaScriptFile(id, builder.toString());
+            return new StylesheetFile(id, builder.toString());
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
     private String getId() {
-        return jsPath;
+        return stylesheetPath;
     }
 
 }

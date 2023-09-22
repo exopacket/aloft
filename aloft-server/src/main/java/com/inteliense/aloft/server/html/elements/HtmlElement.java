@@ -1,5 +1,7 @@
 package com.inteliense.aloft.server.html.elements;
 
+import com.inteliense.aloft.compiler.lang.keywords.elements.types.ButtonAloftElement;
+import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.server.html.elements.types.Content;
 import com.inteliense.aloft.utils.global.__;
 
@@ -106,7 +108,7 @@ public abstract class HtmlElement {
         if(this.getKey() == null) return "";
         String tag = "<" + this.getKey();
         tag += " " + this.buildAttributes();
-        tag += "/>";
+        tag += "></" + this.getKey() + ">";
         return tag;
     }
 

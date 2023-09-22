@@ -2,6 +2,10 @@ package com.inteliense.aloft.server.http.supporting;
 
 import com.inteliense.aloft.compiler.lang.keywords.AloftPage;
 import com.inteliense.aloft.server.html.HtmlRenderer;
+import com.inteliense.aloft.server.html.elements.css.StylesheetEndpoint;
+import com.inteliense.aloft.server.html.elements.css.StylesheetRenderer;
+import com.inteliense.aloft.server.html.elements.js.JavaScriptRenderer;
+import com.inteliense.aloft.server.html.elements.js.ScriptEndpoint;
 import com.inteliense.aloft.utils.data.BaseX;
 import com.inteliense.aloft.utils.encryption.SHA;
 import com.inteliense.aloft.utils.global.__;
@@ -61,6 +65,10 @@ public class Route {
     public Response go(HttpExchange t, Endpoint endpoint) {
         if(endpoint.getClass() == AloftPage.class)
             return HtmlRenderer.render((AloftPage) endpoint).get(t);
+        if(endpoint.getClass() == ScriptEndpoint.class)
+            return JavaScriptRenderer.render((ScriptEndpoint) endpoint).get(t);
+        if(endpoint.getClass() == StylesheetEndpoint.class)
+            return StylesheetRenderer.render((StylesheetEndpoint) endpoint).get(t);
         return new Response(t, "Page not found", 404);
     }
 

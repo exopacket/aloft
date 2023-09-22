@@ -1,9 +1,7 @@
 package com.inteliense.aloft.server.html;
 
-import com.inteliense.aloft.compiler.lang.keywords.AloftPage;
-import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
-import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.server.http.supporting.Response;
+import com.sun.net.httpserver.HttpExchange;
 
 public class StaticSourceFile {
 
@@ -17,9 +15,10 @@ public class StaticSourceFile {
         this.contentType = contentType;
     }
 
-    public Response getResponse() {
-        return null;
+    public Response get(HttpExchange t) {
+        Response resp = new Response(t, content, 200);
+        resp.addHeader("Content-Type", contentType);
+        return resp;
     }
-
 
 }

@@ -31,7 +31,7 @@ public class DirectRequest {
         this.internalRequestType = getInternalRequestType(path);
         this.route = config.getRoute(path, t.getRequestMethod().toUpperCase());
         if(!__.isset(this.route)) exit("Page not found.", 404);
-        this.endpoint = Endpoint.create(path, route, requestType, internalRequestType, config.getTheme());
+        this.endpoint = Endpoint.create(path, route, requestType, internalRequestType, config);
     }
 
     private RequestParams buildParams() {

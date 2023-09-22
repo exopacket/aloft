@@ -50,14 +50,14 @@ public class Html {
         return "";
     }
 
-    private String renderPage(AloftPage page) { return page.html().getHtml(); }
+    private String renderPage(AloftPage page) { return page.html(null).getHtml(); }
 
     private String renderComponent(AloftComponent component) {
         return "";
     }
 
     private String renderElement(AloftElement element) {
-        return element.html().getHtml();
+        return element.html(null).getHtml();
     }
 
     private String renderPage(_AloftPage page) {

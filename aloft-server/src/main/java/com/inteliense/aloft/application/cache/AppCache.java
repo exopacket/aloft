@@ -1,8 +1,13 @@
 package com.inteliense.aloft.application.cache;
 
+import com.inteliense.aloft.application.config.AppConfig;
+import com.inteliense.aloft.application.config.JavaScriptEndpointList;
 import com.inteliense.aloft.application.config.RouteList;
+import com.inteliense.aloft.application.config.StylesheetEndpointList;
 import com.inteliense.aloft.compiler.lang.types.base.V;
 import com.inteliense.aloft.compiler.lang.types.t.StringT;
+import com.inteliense.aloft.server.html.elements.css.Stylesheet;
+import com.inteliense.aloft.server.html.elements.js.JavaScript;
 import com.inteliense.aloft.server.http.supporting.Route;
 import com.inteliense.aloft.server.http.supporting.VariableTree;
 
@@ -20,8 +25,21 @@ public class AppCache {
         routes.add(new Route("/images", "GET"));
         routes.add(new Route("/api/*", "GET", vars));
         routes.add(new Route("/", "GET"));
-        routes.add(new Route("/js/bootstrap.js", "GET"));
         routeCache = new RouteCache(routes);
+    }
+
+    public void addStaticJavascript(JavaScriptEndpointList list) {
+        for(int i=0; i<list.size(); i++) {
+            JavaScript js = list.next();
+            routeCache.getRouteList().appendRoute(new Route(js.getFile().getPath(), "GET"));
+        }
+    }
+
+    public void addStaticStylesheets(StylesheetEndpointList list) {
+        for(int i=0; i<list.size(); i++) {
+            Stylesheet css = list.next();
+            routeCache.getRouteList().appendRoute(new Route(css.getFile().getPath(), "GET"));
+        }
     }
 
     public Route fetchRoute(String path, String requestType) {

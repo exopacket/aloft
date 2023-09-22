@@ -12,32 +12,28 @@ public class Response {
     private HttpExchange t;
     private int code;
     private String content;
-    private int len;
     private HeaderList headers = new HeaderList();
 
     public Response(HttpExchange t, String content, int code) {
         this.t = t;
         this.code = code;
         this.content = content;
-        this.len = this.content.length();
     }
 
     public Response(HttpExchange t, String[] content, int code) {
         this.t = t;
         this.code = code;
         this.content = strFromArr(content);
-        this.len = this.content.length();
     }
 
     public Response(HttpExchange t, JSONObject content, int code) {
         this.t = t;
         this.code = code;
         this.content = JSON.getString(content);
-        this.len = this.content.length();
     }
     public boolean send() {
         try {
-            t.sendResponseHeaders(code, len);
+            t.sendResponseHeaders(code, 0);
             OutputStream os = t.getResponseBody();
             os.write(content.getBytes());
             os.close();

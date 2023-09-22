@@ -1,6 +1,7 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
+import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptObject;
 import com.inteliense.aloft.server.html.elements.types.Content;
@@ -41,16 +42,13 @@ public class TextAloftElement extends AloftElement {
     }
 
     @Override
-    public HtmlElement html() {
+    public HtmlElement html(StyleModule module) {
         HtmlElement root = createElement("p");
         root.addAttribute("data-aid", A32.casified(SHA.getSha1(getName())));
-        for(int i=0; i<this.classes.size(); i++) {
-            root.addAttribute("class", this.classes.get(i).getClassName());
-        }
         Content rootContent = new Content(text);
         root.addChild(rootContent);
         for(int i=0; i<textSpans.size(); i++) {
-            HtmlElement element = textSpans.get(i).html();
+            HtmlElement element = textSpans.get(i).html(module);
             root.addChild(element);
         }
         for(int i=0; i< listeners.size(); i++) {
