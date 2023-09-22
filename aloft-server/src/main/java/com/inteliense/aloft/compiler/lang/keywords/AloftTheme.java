@@ -15,12 +15,22 @@ public class AloftTheme implements BuildsJava {
     private AloftStyleClassBuilder classBuilder = new AloftStyleClassBuilder();
     private ArrayList<AloftStyleClass> classes = new ArrayList<>();
 
+    private boolean useBootstrap = false;
+
     public AloftTheme() { }
 
     public ArrayList<AloftStyleClass> mergeByHash(ArrayList<AloftStyleHashList> hashes) {
             ArrayList[] v = this.classBuilder.merge(this.classes, hashes);
             this.classes = v[1];
             return v[0];
+    }
+
+    public void setUsesBootstrap() {
+        useBootstrap = true;
+    }
+
+    public boolean usesBootstrap() {
+        return useBootstrap;
     }
 
 }

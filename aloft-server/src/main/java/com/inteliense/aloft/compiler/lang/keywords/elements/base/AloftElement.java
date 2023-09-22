@@ -13,10 +13,11 @@ import java.util.Arrays;
 
 public abstract class AloftElement extends AloftComponent implements BuildsHtml {
 
+    protected String veryUniqueId = null;
     protected String friendlyId = null;
     protected String name = null;
 
-    protected ArrayList<AloftElement> children = new ArrayList<>();
+//    protected ArrayList<AloftElement> children = new ArrayList<>();
 
     protected boolean acceptsIterator = false;
     protected AloftIterator iterator;
@@ -44,6 +45,11 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
         refresh();
     }
 
+    @Override
+    public void addChild(AloftComponent component) {
+        this.children.add(component);
+    }
+
     protected abstract String name();
     protected abstract boolean acceptsIterator();
     protected abstract boolean acceptsBuilder();
@@ -56,9 +62,9 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
         return this.friendlyId == null ? this.veryUniqueId : this.friendlyId;
     }
 
-    protected void appendChild(AloftElement child) {
-        if(acceptsChild()) this.children.add(child);
-    }
+//    protected void appendChild(AloftElement child) {
+//        if(acceptsChild()) this.children.add(child);
+//    }
 
     private void setupSubtypes() {
         this.hasMultipleSubtypes = hasMultipleSubtypes();

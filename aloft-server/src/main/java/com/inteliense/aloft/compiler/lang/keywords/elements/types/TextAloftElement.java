@@ -13,7 +13,6 @@ import java.util.ArrayList;
 public class TextAloftElement extends AloftElement {
 
     private ArrayList<TextAloftElement> textSpans = new ArrayList<>();
-    protected String veryUniqueId = null;
     private String text = "";
 
     public TextAloftElement(String text) {

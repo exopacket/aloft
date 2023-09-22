@@ -1,5 +1,6 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
+import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
@@ -10,8 +11,7 @@ import java.util.ArrayList;
 public class AloftScreenContainer extends AloftElement {
 
     public AloftScreenContainer() {
-        super("__screen__");
-        this.friendlyId = "__root__";
+        super();
         init();
     }
 
@@ -19,8 +19,9 @@ public class AloftScreenContainer extends AloftElement {
     public HtmlElement html() {
         HtmlElement root = createElement("div");
         root.addAttribute("style", "width:100vw; height: 100vh;");
-//        root.addAttribute("test", getState().getByPath("test").getValue());
-        root.addChild(super.html());
+        for(int i=0;i<children.size(); i++) {
+            root.addChild(children.get(i).html());
+        }
         return root;
     }
 

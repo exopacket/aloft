@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class AloftComponent implements BuildsHtml {
 
-    private ArrayList<AloftComponent> children = new ArrayList<>();
+    protected ArrayList<AloftComponent> children = new ArrayList<>();
     private int currentIndex = 0;
     private String name = null;
     private VariableTree state = new VariableTree();
@@ -38,11 +38,7 @@ public class AloftComponent implements BuildsHtml {
     }
 
     public void addChild(AloftComponent component) {
-//        VariableTree tree = this.getState().getByPath(component.getName()).getValue();
-//        component.setState(tree);
         this.children.add(component);
-        AloftStyle childStyle = component.getStyle();
-//        int numDuplicates = AloftStyleClassBuilder.countDuplicates()
     }
 
     public void setState(VariableTree tree) {
