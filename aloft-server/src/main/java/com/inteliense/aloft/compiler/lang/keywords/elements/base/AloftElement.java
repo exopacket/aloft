@@ -45,11 +45,6 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
         refresh();
     }
 
-    @Override
-    public void addChild(AloftComponent component) {
-        this.children.add(component);
-    }
-
     protected abstract String name();
     protected abstract boolean acceptsIterator();
     protected abstract boolean acceptsBuilder();
@@ -119,7 +114,7 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
     }
 
     protected HtmlElement createElement(String key) {
-        return createElement(key, createId(String.valueOf(System.currentTimeMillis())));
+        return createElement(key, this.uniqueId);
     }
 
     protected HtmlElement createElement(String key, String id) {

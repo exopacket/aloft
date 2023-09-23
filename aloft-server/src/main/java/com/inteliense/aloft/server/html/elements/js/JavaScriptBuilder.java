@@ -1,5 +1,6 @@
 package com.inteliense.aloft.server.html.elements.js;
 
+import com.inteliense.aloft.server.html.elements.js.types.ElementRef;
 import com.inteliense.aloft.utils.global.__;
 
 import java.io.File;
@@ -28,6 +29,10 @@ public class JavaScriptBuilder {
     public void addObject(JavaScriptObject object, String...vars) {
         object.setVars(vars);
         objects.add(object);
+    }
+
+    public void addRef(ElementRef ref) {
+        objects.add(ref);
     }
 
     public JavaScriptElement getElement() {

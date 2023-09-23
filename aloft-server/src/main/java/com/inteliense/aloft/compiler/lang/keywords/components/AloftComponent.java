@@ -12,6 +12,7 @@ import com.inteliense.aloft.server.html.elements.js.AppJavaScript;
 import com.inteliense.aloft.server.html.elements.js.JavaScript;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptBuilder;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptWriterType;
+import com.inteliense.aloft.server.html.elements.js.types.ElementRef;
 import com.inteliense.aloft.server.http.supporting.VariableNode;
 import com.inteliense.aloft.server.http.supporting.VariableTree;
 import com.inteliense.aloft.utils.encryption.A32;
@@ -30,6 +31,7 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
     private String name = null;
     private VariableTree state = new VariableTree();
     protected String veryUniqueId = null;
+    protected String uniqueId = "";
 
     protected ArrayList<String> moduleSubclasses = new ArrayList<>();
     protected ArrayList<AloftStyleClass> classes = new ArrayList<>();
@@ -41,11 +43,17 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
 
     public AloftComponent() {
         this.name = getName();
+        this.uniqueId = A32.casified(SHA.get256(getName()));
         veryUniqueId = createId(String.valueOf(System.currentTimeMillis()));
     }
 
     public void addChild(AloftComponent component) {
+        component.setUniqueId(this.uniqueId);
         this.children.add(component);
+    }
+
+    public void setUniqueId(String parent) {
+        this.uniqueId = A32.casified(SHA.getHmac256(parent, getName()));
     }
 
     public void setState(VariableTree tree) {
@@ -136,7 +144,7 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
             element.addAttribute("data-aid", A32.casified(SHA.getSha1(getName())));
             return element;
         } else if(this.children.size() > 1) {
-            HtmlElement container = new HtmlElement() {
+            HtmlElement container = new HtmlElement(this.uniqueId) {
                 @Override
                 protected String getKey() {
                     return "div";
@@ -151,6 +159,18 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
             return container;
         }
         return null;
+    }
+
+    public void ref() {
+        ElementRef ref = new ElementRef(A32.casified(SHA.getSha1(this.uniqueId)));
+        ElementRef.Selector selector = ElementRef.Selector.byId(this.uniqueId);
+        ref.addRef(selector, ElementRef.Type.SINGLE);
+    }
+
+    public void ref(String override) {
+        ElementRef ref = new ElementRef(override);
+        ElementRef.Selector selector = ElementRef.Selector.byId(this.uniqueId);
+        ref.addRef(selector, ElementRef.Type.SINGLE);
     }
 
     public void addListener(AloftListener listener) {

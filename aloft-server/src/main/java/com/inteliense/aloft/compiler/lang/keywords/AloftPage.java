@@ -84,6 +84,7 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
     }
 
     public void testAppend() {
+
         AloftScreen screen = new AloftScreen();
 //        screen.appendState("__root__.test", new StringT(), "value");
         AloftScreenContainer container = new AloftScreenContainer();

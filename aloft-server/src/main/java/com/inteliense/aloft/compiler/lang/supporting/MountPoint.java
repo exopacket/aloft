@@ -13,6 +13,6 @@ public class MountPoint extends AloftComponent {
 
     @Override
     public String getName() {
-        return null;
+        return "__mount__";
     }
 }

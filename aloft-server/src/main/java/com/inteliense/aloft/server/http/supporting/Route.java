@@ -23,8 +23,6 @@ public class Route {
 
     private VariableTree vars;
 
-    private JavaScriptBuilder js = new JavaScriptBuilder();
-
     public Route(String path, RequestType type, String typeStr) {
         if(!__.isset(type)) return;
         this.path = new RoutePath(path);

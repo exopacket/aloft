@@ -32,6 +32,6 @@ public class DynamicMountableComponent extends AloftComponent {
 
     @Override
     public String getName() {
-        return null;
+        return "__mountable_component__";
     }
 }
