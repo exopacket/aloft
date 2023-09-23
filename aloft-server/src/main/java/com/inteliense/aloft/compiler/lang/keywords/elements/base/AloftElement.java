@@ -3,6 +3,7 @@ package com.inteliense.aloft.compiler.lang.keywords.elements.base;
 import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
 import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
 import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
+import com.inteliense.aloft.compiler.lang.lib.ModuleElementAttributes;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.utils.encryption.Rand;
 import com.inteliense.aloft.utils.encryption.SHA;
@@ -32,7 +33,6 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
 
     protected boolean hasMultipleSubtypes;
     protected ArrayList<AloftElementSubtype> subtypes = new ArrayList<>();
-    protected HashMap<String, String> vars = new HashMap<>();
 
     public AloftElement() {
         super();
@@ -114,8 +114,14 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
 
     protected void registerSubtypes(ArrayList<AloftElementSubtype> subtypes) { }
 
+    protected HtmlElement createElement(String key, ModuleElementAttributes attributes) {
+        HtmlElement element = createElement(key, createId(String.valueOf(System.currentTimeMillis())));
+        attributes.apply(element);
+        return element;
+    }
+
     protected HtmlElement createElement(String key) {
-        return createElement(key, id());
+        return createElement(key, createId(String.valueOf(System.currentTimeMillis())));
     }
 
     protected HtmlElement createElement(String key, String id) {

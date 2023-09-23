@@ -21,6 +21,8 @@ public class JavaScriptBuilder {
         this.id = getId();
     }
 
+    public JavaScriptBuilder() { }
+
     public void addObject(JavaScriptObject object) {
         objects.add(object);
     }

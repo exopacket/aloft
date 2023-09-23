@@ -5,6 +5,7 @@ import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftBuilder;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElementSubtype;
+import com.inteliense.aloft.compiler.lang.lib.ModuleElement;
 import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 
@@ -16,6 +17,23 @@ public class AlertAloftElement extends AloftElement {
     public AlertAloftElement() { super(); init();  }
 
     @Override
+    public HtmlElement html(StyleModule module) {
+        ModuleElement m = module.get(this.getClass());
+        HtmlElement root = createElement("div", m.fromKey("root"));
+        addVar("modal-id", root.getId());
+        HtmlElement dialog = createElement("div", m.fromKey("dialog"));
+        root.addChild(dialog);
+        HtmlElement content = createElement("div", m.fromKey("content"));
+        dialog.addChild(content);
+        HtmlElement header = createElement("div", m.fromKey("header"));
+//        HtmlElement title = createElement("h5", m.fromKey("title"));
+        HtmlElement title = builder.get("title").html(module);
+        header.addChild(title);
+        content.addChild(header);
+        return root;
+    }
+
+    @Override
     protected void registerBuilder(AloftBuilder builder) {
         builder.addRequirement("title", TextAloftElement.class, "text");
         builder.addRequirement("body", TextAloftElement.class, "text");
@@ -23,13 +41,7 @@ public class AlertAloftElement extends AloftElement {
     }
 
     @Override
-    protected void registerSubtypes(ArrayList<AloftElementSubtype> subtypes) {
-    }
-
-    @Override
-    public HtmlElement html(StyleModule module) {
-        return builder.get("title").html(module);
-    }
+    protected void registerSubtypes(ArrayList<AloftElementSubtype> subtypes) { }
 
     @Override
     protected String name() {
@@ -68,7 +80,7 @@ public class AlertAloftElement extends AloftElement {
 
     @Override
     protected void setupVariables(HashMap<String, String> vars) {
-
+        vars.put("modal-id", null);
     }
 
 }

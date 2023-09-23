@@ -1,5 +1,6 @@
 package com.inteliense.aloft.compiler.lang.lib;
 
+import com.inteliense.aloft.compiler.lang.keywords.elements.types.AlertAloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.types.ButtonAloftElement;
 
 import java.util.HashMap;
@@ -7,18 +8,20 @@ import java.util.Map;
 
 public abstract class StyleModule {
 
-    protected Map<Class<?>, ModuleElementAttributes> map;
+    protected Map<Class<?>, ModuleElement> map;
 
     public StyleModule() {
-        map = new HashMap<Class<?>, ModuleElementAttributes>() {{
-            put(ButtonAloftElement.class, buttonAloftElement());
+        map = new HashMap<Class<?>, ModuleElement>() {{
+            put(ButtonAloftElement.class, buttonAloftElement(new ModuleElement()));
+            put(AlertAloftElement.class, alertAloftElement(new ModuleElement()));
         }};
     }
 
-    public ModuleElementAttributes get(Class<?> c) {
+    public ModuleElement get(Class<?> c) {
         return map.get(c);
     }
 
-    protected abstract ModuleElementAttributes buttonAloftElement();
+    protected abstract ModuleElement buttonAloftElement(ModuleElement element);
+    protected abstract ModuleElement alertAloftElement(ModuleElement element);
 
 }

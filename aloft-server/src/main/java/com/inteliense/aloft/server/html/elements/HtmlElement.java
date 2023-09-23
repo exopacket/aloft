@@ -57,22 +57,29 @@ public abstract class HtmlElement {
         return element;
     }
     
-    public void addAttribute(String key, String value) {
+    public HtmlElement addAttribute(String key, String value) {
         if(this.attributes.containsKey(key)) {
             String v = this.attributes.get(key);
             this.attributes.replace(key, v + " " + value);
         } else {
             this.attributes.put(key, value);
         }
+        return this;
     }
 
-    public void addAttribute(String key, String value, String delimiter) {
+    public HtmlElement addAttributes(String key, String...values) {
+        for(int i=0; i<values.length; i++) addAttribute(key, values[i]);
+        return this;
+    }
+
+    public HtmlElement addAttribute(String key, String value, String delimiter) {
         if(this.attributes.containsKey(key)) {
             String v = this.attributes.get(key);
             this.attributes.replace(key, v + delimiter + value);
         } else {
             this.attributes.put(key, value);
         }
+        return this;
     }
     
     public void addStyle(String key, String value) {

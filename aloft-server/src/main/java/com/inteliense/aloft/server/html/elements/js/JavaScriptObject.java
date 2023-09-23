@@ -51,8 +51,28 @@ public abstract class JavaScriptObject {
         addLine(name + "()");
     }
 
-    protected void call(String[] var, String name, String...args) {
-        String ln = name + "(";
+    protected String byId(String id) {
+        return "document.getElementById('" + id + "')";
+    }
+
+    protected void var(String var) {
+        lines.add("let " + var + " = ");
+    }
+
+    protected String object() {
+        return "{}";
+    }
+
+    protected void constant(String constant) {
+        lines.add("const " + constant + " = ");
+    }
+
+    protected void call(boolean isNew, String[] var, String name, String...args) {
+        String ln = ((isNew) ? "new " : "");
+        for(int i=0; i<var.length; i++) {
+            ln += var[i] + ".";
+        }
+        ln += name + "(";
         for(int i=0; i< args.length;i++) {
             if(i>0) ln += ", ";
             ln += args[i];

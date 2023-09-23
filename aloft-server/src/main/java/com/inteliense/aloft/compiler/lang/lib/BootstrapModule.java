@@ -5,12 +5,29 @@ public class BootstrapModule extends StyleModule {
     public BootstrapModule() { super(); }
 
     @Override
-    protected ModuleElementAttributes buttonAloftElement() {
-        ModuleElementAttributes attributes = new ModuleElementAttributes();
-        attributes.addClasses("btn");
-        attributes.addAttributes("type", "button");
-        attributes.addSubclasses("primary", "btn-primary");
-        attributes.addSubclasses("secondary", "btn-secondary");
-        return attributes;
+    protected ModuleElement buttonAloftElement(ModuleElement element) {
+        element.addClasses("button","btn");
+        element.addAttributes("button","type", "button");
+        element.addSubclasses("button","primary", "btn-primary");
+        element.addSubclasses("button","secondary", "btn-secondary");
+        return element;
+    }
+
+    @Override
+    protected ModuleElement alertAloftElement(ModuleElement element) {
+        element.addClasses("root", "modal", "fade");
+        element.addAttributes("root",
+            "data-bs-backdrop", "static",
+                "data-bs-keyboard", "false",
+                "tabindex", "-1",
+                "aria-labeledby", "staticBackdropLabel",
+                "aria-hidden", "true"
+        );
+        element.addClasses("dialog", "modal-dialog");
+        element.addClasses("content", "modal-content");
+        element.addClasses("header", "modal-header");
+        element.addClasses("title", "modal-title");
+        element.addAttributes("title" , "id", "staticBackdropLabel");
+        return element;
     }
 }

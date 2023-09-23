@@ -99,6 +99,7 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
         container.addChild(btn);
         AlertAloftElement alert = new AlertAloftElement();
         alert.builder("title", __.arr("text", "Hello World"));
+        alert.builder("body", __.arr("text", "This is a message from the national weather service."));
         container.addChild(alert);
         screen.addChild(container);
         this.root = screen;

@@ -7,6 +7,8 @@ import com.inteliense.aloft.compiler.lang.keywords.style.base.*;
 import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.compiler.lang.types.base.T;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
+import com.inteliense.aloft.server.html.elements.js.JavaScript;
+import com.inteliense.aloft.server.html.elements.js.JavaScriptBuilder;
 import com.inteliense.aloft.server.http.supporting.VariableNode;
 import com.inteliense.aloft.server.http.supporting.VariableTree;
 import com.inteliense.aloft.utils.encryption.A32;
@@ -15,6 +17,7 @@ import com.inteliense.aloft.utils.encryption.SHA;
 import com.inteliense.aloft.utils.global.__;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AloftComponent implements BuildsHtml {
 
@@ -28,6 +31,8 @@ public class AloftComponent implements BuildsHtml {
     protected ArrayList<AloftStyleClass> classes = new ArrayList<>();
     protected AloftStyle style = new AloftStyle();
     protected ArrayList<AloftListener> listeners = new ArrayList<>();
+    protected JavaScriptBuilder js = new JavaScriptBuilder();
+    protected HashMap<String, String> vars = new HashMap<>();
 
     public AloftComponent() {
         this.name = getName();

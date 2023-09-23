@@ -29,7 +29,7 @@ public class ButtonAloftElement extends AloftElement {
         HtmlElement root = createElement("button");
         Content content = new Content(this.text);
         root.addChild(content);
-        module.get(this.getClass()).apply(root, getModuleSubclasses());
+        module.get(this.getClass()).fromKey("button").apply(root, getModuleSubclasses());
         for(int i=0; i< listeners.size(); i++) {
             root.addChild(listeners.get(i).getObject().getJs());
         }

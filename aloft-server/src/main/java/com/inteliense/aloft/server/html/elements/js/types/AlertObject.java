@@ -4,14 +4,25 @@ import com.inteliense.aloft.server.html.elements.js.JavaScriptObject;
 
 public class AlertObject extends JavaScriptObject {
 
-    private String text;
+    private String title;
+    private String body;
+    private String id;
 
-    public void setText(String text) {
-        this.text = text;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 
     @Override
     public void create() {
-        call(new String[]{""}, "alert", text);
+        var("myModal");
+        call(true, new String[]{"bootstrap"}, "Modal", byId(this.id), object());
     }
 }

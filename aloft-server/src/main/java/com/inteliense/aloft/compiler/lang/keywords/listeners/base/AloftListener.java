@@ -9,7 +9,7 @@ public abstract class AloftListener implements BuildsJavascript {
         JavaScriptObject base = new JavaScriptObject() {
             @Override
             public void create() {
-                this.call(new String[]{""}, "document.querySelector('p').addEventListener", "\"" + method + "\"", functionName);
+                this.call(false, new String[]{""}, "document.querySelector('p').addEventListener", "\"" + method + "\"", functionName);
                 this.slot();
             }
         };
