@@ -10,6 +10,7 @@ import com.inteliense.aloft.utils.global.__;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public abstract class AloftElement extends AloftComponent implements BuildsHtml {
 
@@ -31,6 +32,7 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
 
     protected boolean hasMultipleSubtypes;
     protected ArrayList<AloftElementSubtype> subtypes = new ArrayList<>();
+    protected HashMap<String, String> vars = new HashMap<>();
 
     public AloftElement() {
         super();
@@ -57,6 +59,7 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
     protected abstract boolean isExtensible();
     protected abstract boolean hasMultipleSubtypes();
     protected abstract boolean acceptsChild();
+    protected abstract void setupVariables(HashMap<String, String> vars);
 
     protected String id() {
         return this.friendlyId == null ? this.veryUniqueId : this.friendlyId;
@@ -92,17 +95,24 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
         this.acceptsIterator = acceptsIterator();
         if(this.acceptsIterator) this.iterator = iterator;
     }
-
-    private void setupBuilder() {
+    protected void setupBuilder() {
         this.requiresBuilder = requiresBuilder();
         this.acceptsBuilder = this.requiresBuilder || acceptsBuilder();
     }
+
 
     protected void setupBuilder(AloftBuilder builder) {
         this.requiresBuilder = requiresBuilder();
         this.acceptsBuilder = this.requiresBuilder || acceptsBuilder();
-        if(this.requiresBuilder || this.acceptsBuilder) this.builder = builder;
+        if(this.requiresBuilder || this.acceptsBuilder) {
+            registerBuilder(builder);
+            this.builder = builder;
+        }
     }
+
+    protected void registerBuilder(AloftBuilder builder) { }
+
+    protected void registerSubtypes(ArrayList<AloftElementSubtype> subtypes) { }
 
     protected HtmlElement createElement(String key) {
         return createElement(key, id());
@@ -117,9 +127,30 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
         };
     }
 
+    public void addVar(String key, String value) {
+        if(vars.containsKey(key)) vars.replace(key, value);
+        else vars.put(key, value);
+    }
+
+    protected String var(String key) {
+        return vars.get(key);
+    }
+
+    public void builder(String key, String[]...vars) {
+        builder.add(key, vars);
+        build();
+    }
+
+    protected void build() {
+        for(int i=0; i< builder.size(); i++) addChild(builder.get(i));
+    }
+
     public void refresh() {
+        setupVariables(this.vars);
         setupBuilder();
+        if(this.requiresBuilder || this.acceptsBuilder) setupBuilder(new AloftBuilder());
         setupIterator();
+        if(this.requiresBuilder || this.acceptsBuilder) build();
     }
 
     @Override

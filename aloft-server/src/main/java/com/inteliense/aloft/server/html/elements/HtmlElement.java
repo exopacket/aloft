@@ -29,6 +29,10 @@ public abstract class HtmlElement {
         return id == null ? "" : id;
     }
 
+    public void createId() {
+
+    }
+
     public void addChild(HtmlElement element) {
         this.children.add(element);
     }

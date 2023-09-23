@@ -6,6 +6,7 @@ import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
 import com.inteliense.aloft.compiler.lang.base.BuildsJava;
 import com.inteliense.aloft.compiler.lang.keywords.components.AloftScreen;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
+import com.inteliense.aloft.compiler.lang.keywords.elements.types.AlertAloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.types.AloftScreenContainer;
 import com.inteliense.aloft.compiler.lang.keywords.elements.types.ButtonAloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.types.TextAloftElement;
@@ -20,6 +21,7 @@ import com.inteliense.aloft.server.html.elements.types.Body;
 import com.inteliense.aloft.server.html.elements.types.Head;
 import com.inteliense.aloft.server.html.elements.types.Page;
 import com.inteliense.aloft.server.http.supporting.*;
+import com.inteliense.aloft.utils.global.__;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -95,6 +97,9 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
         ButtonAloftElement btn = new ButtonAloftElement("This button does nothing.");
         btn.addSubclass("primary");
         container.addChild(btn);
+        AlertAloftElement alert = new AlertAloftElement();
+        alert.builder("title", __.arr("text", "Hello World"));
+        container.addChild(alert);
         screen.addChild(container);
         this.root = screen;
         this.root.appendCss(this.css);

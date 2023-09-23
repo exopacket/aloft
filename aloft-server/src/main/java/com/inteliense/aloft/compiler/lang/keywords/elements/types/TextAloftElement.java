@@ -1,5 +1,6 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
+import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftBuilder;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
@@ -10,31 +11,33 @@ import com.inteliense.aloft.utils.encryption.Rand;
 import com.inteliense.aloft.utils.encryption.SHA;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TextAloftElement extends AloftElement {
 
     private ArrayList<TextAloftElement> textSpans = new ArrayList<>();
-    private String text = "";
+
+    public TextAloftElement() { super(); init(); }
 
     public TextAloftElement(String text) {
         super();
-        this.text = text;
         init();
+        vars.replace("text", text);
     }
 
     public TextAloftElement(String text, String friendlyId) {
         super();
         this.friendlyId = friendlyId;
-        this.text = text;
         init();
+        vars.replace("text", text);
     }
 
     public TextAloftElement(String text, String friendlyId, String uniqueId) {
         super();
         this.friendlyId = friendlyId;
         this.veryUniqueId = uniqueId;
-        this.text = text;
         init();
+        vars.replace("text", text);
     }
 
     public void addSpan(TextAloftElement element) {
@@ -45,7 +48,7 @@ public class TextAloftElement extends AloftElement {
     public HtmlElement html(StyleModule module) {
         HtmlElement root = createElement("p");
         root.addAttribute("data-aid", A32.casified(SHA.getSha1(getName())));
-        Content rootContent = new Content(text);
+        Content rootContent = new Content(var("text"));
         root.addChild(rootContent);
         for(int i=0; i<textSpans.size(); i++) {
             HtmlElement element = textSpans.get(i).html(module);
@@ -90,6 +93,11 @@ public class TextAloftElement extends AloftElement {
     @Override
     protected boolean acceptsChild() {
         return true;
+    }
+
+    @Override
+    protected void setupVariables(HashMap<String, String> vars) {
+        vars.put("text", null);
     }
 
 }

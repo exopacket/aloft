@@ -49,6 +49,10 @@ public class __ {
         return !isset(input) || same("", input.replace(" ", "").trim());
     }
 
+    public static String[] arr(String...vals) {
+        return vals;
+    }
+
     public static boolean isset(Object input) {
         return input != null;
     }

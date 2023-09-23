@@ -7,6 +7,8 @@ import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.types.Content;
 
+import java.util.HashMap;
+
 public class ButtonAloftElement extends AloftElement {
 
     private String text;
@@ -67,5 +69,10 @@ public class ButtonAloftElement extends AloftElement {
     @Override
     protected boolean acceptsChild() {
         return true;
+    }
+
+    @Override
+    protected void setupVariables(HashMap<String, String> vars) {
+
     }
 }
