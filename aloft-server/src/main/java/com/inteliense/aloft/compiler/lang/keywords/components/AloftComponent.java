@@ -161,19 +161,22 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
         return null;
     }
 
-    public void ref() {
+    public ElementRef ref() {
         ElementRef ref = new ElementRef(A32.casified(SHA.getSha1(this.uniqueId)));
         ElementRef.Selector selector = ElementRef.Selector.byId(this.uniqueId);
         ref.addRef(selector, ElementRef.Type.SINGLE);
+        return ref;
     }
 
-    public void ref(String override) {
+    public ElementRef ref(String override) {
         ElementRef ref = new ElementRef(override);
         ElementRef.Selector selector = ElementRef.Selector.byId(this.uniqueId);
         ref.addRef(selector, ElementRef.Type.SINGLE);
+        return ref;
     }
 
     public void addListener(AloftListener listener) {
+        listener.setRef("sticky", ref());
         this.jsBuilder.addObject(listener.getObject());
         this.listeners.add(listener);
     }

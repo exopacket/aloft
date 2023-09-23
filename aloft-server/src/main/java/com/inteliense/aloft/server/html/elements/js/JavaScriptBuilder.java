@@ -6,6 +6,7 @@ import com.inteliense.aloft.utils.global.__;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class JavaScriptBuilder {
@@ -33,6 +34,10 @@ public class JavaScriptBuilder {
 
     public void addRef(ElementRef ref) {
         objects.add(ref);
+    }
+
+    public void addRefs(ElementRef...ref) {
+        objects.addAll(Arrays.asList(ref));
     }
 
     public JavaScriptElement getElement() {

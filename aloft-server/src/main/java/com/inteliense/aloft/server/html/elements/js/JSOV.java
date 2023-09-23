@@ -1,5 +1,6 @@
 package com.inteliense.aloft.server.html.elements.js;
 
+import com.inteliense.aloft.server.html.elements.js.types.ElementRef;
 import com.inteliense.aloft.utils.data.JSON;
 
 public class JSOV {
@@ -9,10 +10,15 @@ public class JSOV {
     private Class<?> c;
     private String quotes = "";
 
-    public JSOV(String key, Object o, String quotes) {
+    public JSOV(String key, Object o, boolean isString) {
         this.key = key;
         set(o);
-        this.quotes = quotes;
+        this.quotes = (isString) ? "\"" : "";
+    }
+
+    public JSOV(String key, ElementRef ref) {
+        this.key = key;
+        set(ref);
     }
 
     public JSOV(String key, Object o) {
@@ -30,9 +36,8 @@ public class JSOV {
        return new Object();
     }
 
-    public static JSOV v(String key, String val, boolean quotes) {
-        if(quotes) return new JSOV(key, val, "\"");
-        return new JSOV(key, val);
+    public static JSOV v(String key, String val, boolean isString) {
+        return new JSOV(key, val, isString);
     }
 
     public static JSOV v(String key, Object val) {

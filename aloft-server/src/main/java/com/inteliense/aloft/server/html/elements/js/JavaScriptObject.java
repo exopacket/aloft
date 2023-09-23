@@ -1,5 +1,6 @@
 package com.inteliense.aloft.server.html.elements.js;
 
+import com.inteliense.aloft.server.html.elements.js.types.ElementRef;
 import com.inteliense.aloft.utils.global.__;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.HashMap;
 public abstract class JavaScriptObject {
 
     private HashMap<String, JSOV> vars = new HashMap<>();
-    private ArrayList<Object> lines = new ArrayList<>();
+    protected ArrayList<Object> lines = new ArrayList<>();
     private int slotIndex = -1;
     private boolean built = false;
 
@@ -37,6 +38,14 @@ public abstract class JavaScriptObject {
     }
 
     public void setVars(JSOV...variables) {
+        if(this.vars.isEmpty()) return;
+        for(JSOV var : variables) {
+            if(!this.vars.containsKey(var.key())) continue;
+            this.vars.replace(var.key(), var);
+        }
+    }
+
+    public void setVars(ArrayList<JSOV> variables) {
         if(this.vars.isEmpty()) return;
         for(JSOV var : variables) {
             if(!this.vars.containsKey(var.key())) continue;
@@ -80,6 +89,17 @@ public abstract class JavaScriptObject {
     
     protected void var(String var) {
         add(var);
+    }
+
+    protected void placeRef(FunctionArg var) {
+        JSOV v = getVar((String) var.getValue());
+        if(v.type() == ElementRef.class) child(((ElementRef) v.get()).build());
+    }
+
+    protected void var(FunctionArg var) {
+        JSOV v = getVar((String) var.getValue());
+        if(v.type() == ElementRef.class) add(((ElementRef) v.get()).getId());
+        else add(v.get());
     }
 
     protected void construct(String name, FunctionArg...args) {

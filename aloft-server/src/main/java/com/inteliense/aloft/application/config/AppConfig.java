@@ -11,6 +11,7 @@ import com.inteliense.aloft.server.html.elements.js.AppJavaScript;
 import com.inteliense.aloft.server.html.elements.js.JavaScript;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptBuilder;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptWriterType;
+import com.inteliense.aloft.server.html.elements.types.App;
 import com.inteliense.aloft.server.http.middleware.base.ApplyToType;
 import com.inteliense.aloft.server.http.middleware.types.HasHeaders;
 import com.inteliense.aloft.server.http.supporting.Route;
@@ -26,6 +27,7 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class AppConfig {
 
@@ -111,8 +113,8 @@ public class AppConfig {
         return staticFiles;
     }
 
-    public AppJavaScript getAppJs() {
-        return appJs;
+    public AtomicReference<AppJavaScript> getAppJs() {
+        return new AtomicReference<AppJavaScript>(appJs);
     }
 
     public JavaScript getStaticJavaScript(String id) {

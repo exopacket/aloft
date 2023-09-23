@@ -13,14 +13,13 @@ public class AloftOnClickListener extends AloftListener {
     }
 
     @Override
-    public JavaScriptObject getObject() {
+    protected JavaScriptObject create() {
         return buildBase("click");
     }
 
     @Override
     protected ArrayList<String> required(ArrayList<String> vars) {
-        vars.add("query");
-        vars.add("multiple-elements");
+        vars.add("sticky");
         vars.add("function");
         vars.add("function-slot");
         return vars;

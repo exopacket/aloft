@@ -36,7 +36,7 @@ public class Endpoint {
         this.vars = vars;
         this.theme = config.getTheme();
         this.staticFiles = config.getStaticFiles();
-//        this.js.set(config.getAppJs());
+        this.js = config.getAppJs();
     }
 
 

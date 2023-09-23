@@ -92,8 +92,6 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
         AlertObject alertObject = new AlertObject();
         alertObject.setTitle("Hello World!");
         textElement.addListener(new AloftOnClickListener(
-                JSOV.v("query", "p", true),
-                JSOV.v("multiple-elements", false),
                 JSOV.v("function", "myAlert"),
                 JSOV.v("function-slot", alertObject)
         ));
@@ -115,6 +113,7 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
         screen.addChild(container);
         this.root = screen;
         this.root.appendCss(this.css);
+        this.root.javascript(this.js);
     }
 
     public AloftStyleCss getCss() {
