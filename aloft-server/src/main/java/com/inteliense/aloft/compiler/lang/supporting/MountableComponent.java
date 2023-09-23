@@ -4,21 +4,24 @@ import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
 import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleClass;
 import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleCss;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
+import com.inteliense.aloft.server.html.elements.js.AppJavaScript;
 import com.inteliense.aloft.utils.data.BaseX;
 import com.inteliense.aloft.utils.encryption.SHA;
 import com.inteliense.aloft.utils.global.__;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MountableComponent extends AloftComponent {
 
-    private DynamicMountableComponent child = new DynamicMountableComponent();
+    private DynamicMountableComponent child;
     private ArrayList<AloftComponent> components = new ArrayList<>();
     private boolean layout;
 
     public MountableComponent() {
-        super(null);
+        super();
+        child = new DynamicMountableComponent();
     }
 
     public boolean isLayout() {

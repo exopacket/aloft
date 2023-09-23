@@ -1,5 +1,6 @@
 package com.inteliense.aloft.compiler.lang.keywords.components;
 
+import com.inteliense.aloft.compiler.lang.base.BuildsAppJavascript;
 import com.inteliense.aloft.compiler.lang.base.BuildsCss;
 import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
 import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
@@ -7,8 +8,10 @@ import com.inteliense.aloft.compiler.lang.keywords.style.base.*;
 import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.compiler.lang.types.base.T;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
+import com.inteliense.aloft.server.html.elements.js.AppJavaScript;
 import com.inteliense.aloft.server.html.elements.js.JavaScript;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptBuilder;
+import com.inteliense.aloft.server.html.elements.js.JavaScriptWriterType;
 import com.inteliense.aloft.server.http.supporting.VariableNode;
 import com.inteliense.aloft.server.http.supporting.VariableTree;
 import com.inteliense.aloft.utils.encryption.A32;
@@ -18,8 +21,9 @@ import com.inteliense.aloft.utils.global.__;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
-public class AloftComponent implements BuildsHtml {
+public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
 
     protected ArrayList<AloftComponent> children = new ArrayList<>();
     private int currentIndex = 0;
@@ -31,16 +35,12 @@ public class AloftComponent implements BuildsHtml {
     protected ArrayList<AloftStyleClass> classes = new ArrayList<>();
     protected AloftStyle style = new AloftStyle();
     protected ArrayList<AloftListener> listeners = new ArrayList<>();
-    protected JavaScriptBuilder js = new JavaScriptBuilder();
     protected HashMap<String, String> vars = new HashMap<>();
+    protected JavaScriptBuilder jsBuilder = new JavaScriptBuilder();
+    protected JavaScript scripts = null;
 
     public AloftComponent() {
         this.name = getName();
-        veryUniqueId = createId(String.valueOf(System.currentTimeMillis()));
-    }
-
-    public AloftComponent(String name) {
-        this.name = name;
         veryUniqueId = createId(String.valueOf(System.currentTimeMillis()));
     }
 
@@ -154,7 +154,19 @@ public class AloftComponent implements BuildsHtml {
     }
 
     public void addListener(AloftListener listener) {
+        this.jsBuilder.addObject(listener.getObject());
         this.listeners.add(listener);
     }
 
+    @Override
+    public void javascript(AtomicReference<AppJavaScript> js) {
+        if(this.jsBuilder.empty()) {
+            for(int i=0; i<this.children.size(); i++) this.children.get(i).javascript(js);
+            return;
+        }
+        AppJavaScript appJs = js.get();
+        this.scripts = appJs.apply(new JavaScript(JavaScriptWriterType.ELEMENT, this.jsBuilder));
+        js.set(appJs);
+        for(int i=0; i<this.children.size(); i++) this.children.get(i).javascript(js);
+    }
 }

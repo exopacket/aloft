@@ -12,6 +12,6 @@ public class ShowAlertObject extends JavaScriptObject {
 
     @Override
     public void create() {
-        call(true, new String[]{this.id}, "toggle");
+//        call(true, new String[]{this.id}, "toggle");
     }
 }

@@ -3,19 +3,50 @@ package com.inteliense.aloft.server.html.elements.js;
 import com.inteliense.aloft.utils.global.__;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public abstract class JavaScriptObject {
 
+    private HashMap<String, JSOV> vars = new HashMap<>();
     private ArrayList<Object> lines = new ArrayList<>();
     private int slotIndex = -1;
+    private boolean built = false;
 
     public JavaScriptObject build() {
-        this.lines.clear();
-        create();
+        return build(false);
+    }
+
+    public JavaScriptObject build(boolean refresh) {
+        if(refresh) {
+            this.lines.clear();
+            create();
+            built = true;
+        } else if(!built) {
+            create();
+            built = true;
+        }
         return this;
     }
 
     protected abstract void create();
+
+    public void setVars(String[] vars) {
+        for(int i=0; i<vars.length; i++) {
+            this.vars.put(vars[i], null);
+        }
+    }
+
+    public void setVars(JSOV...variables) {
+        if(this.vars.isEmpty()) return;
+        for(JSOV var : variables) {
+            if(!this.vars.containsKey(var.key())) continue;
+            this.vars.replace(var.key(), var);
+        }
+    }
+
+    public JSOV getVar(String key) {
+        return this.vars.get(key);
+    }
 
     public JavaScriptObject setSlot(JavaScriptObject slot) {
         for(int i=0; i<lines.size(); i++) {
@@ -46,38 +77,78 @@ public abstract class JavaScriptObject {
     protected void child(JavaScriptObject object) {
         this.lines.add(object);
     }
-
-    protected void call(String name) {
-        addLine(name + "()");
-    }
-
-    protected String byId(String id) {
-        return "document.getElementById('" + id + "')";
-    }
-
+    
     protected void var(String var) {
-        lines.add("let " + var + " = ");
+        add(var);
     }
 
-    protected String object() {
-        return "{}";
+    protected void construct(String name, FunctionArg...args) {
+        String ln = "new " + name + "(";
+        ln += getArgsString(args);
+        ln += ")";
+        add(ln);
     }
 
-    protected void constant(String constant) {
-        lines.add("const " + constant + " = ");
-    }
-
-    protected void call(boolean isNew, String[] var, String name, String...args) {
-        String ln = ((isNew) ? "new " : "");
-        for(int i=0; i<var.length; i++) {
-            ln += var[i] + ".";
+    private String getArgsString(FunctionArg[] args) {
+        String ln = "";
+        for(int i=0; i<args.length; i++) {
+            if(i > 0) ln += ",";
+            if(args[i].isVariable()) {
+                String v = (String) args[i].getValue();
+                JSOV var = getVar(v);
+                if(var.type() == String.class) ln += var.getString();
+                else ln += String.valueOf(var.get());
+            } else {
+                Object arg = args[i].getValue();
+                if(arg.getClass() == String.class) ln += "\"" + arg + "\"";
+                else ln += String.valueOf(arg);
+            }
         }
-        ln += name + "(";
-        for(int i=0; i< args.length;i++) {
-            if(i>0) ln += ", ";
-            ln += args[i];
+        return ln;
+    }
+
+    protected void chain(String var, FunctionArg...args) {
+        String ln = "." + var;
+        if(args.length > 0) {
+            ln += "(";
+            ln += getArgsString(args);
+            ln += ")";
         }
-        addLine(ln + "); ");
+        add(ln);
+    }
+
+    protected void declare(String var, boolean constant) {
+        lines.add(((constant) ? "const " : "let ") + var + " = ");
+    }
+
+    protected void emptyObject() {
+        add("{ }");
+    }
+
+    protected void byId(String id) {
+        var("document");
+        chain("getElementById", FunctionArg.var(id));
+    }
+
+    protected void queryAll(String query) {
+        var("document");
+        chain("querySelectorAll", FunctionArg.var(query));
+    }
+
+    protected void query(String query) {
+        var("document");
+        chain("querySelector", FunctionArg.var(query));
+    }
+
+    protected void end() {
+        add(";");
+    }
+
+    protected void call(String name, FunctionArg...args) {
+        String ln = name + "(";
+        ln += getArgsString(args);
+        ln += ")";
+        add(ln);
     }
 
     public static JavaScriptObject function(String name, String...args) {
@@ -92,7 +163,7 @@ public abstract class JavaScriptObject {
         };
     }
 
-    protected void namedFunction(String name, String[] args) {
+    protected void namedFunction(String name, String...args) {
         lines.add(" function " + name + "()");
     }
 
@@ -104,8 +175,35 @@ public abstract class JavaScriptObject {
         lines.add(" } ");
     }
 
-    protected void addLine(String ln) {
+    protected void add(String ln) {
         lines.add(ln);
+    }
+
+    protected static class FunctionArg {
+
+        private boolean isVariable = false;
+        private Object value;
+
+        public FunctionArg(Object value, boolean isVariable) {
+            this.isVariable = isVariable;
+            this.value = value;
+        }
+
+        public static FunctionArg var(Object value) {
+            return new FunctionArg(value, true);
+        }
+
+        public static FunctionArg preset(Object value) {
+            return new FunctionArg(value, false);
+        }
+
+        public boolean isVariable() {
+            return isVariable;
+        }
+
+        public Object getValue() {
+            return value;
+        }
     }
 
 }

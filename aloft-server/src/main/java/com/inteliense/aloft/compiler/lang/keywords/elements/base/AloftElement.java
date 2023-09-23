@@ -5,6 +5,7 @@ import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
 import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
 import com.inteliense.aloft.compiler.lang.lib.ModuleElementAttributes;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
+import com.inteliense.aloft.server.html.elements.js.AppJavaScript;
 import com.inteliense.aloft.utils.encryption.Rand;
 import com.inteliense.aloft.utils.encryption.SHA;
 import com.inteliense.aloft.utils.global.__;
@@ -12,6 +13,7 @@ import com.inteliense.aloft.utils.global.__;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class AloftElement extends AloftComponent implements BuildsHtml {
 
@@ -36,10 +38,6 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
 
     public AloftElement() {
         super();
-    }
-
-    public AloftElement(String name) {
-        super(name);
     }
 
     protected void init() {

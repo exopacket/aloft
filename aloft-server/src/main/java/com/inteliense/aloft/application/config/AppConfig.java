@@ -7,6 +7,7 @@ import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.css.Stylesheet;
 import com.inteliense.aloft.server.html.elements.css.StylesheetBuilder;
 import com.inteliense.aloft.server.html.elements.css.StylesheetWriterType;
+import com.inteliense.aloft.server.html.elements.js.AppJavaScript;
 import com.inteliense.aloft.server.html.elements.js.JavaScript;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptBuilder;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptWriterType;
@@ -55,6 +56,7 @@ public class AppConfig {
     //JAVASCRIPT AND STYLESHEETS;
     private JavaScriptEndpointList scriptEndpoints;
     private StylesheetEndpointList stylesheetEndpoints;
+    private AppJavaScript appJs = new AppJavaScript();
 
     public MiddlewareList getMiddleware() { return this.middleware; }
 
@@ -107,6 +109,10 @@ public class AppConfig {
             staticFiles.add(stylesheetEndpoints.next().getTag());
         }
         return staticFiles;
+    }
+
+    public AppJavaScript getAppJs() {
+        return appJs;
     }
 
     public JavaScript getStaticJavaScript(String id) {

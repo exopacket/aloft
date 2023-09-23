@@ -5,9 +5,12 @@ import com.inteliense.aloft.compiler.lang.keywords.AloftPage;
 import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.css.StylesheetEndpoint;
+import com.inteliense.aloft.server.html.elements.js.AppJavaScript;
+import com.inteliense.aloft.server.html.elements.js.JavaScriptBuilder;
 import com.inteliense.aloft.server.html.elements.js.ScriptEndpoint;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Endpoint {
 
@@ -17,6 +20,7 @@ public class Endpoint {
     protected VariableTree vars;
     protected AloftTheme theme;
     protected ArrayList<HtmlElement> staticFiles;
+    protected AtomicReference<AppJavaScript> js;
 
     public Endpoint(Route route, RequestType type, AloftRequestType internalType, VariableTree vars) {
         this.path = route.getPath();
@@ -32,6 +36,7 @@ public class Endpoint {
         this.vars = vars;
         this.theme = config.getTheme();
         this.staticFiles = config.getStaticFiles();
+//        this.js.set(config.getAppJs());
     }
 
 

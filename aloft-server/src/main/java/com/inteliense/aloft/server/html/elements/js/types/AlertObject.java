@@ -22,7 +22,7 @@ public class AlertObject extends JavaScriptObject {
 
     @Override
     public void create() {
-        var("myModal");
-        call(true, new String[]{"bootstrap"}, "Modal", byId(this.id), object());
+        call("alert", FunctionArg.preset(title));
+        end();
     }
 }

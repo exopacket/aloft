@@ -4,6 +4,7 @@ import com.inteliense.aloft.compiler.lang.keywords.AloftPage;
 import com.inteliense.aloft.server.html.HtmlRenderer;
 import com.inteliense.aloft.server.html.elements.css.StylesheetEndpoint;
 import com.inteliense.aloft.server.html.elements.css.StylesheetRenderer;
+import com.inteliense.aloft.server.html.elements.js.JavaScriptBuilder;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptRenderer;
 import com.inteliense.aloft.server.html.elements.js.ScriptEndpoint;
 import com.inteliense.aloft.utils.data.BaseX;
@@ -21,6 +22,8 @@ public class Route {
     private AloftRequestType aloftRequestType;
 
     private VariableTree vars;
+
+    private JavaScriptBuilder js = new JavaScriptBuilder();
 
     public Route(String path, RequestType type, String typeStr) {
         if(!__.isset(type)) return;

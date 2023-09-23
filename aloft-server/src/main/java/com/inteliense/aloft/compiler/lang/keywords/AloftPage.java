@@ -17,6 +17,9 @@ import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleHashList
 import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.compiler.lang.supporting.MountableComponent;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
+import com.inteliense.aloft.server.html.elements.js.JSOV;
+import com.inteliense.aloft.server.html.elements.js.JavaScriptObject;
+import com.inteliense.aloft.server.html.elements.js.types.AlertObject;
 import com.inteliense.aloft.server.html.elements.types.Body;
 import com.inteliense.aloft.server.html.elements.types.Head;
 import com.inteliense.aloft.server.html.elements.types.Page;
@@ -85,7 +88,14 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
 //        screen.appendState("__root__.test", new StringT(), "value");
         AloftScreenContainer container = new AloftScreenContainer();
         TextAloftElement textElement = new TextAloftElement(this.vars.getByIndex(0).getValue() + "\n\nSincerely yours,\n- Server.");
-        textElement.addListener(new AloftOnClickListener());
+        AlertObject alertObject = new AlertObject();
+        alertObject.setTitle("Hello World!");
+        textElement.addListener(new AloftOnClickListener(
+                JSOV.v("query", "p", true),
+                JSOV.v("multiple-elements", false),
+                JSOV.v("function", "myAlert"),
+                JSOV.v("function-slot", alertObject)
+        ));
         TextAloftElement textSpan = new TextAloftElement("THIS IS A TEST PAGE.");
         textElement.addSpan(textSpan);
         textElement.addStyle("color", "blue");
@@ -118,7 +128,6 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
     public HtmlElement html(StyleModule module) {
         return buildPage();
     }
-
 
     private void buildCss() {
         this.root.appendCss(this.css);

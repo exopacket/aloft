@@ -17,6 +17,10 @@ public class JavaScript {
         return type;
     }
 
+    public void clean() {
+
+    }
+
     public HtmlElement getTag() {
         if(type == JavaScriptWriterType.ELEMENT && __.isset(getElement())) return getElement();
         else if(type == JavaScriptWriterType.FILE && __.isset(getFile())) return getFile();

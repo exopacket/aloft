@@ -1,7 +1,9 @@
 package com.inteliense.aloft.server.html.elements;
 
 import com.inteliense.aloft.compiler.lang.keywords.elements.types.ButtonAloftElement;
+import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
 import com.inteliense.aloft.compiler.lang.lib.StyleModule;
+import com.inteliense.aloft.server.html.elements.js.*;
 import com.inteliense.aloft.server.html.elements.types.Content;
 import com.inteliense.aloft.utils.global.__;
 
@@ -27,10 +29,6 @@ public abstract class HtmlElement {
 
     public String getId() {
         return id == null ? "" : id;
-    }
-
-    public void createId() {
-
     }
 
     public void addChild(HtmlElement element) {
@@ -90,6 +88,11 @@ public abstract class HtmlElement {
         for(int i=0; i<styles.length; i++) {
             this.styles.add(styles[i]);
         }
+    }
+
+    public HtmlElement applyJs(JavaScript js) {
+        this.id = id;
+        return null;
     }
 
     public String getHtml() {

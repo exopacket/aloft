@@ -9,21 +9,24 @@ import java.util.Scanner;
 
 public class JavaScriptBuilder {
 
-    private String id;
     private File file;
 
     private ArrayList<JavaScriptObject> objects = new ArrayList<>();
-    private String jsPath;
+    private String path;
 
     public JavaScriptBuilder(String path, File file) {
         this.file = file;
-        this.jsPath = path;
-        this.id = getId();
+        this.path = path;
     }
 
     public JavaScriptBuilder() { }
 
-    public void addObject(JavaScriptObject object) {
+    public boolean empty() {
+        return this.objects.isEmpty();
+    }
+
+    public void addObject(JavaScriptObject object, String...vars) {
+        object.setVars(vars);
         objects.add(object);
     }
 
@@ -40,14 +43,10 @@ public class JavaScriptBuilder {
             while(scnr.hasNext()) {
                 builder.append(scnr.nextLine() + "\n");
             }
-            return new JavaScriptFile(id, builder.toString());
+            return new JavaScriptFile(path, builder.toString());
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private String getId() {
-        return jsPath;
     }
 
 }
