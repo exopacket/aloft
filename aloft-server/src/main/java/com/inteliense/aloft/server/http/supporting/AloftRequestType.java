@@ -10,5 +10,6 @@ public enum AloftRequestType {
     JAVASCRIPT_FILE,
     STYLESHEET_FILE,
     IMAGE,
-    FILE
+    FILE,
+    FONT_FILE
 }

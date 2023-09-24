@@ -22,7 +22,10 @@ public class AloftRequestTypeParser {
                 if(path.indexOf(config.getRoutesConfig().publicApi()) == 0) return AloftRequestType.PUBLIC_API;
             }
         }
-        if(path.indexOf(config.getRoutesConfig().stylesheets()) == 0) return AloftRequestType.STYLESHEET_FILE;
+        if(path.indexOf(config.getRoutesConfig().stylesheets()) == 0) {
+            if(path.indexOf(".css") > 0) return AloftRequestType.STYLESHEET_FILE;
+            if(path.indexOf(".woff") > 0) return AloftRequestType.FONT_FILE;
+        }
         if(path.indexOf(config.getRoutesConfig().javascript()) == 0) return AloftRequestType.JAVASCRIPT_FILE;
         if(path.indexOf(config.getRoutesConfig().images()) == 0) return AloftRequestType.IMAGE;
         if(path.indexOf(config.getRoutesConfig().files()) == 0) return AloftRequestType.FILE;

@@ -12,12 +12,21 @@ public class Response {
     private HttpExchange t;
     private int code;
     private String content;
+    private byte[] bytes;
+    private boolean binary = false;
     private HeaderList headers = new HeaderList();
 
     public Response(HttpExchange t, String content, int code) {
         this.t = t;
         this.code = code;
         this.content = content;
+    }
+
+    public Response(HttpExchange t, byte[] bytes, int code) {
+        this.t = t;
+        this.code = code;
+        this.bytes = bytes;
+        this.binary = true;
     }
 
     public Response(HttpExchange t, String[] content, int code) {
@@ -35,7 +44,8 @@ public class Response {
         try {
             t.sendResponseHeaders(code, 0);
             OutputStream os = t.getResponseBody();
-            os.write(content.getBytes());
+            if(!binary) os.write(content.getBytes());
+            else os.write(bytes);
             os.close();
             return true;
         } catch (Exception e) { return false; }

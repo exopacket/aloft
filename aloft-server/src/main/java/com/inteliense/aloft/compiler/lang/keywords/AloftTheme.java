@@ -21,7 +21,8 @@ public class AloftTheme implements BuildsJava {
     private StyleModule module;
 
     private boolean useBootstrap = false;
-    private boolean useFontAwesome = false;
+    private boolean useDefaultIcons = false;
+    private boolean useDefaultFont = false;
 
     public AloftTheme() { }
 
@@ -42,12 +43,20 @@ public class AloftTheme implements BuildsJava {
         return useBootstrap;
     }
 
-    public void setUsesFontAwesome() {
-        useFontAwesome = true;
+    public void setUsesDefaultIcons() {
+        useDefaultIcons = true;
     }
 
-    public boolean usesFontAwesome() {
-        return useFontAwesome;
+    public boolean usesDefaultIcons() {
+        return useDefaultIcons;
+    }
+
+    public void setUsesDefaultFont() {
+        useDefaultFont = true;
+    }
+
+    public boolean usesDefaultFont() {
+        return useDefaultFont;
     }
 
     public StyleModule getStyleModule() {

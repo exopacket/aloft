@@ -2,16 +2,12 @@ package com.inteliense.aloft.application.config;
 
 import com.inteliense.aloft.application.cache.AppCache;
 import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
-import com.inteliense.aloft.run.Main;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
-import com.inteliense.aloft.server.html.elements.css.Stylesheet;
-import com.inteliense.aloft.server.html.elements.css.StylesheetBuilder;
-import com.inteliense.aloft.server.html.elements.css.StylesheetWriterType;
+import com.inteliense.aloft.server.html.elements.css.*;
 import com.inteliense.aloft.server.html.elements.js.AppJavaScript;
 import com.inteliense.aloft.server.html.elements.js.JavaScript;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptBuilder;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptWriterType;
-import com.inteliense.aloft.server.html.elements.types.App;
 import com.inteliense.aloft.server.http.middleware.base.ApplyToType;
 import com.inteliense.aloft.server.http.middleware.types.HasHeaders;
 import com.inteliense.aloft.server.http.supporting.Route;
@@ -22,7 +18,6 @@ import org.json.simple.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -58,6 +53,8 @@ public class AppConfig {
     //JAVASCRIPT AND STYLESHEETS;
     private JavaScriptEndpointList scriptEndpoints;
     private StylesheetEndpointList stylesheetEndpoints;
+    private FontEndpointList fontEndpoints;
+
     private AppJavaScript appJs = new AppJavaScript();
 
     public MiddlewareList getMiddleware() { return this.middleware; }
@@ -83,14 +80,20 @@ public class AppConfig {
         cache = new AppCache();
         theme = new AloftTheme();
         theme.setUsesBootstrap();
-        theme.setUsesFontAwesome();
+        theme.setUsesDefaultIcons();
+        theme.setUsesDefaultFont();
         scriptEndpoints = new JavaScriptEndpointList();
         stylesheetEndpoints = new StylesheetEndpointList();
-        if(theme.usesBootstrap() || theme.usesFontAwesome()) {
+        fontEndpoints = new FontEndpointList();
+        if(theme.usesBootstrap() || theme.usesDefaultIcons()) {
             buildStaticJavaScript();
             cache.addStaticJavascript(scriptEndpoints);
             buildStaticStylesheets();
             cache.addStaticStylesheets(stylesheetEndpoints);
+        }
+        if(theme.usesDefaultIcons() || theme.usesDefaultFont()) {
+            buildStaticFonts();
+            cache.addStaticFonts(fontEndpoints);
         }
     }
 
@@ -126,6 +129,10 @@ public class AppConfig {
         return this.stylesheetEndpoints.get(id);
     }
 
+    public Font getStaticFont(String id) {
+        return this.fontEndpoints.get(id);
+    }
+
     private void buildStaticJavaScript() {
         ArrayList<String[]> paths = new ArrayList<>();
         if(this.theme.usesBootstrap()) {
@@ -137,21 +144,6 @@ public class AppConfig {
                 scriptEndpoints.appendAppScriptEndpoints(js);
             }
         }
-        if(this.theme.usesFontAwesome()) {
-            paths.addAll(getFontAwesomeJsResources());
-            ArrayList<File> fontAwesomeJs = getFileList(getFontAwesomeJsResources());
-            for(int i=0; i< fontAwesomeJs.size(); i++){
-                JavaScriptBuilder builder = new JavaScriptBuilder(getFontAwesomeJsResources().get(i)[1], fontAwesomeJs.get(i));
-                JavaScript js = new JavaScript(JavaScriptWriterType.FILE, builder);
-                scriptEndpoints.appendAppScriptEndpoints(js);
-            }
-        }
-    }
-
-    private ArrayList<String[]> getFontAwesomeJsResources() {
-        ArrayList<String[]> resources = new ArrayList<>();
-        resources.add(new String[]{"/fontawesome/fontawesome.js", this.routes.javascript() + "/icons.js"});
-        return resources;
     }
 
     private ArrayList<String[]> getBootstrapJsResources() {
@@ -170,6 +162,74 @@ public class AppConfig {
                 stylesheetEndpoints.appendAppStylesheetEndpoints(css);
             }
         }
+        paths.clear();
+        if(this.theme.usesDefaultFont()) {
+            paths.addAll(getDefaultFontCssResources());
+            ArrayList<File> defaultFontCss = getFileList(getDefaultFontCssResources());
+            for(int i=0; i< defaultFontCss.size(); i++){
+                StylesheetBuilder builder = new StylesheetBuilder(getDefaultFontCssResources().get(i)[1], defaultFontCss.get(i));
+                Stylesheet css = new Stylesheet(StylesheetWriterType.FILE, builder);
+                stylesheetEndpoints.appendAppStylesheetEndpoints(css);
+            }
+        }
+        paths.clear();
+        if(this.theme.usesDefaultIcons()) {
+            paths.addAll(getIconFontCssResources());
+            ArrayList<File> iconCss = getFileList(getIconFontCssResources());
+            for(int i=0; i< iconCss.size(); i++){
+                StylesheetBuilder builder = new StylesheetBuilder(getIconFontCssResources().get(i)[1], iconCss.get(i));
+                Stylesheet css = new Stylesheet(StylesheetWriterType.FILE, builder);
+                stylesheetEndpoints.appendAppStylesheetEndpoints(css);
+            }
+        }
+    }
+
+    private void buildStaticFonts() {
+        ArrayList<String[]> paths = new ArrayList<>();
+        if(this.theme.usesDefaultFont()) {
+            paths.addAll(getDefaultFontResources());
+            ArrayList<File> defaultFont = getFileList(getDefaultFontResources());
+            for(int i=0; i< defaultFont.size(); i++){
+                System.out.println(getDefaultFontResources().get(i)[1]);
+                FontBuilder builder = new FontBuilder(getDefaultFontResources().get(i)[1], defaultFont.get(i));
+                Font font = new Font(builder);
+                fontEndpoints.appendAppFontEndpoints(font);
+            }
+        }
+        paths.clear();
+        if(this.theme.usesDefaultIcons()) {
+            paths.addAll(getIconFontResources());
+            ArrayList<File> iconFont = getFileList(getIconFontResources());
+            for(int i=0; i< iconFont.size(); i++){
+                FontBuilder builder = new FontBuilder(getIconFontResources().get(i)[1], iconFont.get(i));
+                Font font = new Font(builder);
+                fontEndpoints.appendAppFontEndpoints(font);
+            }
+        }
+    }
+
+    private ArrayList<String[]> getIconFontResources() {
+        ArrayList<String[]> resources = new ArrayList<>();
+        resources.add(new String[]{"/bootstrap/bootstrap-icons.woff", this.routes.stylesheets() + "/icons.woff"});
+        return resources;
+    }
+
+    private ArrayList<String[]> getIconFontCssResources() {
+        ArrayList<String[]> resources = new ArrayList<>();
+        resources.add(new String[]{"/bootstrap/icons.css", this.routes.stylesheets() + "/icons.css"});
+        return resources;
+    }
+
+    private ArrayList<String[]> getDefaultFontResources() {
+        ArrayList<String[]> resources = new ArrayList<>();
+        resources.add(new String[]{"/fonts/default.woff", this.routes.stylesheets() + "/font.woff"});
+        return resources;
+    }
+
+    private ArrayList<String[]> getDefaultFontCssResources() {
+        ArrayList<String[]> resources = new ArrayList<>();
+        resources.add(new String[]{"/fonts/default.css", this.routes.stylesheets() + "/font.css"});
+        return resources;
     }
 
     private ArrayList<String[]> getBootstrapCssResources() {

@@ -4,6 +4,7 @@ import com.inteliense.aloft.application.config.AppConfig;
 import com.inteliense.aloft.compiler.lang.keywords.AloftPage;
 import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
+import com.inteliense.aloft.server.html.elements.css.FontEndpoint;
 import com.inteliense.aloft.server.html.elements.css.StylesheetEndpoint;
 import com.inteliense.aloft.server.html.elements.js.AppJavaScript;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptBuilder;
@@ -47,6 +48,7 @@ public class Endpoint {
     public static Endpoint create(String requestPath, Route route, RequestType type, AloftRequestType internalType, AppConfig config) {
         if(internalType == AloftRequestType.JAVASCRIPT_FILE) return new ScriptEndpoint(route, type, internalType, route.getPath().getVariables(requestPath), config.getStaticJavaScript(route.getPath().getPathString()));
         if(internalType == AloftRequestType.STYLESHEET_FILE) return new StylesheetEndpoint(route, type, internalType, route.getPath().getVariables(requestPath), config.getStaticStylesheet(route.getPath().getPathString()));
+        if(internalType == AloftRequestType.FONT_FILE) return new FontEndpoint(route, type, internalType, route.getPath().getVariables(requestPath), config.getStaticFont(route.getPath().getPathString()));
         return new AloftPage(route, type, internalType, route.getPath().getVariables(requestPath), config);
     }
 

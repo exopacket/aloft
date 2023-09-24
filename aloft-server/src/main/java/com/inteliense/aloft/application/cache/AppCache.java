@@ -1,11 +1,9 @@
 package com.inteliense.aloft.application.cache;
 
-import com.inteliense.aloft.application.config.AppConfig;
-import com.inteliense.aloft.application.config.JavaScriptEndpointList;
-import com.inteliense.aloft.application.config.RouteList;
-import com.inteliense.aloft.application.config.StylesheetEndpointList;
+import com.inteliense.aloft.application.config.*;
 import com.inteliense.aloft.compiler.lang.types.base.V;
 import com.inteliense.aloft.compiler.lang.types.t.StringT;
+import com.inteliense.aloft.server.html.elements.css.Font;
 import com.inteliense.aloft.server.html.elements.css.Stylesheet;
 import com.inteliense.aloft.server.html.elements.js.JavaScript;
 import com.inteliense.aloft.server.http.supporting.Route;
@@ -39,6 +37,13 @@ public class AppCache {
         for(int i=0; i<list.size(); i++) {
             Stylesheet css = list.next();
             routeCache.getRouteList().appendRoute(new Route(css.getFile().getPath(), "GET"));
+        }
+    }
+
+    public void addStaticFonts(FontEndpointList list) {
+        for(int i=0; i<list.size(); i++) {
+            Font font = list.next();
+            routeCache.getRouteList().appendRoute(new Route(font.getPath(), "GET"));
         }
     }
 

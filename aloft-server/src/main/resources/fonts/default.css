@@ -1,0 +1,12 @@
+@font-face {
+    font-display: block;
+    font-family: "Aileron";
+    src: url("./font.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: Aileron, ui-sans-serif !important;
+    letter-spacing: 1.5px;
+}

@@ -17,8 +17,6 @@ import java.util.HashMap;
 
 public class TextAloftElement extends AloftElement {
 
-    private ArrayList<TextAloftElement> textSpans = new ArrayList<>();
-
     public TextAloftElement() { super(); init(); }
 
     public TextAloftElement(String text) {

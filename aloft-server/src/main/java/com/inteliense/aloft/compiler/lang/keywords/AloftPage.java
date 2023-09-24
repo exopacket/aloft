@@ -106,6 +106,7 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
         ButtonAloftElement btn = new ButtonAloftElement("__button_default__");
         btn.setText("This button now does something different.");
         btn.addSubclass("primary");
+        btn.addSubclass("lg");
         container.addChild(btn);
         AlertAloftElement alert = new AlertAloftElement();
         alert.builder("title", __.arr("text", "Hello World"));

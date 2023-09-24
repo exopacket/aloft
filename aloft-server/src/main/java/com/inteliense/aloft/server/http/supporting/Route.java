@@ -2,6 +2,8 @@ package com.inteliense.aloft.server.http.supporting;
 
 import com.inteliense.aloft.compiler.lang.keywords.AloftPage;
 import com.inteliense.aloft.server.html.HtmlRenderer;
+import com.inteliense.aloft.server.html.elements.css.FontEndpoint;
+import com.inteliense.aloft.server.html.elements.css.FontRenderer;
 import com.inteliense.aloft.server.html.elements.css.StylesheetEndpoint;
 import com.inteliense.aloft.server.html.elements.css.StylesheetRenderer;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptBuilder;
@@ -70,6 +72,8 @@ public class Route {
             return JavaScriptRenderer.render((ScriptEndpoint) endpoint).get(t);
         if(endpoint.getClass() == StylesheetEndpoint.class)
             return StylesheetRenderer.render((StylesheetEndpoint) endpoint).get(t);
+        if(endpoint.getClass() == FontEndpoint.class)
+            return FontRenderer.render((FontEndpoint) endpoint).get(t);
         return new Response(t, "Page not found", 404);
     }
 
