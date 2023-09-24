@@ -190,7 +190,6 @@ public class AppConfig {
             paths.addAll(getDefaultFontResources());
             ArrayList<File> defaultFont = getFileList(getDefaultFontResources());
             for(int i=0; i< defaultFont.size(); i++){
-                System.out.println(getDefaultFontResources().get(i)[1]);
                 FontBuilder builder = new FontBuilder(getDefaultFontResources().get(i)[1], defaultFont.get(i));
                 Font font = new Font(builder);
                 fontEndpoints.appendAppFontEndpoints(font);

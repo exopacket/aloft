@@ -15,6 +15,7 @@ public class BootstrapModule extends StyleModule {
 
         //SIZE
         element.addSubclasses("button","lg", "btn-lg");
+        element.addSubclasses("button","sm", "btn-sm");
         return element;
     }
 
@@ -33,6 +34,13 @@ public class BootstrapModule extends StyleModule {
         element.addClasses("header", "modal-header");
         element.addClasses("title", "modal-title");
         element.addAttributes("title" , "id", "staticBackdropLabel");
+        return element;
+    }
+
+    @Override
+    protected ModuleElement centeredAloftElement(ModuleElement element) {
+        element.addClasses("root","d-flex", "w-100", "h-100", "p-3");
+        element.addClasses("child","mx-auto", "my-auto");
         return element;
     }
 }
