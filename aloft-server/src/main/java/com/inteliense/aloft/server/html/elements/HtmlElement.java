@@ -24,7 +24,7 @@ public abstract class HtmlElement {
     public HtmlElement() { this.id = null; }
 
     public HtmlElement(String id) {
-        this.id = id;
+        this.id = "_" + id;
     }
 
     public String getId() {

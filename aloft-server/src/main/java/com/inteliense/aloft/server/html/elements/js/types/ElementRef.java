@@ -61,7 +61,7 @@ public class ElementRef extends JavaScriptObject {
                 String[] arr = (String[]) this.selector;
                 return " [" + arr[0] + "=" + arr[1] + "] ";
             } else if(this.type == T.ID) {
-                return "#" + this.selector;
+                return "#_" + this.selector;
             } else {
                 return " " + (String) this.selector + " ";
             }
