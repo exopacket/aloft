@@ -1,7 +1,6 @@
 package com.inteliense.aloft.compiler.lang.keywords.components;
 
 import com.inteliense.aloft.compiler.lang.base.BuildsAppJavascript;
-import com.inteliense.aloft.compiler.lang.base.BuildsCss;
 import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
 import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
 import com.inteliense.aloft.compiler.lang.keywords.style.base.*;
@@ -37,7 +36,7 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
     protected ArrayList<AloftStyleClass> classes = new ArrayList<>();
     protected AloftStyle style = new AloftStyle();
     protected ArrayList<AloftListener> listeners = new ArrayList<>();
-    protected HashMap<String, String> vars = new HashMap<>();
+    public HashMap<String, Object> vars = new HashMap<>();
     protected JavaScriptBuilder jsBuilder = new JavaScriptBuilder();
     protected JavaScript scripts = null;
 
@@ -54,6 +53,7 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
 
     public void setUniqueId(String parent) {
         this.uniqueId = A32.casified(SHA.getHmac256(parent, getName()));
+        for(int i=0; i< children.size(); i++) children.get(i).setUniqueId(this.uniqueId);
     }
 
     public void setState(VariableTree tree) {
@@ -176,7 +176,7 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
     }
 
     public void addListener(AloftListener listener) {
-        listener.setRef("sticky", ref());
+        listener.setRef("ref", ref());
         this.jsBuilder.addObject(listener.getObject());
         this.listeners.add(listener);
     }

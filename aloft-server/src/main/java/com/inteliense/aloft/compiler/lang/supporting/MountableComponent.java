@@ -34,6 +34,7 @@ public class MountableComponent extends AloftComponent {
 
     public void appendComponent(AloftComponent component) {
         this.components.add(component);
+        System.out.println("APPEND COMPONENT");
     }
 
     public HtmlElement get(List<String> arr, HtmlElement root) {

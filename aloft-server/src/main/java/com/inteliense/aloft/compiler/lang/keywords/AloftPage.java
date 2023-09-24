@@ -103,7 +103,8 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
         textElement.addStyle("font-style", "italic");
         textElement.setClasses(this.theme.mergeByHash(textElement.getStyle().getHashes()));
         container.addChild(textElement);
-        ButtonAloftElement btn = new ButtonAloftElement("This button does nothing.");
+        ButtonAloftElement btn = new ButtonAloftElement("__button_default__");
+        btn.setText("This button now does something different.");
         btn.addSubclass("primary");
         container.addChild(btn);
         AlertAloftElement alert = new AlertAloftElement();

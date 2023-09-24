@@ -1,39 +1,69 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
+import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElementSubtype;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftIconPlacement;
-import com.inteliense.aloft.compiler.lang.lib.ModuleElementAttributes;
 import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.types.Content;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ButtonAloftElement extends AloftElement {
 
-    private String text;
-    private IconAloftElement icon;
-    private AloftIconPlacement iconPlacement;
+    public ButtonAloftElement() { super(); init(); }
 
-    public ButtonAloftElement(String text) { super(); this.text = text; init(); }
+    public ButtonAloftElement(String subtype) {
+        super(subtype);
+        init();
+    }
 
-    public void setText(String text) { this.text = text; }
+    public void setText(String text) { this.vars.replace("text", text); }
 
     public void setIcon(IconAloftElement icon, AloftIconPlacement placement) {
-        this.icon = icon;
-        this.iconPlacement = placement;
+        this.vars.replace("icon", icon);
+        this.vars.replace("placement", placement);
     }
 
     @Override
-    public HtmlElement html(StyleModule module) {
-        HtmlElement root = createElement("button");
-        Content content = new Content(this.text);
-        root.addChild(content);
-        module.get(this.getClass()).fromKey("button").apply(root, getModuleSubclasses());
-        for(int i=0; i< listeners.size(); i++) {
-            root.addChild(listeners.get(i).getObject().getJs());
-        }
-        return root;
+    protected void subtypes(ArrayList<AloftElementSubtype> subtypes) {
+        //NAMES ARE IN THIS FORMAT UNTIL FURTHER WORK
+        this.subtypes.add(new AloftElementSubtype(constructSubtype("__button_default__")) {
+            @Override
+            public HtmlElement html(StyleModule module) {
+                HtmlElement root = createElement("button");
+                Content content = new Content(var("text"));
+                root.addChild(content);
+                applyStyle("button", ButtonAloftElement.class, root, module);
+                applyListeners(root);
+                return root;
+            }
+            @Override
+            public String getName() {
+                return "__button_default__";
+            }
+        });
+        this.subtypes.add(new AloftElementSubtype(constructSubtype("__button_with_icon__")) {
+            @Override
+            public HtmlElement html(StyleModule module) {
+                return createElement("button");
+            }
+            @Override
+            public String getName() {
+                return "__button_with_icon__";
+            }
+        });
+        this.subtypes.add(new AloftElementSubtype(constructSubtype("__icon_button__")) {
+            @Override
+            public HtmlElement html(StyleModule module) {
+                return createElement("button");
+            }
+            @Override
+            public String getName() {
+                return "__icon_button__";
+            }
+        });
     }
 
     @Override
@@ -72,7 +102,9 @@ public class ButtonAloftElement extends AloftElement {
     }
 
     @Override
-    protected void setupVariables(HashMap<String, String> vars) {
-
+    protected void setupVariables(HashMap<String, Object> vars) {
+        vars.put("text", null);
+        vars.put("icon", null);
+        vars.put("placement", null);
     }
 }

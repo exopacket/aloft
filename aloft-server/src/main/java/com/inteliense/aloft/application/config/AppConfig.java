@@ -83,9 +83,10 @@ public class AppConfig {
         cache = new AppCache();
         theme = new AloftTheme();
         theme.setUsesBootstrap();
+        theme.setUsesFontAwesome();
         scriptEndpoints = new JavaScriptEndpointList();
         stylesheetEndpoints = new StylesheetEndpointList();
-        if(theme.usesBootstrap()) {
+        if(theme.usesBootstrap() || theme.usesFontAwesome()) {
             buildStaticJavaScript();
             cache.addStaticJavascript(scriptEndpoints);
             buildStaticStylesheets();
@@ -129,13 +130,28 @@ public class AppConfig {
         ArrayList<String[]> paths = new ArrayList<>();
         if(this.theme.usesBootstrap()) {
             paths.addAll(getBootstrapJsResources());
-            ArrayList<File> bootstrapJs = getBootstrapJsList(getBootstrapJsResources());
+            ArrayList<File> bootstrapJs = getFileList(getBootstrapJsResources());
             for(int i=0; i< bootstrapJs.size(); i++){
                 JavaScriptBuilder builder = new JavaScriptBuilder(getBootstrapJsResources().get(i)[1], bootstrapJs.get(i));
                 JavaScript js = new JavaScript(JavaScriptWriterType.FILE, builder);
                 scriptEndpoints.appendAppScriptEndpoints(js);
             }
         }
+        if(this.theme.usesFontAwesome()) {
+            paths.addAll(getFontAwesomeJsResources());
+            ArrayList<File> fontAwesomeJs = getFileList(getFontAwesomeJsResources());
+            for(int i=0; i< fontAwesomeJs.size(); i++){
+                JavaScriptBuilder builder = new JavaScriptBuilder(getFontAwesomeJsResources().get(i)[1], fontAwesomeJs.get(i));
+                JavaScript js = new JavaScript(JavaScriptWriterType.FILE, builder);
+                scriptEndpoints.appendAppScriptEndpoints(js);
+            }
+        }
+    }
+
+    private ArrayList<String[]> getFontAwesomeJsResources() {
+        ArrayList<String[]> resources = new ArrayList<>();
+        resources.add(new String[]{"/fontawesome/fontawesome.js", this.routes.javascript() + "/icons.js"});
+        return resources;
     }
 
     private ArrayList<String[]> getBootstrapJsResources() {
@@ -143,16 +159,11 @@ public class AppConfig {
         resources.add(new String[]{"/bootstrap/bootstrap.bundle.js", this.routes.javascript() + "/bootstrap.js"});
         return resources;
     }
-
-    private ArrayList<File> getBootstrapJsList(ArrayList<String[]> resources) {
-        return getFiles(resources);
-    }
-
     private void buildStaticStylesheets() {
         ArrayList<String[]> paths = new ArrayList<>();
         if(this.theme.usesBootstrap()) {
             paths.addAll(getBootstrapCssResources());
-            ArrayList<File> bootstrapCss = getBootstrapCssList(getBootstrapCssResources());
+            ArrayList<File> bootstrapCss = getFileList(getBootstrapCssResources());
             for(int i=0; i< bootstrapCss.size(); i++){
                 StylesheetBuilder builder = new StylesheetBuilder(getBootstrapCssResources().get(i)[1], bootstrapCss.get(i));
                 Stylesheet css = new Stylesheet(StylesheetWriterType.FILE, builder);
@@ -167,7 +178,7 @@ public class AppConfig {
         return resources;
     }
 
-    private ArrayList<File> getBootstrapCssList(ArrayList<String[]> resources) {
+    private ArrayList<File> getFileList(ArrayList<String[]> resources) {
         return getFiles(resources);
     }
 

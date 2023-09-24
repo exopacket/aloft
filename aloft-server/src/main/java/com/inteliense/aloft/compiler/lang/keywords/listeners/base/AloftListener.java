@@ -38,14 +38,14 @@ public abstract class AloftListener implements BuildsJavascript {
         JavaScriptObject base = new JavaScriptObject() {
             @Override
             public void create() {
-                this.placeRef(FunctionArg.var("sticky"));
-                this.var(FunctionArg.var("sticky"));
+                this.placeRef(FunctionArg.var("ref"));
+                this.var(FunctionArg.var("ref"));
                 this.chain("addEventListener", FunctionArg.preset(method), FunctionArg.var("function"));
                 this.end();
                 this.slot();
             }
         };
-        base.setVars(new String[]{"sticky", "function"});
+        base.setVars(new String[]{"ref", "function"});
         base.setVars(vars);
         base.build();
         FunctionObject func = new FunctionObject();

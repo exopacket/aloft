@@ -8,8 +8,13 @@ public class BootstrapModule extends StyleModule {
     protected ModuleElement buttonAloftElement(ModuleElement element) {
         element.addClasses("button","btn");
         element.addAttributes("button","type", "button");
+
+        //COLORS
         element.addSubclasses("button","primary", "btn-primary");
         element.addSubclasses("button","secondary", "btn-secondary");
+
+        //SIZE
+        element.addSubclasses("button","lg", "btn-lg");
         return element;
     }
 

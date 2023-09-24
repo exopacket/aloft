@@ -2,6 +2,7 @@ package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
 import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
+import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElementSubtype;
 import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
 import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
@@ -63,7 +64,12 @@ public class AloftScreenContainer extends AloftElement {
     }
 
     @Override
-    protected void setupVariables(HashMap<String, String> vars) {
+    protected void setupVariables(HashMap<String, Object> vars) {
+
+    }
+
+    @Override
+    protected void subtypes(ArrayList<AloftElementSubtype> subtypes) {
 
     }
 

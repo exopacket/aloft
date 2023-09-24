@@ -1,7 +1,9 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
+import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftBuilder;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
+import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElementSubtype;
 import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptObject;
@@ -41,22 +43,20 @@ public class TextAloftElement extends AloftElement {
     }
 
     public void addSpan(TextAloftElement element) {
-        textSpans.add(element);
+        addChild(element);
     }
 
     @Override
     public HtmlElement html(StyleModule module) {
-        HtmlElement root = createElement("p");
+        HtmlElement root = createElement("p", this.uniqueId);
         root.addAttribute("data-aid", A32.casified(SHA.getSha1(getName())));
         Content rootContent = new Content(var("text"));
         root.addChild(rootContent);
-        for(int i=0; i<textSpans.size(); i++) {
-            HtmlElement element = textSpans.get(i).html(module);
+        for(int i=0; i<children.size(); i++) {
+            HtmlElement element = children.get(i).html(module);
             root.addChild(element);
         }
-        for(int i=0; i< listeners.size(); i++) {
-            root.addChild(listeners.get(i).getObject().getJs());
-        }
+        this.applyListeners(root);
         return root;
     }
 
@@ -96,8 +96,13 @@ public class TextAloftElement extends AloftElement {
     }
 
     @Override
-    protected void setupVariables(HashMap<String, String> vars) {
+    protected void setupVariables(HashMap<String, Object> vars) {
         vars.put("text", null);
+    }
+
+    @Override
+    protected void subtypes(ArrayList<AloftElementSubtype> subtypes) {
+
     }
 
 }

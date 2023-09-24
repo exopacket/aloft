@@ -1,7 +1,5 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
-import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
-import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftBuilder;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElementSubtype;
@@ -79,8 +77,13 @@ public class AlertAloftElement extends AloftElement {
     }
 
     @Override
-    protected void setupVariables(HashMap<String, String> vars) {
-        vars.put("modal-id", null);
+    protected void setupVariables(HashMap<String, Object> vars) {
+
+    }
+
+    @Override
+    protected void subtypes(ArrayList<AloftElementSubtype> subtypes) {
+
     }
 
 }
