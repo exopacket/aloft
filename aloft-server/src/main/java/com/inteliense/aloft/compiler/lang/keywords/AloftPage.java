@@ -86,6 +86,11 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
 //        screen.appendState("__root__.test", new StringT(), "value");
         AloftScreenContainer container = new AloftScreenContainer();
         CenteredAloftElement centered = new CenteredAloftElement();
+        IconAloftElement icon = new IconAloftElement();
+        icon.setIcon("PERSON_RAISED_HAND");
+        icon.setSize(48);
+        icon.setColor("rgb(13, 110, 253)");
+        centered.addChild(icon);
         TextAloftElement textElement = new TextAloftElement("Hello World", "\n\nSincerely yours,\n- Server.");
         AlertObject alertObject = new AlertObject();
         alertObject.setTitle("Hello World!");

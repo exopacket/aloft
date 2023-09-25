@@ -2,19 +2,43 @@ package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElementSubtype;
+import com.inteliense.aloft.compiler.lang.lib.StyleModule;
+import com.inteliense.aloft.server.html.elements.HtmlElement;
+import com.inteliense.aloft.utils.global.__;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class IconAloftElement extends AloftElement {
 
-    public IconAloftElement() {
+    public IconAloftElement() { super(); init(); }
 
+    public void setIcon(String icon) {
+        this.vars.replace("icon", icon);
+    }
+
+    public void setColor(String color) {
+        this.vars.replace("color", color);
+    }
+
+    public void setSize(int size) {
+        this.vars.replace("size", size);
+    }
+
+    @Override
+    public HtmlElement html(StyleModule module) {
+        HtmlElement icon = createElement("i");
+        System.out.println(vars.get("icon"));
+        icon.addAttribute("class", module.icon((String) vars.get("icon")));
+        if(__.isset(vars.get("color"))) icon.addStyle("color", (String) vars.get("color"));
+        if(__.isset(vars.get("size"))) icon.addStyle("font-size", String.valueOf(vars.get("size")) + "px");
+        applyListeners(icon);
+        return icon;
     }
 
     @Override
     protected String name() {
-        return null;
+        return "__icon__";
     }
 
     @Override
@@ -49,7 +73,9 @@ public class IconAloftElement extends AloftElement {
 
     @Override
     protected void setupVariables(HashMap<String, Object> vars) {
-
+        vars.put("icon", null);
+        vars.put("size", null);
+        vars.put("color", null);
     }
 
     @Override
