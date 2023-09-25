@@ -62,7 +62,7 @@ public class Colors {
         double h = values[0];
         double s = values[1];
         double v = values[2];
-        double d = v - 0.35;
+        double d = v - 0.25;
         double x = s;
         if(d < 0) {
             x += (v * -1);
@@ -76,14 +76,14 @@ public class Colors {
         if(y >= 360) {
             y = y - 360;
         }
-        return new float[]{(float) y * 360, (float) x, (float) d};
+        return new float[]{(float) y * 360, (float) x, (float) v};
     }
 
     private float[] light(float[] values) {
         double h = values[0];
         double s = values[1];
         double v = values[2];
-        double d = v + 0.35;
+        double d = v + 0.25;
         double x = s;
         if(d >= 1.0) {
             x -= d - 1.0;
@@ -97,7 +97,7 @@ public class Colors {
         if(y < 0) {
             y = 360 - (y * -1);
         }
-        return new float[]{(float) y * 360, (float) x, (float) d};
+        return new float[]{(float) y * 360, (float) x, (float) v};
     }
 
     public enum Shade {

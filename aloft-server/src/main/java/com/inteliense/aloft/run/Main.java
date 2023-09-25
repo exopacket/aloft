@@ -12,6 +12,7 @@ public class Main {
 
         Colors colors = new Colors("#ff2b2b", "#00ff00", "#0000ff");
         System.out.println(colors.get("yellow", Colors.Shade.LIGHT).getHex());
+        System.out.println(colors.get("yellow").getHex());
 
 //        try {
 //            WebSockServer server = new WebSockServer("127.0.0.1", 3030, "debug") {
