@@ -62,7 +62,7 @@ public class Colors {
         double h = values[0];
         double s = values[1];
         double v = values[2];
-        double d = v - 0.5;
+        double d = v - 0.35;
         double x = s;
         if(d < 0) {
             x += (v * -1);
@@ -83,7 +83,7 @@ public class Colors {
         double h = values[0];
         double s = values[1];
         double v = values[2];
-        double d = v + 0.5;
+        double d = v + 0.35;
         double x = s;
         if(d >= 1.0) {
             x -= d - 1.0;

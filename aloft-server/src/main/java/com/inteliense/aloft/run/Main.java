@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Colors colors = new Colors("#ff0000", "#00ff00", "#0000ff");
+        Colors colors = new Colors("#ff2b2b", "#00ff00", "#0000ff");
         System.out.println(colors.get("yellow", Colors.Shade.LIGHT).getHex());
 
 //        try {
