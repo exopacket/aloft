@@ -20,8 +20,18 @@ public class Color {
         return ColorUtils.rgbToHex(rgb);
     }
 
+    public String getHex(float opacity) {
+        int[] v = rgb;
+        v[3] = (int) (opacity * 255);
+        return ColorUtils.rgbToHex(v);
+    }
+
     public String getRgbaFunction() {
         return "rgba(" + rgb[0] + ", " + rgb[1] + ", " + rgb[2] + ", " + ColorUtils.intToFloat(rgb[3]) + ")";
+    }
+
+    public String getRgbaFunction(float opacity) {
+        return "rgba(" + rgb[0] + ", " + rgb[1] + ", " + rgb[2] + ", " + opacity + ")";
     }
 
 }

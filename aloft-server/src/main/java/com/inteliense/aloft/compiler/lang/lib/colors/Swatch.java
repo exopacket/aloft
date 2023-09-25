@@ -12,4 +12,16 @@ public class Swatch {
         this.dark = dark;
     }
 
+    public Color base() {
+        return this.def;
+    }
+
+    public Color light() {
+        return this.light;
+    }
+
+    public Color dark() {
+        return this.dark;
+    }
+
 }

@@ -14,6 +14,16 @@ public class Colors {
         create(red, green, blue);
     }
 
+    public Color get(String key) {
+        return swatches.get(key).base();
+    }
+
+    public Color get(String key, Shade shade) {
+        if(shade == Shade.DARK) return swatches.get(key).dark();
+        if(shade == Shade.LIGHT) return swatches.get(key).light();
+        return swatches.get(key).base();
+    }
+
     private void create(int[] red, int[] green, int[] blue) {
         float[] steps = new float[]{0,0,0};
         float r = ColorUtils.toHsv(red[0], red[1], red[2])[0] * 360;
@@ -22,9 +32,9 @@ public class Colors {
         steps[0] = (g - r) / 4;
         steps[1] = (b - g) / 4;
         steps[2] = ((r + 360) - b) / 4;
-        mix(red, steps[0],  "test", "test", "test");
-        mix(green, steps[1],  "test", "test", "test");
-        mix(blue, steps[2],  "test", "test", "test");
+        mix(red, steps[0],  "red", "orange", "yellow", "chartreuse");
+        mix(green, steps[1],  "green", "spring-green", "cyan", "azure");
+        mix(blue, steps[2],  "blue", "violet", "magenta", "rose");
     }
 
     private void mix(int[] base, float step, String...names) {
@@ -66,7 +76,7 @@ public class Colors {
         if(y >= 360) {
             y = y - 360;
         }
-        return new float[]{(float) y, (float) x, (float) d};
+        return new float[]{(float) y * 360, (float) x, (float) d};
     }
 
     private float[] light(float[] values) {
@@ -87,7 +97,13 @@ public class Colors {
         if(y < 0) {
             y = 360 - (y * -1);
         }
-        return new float[]{(float) y, (float) x, (float) d};
+        return new float[]{(float) y * 360, (float) x, (float) d};
+    }
+
+    public enum Shade {
+        DEFAULT,
+        LIGHT,
+        DARK
     }
 
 }
