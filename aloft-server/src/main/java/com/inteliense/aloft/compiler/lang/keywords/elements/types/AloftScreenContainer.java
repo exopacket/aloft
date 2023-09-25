@@ -21,7 +21,7 @@ public class AloftScreenContainer extends AloftElement {
     @Override
     public HtmlElement html(StyleModule styleModule) {
         HtmlElement root = createElement("div");
-        root.addAttribute("style", "width:100vw; height: 100vh;");
+        root.addAttribute("style", "width:100vw; height: 100vh; background-color: #e8f0fc;");
         for(int i=0;i<children.size(); i++) {
             root.addChild(children.get(i).html(styleModule));
         }

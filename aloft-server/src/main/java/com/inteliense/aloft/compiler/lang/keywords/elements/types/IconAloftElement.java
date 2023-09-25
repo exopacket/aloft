@@ -28,7 +28,6 @@ public class IconAloftElement extends AloftElement {
     @Override
     public HtmlElement html(StyleModule module) {
         HtmlElement icon = createElement("i");
-        System.out.println(vars.get("icon"));
         icon.addAttribute("class", module.icon((String) vars.get("icon")));
         if(__.isset(vars.get("color"))) icon.addStyle("color", (String) vars.get("color"));
         if(__.isset(vars.get("size"))) icon.addStyle("font-size", String.valueOf(vars.get("size")) + "px");

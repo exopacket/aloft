@@ -235,7 +235,8 @@ public class AppConfig {
 
     private ArrayList<String[]> getBootstrapCssResources() {
         ArrayList<String[]> resources = new ArrayList<>();
-        resources.add(new String[]{"/bootstrap/bootstrap.min.css", this.routes.stylesheets() + "/bootstrap.css"});
+        resources.add(new String[]{"/bootstrap/ayroui/ayroui.css", this.routes.stylesheets() + "/module.css"});
+        resources.add(new String[]{"/bootstrap/ayroui/bootstrap.min.css", this.routes.stylesheets() + "/bootstrap.css"});
         return resources;
     }
 

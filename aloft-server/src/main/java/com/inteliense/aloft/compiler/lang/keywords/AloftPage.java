@@ -98,7 +98,7 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
                 JSOV.v("function", "myAlert"),
                 JSOV.v("function-slot", alertObject)
         ));
-        TextAloftElement textSpan = new TextAloftElement("THIS IS A TEST PAGE.");
+        TextAloftElement textSpan = new TextAloftElement("aloft: the new full stack language");
         textElement.addSpan(textSpan);
         textElement.addStyle("color", "blue");
         textElement.addStyle("font-weight", "bold");
@@ -107,7 +107,7 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
         textElement.setClasses(this.theme.mergeByHash(textElement.getStyle().getHashes()));
         centered.addChild(textElement);
         ButtonAloftElement btn = new ButtonAloftElement("__button_default__");
-        btn.setText("This button now does something different.");
+        btn.setText("Show Alert");
         btn.addSubclass("primary");
         btn.addSubclass("sm");
         centered.addChild(btn);
