@@ -10,7 +10,7 @@ public class ElementRef extends JavaScriptObject {
     private String id;
     private ArrayList<Ref> refs = new ArrayList<>();
 
-    public ElementRef(String id) { super(); this.id = "_" + id; }
+    public ElementRef(String id) { super(); this.id = id; }
 
     public void addRef(Selector selector, Type type) {
         this.refs.add(new Ref(selector, type));
@@ -61,7 +61,7 @@ public class ElementRef extends JavaScriptObject {
                 String[] arr = (String[]) this.selector;
                 return " [" + arr[0] + "=" + arr[1] + "] ";
             } else if(this.type == T.ID) {
-                return "#_" + this.selector;
+                return "#" + this.selector;
             } else {
                 return " " + (String) this.selector + " ";
             }

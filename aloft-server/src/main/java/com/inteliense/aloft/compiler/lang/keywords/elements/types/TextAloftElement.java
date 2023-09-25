@@ -54,6 +54,7 @@ public class TextAloftElement extends AloftElement {
             HtmlElement element = children.get(i).html(module);
             root.addChild(element);
         }
+        this.applyStyle(root);
         this.applyListeners(root);
         return root;
     }

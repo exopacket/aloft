@@ -25,6 +25,7 @@ public class AloftScreenContainer extends AloftElement {
         for(int i=0;i<children.size(); i++) {
             root.addChild(children.get(i).html(styleModule));
         }
+        applyStyle(root);
         return root;
     }
 

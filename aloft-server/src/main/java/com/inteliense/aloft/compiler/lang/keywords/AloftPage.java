@@ -24,6 +24,9 @@ import com.inteliense.aloft.server.http.supporting.*;
 import com.inteliense.aloft.utils.global.__;
 
 import java.awt.*;
+import java.io.File;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, BuildsHtml {
@@ -81,45 +84,55 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
     }
 
     public void testAppend() {
+        try {
+            File file = Paths.get(this.getClass().getResource("/images/default-error-bg.svg").toURI()).toFile();
+            VectorAloftElement bg = VectorAloftElement.fromFile(file);
+            AloftScreen screen = new AloftScreen();
+    //        screen.appendState("__root__.test", new StringT(), "value");
+            AloftScreenContainer container = new AloftScreenContainer();
+            container.addStyle("background-image", bg.getEncodedUrl(theme.getStyleModule()));
+            container.addStyle("background-repeat", "no-repeat");
+            container.addStyle("background-size", "cover");
+            container.setClasses(this.theme.mergeByHash(container.getStyle().getHashes()));
+            CenteredAloftElement centered = new CenteredAloftElement();
+            IconAloftElement icon = new IconAloftElement();
+            icon.setIcon("PERSON_RAISED_HAND");
+            icon.setSize(48);
+            icon.setColor("rgb(13, 110, 253)");
+            centered.addChild(icon);
+            TextAloftElement textElement = new TextAloftElement("Hello World", "\n\nSincerely yours,\n- Server.");
+            AlertObject alertObject = new AlertObject();
+            alertObject.setTitle("Hello World!");
+            textElement.addListener(new AloftOnClickListener(
+                    JSOV.v("function", "myAlert"),
+                    JSOV.v("function-slot", alertObject)
+            ));
+            TextAloftElement textSpan = new TextAloftElement("aloft: the new full stack language");
+            textElement.addSpan(textSpan);
+            textElement.addStyle("color", "blue");
+            textElement.addStyle("font-weight", "bold");
+            textElement.addStyle("text-decoration", "underline");
+            textElement.addStyle("font-style", "italic");
+            textElement.setClasses(this.theme.mergeByHash(textElement.getStyle().getHashes()));
 
-        AloftScreen screen = new AloftScreen();
-//        screen.appendState("__root__.test", new StringT(), "value");
-        AloftScreenContainer container = new AloftScreenContainer();
-        CenteredAloftElement centered = new CenteredAloftElement();
-        IconAloftElement icon = new IconAloftElement();
-        icon.setIcon("PERSON_RAISED_HAND");
-        icon.setSize(48);
-        icon.setColor("rgb(13, 110, 253)");
-        centered.addChild(icon);
-        TextAloftElement textElement = new TextAloftElement("Hello World", "\n\nSincerely yours,\n- Server.");
-        AlertObject alertObject = new AlertObject();
-        alertObject.setTitle("Hello World!");
-        textElement.addListener(new AloftOnClickListener(
-                JSOV.v("function", "myAlert"),
-                JSOV.v("function-slot", alertObject)
-        ));
-        TextAloftElement textSpan = new TextAloftElement("aloft: the new full stack language");
-        textElement.addSpan(textSpan);
-        textElement.addStyle("color", "blue");
-        textElement.addStyle("font-weight", "bold");
-        textElement.addStyle("text-decoration", "underline");
-        textElement.addStyle("font-style", "italic");
-        textElement.setClasses(this.theme.mergeByHash(textElement.getStyle().getHashes()));
-        centered.addChild(textElement);
-        ButtonAloftElement btn = new ButtonAloftElement("__button_default__");
-        btn.setText("Show Alert");
-        btn.addSubclass("primary");
-        btn.addSubclass("sm");
-        centered.addChild(btn);
-        AlertAloftElement alert = new AlertAloftElement();
-        alert.builder("title", __.arr("text", "Hello World"));
-        alert.builder("body", __.arr("text", "This is a message from the national weather service."));
-        centered.addChild(alert);
-        container.addChild(centered);
-        screen.addChild(container);
-        this.root = screen;
-        this.root.appendCss(this.css);
-        this.root.javascript(this.js);
+            centered.addChild(textElement);
+            ButtonAloftElement btn = new ButtonAloftElement("__button_default__");
+            btn.setText("Show Alert");
+            btn.addSubclass("primary");
+            btn.addSubclass("sm");
+            centered.addChild(btn);
+            AlertAloftElement alert = new AlertAloftElement();
+            alert.builder("title", __.arr("text", "Hello World"));
+            alert.builder("body", __.arr("text", "This is a message from the national weather service."));
+            centered.addChild(alert);
+            container.addChild(centered);
+            screen.addChild(container);
+            this.root = screen;
+            this.root.appendCss(this.css);
+            this.root.javascript(this.js);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public AloftStyleCss getCss() {
@@ -157,10 +170,10 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
     private Head buildHead(String title, String favicon, ArrayList<AloftPage.Meta> meta) {
         Head head = new Head();
         head.addTitle(title);
-        head.addCss(css);
         for(int i=0; i<this.staticFiles.size(); i++) {
             head.addChild(this.staticFiles.get(i));
         }
+        head.addCss(css);
         return head;
     }
 

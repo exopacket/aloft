@@ -2,6 +2,7 @@ package com.inteliense.aloft.utils.encryption;
 
 import javax.crypto.spec.IvParameterSpec;
 import java.security.SecureRandom;
+import java.util.Random;
 
 public class Rand {
 
@@ -12,6 +13,13 @@ public class Rand {
         return bytes;
 
     }
+
+    public static String letter() {
+        String letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        Random r = new Random(System.nanoTime());
+        int i = r.nextInt(52);
+        return String.valueOf(letters.charAt(i));
+}
 
     public static String str(int len) {
 

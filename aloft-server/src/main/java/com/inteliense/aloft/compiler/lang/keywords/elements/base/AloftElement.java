@@ -70,6 +70,11 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
 
     protected void applyStyle(String key, Class<?> c, HtmlElement element, StyleModule module) {
         module.get(c).fromKey(key).apply(element, this.getModuleSubclasses());
+        applyStyle(element);
+    }
+
+    protected void applyStyle(HtmlElement element) {
+        for(int i=0; i<classes.size(); i++) element.addAttribute("class", classes.get(i).getClassName());
     }
 
     protected void applyListeners(HtmlElement element) {
@@ -169,7 +174,7 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
         return createElement(key, this.uniqueId);
     }
 
-    protected HtmlElement createElement(String key, String id) {
+    protected static HtmlElement createElement(String key, String id) {
         return new HtmlElement(id) {
             @Override
             protected String getKey() {

@@ -1,5 +1,6 @@
 package com.inteliense.aloft.run;
 
+import com.inteliense.aloft.compiler.lang.lib.colors.Colors;
 import com.inteliense.aloft.run.cli.commands.base.Command;
 import com.inteliense.aloft.run.cli.commands.base.HandlesCommands;
 import com.inteliense.aloft.application.config.AppConfig;
@@ -8,6 +9,8 @@ import com.inteliense.aloft.run.cli.fs.FileSystem;
 public class Main {
 
     public static void main(String[] args) {
+
+        Colors colors = new Colors("#ff0000", "#00ff00", "#0000ff");
 
 //        try {
 //            WebSockServer server = new WebSockServer("127.0.0.1", 3030, "debug") {
