@@ -6,6 +6,7 @@ import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleClass;
 import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleClassBuilder;
 import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleHashList;
 import com.inteliense.aloft.compiler.lang.lib.BootstrapModule;
+import com.inteliense.aloft.compiler.lang.lib.IconsModule;
 import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 
 import javax.swing.text.Style;
@@ -37,6 +38,10 @@ public class AloftTheme implements BuildsJava {
     public void setUsesBootstrap() {
         useBootstrap = true;
         module = new BootstrapModule();
+    }
+
+    public void setIconModule(IconsModule module) {
+        this.module.setIcons(module);
     }
 
     public boolean usesBootstrap() {

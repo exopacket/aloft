@@ -3,7 +3,7 @@ package com.inteliense.aloft.compiler.lang.lib;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BootstrapIcons {
+public class BootstrapIcons extends IconsModule {
 
     private static Map<String, String> map = new HashMap<>() {{
         put("SORT_NUMERIC_UP", "bi-sort-numeric-up");
@@ -2063,7 +2063,7 @@ public class BootstrapIcons {
         put("FILETYPE_HEIC", "bi-filetype-heic");
     }};
 
-    public static String v(String key) {
+    public String v(String key) {
         return map.get(key);
     }
 

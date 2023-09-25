@@ -10,6 +10,7 @@ import java.util.Map;
 public abstract class StyleModule {
 
     protected Map<Class<?>, ModuleElement> map;
+    private IconsModule icons;
 
     public StyleModule() {
         map = new HashMap<Class<?>, ModuleElement>() {{
@@ -17,6 +18,14 @@ public abstract class StyleModule {
             put(AlertAloftElement.class, alertAloftElement(new ModuleElement()));
             put(CenteredAloftElement.class, centeredAloftElement(new ModuleElement()));
         }};
+    }
+
+    public void setIcons(IconsModule icons) {
+        this.icons = icons;
+    }
+
+    public String icon(String key) {
+        return icons.v(key);
     }
 
     public ModuleElement get(Class<?> c) {

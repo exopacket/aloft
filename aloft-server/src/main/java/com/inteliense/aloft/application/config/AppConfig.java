@@ -2,6 +2,7 @@ package com.inteliense.aloft.application.config;
 
 import com.inteliense.aloft.application.cache.AppCache;
 import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
+import com.inteliense.aloft.compiler.lang.lib.BootstrapIcons;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.css.*;
 import com.inteliense.aloft.server.html.elements.js.AppJavaScript;
@@ -82,6 +83,7 @@ public class AppConfig {
         theme.setUsesBootstrap();
         theme.setUsesDefaultIcons();
         theme.setUsesDefaultFont();
+        theme.setIconModule(new BootstrapIcons());
         scriptEndpoints = new JavaScriptEndpointList();
         stylesheetEndpoints = new StylesheetEndpointList();
         fontEndpoints = new FontEndpointList();
