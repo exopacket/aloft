@@ -3,6 +3,7 @@ package com.inteliense.aloft.application.config;
 import com.inteliense.aloft.application.cache.AppCache;
 import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.lib.BootstrapIcons;
+import com.inteliense.aloft.compiler.lang.lib.colors.Colors;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.css.*;
 import com.inteliense.aloft.server.html.elements.js.AppJavaScript;
@@ -80,6 +81,7 @@ public class AppConfig {
         this.middleware = list;
         cache = new AppCache();
         theme = new AloftTheme();
+        theme.setColors(new Colors("#e03d3d", "#269447", "#3d7be0", "#36d4c4", "#727a8a"));
         theme.setUsesBootstrap();
         theme.setUsesDefaultIcons();
         theme.setUsesDefaultFont();

@@ -1,72 +1,72 @@
 <svg id="visual" viewBox="0 0 960 540" width="960" height="540" xmlns="http://www.w3.org/2000/svg"
      xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
-    <rect x="0" y="0" width="960" height="540" fill="#ffffff"></rect>
+    <rect x="0" y="0" width="960" height="540" d-fill="bg-color"></rect>
     <defs>
         <linearGradient id="grad1_0" x1="43.8%" y1="100%" x2="100%" y2="0%">
-            <stop offset="14.444444444444446%" stop-color="#715df2" stop-opacity="1"></stop>
-            <stop offset="85.55555555555554%" stop-color="#715df2" stop-opacity="1"></stop>
+            <stop offset="14.444444444444446%" d-stop-color="color1" stop-opacity="1"></stop>
+            <stop offset="85.55555555555554%" d-stop-color="color1" stop-opacity="1"></stop>
         </linearGradient>
     </defs>
     <defs>
         <linearGradient id="grad1_1" x1="43.8%" y1="100%" x2="100%" y2="0%">
-            <stop offset="14.444444444444446%" stop-color="#715df2" stop-opacity="1"></stop>
-            <stop offset="85.55555555555554%" stop-color="#a991f8" stop-opacity="1"></stop>
+            <stop offset="14.444444444444446%" d-stop-color="color1" stop-opacity="1"></stop>
+            <stop offset="85.55555555555554%" d-stop-color="color2" stop-opacity="1"></stop>
         </linearGradient>
     </defs>
     <defs>
         <linearGradient id="grad1_2" x1="43.8%" y1="100%" x2="100%" y2="0%">
-            <stop offset="14.444444444444446%" stop-color="#d6c7fc" stop-opacity="1"></stop>
-            <stop offset="85.55555555555554%" stop-color="#a991f8" stop-opacity="1"></stop>
+            <stop offset="14.444444444444446%" d-stop-color="color3" stop-opacity="1"></stop>
+            <stop offset="85.55555555555554%" d-stop-color="color2" stop-opacity="1"></stop>
         </linearGradient>
     </defs>
     <defs>
         <linearGradient id="grad1_3" x1="43.8%" y1="100%" x2="100%" y2="0%">
-            <stop offset="14.444444444444446%" stop-color="#d6c7fc" stop-opacity="1"></stop>
-            <stop offset="85.55555555555554%" stop-color="#ffffff" stop-opacity="1"></stop>
+            <stop offset="14.444444444444446%" d-stop-color="color3" stop-opacity="1"></stop>
+            <stop offset="85.55555555555554%" d-stop-color="bg-color" stop-opacity="1"></stop>
         </linearGradient>
     </defs>
     <defs>
         <linearGradient id="grad2_0" x1="0%" y1="100%" x2="56.3%" y2="0%">
-            <stop offset="14.444444444444446%" stop-color="#715df2" stop-opacity="1"></stop>
-            <stop offset="85.55555555555554%" stop-color="#715df2" stop-opacity="1"></stop>
+            <stop offset="14.444444444444446%" d-stop-color="color1" stop-opacity="1"></stop>
+            <stop offset="85.55555555555554%" d-stop-color="color1" stop-opacity="1"></stop>
         </linearGradient>
     </defs>
     <defs>
         <linearGradient id="grad2_1" x1="0%" y1="100%" x2="56.3%" y2="0%">
-            <stop offset="14.444444444444446%" stop-color="#a991f8" stop-opacity="1"></stop>
-            <stop offset="85.55555555555554%" stop-color="#715df2" stop-opacity="1"></stop>
+            <stop offset="14.444444444444446%" d-stop-color="color2" stop-opacity="1"></stop>
+            <stop offset="85.55555555555554%" d-stop-color="color1" stop-opacity="1"></stop>
         </linearGradient>
     </defs>
     <defs>
         <linearGradient id="grad2_2" x1="0%" y1="100%" x2="56.3%" y2="0%">
-            <stop offset="14.444444444444446%" stop-color="#a991f8" stop-opacity="1"></stop>
-            <stop offset="85.55555555555554%" stop-color="#d6c7fc" stop-opacity="1"></stop>
+            <stop offset="14.444444444444446%" d-stop-color="color2" stop-opacity="1"></stop>
+            <stop offset="85.55555555555554%" d-stop-color="color3" stop-opacity="1"></stop>
         </linearGradient>
     </defs>
     <defs>
         <linearGradient id="grad2_3" x1="0%" y1="100%" x2="56.3%" y2="0%">
-            <stop offset="14.444444444444446%" stop-color="#ffffff" stop-opacity="1"></stop>
-            <stop offset="85.55555555555554%" stop-color="#d6c7fc" stop-opacity="1"></stop>
+            <stop offset="14.444444444444446%" d-stop-color="bg-color" stop-opacity="1"></stop>
+            <stop offset="85.55555555555554%" d-stop-color="color3" stop-opacity="1"></stop>
         </linearGradient>
     </defs>
     <g transform="translate(960, 540)">
         <path d="M-351 0C-347.4 -71 -343.8 -142.1 -304 -175.5C-264.2 -208.9 -188.2 -204.8 -131.5 -227.8C-74.8 -250.7 -37.4 -300.9 0 -351L0 0Z"
-              fill="#ebe3fe"></path>
+              d-fill="color6"></path>
         <path d="M-263.2 0C-260.5 -53.3 -257.8 -106.5 -228 -131.6C-198.1 -156.7 -141.1 -153.6 -98.6 -170.8C-56.1 -188.1 -28.1 -225.7 0 -263.2L0 0Z"
-              fill="#c1acfa"></path>
+              d-fill="color5"></path>
         <path d="M-175.5 0C-173.7 -35.5 -171.9 -71 -152 -87.8C-132.1 -104.5 -94.1 -102.4 -65.8 -113.9C-37.4 -125.4 -18.7 -150.4 0 -175.5L0 0Z"
-              fill="#8f77f5"></path>
+              d-fill="color4"></path>
         <path d="M-87.7 0C-86.8 -17.8 -85.9 -35.5 -76 -43.9C-66 -52.2 -47 -51.2 -32.9 -56.9C-18.7 -62.7 -9.4 -75.2 0 -87.7L0 0Z"
-              fill="#715df2"></path>
+              d-fill="color1"></path>
     </g>
     <g transform="translate(0, 0)">
         <path d="M351 0C341.7 61.1 332.3 122.2 304 175.5C275.6 228.8 228.3 274.3 174.5 302.2C120.7 330.2 60.3 340.6 0 351L0 0Z"
-              fill="#ebe3fe"></path>
+              d-fill="color6"></path>
         <path d="M263.3 0C256.2 45.8 249.2 91.7 228 131.6C206.7 171.6 171.2 205.7 130.9 226.7C90.5 247.6 45.3 255.4 0 263.3L0 0Z"
-              fill="#c1acfa"></path>
+              d-fill="color5"></path>
         <path d="M175.5 0C170.8 30.6 166.2 61.1 152 87.7C137.8 114.4 114.2 137.1 87.3 151.1C60.3 165.1 30.2 170.3 0 175.5L0 0Z"
-              fill="#8f77f5"></path>
+              d-fill="color4"></path>
         <path d="M87.8 0C85.4 15.3 83.1 30.6 76 43.9C68.9 57.2 57.1 68.6 43.6 75.6C30.2 82.5 15.1 85.1 0 87.8L0 0Z"
-              fill="#715df2"></path>
+              d-fill="color1"></path>
     </g>
 </svg>

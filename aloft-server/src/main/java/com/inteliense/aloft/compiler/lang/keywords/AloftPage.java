@@ -12,6 +12,7 @@ import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleClass;
 import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleCss;
 import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleHashList;
 import com.inteliense.aloft.compiler.lang.lib.StyleModule;
+import com.inteliense.aloft.compiler.lang.lib.colors.Colors;
 import com.inteliense.aloft.compiler.lang.supporting.MountableComponent;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.js.JSOV;
@@ -28,6 +29,7 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, BuildsHtml {
 
@@ -85,8 +87,16 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
 
     public void testAppend() {
         try {
-            File file = Paths.get(this.getClass().getResource("/images/default-error-bg.svg").toURI()).toFile();
-            VectorAloftElement bg = VectorAloftElement.fromFile(file);
+            File file = Paths.get(this.getClass().getResource("/images/default-error-bg.dvg").toURI()).toFile();
+            HashMap<String, String> svgVars = new HashMap<>();
+            svgVars.put("bg-color", "#ffffff");
+            svgVars.put("color1", theme.color("primary", Colors.Shade.DARK).getHex());
+            svgVars.put("color2", theme.color("primary").getHex());
+            svgVars.put("color3", theme.color("primary", Colors.Shade.LIGHT).getHex());
+            svgVars.put("color4", theme.color("primary").getHex());
+            svgVars.put("color5", theme.color("primary").getHex(0.66F));
+            svgVars.put("color6", theme.color("primary").getHex(0.33F));
+            VectorAloftElement bg = VectorAloftElement.fromFile(file, svgVars);
             AloftScreen screen = new AloftScreen();
     //        screen.appendState("__root__.test", new StringT(), "value");
             AloftScreenContainer container = new AloftScreenContainer();
@@ -98,7 +108,7 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
             IconAloftElement icon = new IconAloftElement();
             icon.setIcon("PERSON_RAISED_HAND");
             icon.setSize(48);
-            icon.setColor("rgb(13, 110, 253)");
+            icon.setColor(theme.color("blue", Colors.Shade.LIGHT).getHex());
             centered.addChild(icon);
             TextAloftElement textElement = new TextAloftElement("Hello World", "\n\nSincerely yours,\n- Server.");
             AlertObject alertObject = new AlertObject();
@@ -108,8 +118,10 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
                     JSOV.v("function-slot", alertObject)
             ));
             TextAloftElement textSpan = new TextAloftElement("aloft: the new full stack language");
+            textSpan.addStyle("color", theme.color("secondary").getHex());
+            textSpan.setClasses(this.theme.mergeByHash(textSpan.getStyle().getHashes()));
             textElement.addSpan(textSpan);
-            textElement.addStyle("color", "blue");
+            textElement.addStyle("color", theme.color("secondary").getHex());
             textElement.addStyle("font-weight", "bold");
             textElement.addStyle("text-decoration", "underline");
             textElement.addStyle("font-style", "italic");

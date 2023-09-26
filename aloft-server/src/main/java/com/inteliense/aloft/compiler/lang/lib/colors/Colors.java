@@ -6,12 +6,14 @@ public class Colors {
 
     private HashMap<String, Swatch> swatches = new HashMap<>();
 
-    public Colors(String red, String green, String blue) {
+    public Colors(String red, String green, String blue, String primary, String secondary) {
         create(ColorUtils.hexToRgb(red), ColorUtils.hexToRgb(green), ColorUtils.hexToRgb(blue));
+        app(ColorUtils.hexToRgb(primary), ColorUtils.hexToRgb(secondary));
     }
 
-    public Colors(int[] red, int[] green, int[] blue) {
+    public Colors(int[] red, int[] green, int[] blue, int[] primary, int[] secondary) {
         create(red, green, blue);
+        app(primary, secondary);
     }
 
     public Color get(String key) {
@@ -22,6 +24,11 @@ public class Colors {
         if(shade == Shade.DARK) return swatches.get(key).dark();
         if(shade == Shade.LIGHT) return swatches.get(key).light();
         return swatches.get(key).base();
+    }
+
+    private void app(int[] primary, int[] secondary) {
+        mix(primary, 0, "primary");
+        mix(secondary, 0, "secondary");
     }
 
     private void create(int[] red, int[] green, int[] blue) {

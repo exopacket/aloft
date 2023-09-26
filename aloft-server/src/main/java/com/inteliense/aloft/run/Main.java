@@ -10,11 +10,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Colors colors = new Colors("#ffc7c7", "#00ff00", "#0000ff");
-        System.out.println(colors.get("red", Colors.Shade.DARK).getHex());
-        System.out.println(colors.get("red", Colors.Shade.LIGHT).getHex());
-        System.out.println(colors.get("red").getHex());
-
 //        try {
 //            WebSockServer server = new WebSockServer("127.0.0.1", 3030, "debug") {
 //                @Override

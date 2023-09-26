@@ -8,6 +8,8 @@ import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleHashList
 import com.inteliense.aloft.compiler.lang.lib.BootstrapModule;
 import com.inteliense.aloft.compiler.lang.lib.IconsModule;
 import com.inteliense.aloft.compiler.lang.lib.StyleModule;
+import com.inteliense.aloft.compiler.lang.lib.colors.Color;
+import com.inteliense.aloft.compiler.lang.lib.colors.Colors;
 
 import javax.swing.text.Style;
 import java.util.ArrayList;
@@ -18,6 +20,8 @@ public class AloftTheme implements BuildsJava {
 
     private AloftStyleClassBuilder classBuilder = new AloftStyleClassBuilder();
     private ArrayList<AloftStyleClass> classes = new ArrayList<>();
+
+    private Colors colors;
 
     private StyleModule module;
 
@@ -42,6 +46,18 @@ public class AloftTheme implements BuildsJava {
 
     public void setIconModule(IconsModule module) {
         this.module.setIcons(module);
+    }
+
+    public void setColors(Colors colors) {
+        this.colors = colors;
+    }
+
+    public Color color(String key) {
+        return color(key, Colors.Shade.DEFAULT);
+    }
+
+    public Color color(String key, Colors.Shade shade) {
+        return colors.get(key, shade);
     }
 
     public boolean usesBootstrap() {
