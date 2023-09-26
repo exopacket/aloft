@@ -3,6 +3,9 @@ package com.inteliense.aloft.compiler.lang.keywords.elements.base;
 import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
 import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
 import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
+import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyle;
+import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleClass;
+import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStylePair;
 import com.inteliense.aloft.compiler.lang.lib.ModuleElementAttributes;
 import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
@@ -35,6 +38,8 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
     protected boolean hasMultipleSubtypes;
     protected ArrayList<AloftElementSubtype> subtypes = new ArrayList<>();
     protected AloftElementSubtype subtype = null;
+
+    protected HashMap<String, ArrayList<String[]>> overrides = new HashMap<>();
 
     public AloftElement() {
         super();
@@ -98,8 +103,28 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
                 isExtensible(),
                 acceptsChild(),
                 this.vars,
-                this.moduleSubclasses
+                this.moduleSubclasses,
+                this.overrides,
+                this.style
         };
+    }
+
+    protected void applyOverrides() {
+        for(String key : overrides.keySet()) {
+            for(String[] arr : overrides.get(key)) {
+                String property = arr[0];
+                String value = arr[1];
+                if(!__.isset(value)) value = var(key);
+                if(!__.isset(value)) continue;
+                addStyle(property, value);
+            }
+        }
+    }
+
+    @Override
+    public void setClasses(ArrayList<AloftStyleClass> classes) {
+        this.classes = classes;
+        if(__.isset(subtype)) subtype.setClasses(classes);
     }
 
     public void setSubtype(String subtype) {
@@ -114,6 +139,41 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
 
     public void addSubclass(String subclass) {
         this.moduleSubclasses.add(subclass);
+    }
+
+    protected void addOverride(String variable, String property) {
+        if(!overrides.containsKey(variable)) overrides.put(variable, new ArrayList<>());
+        ArrayList<String[]> list = overrides.get(variable);
+        list.add(new String[]{property, null});
+        overrides.put(variable, list);
+    }
+
+    protected void addOverride(String variable, String property, String...events) {
+        if(!overrides.containsKey(variable)) overrides.put(variable, new ArrayList<>());
+        ArrayList<String[]> list = overrides.get(variable);
+        String[] arr = new String[events.length + 1];
+        arr[0] = property;
+        arr[1] = null;
+        int x = 0;
+        for(int i=2; i<arr.length; i++) { arr[i] = events[x]; x++; }
+        list.add(arr);
+    }
+
+    protected void addFlaggedOverride(String flag, String property, String value, String...events) {
+        if(!overrides.containsKey(flag)) overrides.put(flag, new ArrayList<>());
+        ArrayList<String[]> list = overrides.get(flag);
+        String[] arr = new String[events.length + 1];
+        arr[0] = property;
+        arr[1] = value;
+        int x = 0;
+        for(int i=2; i<arr.length; i++) { arr[i] = events[x]; x++; }
+        list.add(arr);
+    }
+
+    protected void addFlaggedOverride(String flag, String property, String value) {
+        if(!overrides.containsKey(flag)) overrides.put(flag, new ArrayList<>());
+        ArrayList<String[]> list = overrides.get(flag);
+        list.add(new String[]{property, value});
     }
 
     public void addSubclasses(String...classes) {
@@ -204,6 +264,7 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
 
     public void refresh() {
         setupVariables(this.vars);
+        applyOverrides();
         setupBuilder();
         if(this.requiresBuilder || this.acceptsBuilder) setupBuilder(new AloftBuilder());
         setupIterator();

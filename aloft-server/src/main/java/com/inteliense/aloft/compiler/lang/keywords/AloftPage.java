@@ -89,13 +89,15 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
         try {
             File file = Paths.get(this.getClass().getResource("/images/default-error-bg.dvg").toURI()).toFile();
             HashMap<String, String> svgVars = new HashMap<>();
-            svgVars.put("bg-color", "#ffffff");
+            svgVars.put("bg-color", theme.color("primary", Colors.Shade.LIGHT).getHex());
             svgVars.put("color1", theme.color("primary", Colors.Shade.DARK).getHex());
-            svgVars.put("color2", theme.color("primary").getHex());
-            svgVars.put("color3", theme.color("primary", Colors.Shade.LIGHT).getHex());
+            svgVars.put("color2", theme.color("primary", Colors.Shade.DARK).getHex(0.66F));
+            svgVars.put("color3", theme.color("primary", Colors.Shade.DARK).getHex(0.33F));
             svgVars.put("color4", theme.color("primary").getHex());
-            svgVars.put("color5", theme.color("primary").getHex(0.66F));
-            svgVars.put("color6", theme.color("primary").getHex(0.33F));
+            svgVars.put("color5", theme.color("primary").getHex(0.8F));
+            svgVars.put("color6", theme.color("primary").getHex(0.35F));
+            svgVars.put("color7", theme.color("primary", Colors.Shade.LIGHT).getHex());
+            svgVars.put("color8", theme.color("primary", Colors.Shade.LIGHT).getHex(0.66F));
             VectorAloftElement bg = VectorAloftElement.fromFile(file, svgVars);
             AloftScreen screen = new AloftScreen();
     //        screen.appendState("__root__.test", new StringT(), "value");
@@ -109,27 +111,30 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
             icon.setIcon("PERSON_RAISED_HAND");
             icon.setSize(48);
             icon.setColor(theme.color("primary", Colors.Shade.DARK).getHex());
-            centered.addChild(icon);
-            TextAloftElement textElement = new TextAloftElement("Hello World", "\n\nSincerely yours,\n- Server.");
-            TextAloftElement textSpan = new TextAloftElement("aloft: the new full stack language");
+//            centered.addChild(icon);
+            TextAloftElement textElement = new TextAloftElement("404");
+            TextAloftElement textSpan = new TextAloftElement("PAGE NOT FOUND");
             textSpan.addStyle("color", theme.color("secondary").getHex());
             textSpan.setClasses(this.theme.mergeByHash(textSpan.getStyle().getHashes()));
-            textElement.addSpan(textSpan);
-            textElement.addStyle("color", theme.color("secondary").getHex());
+//            textElement.addSpan(textSpan);
+            textElement.addStyle("color", "#ffffff");
             textElement.addStyle("text-transform", "uppercase");
+            textElement.addStyle("font-size", "256px");
+            textElement.addStyle("text-shadow", "-0.0625em 0.0625em 0px " + theme.color("azure", Colors.Shade.DARK).getHex() + ", calc(-0.0625em - 0.025em) calc(0.0625em + 0.025em) 0px " + theme.color("azure", Colors.Shade.LIGHT).getHex());
             textElement.setClasses(this.theme.mergeByHash(textElement.getStyle().getHashes()));
             centered.addChild(textElement);
             ButtonAloftElement btn = new ButtonAloftElement("__button_default__");
-            btn.setText("Show Alert");
+            btn.setText("GO HOME");
             btn.addSubclass("primary");
             btn.addSubclass("sm");
+            btn.setClasses(this.theme.mergeByHash(btn.getStyle().getHashes()));
             AlertObject alertObject = new AlertObject();
             alertObject.setTitle("This is a message from the national weather service");
             btn.addListener(new AloftOnClickListener(
                     JSOV.v("function", "myAlert"),
                     JSOV.v("function-slot", alertObject)
             ));
-            centered.addChild(btn);
+//            centered.addChild(btn);
             AlertAloftElement alert = new AlertAloftElement();
             alert.builder("title", __.arr("text", "Hello World"));
             alert.builder("body", __.arr("text", "This is a message from the national weather service."));

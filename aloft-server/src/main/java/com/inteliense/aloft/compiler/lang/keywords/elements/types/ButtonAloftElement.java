@@ -3,6 +3,8 @@ package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElementSubtype;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftIconPlacement;
+import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyle;
+import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStylePair;
 import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.types.Content;
@@ -106,5 +108,24 @@ public class ButtonAloftElement extends AloftElement {
         vars.put("text", null);
         vars.put("icon", null);
         vars.put("placement", null);
+
+        vars.put("color", "#444444");
+        addOverride("color", "background-color");
+
+//        vars.put("ring-color", null);
+//        addOverride("ring-color", "border-color", "hover");
+//
+//        vars.put("ring-width", null);
+//        addOverride("ring-width", "border-width", "hover");
+//
+//        vars.put("active-color", null);
+//        addOverride("active-color", "background-color", "focus");
+
+        vars.put("animated", true);
+        addFlaggedOverride("animated", "border", "solid 5px black");
+/*
+        vars.put("pulse-color", null);
+        addOverride("pulse-color", "", "click");*/
     }
+
 }

@@ -1,6 +1,7 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.base;
 
 import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
+import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +25,9 @@ public class AloftElementSubtype extends AloftElement {
                                boolean isExtensible,
                                boolean acceptsChild,
                                HashMap<String, Object> vars,
-                               ArrayList<String> subclasses
+                               ArrayList<String> subclasses,
+                               HashMap<String, ArrayList<String[]>> overrides,
+                               AloftStyle style
     ) {
         super();
         this._name = name;
@@ -35,6 +38,8 @@ public class AloftElementSubtype extends AloftElement {
         this._acceptsChild = acceptsChild;
         this.vars = vars;
         this._subclasses = subclasses;
+        this.overrides = overrides;
+        this.style = style;
     }
 
     public AloftElementSubtype(Object[] args) {
@@ -47,6 +52,8 @@ public class AloftElementSubtype extends AloftElement {
         this._acceptsChild = (boolean) args[5];
         this.vars = (HashMap<String, Object>) args[6];
         this._subclasses = (ArrayList<String>) args[7];
+        this.overrides = (HashMap<String, ArrayList<String[]>>) args[8];
+        this.style = (AloftStyle) args[9];
     }
 
     public void setListeners(ArrayList<AloftListener> listeners) {

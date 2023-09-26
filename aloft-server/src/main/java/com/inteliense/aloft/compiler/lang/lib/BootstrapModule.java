@@ -53,6 +53,9 @@ public class BootstrapModule extends StyleModule {
         //SIZE
         element.addSubclasses("button","lg", "btn-lg");
         element.addSubclasses("button","sm", "btn-sm");
+        element.addSubclasses("button", "full-width", "btn-block");
+
+        element.addSubclasses("button","disabled", "disabled");
         return element;
     }
 
