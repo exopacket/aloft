@@ -25,7 +25,6 @@ public abstract class HtmlElement {
 
     public HtmlElement(String id) {
         this.id = id;
-        if(!__.empty(this.id) && this.id.charAt(0) != '_') this.id = "_" + id;
     }
 
     public String getId() {

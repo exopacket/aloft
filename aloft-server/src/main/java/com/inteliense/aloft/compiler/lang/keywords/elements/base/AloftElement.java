@@ -154,6 +154,7 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
     @Override
     public HtmlElement html(StyleModule module) {
         if(!__.isset(subtype)) return null;
+        if(!listeners.isEmpty()) subtype.setListeners(listeners);
         String[] arr = new String[moduleSubclasses.size()];
         this.moduleSubclasses.toArray(arr);
         subtype.addSubclasses(arr);

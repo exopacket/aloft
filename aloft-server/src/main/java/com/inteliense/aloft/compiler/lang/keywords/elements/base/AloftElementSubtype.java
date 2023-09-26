@@ -1,5 +1,7 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.base;
 
+import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -45,6 +47,10 @@ public class AloftElementSubtype extends AloftElement {
         this._acceptsChild = (boolean) args[5];
         this.vars = (HashMap<String, Object>) args[6];
         this._subclasses = (ArrayList<String>) args[7];
+    }
+
+    public void setListeners(ArrayList<AloftListener> listeners) {
+        this.listeners = listeners;
     }
 
     @Override

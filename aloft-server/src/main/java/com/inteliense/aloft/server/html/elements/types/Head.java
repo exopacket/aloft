@@ -20,6 +20,10 @@ public class Head extends HtmlElement {
         this.addChild(HtmlElement.builder("style", css.css()));
     }
 
+    public void addCss(String css) {
+        this.addChild(HtmlElement.builder("style", css));
+    }
+
     public void addFavicon(String filepath) {
         //FIXME support other file types other than .png
         if(!filepath.contains(".")) return;

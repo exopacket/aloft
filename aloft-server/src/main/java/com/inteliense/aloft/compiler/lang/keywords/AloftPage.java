@@ -108,30 +108,27 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
             IconAloftElement icon = new IconAloftElement();
             icon.setIcon("PERSON_RAISED_HAND");
             icon.setSize(48);
-            icon.setColor(theme.color("blue", Colors.Shade.LIGHT).getHex());
+            icon.setColor(theme.color("primary", Colors.Shade.DARK).getHex());
             centered.addChild(icon);
             TextAloftElement textElement = new TextAloftElement("Hello World", "\n\nSincerely yours,\n- Server.");
-            AlertObject alertObject = new AlertObject();
-            alertObject.setTitle("Hello World!");
-            textElement.addListener(new AloftOnClickListener(
-                    JSOV.v("function", "myAlert"),
-                    JSOV.v("function-slot", alertObject)
-            ));
             TextAloftElement textSpan = new TextAloftElement("aloft: the new full stack language");
             textSpan.addStyle("color", theme.color("secondary").getHex());
             textSpan.setClasses(this.theme.mergeByHash(textSpan.getStyle().getHashes()));
             textElement.addSpan(textSpan);
             textElement.addStyle("color", theme.color("secondary").getHex());
-            textElement.addStyle("font-weight", "bold");
-            textElement.addStyle("text-decoration", "underline");
-            textElement.addStyle("font-style", "italic");
+            textElement.addStyle("text-transform", "uppercase");
             textElement.setClasses(this.theme.mergeByHash(textElement.getStyle().getHashes()));
-
             centered.addChild(textElement);
             ButtonAloftElement btn = new ButtonAloftElement("__button_default__");
             btn.setText("Show Alert");
             btn.addSubclass("primary");
             btn.addSubclass("sm");
+            AlertObject alertObject = new AlertObject();
+            alertObject.setTitle("This is a message from the national weather service");
+            btn.addListener(new AloftOnClickListener(
+                    JSOV.v("function", "myAlert"),
+                    JSOV.v("function-slot", alertObject)
+            ));
             centered.addChild(btn);
             AlertAloftElement alert = new AlertAloftElement();
             alert.builder("title", __.arr("text", "Hello World"));
@@ -185,6 +182,7 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
         for(int i=0; i<this.staticFiles.size(); i++) {
             head.addChild(this.staticFiles.get(i));
         }
+        head.addCss(theme.getStyleModule().rootVars());
         head.addCss(css);
         return head;
     }

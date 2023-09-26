@@ -81,8 +81,8 @@ public class AppConfig {
         this.middleware = list;
         cache = new AppCache();
         theme = new AloftTheme();
-        theme.setColors(new Colors("#e03d3d", "#269447", "#3d7be0", "#36d4c4", "#727a8a"));
         theme.setUsesBootstrap();
+        theme.setColors(new Colors("#e03d3d", "#269447", "#3d7be0", "#36d4c4", "#727a8a"));
         theme.setUsesDefaultIcons();
         theme.setUsesDefaultFont();
         theme.setIconModule(new BootstrapIcons());

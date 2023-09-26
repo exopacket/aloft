@@ -50,6 +50,7 @@ public class AloftTheme implements BuildsJava {
 
     public void setColors(Colors colors) {
         this.colors = colors;
+        this.module.registerColors(colors);
     }
 
     public Color color(String key) {
