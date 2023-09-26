@@ -92,7 +92,7 @@ public class Colors {
         double y = h;
         if(x < 0) {
             y -= (x * -1);
-            x = 1.0 - (x * -1);
+            x = (x * -1);
         }
         if(y < 0) {
             y = 1.0 - (y * -1);
