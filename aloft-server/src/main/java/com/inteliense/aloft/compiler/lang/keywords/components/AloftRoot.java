@@ -1,13 +1,10 @@
 package com.inteliense.aloft.compiler.lang.keywords.components;
 
 import com.inteliense.aloft.compiler.lang.supporting.MountableComponent;
-import com.inteliense.aloft.server.html.elements.js.AppJavaScript;
 
-import java.util.concurrent.atomic.AtomicReference;
+public class AloftRoot extends MountableComponent {
 
-public class AloftScreen extends MountableComponent {
-
-    public AloftScreen() { super(); }
+    public AloftRoot() { super(); }
 
     @Override
     public String getName() {

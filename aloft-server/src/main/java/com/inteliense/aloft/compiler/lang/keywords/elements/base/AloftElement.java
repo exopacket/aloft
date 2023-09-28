@@ -1,20 +1,19 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.base;
 
 import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
+import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
 import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
-import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyle;
 import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleClass;
-import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStylePair;
 import com.inteliense.aloft.compiler.lang.lib.ModuleElementAttributes;
 import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
+import com.inteliense.aloft.utils.encryption.A32;
+import com.inteliense.aloft.utils.encryption.SHA;
 import com.inteliense.aloft.utils.global.__;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 
 public abstract class AloftElement extends AloftComponent implements BuildsHtml {
@@ -73,13 +72,15 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
         if(acceptsChild()) addChild(child);
     }
 
-    protected void applyStyle(String key, Class<?> c, HtmlElement element, StyleModule module) {
-        module.get(c).fromKey(key).apply(element, this.getModuleSubclasses());
-        applyStyle(element);
+    protected void applyStyle(String key, Class<?> c, HtmlElement element, AloftTheme theme) {
+        if(__.isset(subtype)) subtype.applyStyle(key, c, element, theme);
+        theme.getStyleModule().get(c).fromKey(key).apply(element, this.getModuleSubclasses());
+        applyStyle(element, theme);
     }
 
-    protected void applyStyle(HtmlElement element) {
-        for(int i=0; i<classes.size(); i++) element.addAttribute("class", classes.get(i).getClassName());
+    protected void applyStyle(HtmlElement element, AloftTheme theme) {
+//        setClasses(theme.mergeByHash(getStyle().getHashes()), theme);
+        for(int i=0; i<classes.size(); i++) element.addAttribute("class", classes.get(i).getTagClassName());
     }
 
     protected void applyListeners(HtmlElement element) {
@@ -109,26 +110,56 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
         };
     }
 
-    protected void applyOverrides() {
-        for(String key : overrides.keySet()) {
-            for(String[] arr : overrides.get(key)) {
-                String property = arr[0];
-                String value = arr[1];
-                if(!__.isset(value)) value = var(key);
-                if(!__.isset(value)) continue;
-                addStyle(property, value);
+    public void applyOverrides() {
+        try {
+            for (String key : overrides.keySet()) {
+                for (String[] arr : overrides.get(key)) {
+                    String variable = null;
+                    String property = arr[0];
+                    if(property.contains(":")) {
+                        String[] parts = property.split(":");
+                        property = parts[0];
+                        variable = parts[1];
+                    }
+                    String value = arr[1];
+                    if (!__.isset(value)) value = var(variable);
+                    if (!__.isset(value)) continue;
+                    String[] psuedo = new String[arr.length - 2];
+                    int x = 0;
+                    for (int i = 2; i < arr.length; i++) {
+                        psuedo[x] = arr[i];
+                        x++;
+                    }
+                    if (psuedo.length == 0) addStyle(property, value, true);
+                    else addStyle(property, value, psuedo, true);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
-    public void setClasses(ArrayList<AloftStyleClass> classes) {
+    public void setClasses(ArrayList<AloftStyleClass> classes, AloftTheme theme) {
         this.classes = classes;
-        if(__.isset(subtype)) subtype.setClasses(classes);
+        if(__.isset(subtype)) {
+            subtype.applyOverrides();
+            subtype.setClasses(classes, theme);
+            for(int i=0; i< subtype.children.size(); i++) {
+                subtype.children.get(i).applyOverrides();
+                subtype.children.get(i).setClasses(theme.mergeByHash(subtype.getStyle().getHashes()), theme);
+            }
+        } else {
+            for(int i=0; i< children.size(); i++) {
+                children.get(i).applyOverrides();
+                children.get(i).setClasses(theme.mergeByHash(children.get(i).getStyle().getHashes()), theme);
+            }
+        }
     }
 
     public void setSubtype(String subtype) {
         if(!hasMultipleSubtypes()) return;
+        refresh();
         subtypes(this.subtypes);
         for(int i = 0; i< subtypes.size(); i++)
             if(__.same(subtypes.get(i).getName(), subtype)) {
@@ -139,41 +170,61 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
 
     public void addSubclass(String subclass) {
         this.moduleSubclasses.add(subclass);
+        if(__.isset(this.subtype)) this.subtype.addSubclass(subclass);
+    }
+
+    protected void addAll(HtmlElement element, AloftTheme theme) {
+        for (AloftComponent child : children) element.addChild(child.html(theme));
+    }
+
+    protected void placeType(HtmlElement el) {
+        el.addAttribute("data-aid", A32.casified(SHA.getSha1(getName())));
     }
 
     protected void addOverride(String variable, String property) {
-        if(!overrides.containsKey(variable)) overrides.put(variable, new ArrayList<>());
-        ArrayList<String[]> list = overrides.get(variable);
-        list.add(new String[]{property, null});
-        overrides.put(variable, list);
+        if(!overrides.containsKey("\34")) overrides.put("\34", new ArrayList<>());
+        ArrayList<String[]> list = overrides.get("\34");
+        list.add(new String[]{property + ":" + variable, null});
+        overrides.replace("\34", list);
     }
 
     protected void addOverride(String variable, String property, String...events) {
-        if(!overrides.containsKey(variable)) overrides.put(variable, new ArrayList<>());
-        ArrayList<String[]> list = overrides.get(variable);
-        String[] arr = new String[events.length + 1];
-        arr[0] = property;
+        String key = "";
+        for(int i=0; i<events.length; i++) key += ":" + events[i];
+        if(!overrides.containsKey(key)) overrides.put(key, new ArrayList<>());
+        ArrayList<String[]> list = overrides.get(key);
+        String[] arr = new String[events.length + 2];
+        arr[0] = property + ":" + variable;
         arr[1] = null;
         int x = 0;
         for(int i=2; i<arr.length; i++) { arr[i] = events[x]; x++; }
         list.add(arr);
+        overrides.replace(key, list);
     }
 
     protected void addFlaggedOverride(String flag, String property, String value, String...events) {
+        if(!__.isset(var(flag))) return;
+        if(!((boolean) var(flag))) return;
+        String key = "";
+        for(int i=0; i<events.length; i++) key += ":" + events[i];
         if(!overrides.containsKey(flag)) overrides.put(flag, new ArrayList<>());
         ArrayList<String[]> list = overrides.get(flag);
-        String[] arr = new String[events.length + 1];
+        String[] arr = new String[events.length + 2];
         arr[0] = property;
         arr[1] = value;
         int x = 0;
         for(int i=2; i<arr.length; i++) { arr[i] = events[x]; x++; }
         list.add(arr);
+        overrides.replace(flag, list);
     }
 
     protected void addFlaggedOverride(String flag, String property, String value) {
-        if(!overrides.containsKey(flag)) overrides.put(flag, new ArrayList<>());
-        ArrayList<String[]> list = overrides.get(flag);
+        if(!__.isset(var(flag))) return;
+        if(!((boolean) var(flag))) return;
+        if(!overrides.containsKey("\34")) overrides.put("\34", new ArrayList<>());
+        ArrayList<String[]> list = overrides.get("\34");
         list.add(new String[]{property, value});
+        overrides.replace("\34", list);
     }
 
     public void addSubclasses(String...classes) {
@@ -212,13 +263,14 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
     }
 
     @Override
-    public HtmlElement html(StyleModule module) {
+    public HtmlElement html(AloftTheme theme) {
         if(!__.isset(subtype)) return null;
         if(!listeners.isEmpty()) subtype.setListeners(listeners);
         String[] arr = new String[moduleSubclasses.size()];
         this.moduleSubclasses.toArray(arr);
         subtype.addSubclasses(arr);
-        return subtype.html(module);
+//        subtype.applyOverrides();
+        return subtype.html(theme);
     }
 
     protected void registerBuilder(AloftBuilder builder) { }
@@ -263,8 +315,7 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
     }
 
     public void refresh() {
-        setupVariables(this.vars);
-        applyOverrides();
+        if(this.vars.isEmpty()) setupVariables(this.vars);
         setupBuilder();
         if(this.requiresBuilder || this.acceptsBuilder) setupBuilder(new AloftBuilder());
         setupIterator();

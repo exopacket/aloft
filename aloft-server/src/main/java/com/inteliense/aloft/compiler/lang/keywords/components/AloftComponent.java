@@ -2,9 +2,9 @@ package com.inteliense.aloft.compiler.lang.keywords.components;
 
 import com.inteliense.aloft.compiler.lang.base.BuildsAppJavascript;
 import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
+import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
 import com.inteliense.aloft.compiler.lang.keywords.style.base.*;
-import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.compiler.lang.types.base.T;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.js.AppJavaScript;
@@ -20,6 +20,7 @@ import com.inteliense.aloft.utils.encryption.SHA;
 import com.inteliense.aloft.utils.global.__;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -62,10 +63,12 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
     }
 
     public AloftStyleCss appendCss(AloftStyleCss css) {
+        ArrayList<AloftStyleClass> c = getAloftClasses();
+        for(int x=0; x<c.size(); x++) {
+            css.append(c.get(x));
+        }
         for(int i=0; i< children.size(); i++) {
             AloftComponent component = children.get(i);
-            ArrayList<AloftStyleClass> classes = component.getAloftClasses();
-            for(int x=0; x<classes.size(); x++) css.append(classes.get(x));
             css = component.appendCss(css);
         }
         return css;
@@ -79,15 +82,38 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
         return state;
     }
 
-    public void setClasses(ArrayList<AloftStyleClass> classes) {
+    public void setClasses(ArrayList<AloftStyleClass> classes, AloftTheme theme) {
+//        applyOverrides();
         this.classes = classes;
+        for(int i=0; i< children.size(); i++) {
+//            children.get(i).applyOverrides();
+            children.get(i).setClasses(theme.mergeByHash(children.get(i).getStyle().getHashes()), theme);
+        }
     }
+
+    public void applyOverrides() {  }
 
     public ArrayList<AloftStyleClass> getAloftClasses() {
         return this.classes;
     }
 
     public void addStyle(String property, String value) {
+        this.style.addStyle(new AloftStylePair(property, value));
+    }
+
+    public void addStyle(String property, String value, boolean important) {
+        AloftStylePair style = new AloftStylePair(property, value, important);
+        this.style.addStyle(style);
+    }
+
+    public void addStyle(String property, String value, String[] psuedo, boolean important) {
+        StringBuilder builder = new StringBuilder();
+        for(int i=0; i< psuedo.length; i++) builder.append(":").append(psuedo[i]);
+        AloftStylePair style = new AloftStylePair(property, value, builder.toString(), important);
+        this.style.addStyle(style);
+    }
+
+    public void addStyleWithinElement(String property, String value, AloftTheme theme) {
         this.style.addStyle(new AloftStylePair(property, value));
     }
 
@@ -138,9 +164,9 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
     }
 
     @Override
-    public HtmlElement html(StyleModule module) {
+    public HtmlElement html(AloftTheme theme) {
         if(this.children.size() == 1) {
-            HtmlElement element = children.get(0).html(module);
+            HtmlElement element = children.get(0).html(theme);
             element.addAttribute("data-aid", A32.casified(SHA.getSha1(getName())));
             return element;
         } else if(this.children.size() > 1) {
@@ -151,7 +177,7 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
                 }
             };
             for(int i=0; i< children.size(); i++) {
-                HtmlElement element = children.get(i).html(module);
+                HtmlElement element = children.get(i).html(theme);
                 element.addAttribute("data-aid", A32.casified(SHA.getSha1(getName())));
                 container.addChild(element);
             }

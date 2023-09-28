@@ -1,10 +1,10 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
+import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftBuilder;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElementSubtype;
 import com.inteliense.aloft.compiler.lang.lib.ModuleElement;
-import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 
 import java.util.ArrayList;
@@ -15,8 +15,8 @@ public class AlertAloftElement extends AloftElement {
     public AlertAloftElement() { super(); init();  }
 
     @Override
-    public HtmlElement html(StyleModule module) {
-        ModuleElement m = module.get(this.getClass());
+    public HtmlElement html(AloftTheme theme) {
+        ModuleElement m = theme.getStyleModule().get(this.getClass());
         HtmlElement root = createElement("div", m.fromKey("root"));
         addVar("modal-id", root.getId());
         HtmlElement dialog = createElement("div", m.fromKey("dialog"));
@@ -25,7 +25,7 @@ public class AlertAloftElement extends AloftElement {
         dialog.addChild(content);
         HtmlElement header = createElement("div", m.fromKey("header"));
 //        HtmlElement title = createElement("h5", m.fromKey("title"));
-        HtmlElement title = builder.get("title").html(module);
+        HtmlElement title = builder.get("title").html(theme);
         header.addChild(title);
         content.addChild(header);
         return root;

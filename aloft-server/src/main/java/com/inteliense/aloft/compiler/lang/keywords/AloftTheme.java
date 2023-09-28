@@ -10,9 +10,12 @@ import com.inteliense.aloft.compiler.lang.lib.IconsModule;
 import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.compiler.lang.lib.colors.Color;
 import com.inteliense.aloft.compiler.lang.lib.colors.Colors;
+import com.inteliense.aloft.utils.encryption.A32;
+import com.inteliense.aloft.utils.encryption.Rand;
 
 import javax.swing.text.Style;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 // add 'default MyElement.color: #ff000' to syntax
 
@@ -33,10 +36,19 @@ public class AloftTheme implements BuildsJava {
 
     public AloftTheme(StyleModule module) { this.module = module; }
 
-    public ArrayList<AloftStyleClass> mergeByHash(ArrayList<AloftStyleHashList> hashes) {
-            ArrayList[] v = this.classBuilder.merge(this.classes, hashes);
-            this.classes = v[1];
-            return v[0];
+    public ArrayList<AloftStyleClass> mergeByHash(HashMap<String, ArrayList<AloftStyleHashList>> hashes) {
+        ArrayList<AloftStyleClass> v = new ArrayList<AloftStyleClass>();
+        for(String key : hashes.keySet()) {
+            ArrayList<AloftStyleClass> c = this.classBuilder.merge(this.classes, hashes.get(key), key);
+            v.addAll(c);
+            for(AloftStyleClass n : c) {
+                if(!this.classBuilder.globalExists(n)) {
+                    this.classes.add(n);
+                    this.classBuilder.appendGlobalClass(n);
+                }
+            }
+        }
+        return v;
     }
 
     public void setUsesBootstrap() {

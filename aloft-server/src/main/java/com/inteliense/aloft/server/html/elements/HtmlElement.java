@@ -58,7 +58,7 @@ public abstract class HtmlElement {
     public HtmlElement addAttribute(String key, String value) {
         if(this.attributes.containsKey(key)) {
             String v = this.attributes.get(key);
-            this.attributes.replace(key, v + " " + value);
+            if(!v.contains(value)) this.attributes.replace(key, v + " " + value);
         } else {
             this.attributes.put(key, value);
         }

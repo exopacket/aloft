@@ -1,16 +1,10 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
-import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
-import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftBuilder;
+import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElementSubtype;
-import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
-import com.inteliense.aloft.server.html.elements.js.JavaScriptObject;
 import com.inteliense.aloft.server.html.elements.types.Content;
-import com.inteliense.aloft.utils.encryption.A32;
-import com.inteliense.aloft.utils.encryption.Rand;
-import com.inteliense.aloft.utils.encryption.SHA;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,16 +39,13 @@ public class TextAloftElement extends AloftElement {
     }
 
     @Override
-    public HtmlElement html(StyleModule module) {
+    public HtmlElement html(AloftTheme theme) {
         HtmlElement root = createElement("p", this.uniqueId);
-        root.addAttribute("data-aid", A32.casified(SHA.getSha1(getName())));
         Content rootContent = new Content(var("text"));
         root.addChild(rootContent);
-        for(int i=0; i<children.size(); i++) {
-            HtmlElement element = children.get(i).html(module);
-            root.addChild(element);
-        }
-        this.applyStyle(root);
+        this.placeType(root);
+        this.addAll(root, theme);
+        this.applyStyle(root, theme);
         this.applyListeners(root);
         return root;
     }

@@ -15,7 +15,7 @@ public class A32 {
 
     public static String casified(String input) {
         String hex = get(input);
-        return Rand.letter() + Rand.caseify(hex);
+        return Rand.letter(Rand.caseify(hex)) + Rand.caseify(hex);
     }
 
 }

@@ -1,8 +1,8 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
+import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElementSubtype;
-import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.utils.global.__;
 
@@ -26,9 +26,9 @@ public class IconAloftElement extends AloftElement {
     }
 
     @Override
-    public HtmlElement html(StyleModule module) {
+    public HtmlElement html(AloftTheme theme) {
         HtmlElement icon = createElement("i");
-        icon.addAttribute("class", module.icon((String) vars.get("icon")));
+        icon.addAttribute("class", theme.getStyleModule().icon((String) vars.get("icon")));
         if(__.isset(vars.get("color"))) icon.addStyle("color", (String) vars.get("color"));
         if(__.isset(vars.get("size"))) icon.addStyle("font-size", String.valueOf(vars.get("size")) + "px");
         applyListeners(icon);

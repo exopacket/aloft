@@ -1,9 +1,9 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
+import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElementSubtype;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.TextAlign;
-import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 
 import java.util.ArrayList;
@@ -16,19 +16,17 @@ public class CenteredAloftElement extends AloftElement {
     public void setTextAlign(TextAlign alignment) { this.vars.replace("text-align", alignment); }
 
     @Override
-    public HtmlElement html(StyleModule module) {
+    public HtmlElement html(AloftTheme theme) {
         HtmlElement root = createElement("div");
         HtmlElement child = createElement("div");
-        for(int i=0; i<children.size(); i++) {
-            child.addChild(children.get(i).html(module));
-        }
+        addAll(child, theme);
         root.addChild(child);
         TextAlign alignment = (TextAlign) this.vars.get("text-align");
         if(alignment == TextAlign.CENTER) child.addStyle("text-align", "center");
         if(alignment == TextAlign.LEFT) child.addStyle("text-align", "left");
         if(alignment == TextAlign.RIGHT) child.addStyle("text-align", "right");
-        applyStyle("root", CenteredAloftElement.class, root, module);
-        applyStyle("child", CenteredAloftElement.class, child, module);
+        applyStyle("root", CenteredAloftElement.class, root, theme);
+        applyStyle("child", CenteredAloftElement.class, child, theme);
         applyListeners(root);
         return root;
     }

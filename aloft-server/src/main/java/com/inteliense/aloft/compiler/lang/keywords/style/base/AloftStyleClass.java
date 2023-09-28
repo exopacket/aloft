@@ -14,15 +14,21 @@ public class AloftStyleClass {
         return style;
     }
 
+    public String getTagClassName() {
+        if(className.contains(":")) return className.split(":")[0];
+        return className;
+    }
+
     public String getClassName() {
-        return this.className;
+        return className;
     }
 
     public String css() {
-        String v = "." + className + " { ";
-        v += style.css();
-        v += "} ";
-        return v;
+        return style.css(className);
+    }
+
+    public int size() {
+        return style.size();
     }
 
 }

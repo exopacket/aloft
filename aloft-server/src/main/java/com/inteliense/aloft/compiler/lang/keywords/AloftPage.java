@@ -4,19 +4,15 @@ import com.inteliense.aloft.application.config.AppConfig;
 import com.inteliense.aloft.compiler.lang.base.AssertsLanguage;
 import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
 import com.inteliense.aloft.compiler.lang.base.BuildsJava;
-import com.inteliense.aloft.compiler.lang.keywords.components.AloftScreen;
-import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
+import com.inteliense.aloft.compiler.lang.keywords.components.AloftRoot;
 import com.inteliense.aloft.compiler.lang.keywords.elements.types.*;
 import com.inteliense.aloft.compiler.lang.keywords.listeners.types.AloftOnClickListener;
 import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleClass;
 import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleCss;
-import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleHashList;
-import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.compiler.lang.lib.colors.Colors;
 import com.inteliense.aloft.compiler.lang.supporting.MountableComponent;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.js.JSOV;
-import com.inteliense.aloft.server.html.elements.js.JavaScriptObject;
 import com.inteliense.aloft.server.html.elements.js.types.AlertObject;
 import com.inteliense.aloft.server.html.elements.types.Body;
 import com.inteliense.aloft.server.html.elements.types.Head;
@@ -24,9 +20,7 @@ import com.inteliense.aloft.server.html.elements.types.Page;
 import com.inteliense.aloft.server.http.supporting.*;
 import com.inteliense.aloft.utils.global.__;
 
-import java.awt.*;
 import java.io.File;
-import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,7 +79,7 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
         this.meta.add(meta);
     }
 
-    public void testAppend() {
+    public void testAppend() throws Exception {
         try {
             File file = Paths.get(this.getClass().getResource("/images/default-error-bg.dvg").toURI()).toFile();
             HashMap<String, String> svgVars = new HashMap<>();
@@ -99,13 +93,13 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
             svgVars.put("color7", theme.color("primary", Colors.Shade.LIGHT).getHex());
             svgVars.put("color8", theme.color("primary", Colors.Shade.LIGHT).getHex(0.66F));
             VectorAloftElement bg = VectorAloftElement.fromFile(file, svgVars);
-            AloftScreen screen = new AloftScreen();
+            AloftRoot screen = new AloftRoot();
     //        screen.appendState("__root__.test", new StringT(), "value");
-            AloftScreenContainer container = new AloftScreenContainer();
-            container.addStyle("background-image", bg.getEncodedUrl(theme.getStyleModule()));
+            FilledAloftElement container = new FilledAloftElement();
+            container.addStyle("background-image", bg.getEncodedUrl(theme));
             container.addStyle("background-repeat", "no-repeat");
             container.addStyle("background-size", "cover");
-            container.setClasses(this.theme.mergeByHash(container.getStyle().getHashes()));
+            container.useViewSize();
             CenteredAloftElement centered = new CenteredAloftElement();
             IconAloftElement icon = new IconAloftElement();
             icon.setIcon("PERSON_RAISED_HAND");
@@ -113,39 +107,43 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
             icon.setColor(theme.color("primary", Colors.Shade.DARK).getHex());
 //            centered.addChild(icon);
             TextAloftElement textElement = new TextAloftElement("404");
-            TextAloftElement textSpan = new TextAloftElement("PAGE NOT FOUND");
-            textSpan.addStyle("color", theme.color("secondary").getHex());
-            textSpan.setClasses(this.theme.mergeByHash(textSpan.getStyle().getHashes()));
-//            textElement.addSpan(textSpan);
+            TextAloftElement textSpan = new TextAloftElement("PAGE NOT FOUND.");
+            textSpan.addStyle("color", "#ffffff");
+            textSpan.addStyle("padding-top", "20px");
+            textSpan.addStyle("font-size", "32px");
+            textSpan.addStyle("padding-bottom", "20px");
+            textElement.addSpan(textSpan);
+            textElement.addStyle("line-height", "1.0");
             textElement.addStyle("color", "#ffffff");
             textElement.addStyle("text-transform", "uppercase");
             textElement.addStyle("font-size", "256px");
-            textElement.addStyle("text-shadow", "-0.0625em 0.0625em 0px " + theme.color("azure", Colors.Shade.DARK).getHex() + ", calc(-0.0625em - 0.025em) calc(0.0625em + 0.025em) 0px " + theme.color("azure", Colors.Shade.LIGHT).getHex());
-            textElement.setClasses(this.theme.mergeByHash(textElement.getStyle().getHashes()));
+            textElement.addStyle("text-shadow", "-0.04em 0.04em 0px " + theme.color("azure", Colors.Shade.DARK).getHex() + ", calc(-0.04em - 0.025em) calc(0.04em + 0.025em) 0px " + theme.color("azure", Colors.Shade.LIGHT).getHex());
             centered.addChild(textElement);
             ButtonAloftElement btn = new ButtonAloftElement("__button_default__");
             btn.setText("GO HOME");
             btn.addSubclass("primary");
             btn.addSubclass("sm");
-            btn.setClasses(this.theme.mergeByHash(btn.getStyle().getHashes()));
+            btn.setColors(theme.color("azure").getHex(), theme.color("azure", Colors.Shade.LIGHT).getHex(), theme.color("azure", Colors.Shade.DARK).getHex());
+            btn.setRing(theme.color("blue").getHex());
             AlertObject alertObject = new AlertObject();
             alertObject.setTitle("This is a message from the national weather service");
-            btn.addListener(new AloftOnClickListener(
-                    JSOV.v("function", "myAlert"),
-                    JSOV.v("function-slot", alertObject)
-            ));
-//            centered.addChild(btn);
+//            btn.addListener(new AloftOnClickListener(
+//                    JSOV.v("function", "myAlert"),
+//                    JSOV.v("function-slot", alertObject)
+//            ));
+            centered.addChild(btn);
             AlertAloftElement alert = new AlertAloftElement();
             alert.builder("title", __.arr("text", "Hello World"));
             alert.builder("body", __.arr("text", "This is a message from the national weather service."));
             centered.addChild(alert);
             container.addChild(centered);
+            container.setClasses(theme.mergeByHash(container.getStyle().getHashes()), theme);
             screen.addChild(container);
             this.root = screen;
             this.root.appendCss(this.css);
             this.root.javascript(this.js);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -158,12 +156,8 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
     }
 
     @Override
-    public HtmlElement html(StyleModule module) {
+    public HtmlElement html(AloftTheme theme) {
         return buildPage();
-    }
-
-    private void buildCss() {
-        this.root.appendCss(this.css);
     }
 
     private Page buildPage() {
@@ -175,9 +169,13 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
     }
 
     private Body buildBody() {
-        testAppend();
+        try {
+            testAppend();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Body body = new Body();
-        body.addChild(root.html(this.theme.getStyleModule()));
+        body.addChild(root.html(this.theme));
         return body;
     }
 

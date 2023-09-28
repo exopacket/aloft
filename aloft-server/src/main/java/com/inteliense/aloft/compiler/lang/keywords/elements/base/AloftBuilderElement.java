@@ -1,5 +1,6 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.base;
 
+import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 
@@ -21,8 +22,8 @@ public class AloftBuilderElement {
         return element;
     }
 
-    public HtmlElement html(StyleModule module) {
-        return this.element.html(module);
+    public HtmlElement html(AloftTheme theme) {
+        return this.element.html(theme);
     }
 
 }

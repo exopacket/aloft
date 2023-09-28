@@ -1,37 +1,48 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
-import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
+import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElementSubtype;
-import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
-import com.inteliense.aloft.compiler.lang.lib.StyleModule;
+import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStylePair;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
-import com.inteliense.aloft.server.html.elements.types.Content;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class AloftScreenContainer extends AloftElement {
+public class FilledAloftElement extends AloftElement {
 
-    public AloftScreenContainer() {
-        super();
-        init();
+    public FilledAloftElement() { super(); init(); }
+
+    public void setScrollbar(boolean x, boolean y) {
+        this.vars.replace("scrollbar-x", x);
+        this.vars.replace("scrollbar-y", y);
+        if(x) addStyle("overflow-x", "scroll");
+        if(y) addStyle("overflow-y", "scroll");
+    }
+
+    public void useFullSize() {
+        this.vars.replace("use-view", false);
+        addStyle("width", "100%");
+        addStyle("height", "100%");
+    }
+
+    public void useViewSize() {
+        this.vars.replace("use-view", true);
+        addStyle("width", "100vw");
+        addStyle("height", "100vh");
     }
 
     @Override
-    public HtmlElement html(StyleModule styleModule) {
+    public HtmlElement html(AloftTheme theme) {
         HtmlElement root = createElement("div");
-        root.addAttribute("style", "width:100vw; height: 100vh; background-color: #e8f0fc;");
-        for(int i=0;i<children.size(); i++) {
-            root.addChild(children.get(i).html(styleModule));
-        }
-        applyStyle(root);
+        addAll(root, theme);
+        applyStyle(root, theme);
         return root;
     }
 
     @Override
     protected String name() {
-        return "__root__";
+        return "__filled__";
     }
 
     @Override
@@ -61,17 +72,18 @@ public class AloftScreenContainer extends AloftElement {
 
     @Override
     protected boolean acceptsChild() {
-        return true;
+        return false;
     }
 
     @Override
     protected void setupVariables(HashMap<String, Object> vars) {
-
+        vars.put("scrollbar-y", false);
+        vars.put("scrollbar-x", false);
+        vars.put("use-view", false);
     }
 
     @Override
     protected void subtypes(ArrayList<AloftElementSubtype> subtypes) {
 
     }
-
 }

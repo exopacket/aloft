@@ -1,8 +1,8 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
+import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElementSubtype;
-import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.utils.global.__;
 import org.jsoup.parser.ParseSettings;
@@ -17,8 +17,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class VectorAloftElement extends AloftElement {
 
@@ -37,8 +35,8 @@ public class VectorAloftElement extends AloftElement {
         this.vars.replace("element", element);
     }
 
-    public String getEncodedUrl(StyleModule module) {
-        String html = html(module).getHtml();
+    public String getEncodedUrl(AloftTheme theme) {
+        String html = html(theme).getHtml();
         String b64 = __.b64(html.getBytes());
         String data = "data:image/svg+xml;base64," + b64;
         return "url('" + data + "')";
@@ -54,7 +52,7 @@ public class VectorAloftElement extends AloftElement {
 
         VectorAloftElement element = new VectorAloftElement() {
             @Override
-            public HtmlElement html(StyleModule module) {
+            public HtmlElement html(AloftTheme theme) {
                 HtmlElement svg = (HtmlElement) this.vars.get("element");
                 svg.addAttribute("xmlns", "http://www.w3.org/2000/svg");
                 svg.addAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
@@ -86,11 +84,10 @@ public class VectorAloftElement extends AloftElement {
             builder.append(scnr.nextLine());
         }
         String svgStr = builder.toString();
-        boolean isDynamic = file.getPath().contains(".dvg");
 
         VectorAloftElement element = new VectorAloftElement() {
             @Override
-            public HtmlElement html(StyleModule module) {
+            public HtmlElement html(AloftTheme theme) {
                 HtmlElement svg = (HtmlElement) this.vars.get("element");
                 svg.addAttribute("xmlns", "http://www.w3.org/2000/svg");
                 svg.addAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");

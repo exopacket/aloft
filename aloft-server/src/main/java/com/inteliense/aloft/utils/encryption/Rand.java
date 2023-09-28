@@ -14,9 +14,10 @@ public class Rand {
 
     }
 
-    public static String letter() {
+    public static String letter(String seed) {
         String letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        Random r = new Random(System.nanoTime());
+        int s = ((int) seed.charAt(0)) + ((int) seed.charAt(seed.length() - 1));
+        Random r = new Random(s);
         int i = r.nextInt(52);
         return String.valueOf(letters.charAt(i));
 }

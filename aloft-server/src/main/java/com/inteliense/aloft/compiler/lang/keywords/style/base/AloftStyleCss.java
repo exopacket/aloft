@@ -11,7 +11,7 @@ public class AloftStyleCss implements BuildsCss {
     public AloftStyleCss() { }
 
     public void append(AloftStyleClass input) {
-        if(!exists(input.getClassName())) classes.add(input);
+        if(exists(input.getClassName()) == false) classes.add(input);
     }
 
     public void append(ArrayList<AloftStyleClass> input) {
@@ -22,7 +22,7 @@ public class AloftStyleCss implements BuildsCss {
         return this.classes.size();
     }
 
-    public String css() {
+    public String css(String className) {
         String v = "";
         for(int i=0; i<size(); i++) {
             v += this.classes.get(i).css();
@@ -30,9 +30,12 @@ public class AloftStyleCss implements BuildsCss {
         return v;
     }
 
-    private boolean exists(String name) {
-        for(int i=0; i<classes.size(); i++)
-            if(classes.get(i).getClassName().equals(name)) return true;
+    public boolean exists(String name) {
+        for(int i=0; i<classes.size(); i++) {
+            if (classes.get(i).getClassName().equals(name)) {
+                return true;
+            }
+        }
         return false;
     }
 
