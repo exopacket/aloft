@@ -10,6 +10,7 @@ import com.inteliense.aloft.compiler.lang.keywords.listeners.types.AloftOnClickL
 import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleClass;
 import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleCss;
 import com.inteliense.aloft.compiler.lang.lib.colors.Colors;
+import com.inteliense.aloft.compiler.lang.lib.emojis.Emoji;
 import com.inteliense.aloft.compiler.lang.supporting.MountableComponent;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.js.JSOV;
@@ -107,7 +108,7 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
             icon.setColor(theme.color("primary", Colors.Shade.DARK).getHex());
 //            centered.addChild(icon);
             TextAloftElement textElement = new TextAloftElement("404");
-            TextAloftElement textSpan = new TextAloftElement("PAGE NOT FOUND.");
+            TextAloftElement textSpan = new TextAloftElement(Emoji.FACE_WITH_MONOCLE + " PAGE NOT FOUND");
             textSpan.addStyle("color", "#ffffff");
             textSpan.addStyle("padding-top", "20px");
             textSpan.addStyle("font-size", "32px");
