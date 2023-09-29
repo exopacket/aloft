@@ -1,6 +1,7 @@
 package com.inteliense.aloft.server.http.debug;
 
 import com.inteliense.aloft.application.config.AppConfig;
+import com.inteliense.aloft.utils.global.__;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ public class DebugServer {
         httpServer.createContext("/", new DebugServerHandler(new AppConfig()));
         httpServer.setExecutor(null);
         httpServer.start();
+        __.printPrettyLn("Debug server running at http://localhost:" + port);
 
     }
 

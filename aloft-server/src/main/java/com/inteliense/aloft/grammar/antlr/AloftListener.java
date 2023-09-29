@@ -28,36 +28,6 @@ public interface AloftListener extends ParseTreeListener {
 	 */
 	void exitSyntax(AloftParser.SyntaxContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link AloftParser#class}.
-	 * @param ctx the parse tree
-	 */
-	void enterClass(AloftParser.ClassContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AloftParser#class}.
-	 * @param ctx the parse tree
-	 */
-	void exitClass(AloftParser.ClassContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link AloftParser#class_declaration}.
-	 * @param ctx the parse tree
-	 */
-	void enterClass_declaration(AloftParser.Class_declarationContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AloftParser#class_declaration}.
-	 * @param ctx the parse tree
-	 */
-	void exitClass_declaration(AloftParser.Class_declarationContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link AloftParser#class_access}.
-	 * @param ctx the parse tree
-	 */
-	void enterClass_access(AloftParser.Class_accessContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AloftParser#class_access}.
-	 * @param ctx the parse tree
-	 */
-	void exitClass_access(AloftParser.Class_accessContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link AloftParser#component}.
 	 * @param ctx the parse tree
 	 */

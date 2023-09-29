@@ -2,11 +2,7 @@
 /* First ANTLR experience (no clue if it works) */
 grammar Aloft;
 r : syntax+;
-syntax : switch_block | if | loop | functions | class | query  | constructor | source | component | element | model | theme | callable | page | animation | module  | declare_variable | condtional | property ;
-class : class_declaration var_name curly_block ;
-class_declaration : class_access? ('class') ;
-CLASS_ACCESS : ( 'universal ' | 'server ' | 'client ' ) ;
-class_access : CLASS_ACCESS ;
+syntax : switch_block | if | loop | functions  | query  | constructor | source | component | element | model | theme | callable | page | animation | module  | declare_variable | condtional | property | NEW_LINE;
 component : COMPONENT_KEYWORD var_name curly_block ;
 element : ELEMENT_KEYWORD var_name curly_block ;
 theme : THEME_KEYWORD var_name curly_block ;
@@ -19,6 +15,10 @@ query : QUERY_KEYWORD  (NAMED_WITH_PARAMS_SPECIAL | NAMED_WITH_EMPTY_PARAMS) cur
 source : SOURCE_KEYWORD path STATEMENT_END? ;
 callable : CALLABLE_KEYWORD path curly_block ;
 constructor : CONSTRUCTOR_KEYWORD var_name curly_block ;
+//class : class_declaration var_name curly_block ;
+//class_declaration : class_access? ('class') ;
+//CLASS_ACCESS : ( 'universal ' | 'server ' | 'client ' ) ;
+//class_access : CLASS_ACCESS ;
 QUERY_KEYWORD : ('query')  ;
 CONSTRUCTOR_KEYWORD : ('create') ;
 CALLABLE_KEYWORD : ('callable') ;
@@ -117,5 +117,5 @@ END_OF_FILE : EOF -> channel(HIDDEN);
 QUOTES : (["']) ;
 COMMENT_BLOCK_DECLARATION : [/][*]  [^/*]*([*][/]) -> channel(HIDDEN) ;
 NEW_LINE : [\n]+ ;
-WS : [ \t\n\r]+ -> channel(HIDDEN) ;
+WS : [ \t\r]+ -> channel(HIDDEN) ;
 STATEMENT_END : ([;]) ;

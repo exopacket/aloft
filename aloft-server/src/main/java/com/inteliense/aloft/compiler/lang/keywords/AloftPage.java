@@ -106,9 +106,11 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
             icon.setIcon("PERSON_RAISED_HAND");
             icon.setSize(48);
             icon.setColor(theme.color("primary", Colors.Shade.DARK).getHex());
-//            centered.addChild(icon);
+////            centered.addChild(icon);
             TextAloftElement textElement = new TextAloftElement("404");
             TextAloftElement textSpan = new TextAloftElement(Emoji.FACE_WITH_MONOCLE + " PAGE NOT FOUND");
+//            TextAloftElement textElement = new TextAloftElement("500");
+//            TextAloftElement textSpan = new TextAloftElement(Emoji.BUG + " SERVER ERROR");
             textSpan.addStyle("color", "#ffffff");
             textSpan.addStyle("padding-top", "20px");
             textSpan.addStyle("font-size", "32px");
@@ -116,7 +118,6 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
             textElement.addSpan(textSpan);
             textElement.addStyle("line-height", "1.0");
             textElement.addStyle("color", "#ffffff");
-            textElement.addStyle("text-transform", "uppercase");
             textElement.addStyle("font-size", "256px");
             textElement.addStyle("text-shadow", "-0.04em 0.04em 0px " + theme.color("azure", Colors.Shade.DARK).getHex() + ", calc(-0.04em - 0.025em) calc(0.04em + 0.025em) 0px " + theme.color("azure", Colors.Shade.LIGHT).getHex());
             centered.addChild(textElement);

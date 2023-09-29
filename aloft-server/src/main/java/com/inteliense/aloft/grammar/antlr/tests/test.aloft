@@ -1,4 +1,6 @@
-class MyClass {
-	::var = "hello"
-}
+model MyClassName {
+    connection: db
 
+	::var = "hello"
+
+}

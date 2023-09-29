@@ -11,7 +11,7 @@ public class AloftStyleCss implements BuildsCss {
     public AloftStyleCss() { }
 
     public void append(AloftStyleClass input) {
-        if(exists(input.getClassName()) == false) classes.add(input);
+        if(!exists(input.getClassName())) classes.add(input);
     }
 
     public void append(ArrayList<AloftStyleClass> input) {

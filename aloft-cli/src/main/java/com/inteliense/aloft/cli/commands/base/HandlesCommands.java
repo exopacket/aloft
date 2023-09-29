@@ -39,6 +39,7 @@ public abstract class HandlesCommands {
     protected Arg orOptionalFlag(String ...flags) {
         for(int i=0; i<flags.length; i++) {
             Arg flag = Keywords.getFlagArg(flags[i]);
+            if(!__.isset(flag)) continue;
             if(!flag.isFlag()) continue;
             if(hasFlag(flags[i]) && ((flag.requiresValue() && !__.empty(flagValue(flags[i]))) || !flag.requiresValue()))
                 return flag;
@@ -49,8 +50,9 @@ public abstract class HandlesCommands {
     protected Arg orRequiredFlag(String ...flags) {
         for(int i=0; i<flags.length; i++) {
             Arg flag = Keywords.getFlagArg(flags[i]);
+            if(!__.isset(flag)) continue;
             if(!flag.isFlag()) continue;
-            if(hasFlag(flags[i]) && ((flag.requiresValue() && !__.empty(flagValue(flags[i]))) || !flag.requiresValue()))
+            if(hasFlag(flags[i]) && ((flag.requiresValue() && !__.empty(flagValue(flags[i])) || !flag.requiresValue())))
                 return flag;
         }
         String error = "[";

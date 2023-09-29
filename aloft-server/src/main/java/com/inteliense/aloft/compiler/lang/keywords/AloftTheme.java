@@ -39,7 +39,7 @@ public class AloftTheme implements BuildsJava {
     public ArrayList<AloftStyleClass> mergeByHash(HashMap<String, ArrayList<AloftStyleHashList>> hashes) {
         ArrayList<AloftStyleClass> v = new ArrayList<AloftStyleClass>();
         for(String key : hashes.keySet()) {
-            ArrayList<AloftStyleClass> c = this.classBuilder.merge(this.classes, hashes.get(key), key);
+            ArrayList<AloftStyleClass> c = this.classBuilder.merge(this.classes, hashes.get(key));
             v.addAll(c);
             for(AloftStyleClass n : c) {
                 if(!this.classBuilder.globalExists(n)) {

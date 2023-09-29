@@ -37,6 +37,10 @@ public class Keywords {
         put("--remove", new Object[]{ (new Arg("--remove", true)), Module.class});
         put("--install", new Object[]{ (new Arg("--install", true)), Module.class});
         put("--configure", new Object[]{ (new Arg("--configure", true)), Module.class});
+        put("--theme", new Object[]{ (new Arg("--theme", true)), New.class});
+        put("--model", new Object[]{ (new Arg("--model", true)), New.class});
+        put("--file", new Object[]{ (new Arg("--file", true)), New.class});
+        put("--db", new Object[]{ (new Arg("--db", true)), New.class});
     }};
 
     public static Class getClass(String cmd) {
@@ -79,6 +83,7 @@ public class Keywords {
 
     public static Arg getFlagArg(String flag) {
         try {
+            flag = "--" + flag.replace("--", "");
             if(flags.containsKey(flag.toLowerCase())) {
                 Object[] v = flags.get(flag.toLowerCase());
                 return (Arg) v[0];

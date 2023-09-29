@@ -1,13 +1,11 @@
 package com.inteliense.aloft.compiler.lang.keywords.style.base;
 
 import com.inteliense.aloft.utils.encryption.A32;
-import com.inteliense.aloft.utils.encryption.SHA;
 import com.inteliense.aloft.utils.global.__;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -17,12 +15,12 @@ public class AloftStyleClassBuilder {
 
     public AloftStyleClassBuilder() { }
 
-    public ArrayList<AloftStyleClass> merge(ArrayList<AloftStyleClass> current, ArrayList<AloftStyleHashList> toMerge, String key) {
+    public ArrayList<AloftStyleClass> merge(ArrayList<AloftStyleClass> current, ArrayList<AloftStyleHashList> toMerge) {
         ArrayList<AloftStyleClass> classes = new ArrayList<>(current);
         ArrayList<AloftStyleClass> matches = new ArrayList<>();
 
         int size = toMerge.get(0).size();
-//        classes = sortAndSplice(size, classes);
+        classes = sortAndSplice(size, classes);
         for(int i=0; i<toMerge.size(); i++) {
             String toMergeHash = toMerge.get(i).getHash();
             String currentHash = null;

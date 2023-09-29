@@ -63,6 +63,7 @@ public class ButtonAloftElement extends AloftElement {
                 HtmlElement root = createElement("button");
                 Content content = new Content(var("text"));
                 root.addChild(content);
+                placeType(root);
                 applyStyle("button", ButtonAloftElement.class, root, theme);
                 applyListeners(root);
                 return root;
