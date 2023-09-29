@@ -2,7 +2,6 @@ package com.inteliense.aloft.grammar.antlr.tests;
 
 import com.inteliense.aloft.grammar.antlr.AloftLexer;
 import com.inteliense.aloft.grammar.antlr.AloftParser;
-import com.inteliense.aloft.grammar.antlr.listeners.MigrateListener;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
@@ -22,8 +21,6 @@ public class Main {
         TokenStream tokenStream = new CommonTokenStream(lexer);
         AloftParser parser = new AloftParser(tokenStream);
         ParseTreeWalker walker = new ParseTreeWalker();
-        MigrateListener listener = new MigrateListener();
-        walker.walk(listener, parser.model());
     }
 
 }

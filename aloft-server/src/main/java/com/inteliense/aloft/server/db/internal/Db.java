@@ -36,11 +36,19 @@ public class Db {
     }
 
     public Query query(String database) {
-        return this.driver.buildQuery(dbName(database));
+        try {
+            if (!this.database.equals(database)) setDatabase(database);
+            return this.driver.buildQuery(dbName(database));
+        } catch (Exception | CriticalException ignored) { }
+        return null;
     }
 
     private String dbName(String db) {
         return db;
+    }
+
+    public DbDriver getRawDriver() {
+        return this.driver;
     }
 
 }

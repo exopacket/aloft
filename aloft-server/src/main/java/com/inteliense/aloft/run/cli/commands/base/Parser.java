@@ -11,7 +11,7 @@ public class Parser {
         String prevName = "";
         for(int i=0; i<args.length; i++) {
             String arg = args[i];
-            if(flagCheck(arg) && Keywords.flagExists(argList.get(0).getName(), arg)) {
+            if(flagCheck(arg) && argList.size() > 0 && Keywords.flagExists(argList.get(0).getName(), arg)) {
                 Arg flag = Keywords.getFlagArg(arg);
                 if(flag == null) continue;
                 argList.add(flag);

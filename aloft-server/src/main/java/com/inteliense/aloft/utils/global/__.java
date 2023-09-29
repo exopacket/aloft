@@ -21,6 +21,22 @@ public class __ {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
+    public static String str(Object input) {
+        return String.valueOf(input);
+    }
+
+    public static int num(Object input) throws Exception {
+        try {
+            return Integer.parseInt(str(input));
+        } catch (Exception e) { throw new Exception("Integer parse error."); }
+    }
+
+    public static double dbl(Object input) throws Exception {
+        try {
+            return Double.parseDouble(str(input));
+        } catch (Exception e) { throw new Exception("Double parse error."); }
+    }
+
     public static void printPrettyLn(String output) {
         System.out.println(ANSI_CYAN + output + ANSI_RESET);
     }

@@ -1,6 +1,0 @@
-model MyClassName {
-    connection: db
-
-	::var = "hello"
-
-}

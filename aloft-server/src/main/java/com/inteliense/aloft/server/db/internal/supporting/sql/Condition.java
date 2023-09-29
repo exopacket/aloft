@@ -37,7 +37,7 @@ public class Condition {
         this.valuePos = -1;
         this.left = column;
         try {
-            this.operator = (operator.getClass() == Operator.V.class) ? (Operator.V) v : Operator.parse(v);
+            this.operator = (v.getClass() == Operator.V.class) ? (Operator.V) v : Operator.parse(v);
         } catch (CommonException e) {
             e.report();
         }

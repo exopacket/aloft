@@ -1,0 +1,13 @@
+model MyClassName {
+    connection: "aloft_test"
+
+	varname string
+
+}
+
+model MyTableName {
+    connection: "aloft_test"
+
+	varname string
+
+}

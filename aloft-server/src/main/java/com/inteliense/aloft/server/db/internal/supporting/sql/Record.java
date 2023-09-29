@@ -2,6 +2,7 @@ package com.inteliense.aloft.server.db.internal.supporting.sql;
 
 import com.inteliense.aloft.server.db.internal.supporting.sql.Field;
 import com.inteliense.aloft.utils.data.JSON;
+import com.inteliense.aloft.utils.global.__;
 import org.json.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -51,6 +52,8 @@ public class Record {
         return JSON.getString(root);
     }
 
+
+
     public String column(int index) {
         return fields[index].column().name();
     }
@@ -61,6 +64,13 @@ public class Record {
 
     public Object val(int index) {
         return fields[index].get();
+    }
+
+    public Object val(String name) {
+        System.out.println(fields.length);
+        for(int i=0; i<fields.length; i++) System.out.println(fields[i].column().name()); //if(__.same(fields[i].column().name(), name)) return fields[i].get();
+        System.out.println("NOTHING");
+        return new Object();
     }
 
 }

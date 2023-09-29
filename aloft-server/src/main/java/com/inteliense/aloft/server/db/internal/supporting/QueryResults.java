@@ -35,6 +35,7 @@ public class QueryResults {
     public Record next() {
         if(currRecord == records.size()) return null;
         Record r = records.get(currRecord);
+        System.out.println(records.get(currRecord).val("COLUMN_NAME"));
         currRecord++;
         return r;
     }

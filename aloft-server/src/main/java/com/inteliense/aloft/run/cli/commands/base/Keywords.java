@@ -3,6 +3,7 @@ package com.inteliense.aloft.run.cli.commands.base;
 import com.inteliense.aloft.run.cli.commands.keywords.Build;
 import com.inteliense.aloft.run.cli.commands.keywords.Daemon;
 import com.inteliense.aloft.run.cli.commands.keywords.Debug;
+import com.inteliense.aloft.run.cli.commands.keywords.Migrate;
 
 import java.sql.Array;
 import java.util.Arrays;
@@ -14,7 +15,8 @@ public class Keywords {
     private static final Class[] commands = new Class[]{
         Daemon.class,
         Build.class,
-        Debug.class
+        Debug.class,
+        Migrate.class
     };
 
     private static final Class[] required = new Class[]{
@@ -30,6 +32,8 @@ public class Keywords {
             put("--port", new Object[]{ (new Arg("--port", true)), Debug.class });
             put("--src", new Object[]{ (new Arg("--src", true)), Debug.class });
             put("--config", new Object[]{ (new Arg("--config", true)), Debug.class });
+            put("--src", new Object[]{ (new Arg("--src", true)), Migrate.class });
+            put("--config", new Object[]{ (new Arg("--config", true)), Migrate.class });
     }};
 
     public static Class getClass(String cmd) {
