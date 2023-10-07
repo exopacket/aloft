@@ -8,6 +8,6 @@ model MyClassName {
 model MyTableName {
     connection: "aloft_test"
 
-	varname string
+	varname2 string
 
 }

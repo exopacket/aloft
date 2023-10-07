@@ -32,18 +32,14 @@ public class SQLBuilder {
 
         String sql = "";
 
-        if(p.selectSize() > 0 || p.all()) {
-            if(p.all()) {
-                sql += "SELECT * FROM " + p.table() + " ";
-            } else {
-                sql += "SELECT";
-                for(int i=0; i<p.selectSize(); i++) {
-                    sql += (i > 0) ? ", " : " ";
-                    sql += getColumnOrFunctionKey(p.nextSelect());
-                    if(p.selectSize() == 1) sql += " ";
-                }
-                sql += "FROM " + p.table() + " ";
+        if(p.selectSize() > 0) {
+            sql += "SELECT";
+            for(int i=0; i<p.selectSize(); i++) {
+                sql += (i > 0) ? ", " : " ";
+                sql += getColumnOrFunctionKey(p.nextSelect());
+                if(p.selectSize() == 1) sql += " ";
             }
+            sql += "FROM " + p.table() + " ";
         } else if(p.insertSize() > 0) {
             sql += "INSERT INTO " + p.table() + " (";
             for (int i = 0; i < p.insertSize(); i++) {

@@ -37,9 +37,9 @@ public class Db {
 
     public Query query(String database) {
         try {
-            if (!this.database.equals(database)) setDatabase(database);
+            setDatabase(database);
             return this.driver.buildQuery(dbName(database));
-        } catch (Exception | CriticalException ignored) { }
+        } catch (Exception | CriticalException e) { e.printStackTrace(); }
         return null;
     }
 

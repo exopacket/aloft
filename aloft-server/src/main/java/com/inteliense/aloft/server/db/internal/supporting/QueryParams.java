@@ -27,7 +27,6 @@ public class QueryParams {
     private int whereSizeForJoin = -1;
     private int whereSizeNotForJoin = -1;
 
-    private boolean all = false;
     private boolean delete = false;
     private boolean softDelete = false;
     private boolean setTimestamps = false;
@@ -40,7 +39,6 @@ public class QueryParams {
     public QueryParams(
             String database,
             String table,
-            boolean all,
             boolean delete,
             boolean softDelete,
             SQLColumnOrFunction orderByColumn,
@@ -55,7 +53,6 @@ public class QueryParams {
     ) {
         this.database = database;
         this.table = table;
-        this.all = all;
         this.delete = delete;
         this.softDelete = softDelete;
         this.orderByColumn = orderByColumn;
@@ -70,7 +67,7 @@ public class QueryParams {
     }
 
     public boolean returns() {
-        return all || select.size() > 0;
+        return !select.isEmpty();
     }
 
     public String database() {
@@ -82,10 +79,6 @@ public class QueryParams {
     }
 
     public String tableName() { return table; }
-
-    public boolean all() {
-        return all;
-    }
 
     public boolean softDelete() { return softDelete; }
 

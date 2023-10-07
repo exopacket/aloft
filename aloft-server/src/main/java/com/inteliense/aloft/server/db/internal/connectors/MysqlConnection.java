@@ -62,7 +62,6 @@ public class MysqlConnection extends DbConnection implements ExecutesQueries  {
             SQLBuilder builder = new SQLBuilder(p);
             String preparedSql = builder.getPreparedString();
             PreparedStatement stmt = conn.prepareStatement(preparedSql);
-            System.out.println(preparedSql);
             for(int i=0;i< builder.valueSize(); i++) {
                 Object v = builder.next();
                 if(v == null) break;
@@ -96,6 +95,7 @@ public class MysqlConnection extends DbConnection implements ExecutesQueries  {
             }
             stmt.executeUpdate();
         } catch (Exception e) {
+            e.printStackTrace();
             onError(new CriticalException("Failed to execute query.", e));
         }
 

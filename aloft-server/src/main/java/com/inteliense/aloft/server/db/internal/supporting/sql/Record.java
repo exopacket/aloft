@@ -67,9 +67,7 @@ public class Record {
     }
 
     public Object val(String name) {
-        System.out.println(fields.length);
-        for(int i=0; i<fields.length; i++) System.out.println(fields[i].column().name()); //if(__.same(fields[i].column().name(), name)) return fields[i].get();
-        System.out.println("NOTHING");
+        for(int i=0; i<fields.length; i++) if(__.same(fields[i].column().name(), name)) return fields[i].get();
         return new Object();
     }
 

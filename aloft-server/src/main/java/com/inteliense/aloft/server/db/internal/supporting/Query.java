@@ -19,7 +19,6 @@ public class Query {
     private ArrayList<Condition> where = new ArrayList<Condition>();
     private ArrayList<Join> join = new ArrayList<Join>();
 
-    private boolean all = false;
     private boolean delete = false;
     private boolean softDelete = false;
     private boolean setTimestamps = false;
@@ -62,7 +61,7 @@ public class Query {
 //    }
 
     public Query select() {
-        all = true;
+        select(Schema.getColumns(this.connection, database, table));
         return this;
     }
 
@@ -359,7 +358,6 @@ public class Query {
         return new QueryParams(
                 database,
                 table,
-                all,
                 delete,
                 softDelete,
                 orderByColumn,

@@ -1,12 +1,13 @@
 package com.inteliense.aloft.server.db.internal.supporting;
 
 import com.inteliense.aloft.server.db.internal.Db;
+import com.inteliense.aloft.server.db.internal.supporting.sql.Field;
 import com.inteliense.aloft.server.db.internal.supporting.sql.Record;
+import com.inteliense.aloft.server.db.internal.supporting.sql.SQLColumnOrFunction;
+import com.inteliense.aloft.utils.exceptions.types.CriticalException;
 import com.inteliense.aloft.utils.global.__;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -16,7 +17,33 @@ public class Schema {
 
     private static int updates = 0;
 
-    public static int fresh(Db database, DbConnection connection, String db, String name, ArrayList<ColumnProperties> migration) throws SQLException {
+    public static String[] getColumns(DbConnection connection, String db, String table) {
+        try {
+            String sql = "SELECT * FROM `INFORMATION_SCHEMA`.`COLUMNS` " +
+                    "WHERE `COLUMNS`.`TABLE_SCHEMA`=? " +
+                    "AND `COLUMNS`.`TABLE_NAME`=? " +
+                    "ORDER BY `COLUMNS`.`ORDINAL_POSITION` ASC";
+            connection.changeDb("INFORMATION_SCHEMA");
+            PreparedStatement stmt = conn(connection).prepareStatement(sql);
+            stmt.setString(1, db);
+            stmt.setString(2, table);
+            ResultSet rs = stmt.executeQuery();
+            ArrayList<String> cols = new ArrayList<>();
+            while (rs.next()) {
+                cols.add(rs.getString("COLUMN_NAME"));
+            }
+            String[] arr = new String[cols.size()];
+            cols.toArray(arr);
+            return arr;
+        } catch(Exception e) {
+            e.printStackTrace();
+            return new String[0];
+        } catch (CriticalException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static int fresh(Db database, DbConnection connection, String db, String name, ArrayList<ColumnProperties> migration) throws Exception, CriticalException {
         Query q = database.query("INFORMATION_SCHEMA")
                 .table("TABLES")
                 .select("TABLE_NAME")
@@ -35,7 +62,7 @@ public class Schema {
         return ret;
     }
 
-    public static int table(Db database, DbConnection connection, String db, String name, ArrayList<ColumnProperties> migration) throws SQLException {
+    public static int table(Db database, DbConnection connection, String db, String name, ArrayList<ColumnProperties> migration) throws Exception, CriticalException {
         __.printPrettyLn("Creating table '" + name + "' in database '" + db + "' ...");
         String preparedSql = "CREATE TABLE IF NOT EXISTS " + name + " (temp int)";
         Statement stmt = conn(connection).createStatement();
@@ -52,9 +79,10 @@ public class Schema {
         return ret;
     }
 
-    public static void column(Db database, DbConnection connection, String db, String table, ColumnProperties properties, ArrayList<ColumnProperties> migration) throws SQLException {
+    public static void column(Db database, DbConnection connection, String db, String table, ColumnProperties properties, ArrayList<ColumnProperties> migration) throws Exception, CriticalException {
         __.printPrettyLn("Creating column '" + properties.getName() + "' in table '" + db + "." + table + "' ...");
         ArrayList<ColumnProperties> props = getProperties(database, db, table);
+        connection.changeDb(db);
         if(!checkColumnForCreate(properties, props)) {
             __.printPrettyLn("Column '" + properties.getName() + "' already exists... Verifying properties..");
             updateColumn(connection, props, properties, table);
@@ -69,13 +97,12 @@ public class Schema {
         else if(!props.isNullable()) sql += "NOT NULL";
         if(__.isset(props.getColumnDefault())) sql += " DEFAULT '" + props.getColumnDefault() + "'";
         Statement stmt = conn(connection).createStatement();
-        System.out.println(sql);
-        stmt.executeUpdate(sql);
+        stmt.execute(sql);
         __.printPrettyLn("Column '" + props.getName() + "' created successfully!", __.ANSI_PURPLE);
         updates++;
     }
 
-    public static void checkForReplacements(DbConnection connection, String db, String table, ArrayList<ColumnProperties> current, ArrayList<ColumnProperties> migration) throws SQLException {
+    public static void checkForReplacements(DbConnection connection, String db, String table, ArrayList<ColumnProperties> current, ArrayList<ColumnProperties> migration) throws Exception, CriticalException {
 
         ArrayList<ColumnProperties> removals = new ArrayList<>();
         ArrayList<ColumnProperties> replacements  = new ArrayList<>();
@@ -106,6 +133,7 @@ public class Schema {
         if(replacements.isEmpty()) {
             for(ColumnProperties properties : removals) {
                 __.printPrettyLn("Deleting column '" + properties.getName() + "' from table '" + table + "'..");
+                connection.changeDb(db);
                 Statement stmt = conn(connection).createStatement();
                 stmt.executeUpdate("ALTER TABLE " + table + " DROP COLUMN " + properties.getName());
                 __.printPrettyLn("Column deleted successfully!", __.ANSI_PURPLE);
@@ -124,6 +152,7 @@ public class Schema {
                 for (int x = 0; x < replacements.size(); x++) {
                     System.out.println(" [" + (x + 1) + "] Rename '" + removals.get(i).getName() + "' to '" + replacements.get(x).getName() + "'");
                 }
+                System.out.print(" --> ");
                 try {
                     int selection = __.num(scnr.nextLine());
                     if(selection == 0) {
@@ -133,16 +162,16 @@ public class Schema {
                         __.printPrettyLn("Column deleted successfully!", __.ANSI_PURPLE);
                     } else {
                         int index = selection - 1;
-                        if(index >= replacements.size()) continue;
-                        __.printPrettyLn("Renaming column '" + removals.get(i).getName() + "' to '" + replacements.get(index) + "' from table '" + table + "'..");
+                        if(index >= replacements.size()) break;
+                        __.printPrettyLn("Renaming column '" + removals.get(i).getName() + "' to '" + replacements.get(index).getName() + "' from table '" + table + "'..");
                         Statement stmt = conn(connection).createStatement();
                         stmt.executeUpdate("ALTER TABLE " + table + " RENAME COLUMN " + removals.get(i).getName() + " to " + replacements.get(index).getName());
                         replacements.remove(index);
                         __.printPrettyLn("Column renamed successfully!", __.ANSI_PURPLE);
                     }
                     updates++;
-                    break;
                 } catch (Exception ignored) { }
+                break;
             }
         }
 
@@ -173,7 +202,7 @@ public class Schema {
     private static ArrayList<ColumnProperties> getProperties(Db database, String db, String table) {
         Query q = database.query("INFORMATION_SCHEMA")
                 .table("COLUMNS")
-                .select()
+                .select("IS_NULLABLE", "COLUMN_KEY", "COLUMN_DEFAULT", "DATA_TYPE", "COLUMN_NAME")
                 .where("TABLE_SCHEMA", "=", db)
                 .where("TABLE_NAME", "=", table);
         QueryResults res = q.get();
@@ -183,7 +212,6 @@ public class Schema {
 
         for(int i=0; i<res.size(); i++) {
             Record r = res.next();
-            System.out.println(r.val(3).getClass());
             ColumnProperties props = new ColumnProperties(String.valueOf(r.val("COLUMN_NAME")));
             if(__.same("YES", __.str(r.val("IS_NULLABLE")))) props.nullable();
             if(__.same("PRI", __.str(r.val("COLUMN_KEY")))) props.primaryKey();

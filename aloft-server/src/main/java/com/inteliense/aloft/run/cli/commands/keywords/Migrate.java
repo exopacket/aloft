@@ -11,6 +11,7 @@ import com.inteliense.aloft.server.db.internal.supporting.DbType;
 import com.inteliense.aloft.server.db.internal.supporting.Schema;
 import com.inteliense.aloft.utils.data.Case;
 import com.inteliense.aloft.utils.data.JSON;
+import com.inteliense.aloft.utils.exceptions.types.CriticalException;
 import com.inteliense.aloft.utils.global.__;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -45,7 +46,9 @@ public class Migrate extends HandlesCommands {
             System.out.println();
             __.printPrettyLn("Migrations are complete!\nThere were " + updates + " updates during the migration.");
             System.out.println();
-        } catch (Exception e) { e.printStackTrace(); System.exit(1); }
+        } catch (Exception e) { e.printStackTrace(); System.exit(1); } catch (CriticalException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -99,7 +102,7 @@ public class Migrate extends HandlesCommands {
         }
     }
 
-    private void walkAndParse(String src, HashMap<String, Db> connections) throws Exception {
+    private void walkAndParse(String src, HashMap<String, Db> connections) throws Exception, CriticalException {
         File dir = new File(src);
         if(!dir.exists()) {
             System.err.println("Source directory does not exist.");
@@ -108,7 +111,7 @@ public class Migrate extends HandlesCommands {
         getFiles(dir.listFiles(), connections);
     }
 
-    private void getFiles(File[] files, HashMap<String, Db> connections) throws Exception {
+    private void getFiles(File[] files, HashMap<String, Db> connections) throws Exception, CriticalException {
         for (File file : files) {
             if (file.isDirectory()) {
                 getFiles(file.listFiles(), connections); // Calls same method again.
@@ -118,7 +121,7 @@ public class Migrate extends HandlesCommands {
         }
     }
 
-    private void parseFile(File file, HashMap<String, Db> connections) throws Exception {
+    private void parseFile(File file, HashMap<String, Db> connections) throws Exception, CriticalException {
         __.printPrettyLn("Parsing file '" + file.getAbsolutePath().split("src/")[1] + "'", __.ANSI_YELLOW);
         InputStream stream = new FileInputStream(file);
         Lexer lexer = new AloftLexer(CharStreams.fromStream(stream));
