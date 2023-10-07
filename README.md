@@ -2,8 +2,6 @@
 
 A programming language for full stack development with simple object oriented syntax.
 
-This is a side project. Don't intend on it being done anytime soon. Feel free, if you're interested in the idea, to pass along ideas or contributions.
-
 ![icon](https://github.com/exopacket/aloft/blob/main/aloft_icon_sm.png)
 
 # progress
