@@ -32,8 +32,8 @@ public class Keywords {
             put("--port", new Object[]{ (new Arg("--port", true)), Debug.class });
             put("--src", new Object[]{ (new Arg("--src", true)), Debug.class });
             put("--config", new Object[]{ (new Arg("--config", true)), Debug.class });
-            put("--src", new Object[]{ (new Arg("--src", true)), Migrate.class });
-            put("--config", new Object[]{ (new Arg("--config", true)), Migrate.class });
+//            put("--src", new Object[]{ (new Arg("--src", true)), Migrate.class });
+//            put("--config", new Object[]{ (new Arg("--config", true)), Migrate.class });
     }};
 
     public static Class getClass(String cmd) {

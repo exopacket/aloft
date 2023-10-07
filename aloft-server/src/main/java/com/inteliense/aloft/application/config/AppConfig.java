@@ -63,7 +63,7 @@ public class AppConfig {
 
     public AppConfig() {
         //FIXME ....FOR TESTING
-        File file = new File("/home/ryan/aloft/aloft-cli/my-project/my-project.json");
+        File file = new File("/Users/ryanfitzgerald/aloft/aloft-cli/my-project/my-project.json");
         if(!file.exists()) throw new RuntimeException("Config does not exist");
         Scanner scnr = null;
         try {

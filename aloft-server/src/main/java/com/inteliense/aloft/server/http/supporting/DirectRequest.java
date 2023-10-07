@@ -26,7 +26,7 @@ public class DirectRequest {
         this.client = client;
         this.config = config;
         String path = t.getRequestURI().getPath();
-        if(path.length() > 256) exit("Request path length is too large.", 403);
+        if(path.length() > 256) exit("Request.js path length is too large.", 403);
         this.requestType = getRequestType();
         this.internalRequestType = getInternalRequestType(path);
         this.route = config.getRoute(path, t.getRequestMethod().toUpperCase());
