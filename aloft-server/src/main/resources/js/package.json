@@ -11,8 +11,12 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^1.5.0",
+    "browserify": "^17.0.0",
     "crypto-js": "^4.1.1",
     "history": "^5.3.0",
-    "local-storage": "^2.0.0"
+    "js-cookie": "^3.0.5",
+    "local-storage": "^2.0.0",
+    "pace-js": "^1.2.4",
+    "virtual-dom": "^2.1.1"
   }
 }

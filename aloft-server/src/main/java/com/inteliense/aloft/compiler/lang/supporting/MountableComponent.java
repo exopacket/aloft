@@ -18,19 +18,10 @@ public class MountableComponent extends AloftComponent {
 
     private DynamicMountableComponent child;
     private ArrayList<AloftComponent> components = new ArrayList<>();
-    private boolean layout;
 
     public MountableComponent() {
         super();
         child = new DynamicMountableComponent();
-    }
-
-    public boolean isLayout() {
-        return layout;
-    }
-
-    public void setLayout() {
-        this.layout = true;
     }
 
     public void appendComponent(AloftComponent component) {

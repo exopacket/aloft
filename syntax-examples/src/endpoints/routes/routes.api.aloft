@@ -1,0 +1,1 @@
+route.get(LoginController, [MyMiddleware1, MyMiddleware2]) /index //returns data instead of including web content (automatic detection of api route or web route)
