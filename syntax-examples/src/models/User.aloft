@@ -1,3 +1,9 @@
 model User {
+    *firstName string
+    *lastName string
+    *username string
 
+    string fullName() {
+        return firstName + " " + lastName
+    }
 }

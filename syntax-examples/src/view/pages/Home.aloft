@@ -1,0 +1,9 @@
+page Home {
+    endpoint:
+
+    component: CenteredLayout( //root is inferred without dot syntax
+        #id,
+        child: mount(UserFullName.nothing)
+    )
+
+}

@@ -1,6 +1,0 @@
-route(LoginController, [MyMiddleware1, MyMiddleware2]) /index
-route.get(LoginController, [MyMiddleware1, MyMiddleware2]) /index //same as above
-
-route.static(LoginController) /index
-
-resource(User) /user

@@ -121,6 +121,10 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
         return this.style;
     }
 
+    public String getId() {
+        return this.uniqueId;
+    }
+
     protected String[] getModuleSubclasses() {
         String[] arr = new String[moduleSubclasses.size()];
         moduleSubclasses.toArray(arr);

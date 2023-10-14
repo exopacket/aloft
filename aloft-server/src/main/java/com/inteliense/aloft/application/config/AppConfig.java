@@ -1,6 +1,7 @@
 package com.inteliense.aloft.application.config;
 
 import com.inteliense.aloft.application.cache.AppCache;
+import com.inteliense.aloft.application.cache.RouteCache;
 import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.lib.BootstrapIcons;
 import com.inteliense.aloft.compiler.lang.lib.colors.Colors;
@@ -61,9 +62,9 @@ public class AppConfig {
 
     public MiddlewareList getMiddleware() { return this.middleware; }
 
-    public AppConfig() {
+    public AppConfig(RouteCache routes) {
         //FIXME ....FOR TESTING
-        File file = new File("/Users/ryanfitzgerald/aloft/aloft-cli/my-project/my-project.json");
+        File file = new File("/home/ryan/aloft/aloft-cli/my-project/my-project.json");
         if(!file.exists()) throw new RuntimeException("Config does not exist");
         Scanner scnr = null;
         try {

@@ -1,0 +1,5 @@
+component UserFullName {
+       user = new User("ryan", "fitzgerald")
+       root: Text(user.firstName + " " + user.lastName)
+       nothing: Text("Hello World")
+}

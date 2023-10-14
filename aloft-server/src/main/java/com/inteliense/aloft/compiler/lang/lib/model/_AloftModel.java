@@ -9,8 +9,10 @@ public class _AloftModel {
     private String connection;
 
     public _AloftModel(String name) {
-
+        this.name = name;
     }
+
+    public String getName() { return this.name; }
 
     public void setConnection(String connection) {
         this.connection = connection;

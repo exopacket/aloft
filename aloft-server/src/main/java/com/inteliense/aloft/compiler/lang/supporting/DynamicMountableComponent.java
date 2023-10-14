@@ -5,19 +5,22 @@ import com.inteliense.aloft.server.html.elements.js.AppJavaScript;
 import com.inteliense.aloft.utils.data.BaseX;
 import com.inteliense.aloft.utils.encryption.SHA;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class DynamicMountableComponent extends AloftComponent {
+public abstract class DynamicMountableComponent extends AloftComponent {
 
     private HashMap<String, MountableComponent> map = new HashMap<>();
 
-    public DynamicMountableComponent() { super(); }
+    public DynamicMountableComponent() throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException { super(); mountables(map); }
 
     public DynamicMountableComponent(MountableComponent initial) {
         super();
         map.put(initial.getId(), initial);
     }
+
+    protected abstract void mountables(HashMap<String, MountableComponent> map) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException;
 
     public void addComponent(MountableComponent component) {
         if(map.containsKey(component.getId())) return;

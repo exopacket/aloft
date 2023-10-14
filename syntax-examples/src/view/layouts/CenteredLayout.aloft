@@ -1,0 +1,5 @@
+component CenteredLayout {
+    root: Center(
+        child: slot(default: UserFullName)
+    )
+}

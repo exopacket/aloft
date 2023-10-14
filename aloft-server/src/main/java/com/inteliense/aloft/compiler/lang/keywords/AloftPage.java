@@ -12,6 +12,7 @@ import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleCss;
 import com.inteliense.aloft.compiler.lang.lib.colors.Colors;
 import com.inteliense.aloft.compiler.lang.lib.emojis.Emoji;
 import com.inteliense.aloft.compiler.lang.supporting.MountableComponent;
+import com.inteliense.aloft.server.html.Html;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.js.JSOV;
 import com.inteliense.aloft.server.html.elements.js.types.AlertObject;
@@ -40,6 +41,11 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
 
     public AloftPage(Route route, RequestType type, AloftRequestType internalType, VariableTree vars, AppConfig config) {
         super(route, type, internalType, vars, config);
+    }
+
+    public AloftPage(Route route, RequestType type, AloftRequestType internalType, VariableTree vars, AppConfig config, MountableComponent root) {
+        super(route, type, internalType, vars, config);
+        this.root = root;
     }
 
 //    public AloftPage(Route route) {
@@ -159,6 +165,11 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
 
     @Override
     public HtmlElement html(AloftTheme theme) {
+        return buildPage();
+    }
+
+    public HtmlElement html(AloftTheme theme, MountableComponent root) {
+        this.root = root;
         return buildPage();
     }
 

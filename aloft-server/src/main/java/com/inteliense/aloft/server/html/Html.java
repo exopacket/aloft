@@ -50,6 +50,22 @@ public class Html {
         return "";
     }
 
+    public String string(String[] path) {
+        if(type == RenderType.PAGE && object.getClass() == AloftPage.class)
+            return renderPage((AloftPage) object);
+        if(type == RenderType.PAGE && object.getClass() == _AloftPage.class)
+            return renderPage((_AloftPage) object);
+        if(type == RenderType.COMPONENT && object.getClass() == AloftComponent.class)
+            return renderComponent((AloftComponent) object);
+        if(type == RenderType.COMPONENT && object.getClass() == _AloftComponent.class)
+            return renderComponent((_AloftComponent) object);
+        if(type == RenderType.ELEMENT && object.getClass() == _AloftElement.class)
+            return renderElement((_AloftElement) object);
+        if(type == RenderType.ELEMENT)
+            return renderElement((AloftElement) object);
+        return "";
+    }
+
     private String renderPage(AloftPage page) { return page.html(null).getHtml(); }
 
     private String renderComponent(AloftComponent component) {
@@ -61,11 +77,15 @@ public class Html {
     }
 
     private String renderPage(_AloftPage page) {
-        return "";
+        return page.getFromPath().html(null).getHtml();
     }
 
     private String renderComponent(_AloftComponent page) {
         return "";
+    }
+
+    private String renderComponent(_AloftPage page, String[] ids) {
+        return page.getFromPath(ids).html(null).getHtml();
     }
 
     private String renderElement(_AloftElement page) {
