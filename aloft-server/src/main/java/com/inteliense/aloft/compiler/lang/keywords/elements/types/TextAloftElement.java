@@ -39,7 +39,7 @@ public class TextAloftElement extends AloftElement {
     }
 
     @Override
-    public HtmlElement html(AloftTheme theme) {
+    public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
         HtmlElement root = createElement("p", this.uniqueId);
         Content rootContent = new Content(var("text"));
         root.addChild(rootContent);

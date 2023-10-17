@@ -1,6 +1,5 @@
 package com.inteliense.aloft.compiler.lang.lib;
 
-import com.inteliense.aloft.compiler.lang.keywords.AloftPage;
 import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
 import com.inteliense.aloft.compiler.lang.supporting.DynamicMountableComponent;
 import com.inteliense.aloft.compiler.lang.supporting.MountPoint;
@@ -18,21 +17,45 @@ public abstract class _AloftPage {
     //DynamicMountableComponent: alternative components / multiple conditional slot values
     //_AloftPage houses the tree of components, on component update, the tree path is given and updated accordingly
 
-    private AloftPage page;
+    private String path = "/";
     private String favicon = null;
     private String title = null;
     private MountableComponent root;
 
-    public _AloftPage(String favicon, String title) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+    public _AloftPage(String favicon, String title, String path)  {
         this.favicon = favicon;
         this.title = title;
-        this.root = buildTree();
+        this.path = path;
+        try {
+            this.root = buildTree();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     protected abstract MountableComponent buildTree() throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException;
 
     public MountableComponent getFromPath(String...ids) {
         return this.root;
+    }
+
+    public MountableComponent getRoot() {
+        return this.root;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    protected AloftComponent[] cy(Class<?>... comp) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+        ArrayList<AloftComponent> c = new ArrayList<>();
+        for(int i=0; i<comp.length; i++) {
+            Constructor<?> construct = comp[i].getConstructor();
+            c.add((AloftComponent) construct.newInstance());
+        }
+        AloftComponent[] arr = new AloftComponent[c.size()];
+        c.toArray(arr);
+        return arr;
     }
 
     protected MountableComponent[] cx(Class<?>... comp) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
@@ -65,7 +88,7 @@ public abstract class _AloftPage {
                         classes[i] = (Class<?>) comp[i];
                     }
                 }
-                MountableComponent[] mountableComponents = cx(classes);
+                AloftComponent[] mountableComponents = cy(classes);
                 components.addAll(Arrays.asList(mountableComponents));
                 return components;
             };

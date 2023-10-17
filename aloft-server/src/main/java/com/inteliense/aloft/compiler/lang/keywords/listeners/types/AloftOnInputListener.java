@@ -1,20 +1,20 @@
 package com.inteliense.aloft.compiler.lang.keywords.listeners.types;
 
 import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
-import com.inteliense.aloft.server.html.elements.js.JavaScriptObject;
 import com.inteliense.aloft.server.html.elements.js.JSOV;
+import com.inteliense.aloft.server.html.elements.js.JavaScriptObject;
 
 import java.util.ArrayList;
 
-public class AloftOnClickListener extends AloftListener {
+public class AloftOnInputListener extends AloftListener {
 
-    public AloftOnClickListener(JSOV...variables) {
+    public AloftOnInputListener(JSOV...variables) {
         super(variables);
     }
 
     @Override
     protected JavaScriptObject create() {
-        return buildBase("click");
+        return buildBase("keyup");
     }
 
     @Override

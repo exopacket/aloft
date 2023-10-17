@@ -7,12 +7,12 @@ import com.inteliense.aloft.application.config.AppConfig;
 
 public class Build extends HandlesCommands {
 
-    public Build(Command command, AppConfig config) {
-        super(command, config);
+    public Build(Command command) {
+        super(command);
     }
 
     @Override
-    public void run(AppConfig config) {
+    public void run() {
         System.out.println("TESTING [build]");
     }
 

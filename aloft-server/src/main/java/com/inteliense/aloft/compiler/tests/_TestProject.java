@@ -1,19 +1,21 @@
 package com.inteliense.aloft.compiler.tests;
 
-import com.inteliense.aloft.compiler.lang.lib._AloftEntryPoint;
 import com.inteliense.aloft.compiler.lang.lib._AloftProject;
 
-public class _TestProject extends _AloftEntryPoint {
+public class _TestProject extends _AloftProject {
 
-    private static _AloftProject project;
-
-    public static void main(String[] args) {
-        _TestProject project = new _TestProject();
-        project.launch();
+    public _TestProject(String[] args) {
+        super(args);
     }
 
-    @Override
-    public void launch() {
+    public static _AloftProject launch(String[] args) throws Exception {
+        _TestProject project = new _TestProject(args);
+        project.launch();
+        return project;
+    }
+
+    public void launch() throws Exception {
+        buildObjects();
     }
 
 }

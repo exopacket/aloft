@@ -16,7 +16,7 @@ public class CenteredAloftElement extends AloftElement {
     public void setTextAlign(TextAlign alignment) { this.vars.replace("text-align", alignment); }
 
     @Override
-    public HtmlElement html(AloftTheme theme) {
+    public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
         HtmlElement root = createElement("div");
         HtmlElement child = createElement("div");
         addAll(child, theme);

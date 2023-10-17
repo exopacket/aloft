@@ -15,15 +15,8 @@ public class AppCache {
 
     RouteCache routeCache;
 
-    public AppCache() {
-        ArrayList<Route> routes = new ArrayList<>();
-        VariableTree vars = new VariableTree();
-        vars.addNode("text", new StringT());
-        routes.add(new Route("/images", "POST"));
-        routes.add(new Route("/images", "GET"));
-        routes.add(new Route("/api/*", "GET", vars));
-        routes.add(new Route("/", "GET"));
-        routeCache = new RouteCache(routes);
+    public AppCache(RouteCache routes) {
+        this.routeCache = routes;
     }
 
     public void addStaticJavascript(JavaScriptEndpointList list) {

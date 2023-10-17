@@ -4,6 +4,7 @@ import com.inteliense.aloft.application.config.AppConfig;
 import com.inteliense.aloft.compiler.lang.base.AssertsLanguage;
 import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
 import com.inteliense.aloft.compiler.lang.base.BuildsJava;
+import com.inteliense.aloft.compiler.lang.base.ElementMapper;
 import com.inteliense.aloft.compiler.lang.keywords.components.AloftRoot;
 import com.inteliense.aloft.compiler.lang.keywords.elements.types.*;
 import com.inteliense.aloft.compiler.lang.keywords.listeners.types.AloftOnClickListener;
@@ -23,6 +24,7 @@ import com.inteliense.aloft.server.http.supporting.*;
 import com.inteliense.aloft.utils.global.__;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,12 +34,12 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
     private String favicon = null;
     private String title = null;
     private ArrayList<Meta> meta = new ArrayList<>();
-    private MountableComponent root;
+    private MountableComponent root = null;
     private AloftStyleCss css = new AloftStyleCss();
 
-    public AloftPage(Route route, RequestType type, AloftRequestType internalType, VariableTree vars) {
-        super(route, type, internalType, vars);
-    }
+//    public AloftPage(Route route, RequestType type, AloftRequestType internalType, VariableTree vars) {
+//        super(route, type, internalType, vars);
+//    }
 
     public AloftPage(Route route, RequestType type, AloftRequestType internalType, VariableTree vars, AppConfig config) {
         super(route, type, internalType, vars, config);
@@ -164,12 +166,17 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
     }
 
     @Override
-    public HtmlElement html(AloftTheme theme) {
-        return buildPage();
+    public HtmlElement html(AloftTheme theme, ElementMapper mapper) {
+        return create(theme, mapper);
     }
 
-    public HtmlElement html(AloftTheme theme, MountableComponent root) {
-        this.root = root;
+    @Override
+    public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
+        try {
+            buildPage();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return buildPage();
     }
 
@@ -182,11 +189,6 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
     }
 
     private Body buildBody() {
-        try {
-            testAppend();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         Body body = new Body();
         body.addChild(root.html(this.theme));
         return body;
@@ -195,11 +197,13 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
     private Head buildHead(String title, String favicon, ArrayList<AloftPage.Meta> meta) {
         Head head = new Head();
         head.addTitle(title);
+        try { head.addFavicon(Paths.get(this.getClass().getResource("/images/aloft-favicon.png").toURI()).toString()); } catch (Exception ignored) { }
         for(int i=0; i<this.staticFiles.size(); i++) {
             head.addChild(this.staticFiles.get(i));
         }
         head.addCss(theme.getStyleModule().rootVars());
         head.addCss(css);
+        head.addCss("html, body { margin: 0; height: 100%; }");
         return head;
     }
 

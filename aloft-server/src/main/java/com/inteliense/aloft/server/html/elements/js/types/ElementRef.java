@@ -31,7 +31,6 @@ public class ElementRef extends JavaScriptObject {
                 chain("querySelector", FunctionArg.preset(selector));
             }
         }
-        end();
     }
 
     public static class Selector {

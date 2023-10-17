@@ -15,7 +15,7 @@ public class AlertAloftElement extends AloftElement {
     public AlertAloftElement() { super(); init();  }
 
     @Override
-    public HtmlElement html(AloftTheme theme) {
+    public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
         ModuleElement m = theme.getStyleModule().get(this.getClass());
         HtmlElement root = createElement("div", m.fromKey("root"));
         addVar("modal-id", root.getId());

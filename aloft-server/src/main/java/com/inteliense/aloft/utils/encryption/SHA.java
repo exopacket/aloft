@@ -224,7 +224,7 @@ public class SHA {
             return Hex.getHex(sha256_HMAC.doFinal(input.getBytes("UTF-8")));
 
         } catch (Exception ex) {
-
+            ex.printStackTrace();
             return null;
 
         }

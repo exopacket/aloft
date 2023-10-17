@@ -20,18 +20,10 @@ public class DebugServerHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange t) throws IOException {
         try {
-            //test(t);
             app(t);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private void test(HttpExchange t) throws Exception {
-        TextAloftElement textElement = new TextAloftElement("Hello World!\n\nSincerely yours,\n- Server.") {
-        };
-        Response response = HtmlRenderer.render(textElement).get(t);
-        response.send();
     }
 
     private void app(HttpExchange t) {

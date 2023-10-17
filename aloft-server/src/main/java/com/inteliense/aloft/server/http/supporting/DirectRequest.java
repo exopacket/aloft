@@ -2,6 +2,7 @@ package com.inteliense.aloft.server.http.supporting;
 
 import com.inteliense.aloft.application.config.AppConfig;
 import com.inteliense.aloft.application.config.MiddlewareList;
+import com.inteliense.aloft.compiler.lang.lib._AloftProject;
 import com.inteliense.aloft.server.client.ClientInfo;
 import com.inteliense.aloft.server.http.middleware.base.MiddlewareResultCollection;
 import com.inteliense.aloft.utils.global.__;
@@ -31,7 +32,12 @@ public class DirectRequest {
         this.internalRequestType = getInternalRequestType(path);
         this.route = config.getRoute(path, t.getRequestMethod().toUpperCase());
         if(!__.isset(this.route)) exit("Page not found.", 404);
-        this.endpoint = Endpoint.create(path, route, requestType, internalRequestType, config);
+        try {
+            this.endpoint = Endpoint.create(path, route, requestType, internalRequestType, config);
+        } catch (Exception e) {
+            e.printStackTrace();
+            exit("Server error", 500);
+        }
     }
 
     private RequestParams buildParams() {

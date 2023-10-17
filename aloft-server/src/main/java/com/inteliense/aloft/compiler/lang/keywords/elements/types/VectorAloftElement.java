@@ -52,7 +52,7 @@ public class VectorAloftElement extends AloftElement {
 
         VectorAloftElement element = new VectorAloftElement() {
             @Override
-            public HtmlElement html(AloftTheme theme) {
+            public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
                 HtmlElement svg = (HtmlElement) this.vars.get("element");
                 svg.addAttribute("xmlns", "http://www.w3.org/2000/svg");
                 svg.addAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
@@ -87,7 +87,7 @@ public class VectorAloftElement extends AloftElement {
 
         VectorAloftElement element = new VectorAloftElement() {
             @Override
-            public HtmlElement html(AloftTheme theme) {
+            public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
                 HtmlElement svg = (HtmlElement) this.vars.get("element");
                 svg.addAttribute("xmlns", "http://www.w3.org/2000/svg");
                 svg.addAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");

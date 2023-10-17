@@ -1,5 +1,7 @@
 package com.inteliense.aloft.server.http;
 
+import com.inteliense.aloft.compiler.lang.lib._AloftProject;
+import com.inteliense.aloft.compiler.tests._TestProject;
 import com.sun.net.httpserver.HttpServer;
 
 import java.net.InetSocketAddress;
@@ -8,10 +10,12 @@ public class WebServer {
 
     HttpServer httpServer = null;
 
-    public WebServer(int httpPort, int httpsPort, boolean localhostOnly) throws Exception {
+    public WebServer(int httpPort, int httpsPort, boolean localhostOnly, _AloftProject[] projects) throws Exception {
 
         httpServer = HttpServer.create(buildBindAddr(httpPort, localhostOnly), 0);
-        httpServer.createContext("/", new WebServerHandler());
+        for(int i=0; i<projects.length; i++) {
+            httpServer.createContext(projects[i].getContext(), new WebServerHandler(projects[i]));
+        }
         httpServer.setExecutor(null);
         httpServer.start();
 

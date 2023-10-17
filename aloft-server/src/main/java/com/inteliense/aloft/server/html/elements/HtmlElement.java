@@ -5,6 +5,9 @@ import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
 import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.server.html.elements.js.*;
 import com.inteliense.aloft.server.html.elements.types.Content;
+import com.inteliense.aloft.utils.encryption.A32;
+import com.inteliense.aloft.utils.encryption.Rand;
+import com.inteliense.aloft.utils.encryption.SHA;
 import com.inteliense.aloft.utils.global.__;
 
 import java.util.ArrayList;
@@ -21,10 +24,13 @@ public abstract class HtmlElement {
 
     protected abstract String getKey();
 
-    public HtmlElement() { this.id = null; }
+    public HtmlElement() {
+        this.id = null;
+    }
 
     public HtmlElement(String id) {
         this.id = id;
+        if(!__.empty(this.id)) createUniqueId(id, false);
     }
 
     public String getId() {
@@ -33,6 +39,20 @@ public abstract class HtmlElement {
 
     public void addChild(HtmlElement element) {
         this.children.add(element);
+        iterateIds();
+    }
+
+    private void iterateIds() {
+        String seed = __.empty(getId()) ? Rand.str(32) : getId();
+        try {
+            for (int i = 0; i < this.children.size(); i++) seed = children.get(i).createUniqueId(seed, true);
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    public String createUniqueId(String seed, boolean set) {
+        String hash = A32.casified(SHA.getHmac256(seed, seed));
+        if(set) this.id = hash;
+        return hash;
     }
 
     public static HtmlElement builder(String tag, String content) {

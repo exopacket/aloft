@@ -11,10 +11,10 @@ public class DebugServer {
 
     HttpServer httpServer = null;
 
-    public DebugServer(int port, boolean secure, boolean localhostOnly) throws IOException {
+    public DebugServer(String configPath, int port, boolean secure, boolean localhostOnly) throws IOException {
 
         httpServer = HttpServer.create(buildBindAddr(port, localhostOnly), 0);
-        httpServer.createContext("/", new DebugServerHandler(new AppConfig()));
+        httpServer.createContext("/", new DebugServerHandler(new AppConfig(configPath)));
         httpServer.setExecutor(null);
         httpServer.start();
         __.printPrettyLn("Debug server running at http://localhost:" + port);

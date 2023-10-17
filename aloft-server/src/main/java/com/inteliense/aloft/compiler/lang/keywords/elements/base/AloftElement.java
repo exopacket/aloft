@@ -18,7 +18,6 @@ import java.util.HashMap;
 
 public abstract class AloftElement extends AloftComponent implements BuildsHtml {
 
-    protected String veryUniqueId = null;
     protected String friendlyId = null;
     protected String name = null;
 
@@ -50,7 +49,6 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
     }
 
     protected void init() {
-        veryUniqueId = (veryUniqueId == null) ? createId(String.valueOf(System.currentTimeMillis())) : veryUniqueId;
         refresh();
     }
 
@@ -263,7 +261,7 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
     }
 
     @Override
-    public HtmlElement html(AloftTheme theme) {
+    public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
         if(!__.isset(subtype)) return null;
         if(!listeners.isEmpty()) subtype.setListeners(listeners);
         String[] arr = new String[moduleSubclasses.size()];

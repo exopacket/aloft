@@ -26,7 +26,7 @@ public class IconAloftElement extends AloftElement {
     }
 
     @Override
-    public HtmlElement html(AloftTheme theme) {
+    public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
         HtmlElement icon = createElement("i");
         icon.addAttribute("class", theme.getStyleModule().icon((String) vars.get("icon")));
         if(__.isset(vars.get("color"))) icon.addStyle("color", (String) vars.get("color"));

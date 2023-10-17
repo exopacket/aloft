@@ -80,7 +80,27 @@ public class BootstrapModule extends StyleModule {
     @Override
     protected ModuleElement centeredAloftElement(ModuleElement element) {
         element.addClasses("root","d-flex", "w-100", "h-100", "p-3");
-        element.addClasses("child","mx-auto", "my-auto");
+        element.addClasses("child","mx-auto", "my-auto", "w-100");
+        return element;
+    }
+
+    @Override
+    protected ModuleElement columnAloftElement(ModuleElement element) {
+        element.addClasses("col","d-flex", "flex-column");
+        element.addClasses("col-reverse","d-flex", "flex-column-reverse");
+        return element;
+    }
+
+    @Override
+    protected ModuleElement inputAloftElement(ModuleElement element) {
+        element.addClasses("root", "d-flex", "flex-column", "mb-4");
+        element.addClasses("text-group", "form-group");
+        element.addClasses("text-input", "form-control");
+        element.addAttributes("text-input", "type", "text");
+        element.addClasses("help-text", "form-text", "text-muted", "mt-2", "mx-1", "d-block");
+        element.addStyles("help-text", "text-align", "left", "font-size", "12px");
+        element.addStyles("label", "font-weight", "bold", "color", "rgba(0,0,0,0.85)", "font-size", "14px", "text-align", "left");
+        element.addClasses("label", "mb-2", "d-block", "mx-1");
         return element;
     }
 }

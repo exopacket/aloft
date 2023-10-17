@@ -2,30 +2,50 @@ package com.inteliense.aloft.compiler.lang.lib;
 
 import com.inteliense.aloft.application.config.AppConfig;
 import com.inteliense.aloft.compiler.tests.models._User;
+import com.inteliense.aloft.compiler.tests.pages._TestProjectHome;
 
 public class _AloftProject {
 
-    private static AppConfig config;
+    private AppConfig config;
 
-    private static String projectName;
-    private static _AloftObjects objects;
+    private String projectName;
+    private String context;
+    private _AloftObjects objects = new _AloftObjects();
 
-    public static AppConfig getConfig() {
+    public _AloftProject(String[] args) {
+        projectName = args[0];
+        context = args[1];
+    }
+
+    public AppConfig getConfig() {
         return config;
     }
 
-    public static void buildObjects() throws Exception {
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public String getContext() {
+        return context;
+    }
+
+    public void buildObjects() throws Exception {
+        buildPages();
         buildRoutes();
         config = new AppConfig(objects.getRouteCache());
         buildModels();
     }
 
-    private static void buildModels() throws Exception {
+    private void buildPages() throws Exception {
+        objects.append(_TestProjectHome.class);
+    }
+
+    private void buildModels() throws Exception {
         objects.append(_User.class);
     }
 
-    private static void buildRoutes() throws Exception {
-        objects.append(new _AloftRoute("/", "GET"));
+    private void buildRoutes() throws Exception {
+//        objects.append(new _AloftRoute("/", "GET"));
     }
 
 }

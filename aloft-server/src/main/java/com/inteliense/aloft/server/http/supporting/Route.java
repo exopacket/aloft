@@ -1,6 +1,7 @@
 package com.inteliense.aloft.server.http.supporting;
 
 import com.inteliense.aloft.compiler.lang.keywords.AloftPage;
+import com.inteliense.aloft.compiler.lang.lib._AloftPage;
 import com.inteliense.aloft.server.html.HtmlRenderer;
 import com.inteliense.aloft.server.html.elements.css.FontEndpoint;
 import com.inteliense.aloft.server.html.elements.css.FontRenderer;
@@ -14,6 +15,8 @@ import com.inteliense.aloft.utils.encryption.SHA;
 import com.inteliense.aloft.utils.global.__;
 import com.sun.net.httpserver.HttpExchange;
 
+import java.lang.reflect.Constructor;
+
 public class Route {
 
     private String id;
@@ -22,6 +25,7 @@ public class Route {
     private String requestTypeStr;
     private RequestType requestType;
     private AloftRequestType aloftRequestType;
+    private Class<?> content;
 
     private VariableTree vars;
 
@@ -40,6 +44,16 @@ public class Route {
         this.requestTypeStr = typeStr;
         this.requestType = getRequestType(typeStr);
         this.id = BaseX.encode64(SHA.Bites.getSha1(typeStr + ":" + path));
+    }
+
+    public Route(String path, String typeStr, Class<?> content) {
+        typeStr = typeStr.toUpperCase();
+        if(!__.isset(getRequestType(typeStr))) return;
+        this.path = new RoutePath(path);
+        this.requestTypeStr = typeStr;
+        this.requestType = getRequestType(typeStr);
+        this.id = BaseX.encode64(SHA.Bites.getSha1(typeStr + ":" + path));
+        this.content = content;
     }
 
     public Route(String path, RequestType type, String typeStr, VariableTree vars) {
@@ -61,8 +75,24 @@ public class Route {
         this.vars = vars;
     }
 
+    public Route(String path, String typeStr, VariableTree vars, Class<?> content) {
+        typeStr = typeStr.toUpperCase();
+        if(!__.isset(getRequestType(typeStr))) return;
+        this.path = new RoutePath(path, vars);
+        this.requestTypeStr = typeStr;
+        this.requestType = getRequestType(typeStr);
+        this.id = BaseX.encode64(SHA.Bites.getSha1(typeStr + ":" + path));
+        this.vars = vars;
+        this.content = content;
+    }
+
     public String getId() {
         return this.id;
+    }
+
+    public Object instantiate() throws Exception {
+        Constructor<?> construct = content.getConstructor();
+        return construct.newInstance();
     }
 
     public Response go(HttpExchange t, Endpoint endpoint) {

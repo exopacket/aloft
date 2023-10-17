@@ -1,8 +1,6 @@
 package com.inteliense.aloft.compiler.lang.lib;
 
-import com.inteliense.aloft.compiler.lang.keywords.elements.types.AlertAloftElement;
-import com.inteliense.aloft.compiler.lang.keywords.elements.types.ButtonAloftElement;
-import com.inteliense.aloft.compiler.lang.keywords.elements.types.CenteredAloftElement;
+import com.inteliense.aloft.compiler.lang.keywords.elements.types.*;
 import com.inteliense.aloft.compiler.lang.lib.colors.Colors;
 
 import java.util.HashMap;
@@ -19,6 +17,8 @@ public abstract class StyleModule {
             put(ButtonAloftElement.class, buttonAloftElement(new ModuleElement()));
             put(AlertAloftElement.class, alertAloftElement(new ModuleElement()));
             put(CenteredAloftElement.class, centeredAloftElement(new ModuleElement()));
+            put(ColumnAloftElement.class, columnAloftElement(new ModuleElement()));
+            put(InputAloftElement.class, inputAloftElement(new ModuleElement()));
         }};
     }
 
@@ -52,5 +52,7 @@ public abstract class StyleModule {
     protected abstract ModuleElement buttonAloftElement(ModuleElement element);
     protected abstract ModuleElement alertAloftElement(ModuleElement element);
     protected abstract ModuleElement centeredAloftElement(ModuleElement element);
+    protected abstract ModuleElement columnAloftElement(ModuleElement element);
+    protected abstract ModuleElement inputAloftElement(ModuleElement element);
 
 }

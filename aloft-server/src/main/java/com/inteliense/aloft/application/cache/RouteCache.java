@@ -32,19 +32,6 @@ public class RouteCache {
                 createCache(routes);
             }
         };
-        cacheByRequestType.put("GET", new int[]{0,0});
-        cacheByRequestType.put("POST", new int[]{0,0});
-        cacheByRequestType.put("PUT", new int[]{0,0});
-        cacheByRequestType.put("PATCH", new int[]{0,0});
-        cacheByRequestType.put("DELETE", new int[]{0,0});
-        cacheByRequestType.put("OPTIONS", new int[]{0,0});
-
-        combinedCache.put("GET", new ArrayList<>());
-        combinedCache.put("POST", new ArrayList<>());
-        combinedCache.put("PUT", new ArrayList<>());
-        combinedCache.put("PATCH", new ArrayList<>());
-        combinedCache.put("DELETE", new ArrayList<>());
-        combinedCache.put("OPTIONS", new ArrayList<>());
         createCache(routes);
     }
 
@@ -73,13 +60,31 @@ public class RouteCache {
         return 0;
     }
 
-    private void createCache(ArrayList<Route> routes) {
+    private void resetCache() {
         cacheByRequestType.clear();
         combinedCache.clear();
+
+        cacheByRequestType.put("GET", new int[]{0,0});
+        cacheByRequestType.put("POST", new int[]{0,0});
+        cacheByRequestType.put("PUT", new int[]{0,0});
+        cacheByRequestType.put("PATCH", new int[]{0,0});
+        cacheByRequestType.put("DELETE", new int[]{0,0});
+        cacheByRequestType.put("OPTIONS", new int[]{0,0});
+
+        combinedCache.put("GET", new ArrayList<>());
+        combinedCache.put("POST", new ArrayList<>());
+        combinedCache.put("PUT", new ArrayList<>());
+        combinedCache.put("PATCH", new ArrayList<>());
+        combinedCache.put("DELETE", new ArrayList<>());
+        combinedCache.put("OPTIONS", new ArrayList<>());
+    }
+
+    private void createCache(ArrayList<Route> routes) {
+        resetCache();
         int currentRequestType = 0;
         int reqTypeStart = 0;
         int pathStart = 0;
-        String currentPath = routes.get(0).getPath().getPathString();
+        String currentPath = "";
         ArrayList<CacheEntry> entries = new ArrayList<>();
         boolean wasLast = false;
         int i;
@@ -88,12 +93,12 @@ public class RouteCache {
             Route route = routes.get(i);
             String path = trimPath(route.getPath().getPathString());
             String reqType = route.getRequestTypeString();
-            if(!__.same(currentPath, path) || !__.same(reqType, requestTypeOrder[currentRequestType])) {
-                entries.add(new CacheEntry(new RoutePath(currentPath), new int[]{ pathStart, i }));
+            if(!__.same(currentPath, path)) {
+                entries.add(new CacheEntry(new RoutePath(path), new int[]{ pathStart, i + 1 }));
                 pathStart = i;
                 currentPath = path;
-            }
-            if(!__.same(reqType, requestTypeOrder[currentRequestType])) {
+                wasLast = true;
+            } else if(!__.same(reqType, requestTypeOrder[currentRequestType])) {
                 ArrayList<CacheEntry> current = combinedCache.get(requestTypeOrder[currentRequestType]);
                 if(!__.isset(current)) combinedCache.put(requestTypeOrder[currentRequestType], new ArrayList<>());
                 for(int x=0; x<entries.size(); x++) {
@@ -104,6 +109,9 @@ public class RouteCache {
                 reqTypeStart = i;
                 currentPath = routes.get(routes.size() - 1).getPath().getPathString();
                 currentRequestType = getOrder(reqType);
+                wasLast = true;
+            } else if(__.same(currentPath, path)) {
+                entries.get(entries.size() - 1).increase();
                 wasLast = true;
             }
         }
@@ -139,6 +147,10 @@ public class RouteCache {
 
         public int[] range() {
             return range;
+        }
+
+        public void increase() {
+            range[1]++;
         }
 
     }

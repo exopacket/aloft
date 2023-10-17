@@ -14,12 +14,12 @@ import java.io.IOException;
 
 public class Debug extends HandlesCommands {
 
-    public Debug(Command command, AppConfig config) {
-        super(command, config);
+    public Debug(Command command) {
+        super(command);
     }
 
     @Override
-    public void run(AppConfig config) {
+    public void run() {
         requiredFlag("src");
         requiredFlag("config");
         int port = 8181;
@@ -32,7 +32,7 @@ public class Debug extends HandlesCommands {
             }
         }
         ThreadGroup threadGroup = new ThreadGroup(true);
-        threadGroup.appendThread(getServerThread(port));
+        threadGroup.appendThread(getServerThread(flagValue("config"), port));
         threadGroup.appendThread(getHotReloadThread());
         threadGroup.joinGroup(true);
     }
@@ -70,7 +70,7 @@ public class Debug extends HandlesCommands {
         return thr;
     }
 
-    private DetachedThread getServerThread(int port) {
+    private DetachedThread getServerThread(String config, int port) {
         DetachedThread thr = new DetachedThread(5000) {
             @Override
             protected boolean execute() {
@@ -79,7 +79,7 @@ public class Debug extends HandlesCommands {
             @Override
             protected void onStart() {
                 try {
-                    setVar("server", new DebugServer((int) getVar("port"), hasFlag("secure"), !hasFlag("public")));
+                    setVar("server", new DebugServer(config, (int) getVar("port"), hasFlag("secure"), !hasFlag("public")));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }

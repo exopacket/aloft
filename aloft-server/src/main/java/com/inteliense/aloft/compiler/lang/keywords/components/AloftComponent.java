@@ -43,18 +43,21 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
 
     public AloftComponent() {
         this.name = getName();
-        this.uniqueId = A32.casified(SHA.get256(getName()));
-        veryUniqueId = createId(String.valueOf(System.currentTimeMillis()));
+        setIds("__root__");
     }
 
     public void addChild(AloftComponent component) {
-        component.setUniqueId(this.uniqueId);
         this.children.add(component);
+        setIds();
     }
 
-    public void setUniqueId(String parent) {
+    public void setIds() {
+        for(int i=0; i< children.size(); i++) children.get(i).setIds(this.uniqueId + "_" + i);
+    }
+
+    public void setIds(String parent) {
         this.uniqueId = A32.casified(SHA.getHmac256(parent, getName()));
-        for(int i=0; i< children.size(); i++) children.get(i).setUniqueId(this.uniqueId);
+        for(int i=0; i< children.size(); i++) children.get(i).setIds(this.uniqueId + "_" + i);
     }
 
     public void setState(VariableTree tree) {
@@ -169,6 +172,14 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
 
     @Override
     public HtmlElement html(AloftTheme theme) {
+        HtmlElement root = create(theme);
+        System.out.println(this.uniqueId);
+        root.createUniqueId(this.uniqueId, true);
+        return root;
+    }
+
+    @Override
+    public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
         if(this.children.size() == 1) {
             HtmlElement element = children.get(0).html(theme);
             element.addAttribute("data-aid", A32.casified(SHA.getSha1(getName())));

@@ -1,7 +1,5 @@
 package com.inteliense.aloft.run.cli.commands.base;
 
-import com.inteliense.aloft.application.config.AppConfig;
-
 import java.util.Arrays;
 
 public abstract class Command {
@@ -10,7 +8,7 @@ public abstract class Command {
     private Arg[] args = null;
     private Class cmdClass = null;
 
-    public Command(String[] args, AppConfig config) {
+    public Command(String[] args) {
         Arg[] arr = Parser.getArgs(args);
         if(arr.length == 0) {
             exit("Command not found.", 1);

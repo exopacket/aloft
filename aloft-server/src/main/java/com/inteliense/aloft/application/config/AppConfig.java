@@ -80,7 +80,7 @@ public class AppConfig {
         m.appendAppliesTo(ApplyToType.PUBLIC_API, new Route[]{new Route("/index/main", "GET")});
         list.appendAppMiddleware(m);
         this.middleware = list;
-        cache = new AppCache();
+        cache = new AppCache(routes);
         theme = new AloftTheme();
         theme.setUsesBootstrap();
         theme.setColors(new Colors("#e03d3d", "#269447", "#3d7be0", "#f23737", "#727a8a"));

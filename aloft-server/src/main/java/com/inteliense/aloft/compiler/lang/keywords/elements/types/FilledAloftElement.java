@@ -33,7 +33,7 @@ public class FilledAloftElement extends AloftElement {
     }
 
     @Override
-    public HtmlElement html(AloftTheme theme) {
+    public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
         HtmlElement root = createElement("div");
         addAll(root, theme);
         applyStyle(root, theme);

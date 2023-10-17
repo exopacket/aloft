@@ -22,6 +22,7 @@ public class ModuleElementAttributes {
     public void apply(HtmlElement element, String[] subclasses) {
         for(int i=0; i<this.classes.size(); i++) element.addAttribute("class", this.classes.get(i));
         for(int i=0; i<subclasses.length; i++) element.addAttribute("class", this.subclasses.get(subclasses[i]));
+        for(int i=0; i<styles.size(); i++) element.addStyle(styles.get(i)[0], styles.get(i)[1]);
         for(String attr : attributes.keySet()) element.addAttribute(attr, attributes.get(attr));
     }
 

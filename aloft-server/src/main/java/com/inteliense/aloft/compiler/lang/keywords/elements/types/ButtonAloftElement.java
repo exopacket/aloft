@@ -59,7 +59,7 @@ public class ButtonAloftElement extends AloftElement {
         //NAMES ARE IN THIS FORMAT UNTIL FURTHER WORK
         this.subtypes.add(new AloftElementSubtype(constructSubtype("__button_default__")) {
             @Override
-            public HtmlElement html(AloftTheme theme) {
+            public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
                 HtmlElement root = createElement("button");
                 Content content = new Content(var("text"));
                 root.addChild(content);
@@ -73,19 +73,9 @@ public class ButtonAloftElement extends AloftElement {
                 return "__button_default__";
             }
         });
-        this.subtypes.add(new AloftElementSubtype(constructSubtype("__button_with_icon__")) {
-            @Override
-            public HtmlElement html(AloftTheme theme) {
-                return createElement("button");
-            }
-            @Override
-            public String getName() {
-                return "__button_with_icon__";
-            }
-        });
         this.subtypes.add(new AloftElementSubtype(constructSubtype("__icon_button__")) {
             @Override
-            public HtmlElement html(AloftTheme theme) {
+            public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
                 return createElement("button");
             }
             @Override

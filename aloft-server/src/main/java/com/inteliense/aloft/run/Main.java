@@ -1,5 +1,6 @@
 package com.inteliense.aloft.run;
 
+import com.inteliense.aloft.application.cache.RouteCache;
 import com.inteliense.aloft.compiler.lang.lib.colors.Colors;
 import com.inteliense.aloft.run.cli.commands.base.Command;
 import com.inteliense.aloft.run.cli.commands.base.HandlesCommands;
@@ -10,38 +11,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-//        try {
-//            WebSockServer server = new WebSockServer("127.0.0.1", 3030, "debug") {
-//                @Override
-//                protected boolean validateConnection(Session session) {
-//                    return true;
-//                }
-//
-//                @Override
-//                protected void onConnect(String sessionId) {
-//                    System.out.println("Connection Successful.");
-//                    System.out.println(sessionId);
-//                }
-//
-//                @Override
-//                protected void onMessage(String sessionId, JSONObject json) {
-//                    System.out.println("MESSAGE RECEIVED");
-//                }
-//
-//                @Override
-//                protected void onClose(String sessionId) {
-//                    System.out.println("SESSION " + sessionId + " CLOSED.");
-//                }
-//            };
-//            server.start();
-//            server.join();
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-
         Command cmd = null;
         HandlesCommands container = null;
-        AppConfig config = null;
 
         if(args.length == 0) {
             printHelp();
@@ -49,15 +20,14 @@ public class Main {
         }
 
         try {
-            config = loadConfig();
-            cmd = new Command(args, config) {
+            cmd = new Command(args) {
                 @Override
                 public void exit(String message, int code) {
                     System.err.println(message);
                     System.exit(code);
                 }
             };
-            container = HandlesCommands.create(cmd, config);
+            container = HandlesCommands.create(cmd);
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("General error.");
@@ -65,7 +35,7 @@ public class Main {
         }
 
         try {
-            if (container != null) container.run(config);
+            if (container != null) container.run();
             else throw new Exception("Command not found.");
             System.exit(0);
         } catch(Exception e) {
@@ -87,7 +57,7 @@ public class Main {
 
     private static AppConfig loadConfig() {
         try {
-            return new AppConfig();
+            return new AppConfig(new RouteCache(null));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

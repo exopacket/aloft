@@ -1,7 +1,7 @@
 package com.inteliense.aloft.run.cli.commands.base;
 
 import com.inteliense.aloft.run.cli.commands.keywords.Build;
-import com.inteliense.aloft.run.cli.commands.keywords.Daemon;
+import com.inteliense.aloft.run.cli.commands.keywords.Serve;
 import com.inteliense.aloft.run.cli.commands.keywords.Debug;
 import com.inteliense.aloft.run.cli.commands.keywords.Migrate;
 
@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class Keywords {
 
     private static final Class[] commands = new Class[]{
-        Daemon.class,
+        Serve.class,
         Build.class,
         Debug.class,
         Migrate.class
@@ -24,9 +24,9 @@ public class Keywords {
     };
 
     private static final HashMap<String, Object[]> flags = new HashMap<String, Object[]>() {{
-            put("--localhost", new Object[]{ new Arg("--localhost"), Daemon.class });
-            put("--ipv6", new Object[]{ new Arg("--ipv6"), Daemon.class });
-            put("--balanced", new Object[]{ (new Arg("--balanced")), Daemon.class });
+            put("--localhost", new Object[]{ new Arg("--localhost"), Serve.class });
+            put("--ipv6", new Object[]{ new Arg("--ipv6"), Serve.class });
+            put("--balanced", new Object[]{ (new Arg("--balanced")), Serve.class });
             put("--public", new Object[]{ (new Arg("--public")), Debug.class });
             put("--secure", new Object[]{ (new Arg("--secure")), Debug.class });
             put("--port", new Object[]{ (new Arg("--port", true)), Debug.class });

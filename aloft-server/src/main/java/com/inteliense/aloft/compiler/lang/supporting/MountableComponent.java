@@ -11,20 +11,39 @@ import java.util.List;
 
 public abstract class MountableComponent extends AloftComponent {
 
-    private DynamicMountableComponent slot;
+    private DynamicMountableComponent slot = null;
     private ArrayList<AloftComponent> components = new ArrayList<>();
 
-    public MountableComponent() throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+    public MountableComponent() {
         super();
-        slot = new DynamicMountableComponent() {
-            @Override
-            protected void mountables(HashMap<String, MountableComponent> map) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
-                ArrayList<AloftComponent> v = build();
-                for(AloftComponent component : v) { }
-//                    map.put(component.getId());
-//                }
-            }
-        };
+        try {
+            components = build();
+            for(AloftComponent component : components) addChild(component);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    //        ArrayList<AloftComponent> v = build();
+//        boolean hasSlot = false;
+//        for(AloftComponent component : v) {
+//            if(component instanceof MountPoint) {
+//                hasSlot = true;
+//                break;
+//            }
+//        }
+//        slot = new DynamicMountableComponent() {
+//            @Override
+//            protected void mountables(HashMap<String, MountableComponent> map) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+//                ArrayList<AloftComponent> v = build();
+//                for(AloftComponent component : v) { }
+////                    map.put(component.getId());
+////                }
+//            }
+//        };
+    }
+
+    @Override
+    public String getName() {
+        return "__mountable__";
     }
 
     protected abstract ArrayList<AloftComponent> build() throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException;

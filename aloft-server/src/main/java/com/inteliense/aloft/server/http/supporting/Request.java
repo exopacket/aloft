@@ -1,6 +1,7 @@
 package com.inteliense.aloft.server.http.supporting;
 
 import com.inteliense.aloft.application.config.AppConfig;
+import com.inteliense.aloft.compiler.lang.lib._AloftProject;
 import com.inteliense.aloft.server.client.ClientInfo;
 import com.sun.net.httpserver.HttpExchange;
 
@@ -16,6 +17,15 @@ public class Request {
     public Request(HttpExchange t, AppConfig config) {
         this.t = t;
         this.config = config;
+        this.headers = HeaderParser.getHeaders(t);
+        this.client = ClientParser.getClientInfo(t, this.headers);
+        this.location = new DirectRequest(t, this.headers, this.client, this.config);
+        this.validated = this.location.validate();
+    }
+
+    public Request(HttpExchange t, _AloftProject project) {
+        this.t = t;
+        this.config = project.getConfig();
         this.headers = HeaderParser.getHeaders(t);
         this.client = ClientParser.getClientInfo(t, this.headers);
         this.location = new DirectRequest(t, this.headers, this.client, this.config);

@@ -1,6 +1,5 @@
 package com.inteliense.aloft.run.cli.commands.keywords;
 
-import com.inteliense.aloft.application.config.AppConfig;
 import com.inteliense.aloft.grammar.antlr.AloftLexer;
 import com.inteliense.aloft.grammar.antlr.AloftParser;
 import com.inteliense.aloft.run.cli.Help;
@@ -29,12 +28,12 @@ public class Migrate extends HandlesCommands {
     private ArrayList<String> models = new ArrayList<>();
     private int updates = 0;
 
-    public Migrate(Command command, AppConfig config) {
-        super(command, config);
+    public Migrate(Command command) {
+        super(command);
     }
 
     @Override
-    public void run(AppConfig config) {
+    public void run() {
         requiredFlag("src");
         requiredFlag("config");
         String configPath = flagValue("config");
