@@ -1,6 +1,7 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.base;
 
 import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
+import com.inteliense.aloft.compiler.lang.base.ElementMapper;
 import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
 import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public abstract class AloftElement extends AloftComponent implements BuildsHtml {
+public abstract class AloftElement extends AloftComponent {
 
     protected String friendlyId = null;
     protected String name = null;
@@ -171,8 +172,8 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
         if(__.isset(this.subtype)) this.subtype.addSubclass(subclass);
     }
 
-    protected void addAll(HtmlElement element, AloftTheme theme) {
-        for (AloftComponent child : children) element.addChild(child.html(theme));
+    protected void addAll(HtmlElement element, AloftTheme theme, ElementMapper mapper) {
+        for (AloftComponent child : children) element.addChild(child.html(theme, mapper));
     }
 
     protected void placeType(HtmlElement el) {
@@ -268,7 +269,7 @@ public abstract class AloftElement extends AloftComponent implements BuildsHtml 
         this.moduleSubclasses.toArray(arr);
         subtype.addSubclasses(arr);
 //        subtype.applyOverrides();
-        return subtype.html(theme);
+        return subtype.html(theme, mapper);
     }
 
     protected void registerBuilder(AloftBuilder builder) { }

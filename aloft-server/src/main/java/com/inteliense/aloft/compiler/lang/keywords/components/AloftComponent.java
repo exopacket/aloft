@@ -2,6 +2,7 @@ package com.inteliense.aloft.compiler.lang.keywords.components;
 
 import com.inteliense.aloft.compiler.lang.base.BuildsAppJavascript;
 import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
+import com.inteliense.aloft.compiler.lang.base.ElementMapper;
 import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
 import com.inteliense.aloft.compiler.lang.keywords.style.base.*;
@@ -171,8 +172,8 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
     }
 
     @Override
-    public HtmlElement html(AloftTheme theme) {
-        HtmlElement root = create(theme);
+    public HtmlElement html(AloftTheme theme, ElementMapper mapper) {
+        HtmlElement root = create(theme, mapper);
         System.out.println(this.uniqueId);
         root.createUniqueId(this.uniqueId, true);
         return root;
@@ -181,7 +182,7 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
     @Override
     public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
         if(this.children.size() == 1) {
-            HtmlElement element = children.get(0).html(theme);
+            HtmlElement element = children.get(0).html(theme, mapper);
             element.addAttribute("data-aid", A32.casified(SHA.getSha1(getName())));
             return element;
         } else if(this.children.size() > 1) {
@@ -192,7 +193,7 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
                 }
             };
             for(int i=0; i< children.size(); i++) {
-                HtmlElement element = children.get(i).html(theme);
+                HtmlElement element = children.get(i).html(theme, mapper);
                 element.addAttribute("data-aid", A32.casified(SHA.getSha1(getName())));
                 container.addChild(element);
             }

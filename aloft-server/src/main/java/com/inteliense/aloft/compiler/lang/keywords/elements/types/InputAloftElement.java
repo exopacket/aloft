@@ -85,6 +85,56 @@ public class InputAloftElement extends AloftElement {
                 return "__text_input__";
             }
         });
+        this.subtypes.add(new AloftElementSubtype(constructSubtype("__textarea_input__")) {
+            @Override
+            public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
+                HtmlElement root = createElement("div");
+                HtmlElement group = createElement("div");
+                HtmlElement below = createElement("span");
+
+                if(__.isset(var("label"))) {
+                    HtmlElement label = createElement("span");
+                    Content labelTxt = new Content(var("label"));
+                    label.addChild(labelTxt);
+                    applyStyle("label", InputAloftElement.class, label, theme);
+                    root.addChild(label);
+                }
+
+                if(__.isset(var("prepend-text"))) {
+                    HtmlElement prepend = createElement("div");
+                    HtmlElement prependChild = createElement("span");
+                    Content prependText = new Content(var("prepend-text"));
+                    prependChild.addChild(prependText);
+                    applyStyle("prepend-text", InputAloftElement.class, prependChild, theme);
+                    prepend.addChild(prependChild);
+                    applyStyle("prepend-container", InputAloftElement.class, prepend, theme);
+                    group.addChild(prepend);
+                }
+
+                HtmlElement input = createElement("input");
+                applyStyle("text-input", InputAloftElement.class, input, theme);
+                if(__.isset(var("placeholder"))) input.addAttribute("placeholder", var("placeholder"));
+                applyListeners(input);
+                group.addChild(input);
+
+                if(__.isset(var("help-text"))) {
+                    Content helpTxt = new Content(var("help-text"));
+                    below.addChild(helpTxt);
+                }
+
+                applyStyle("help-text", InputAloftElement.class, below, theme);
+                group.addChild(below);
+                applyStyle("text-group", InputAloftElement.class, group, theme);
+                root.addChild(group);
+                applyStyle("root", InputAloftElement.class, root, theme);
+                placeType(root);
+                return root;
+            }
+            @Override
+            public String getName() {
+                return "__text_input__";
+            }
+        });
     }
 
     @Override

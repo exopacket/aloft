@@ -1,5 +1,6 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
+import com.inteliense.aloft.compiler.lang.base.ElementMapper;
 import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElementSubtype;
@@ -19,7 +20,7 @@ public class CenteredAloftElement extends AloftElement {
     public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
         HtmlElement root = createElement("div");
         HtmlElement child = createElement("div");
-        addAll(child, theme);
+        addAll(child, theme, mapper);
         root.addChild(child);
         TextAlign alignment = (TextAlign) this.vars.get("text-align");
         if(alignment == TextAlign.CENTER) child.addStyle("text-align", "center");

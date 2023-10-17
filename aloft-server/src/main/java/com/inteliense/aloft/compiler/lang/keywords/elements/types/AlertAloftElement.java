@@ -1,5 +1,6 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
+import com.inteliense.aloft.compiler.lang.base.ElementMapper;
 import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftBuilder;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
@@ -25,7 +26,7 @@ public class AlertAloftElement extends AloftElement {
         dialog.addChild(content);
         HtmlElement header = createElement("div", m.fromKey("header"));
 //        HtmlElement title = createElement("h5", m.fromKey("title"));
-        HtmlElement title = builder.get("title").html(theme);
+        HtmlElement title = builder.get("title").html(theme, mapper);
         header.addChild(title);
         content.addChild(header);
         return root;
