@@ -7,7 +7,6 @@ import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElementSub
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.types.Content;
 import com.inteliense.aloft.utils.global.__;
-import org.apache.tools.ant.taskdefs.Input;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,7 +76,6 @@ public class InputAloftElement extends AloftElement {
                 applyStyle("text-group", InputAloftElement.class, group, theme);
                 root.addChild(group);
                 applyStyle("root", InputAloftElement.class, root, theme);
-                placeType(root);
                 return root;
             }
             @Override
@@ -127,7 +125,6 @@ public class InputAloftElement extends AloftElement {
                 applyStyle("text-group", InputAloftElement.class, group, theme);
                 root.addChild(group);
                 applyStyle("root", InputAloftElement.class, root, theme);
-                placeType(root);
                 return root;
             }
             @Override

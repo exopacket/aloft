@@ -15,7 +15,7 @@ public class StylesheetElement extends HtmlElement {
     }
 
     @Override
-    protected String getKey() {
+    public String getKey() {
         return "style";
     }
 

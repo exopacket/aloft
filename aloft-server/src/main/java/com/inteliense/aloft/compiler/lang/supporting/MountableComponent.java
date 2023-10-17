@@ -52,22 +52,22 @@ public abstract class MountableComponent extends AloftComponent {
         this.components.add(component);
     }
 
-    public HtmlElement get(List<String> arr, HtmlElement root) {
-        String current = null;
-        if(arr.size() > 0) current = arr.get(0);
-        MountableComponent toMount = (__.isset(current)) ? slot.getActive(current) : null;
-        if(components.size() == 1) return components.get(0).html(null);
-        for(int i=0; i< components.size(); i++) {
-            AloftComponent component = components.get(i);
-            if(__.isset(toMount) && component instanceof MountPoint) {
-                arr.remove(0);
-                root.addChild(toMount.get(arr, toMount.html(null)));
-            } else {
-                root.addChild(component.html(null));
-            }
-        }
-        return root;
-    }
+//    public HtmlElement get(List<String> arr, HtmlElement root) {
+//        String current = null;
+//        if(arr.size() > 0) current = arr.get(0);
+//        MountableComponent toMount = (__.isset(current)) ? slot.getActive(current) : null;
+//        if(components.size() == 1) return components.get(0).html(null);
+//        for(int i=0; i< components.size(); i++) {
+//            AloftComponent component = components.get(i);
+//            if(__.isset(toMount) && component instanceof MountPoint) {
+//                arr.remove(0);
+//                root.addChild(toMount.get(arr, toMount.html(null)));
+//            } else {
+//                root.addChild(component.html(null));
+//            }
+//        }
+//        return root;
+//    }
 
     public MountPoint createSlot(boolean append) {
         if(append) appendComponent(createSlot());

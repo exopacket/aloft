@@ -9,7 +9,7 @@ public class ImageFile extends HtmlElement {
     private String key;
 
     @Override
-    protected String getKey() {
+    public String getKey() {
         return key;
     }
 

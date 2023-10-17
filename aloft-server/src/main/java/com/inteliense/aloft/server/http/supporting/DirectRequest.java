@@ -98,7 +98,7 @@ public class DirectRequest {
 
     public Response get() {
         if(exited) return null;
-        return this.route.go(t, endpoint);
+        return this.route.go(t, endpoint, config.getTheme());
     }
 
 }

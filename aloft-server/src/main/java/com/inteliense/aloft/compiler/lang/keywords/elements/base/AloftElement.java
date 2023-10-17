@@ -1,16 +1,12 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.base;
 
-import com.inteliense.aloft.compiler.lang.base.BuildsHtml;
 import com.inteliense.aloft.compiler.lang.base.ElementMapper;
 import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
 import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
 import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleClass;
 import com.inteliense.aloft.compiler.lang.lib.ModuleElementAttributes;
-import com.inteliense.aloft.compiler.lang.lib.StyleModule;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
-import com.inteliense.aloft.utils.encryption.A32;
-import com.inteliense.aloft.utils.encryption.SHA;
 import com.inteliense.aloft.utils.global.__;
 
 import java.util.ArrayList;
@@ -19,7 +15,6 @@ import java.util.HashMap;
 
 public abstract class AloftElement extends AloftComponent {
 
-    protected String friendlyId = null;
     protected String name = null;
 
 //    protected ArrayList<AloftElement> children = new ArrayList<>();
@@ -176,10 +171,6 @@ public abstract class AloftElement extends AloftComponent {
         for (AloftComponent child : children) element.addChild(child.html(theme, mapper));
     }
 
-    protected void placeType(HtmlElement el) {
-        el.addAttribute("data-aid", A32.casified(SHA.getSha1(getName())));
-    }
-
     protected void addOverride(String variable, String property) {
         if(!overrides.containsKey("\34")) overrides.put("\34", new ArrayList<>());
         ArrayList<String[]> list = overrides.get("\34");
@@ -277,22 +268,24 @@ public abstract class AloftElement extends AloftComponent {
     protected void registerSubtypes(ArrayList<AloftElementSubtype> subtypes) { }
 
     protected HtmlElement createElement(String key, ModuleElementAttributes attributes) {
-        HtmlElement element = createElement(key, createId(String.valueOf(System.currentTimeMillis())));
+        HtmlElement element = createElement(key, createId(String.valueOf(System.currentTimeMillis())), this.getName());
         attributes.apply(element);
         return element;
     }
 
     protected HtmlElement createElement(String key) {
-        return createElement(key, this.uniqueId);
+        return createElement(key, this.uniqueId, this.getName());
     }
 
-    protected static HtmlElement createElement(String key, String id) {
-        return new HtmlElement(id) {
+    protected static HtmlElement createElement(String key, String id, String name) {
+        HtmlElement el = new HtmlElement(id) {
             @Override
-            protected String getKey() {
+            public String getKey() {
                 return key;
             }
         };
+        el.setParentComponent(name);
+        return el;
     }
 
     public void addVar(String key, String value) {

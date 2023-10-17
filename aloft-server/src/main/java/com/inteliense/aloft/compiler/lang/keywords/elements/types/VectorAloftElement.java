@@ -1,5 +1,6 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
+import com.inteliense.aloft.compiler.lang.base.ElementMapper;
 import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElementSubtype;
@@ -36,7 +37,7 @@ public class VectorAloftElement extends AloftElement {
     }
 
     public String getEncodedUrl(AloftTheme theme) {
-        String html = html(theme).getHtml();
+        String html = create(theme, null).getHtml();
         String b64 = __.b64(html.getBytes());
         String data = "data:image/svg+xml;base64," + b64;
         return "url('" + data + "')";
@@ -71,7 +72,7 @@ public class VectorAloftElement extends AloftElement {
         Attributes attrs = svg.attributes();
         element.setSize(attrs.get("height"), attrs.get("width"));
         element.setViewBox(attrs.getIgnoreCase("viewBox"));
-        HtmlElement el = createElement("svg", element.id());
+        HtmlElement el = createElement("svg", element.id(), "__vector__");
         iterate(svg, el);
         element.setElement(el);
         return element;
@@ -106,7 +107,7 @@ public class VectorAloftElement extends AloftElement {
         Attributes attrs = svg.attributes();
         element.setSize(attrs.get("height"), attrs.get("width"));
         element.setViewBox(attrs.getIgnoreCase("viewBox"));
-        HtmlElement el = createElement("svg", element.id());
+        HtmlElement el = createElement("svg", element.id(), "__vector__");
         iterate(svg, el, dynamicVars);
         element.setElement(el);
         return element;
@@ -116,7 +117,7 @@ public class VectorAloftElement extends AloftElement {
         Elements children = el.children();
         for(int i=0; i< children.size(); i++) {
             Element child = children.get(i);
-            HtmlElement childEl = createElement(child.tagName(), "");
+            HtmlElement childEl = createElement(child.tagName(), "", "__vector__");
             Attributes attrs = child.attributes();
             for(Attribute attr: attrs) {
                 childEl.addAttribute(attr.getKey(), attr.getValue());
@@ -130,7 +131,7 @@ public class VectorAloftElement extends AloftElement {
         Elements children = el.children();
         for(int i=0; i< children.size(); i++) {
             Element child = children.get(i);
-            HtmlElement childEl = createElement(child.tagName(), "");
+            HtmlElement childEl = createElement(child.tagName(), "", "__vector__");
             Attributes attrs = child.attributes();
             for(Attribute attr: attrs) {
                 if(attr.getKey().indexOf("d-") == 0) {

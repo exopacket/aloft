@@ -1,13 +1,9 @@
 package com.inteliense.aloft.server.html.elements;
 
-import com.inteliense.aloft.compiler.lang.keywords.elements.types.ButtonAloftElement;
-import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
-import com.inteliense.aloft.compiler.lang.lib.StyleModule;
+import com.inteliense.aloft.compiler.lang.base.ElementMapper;
+import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
 import com.inteliense.aloft.server.html.elements.js.*;
 import com.inteliense.aloft.server.html.elements.types.Content;
-import com.inteliense.aloft.utils.encryption.A32;
-import com.inteliense.aloft.utils.encryption.Rand;
-import com.inteliense.aloft.utils.encryption.SHA;
 import com.inteliense.aloft.utils.global.__;
 
 import java.util.ArrayList;
@@ -20,9 +16,14 @@ public abstract class HtmlElement {
     private ArrayList<String[]> styles = new ArrayList<String[]>();
     private HashMap<String, String> attributes = new HashMap<String, String>();
     private String id;
+    private String friendlyId = "";
+    private String uniqueId = "";
+    private String veryUniqueId = "";
+    private String aid = "";
+    private String parentComponent = "";
     protected String prependHtml = "";
 
-    protected abstract String getKey();
+    public abstract String getKey();
 
     public HtmlElement() {
         this.id = null;
@@ -30,29 +31,48 @@ public abstract class HtmlElement {
 
     public HtmlElement(String id) {
         this.id = id;
-        if(!__.empty(this.id)) createUniqueId(id, false);
+    }
+
+    public void setParentComponent(String parentComponent) {
+        this.parentComponent = parentComponent;
+    }
+
+    public String getParentComponent() {
+        return parentComponent;
+    }
+
+    public void setIdentifiers(String friendlyId, String uniqueId, String veryUniqueId, String aid, boolean debug) {
+        this.friendlyId = friendlyId;
+        this.uniqueId = uniqueId;
+        this.veryUniqueId = veryUniqueId;
+        this.aid = aid;
+        if(identified()) {
+            this.id = (debug) ? friendlyId : veryUniqueId;
+            this.addAttribute("data-aid", aid);
+            this.addAttribute("data-uid", uniqueId);
+        }
     }
 
     public String getId() {
         return id == null ? "" : id;
     }
 
+    private boolean identified() {
+        return id != null && !id.isEmpty();
+    }
+
     public void addChild(HtmlElement element) {
+        element.setParentComponent(this.parentComponent);
         this.children.add(element);
-        iterateIds();
     }
 
-    private void iterateIds() {
-        String seed = __.empty(getId()) ? Rand.str(32) : getId();
-        try {
-            for (int i = 0; i < this.children.size(); i++) seed = children.get(i).createUniqueId(seed, true);
-        } catch (Exception e) { e.printStackTrace(); }
+    public ArrayList<HtmlElement> getChildren() {
+        return children;
     }
 
-    public String createUniqueId(String seed, boolean set) {
-        String hash = A32.casified(SHA.getHmac256(seed, seed));
-        if(set) this.id = hash;
-        return hash;
+    public HtmlElement map(ElementMapper mapper) {
+        mapper.iterate(this);
+        return this;
     }
 
     public static HtmlElement builder(String tag, String content) {
@@ -66,7 +86,7 @@ public abstract class HtmlElement {
     public static HtmlElement builder(String tag, String content, String id, String[][] attrs) {
         HtmlElement element = new HtmlElement(id) {
             @Override
-            protected String getKey() {
+            public String getKey() {
                 return tag;
             }
         };

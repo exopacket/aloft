@@ -19,7 +19,7 @@ public class Content extends HtmlElement {
     }
 
     @Override
-    protected String getKey() {
+    public String getKey() {
         return null;
     }
 

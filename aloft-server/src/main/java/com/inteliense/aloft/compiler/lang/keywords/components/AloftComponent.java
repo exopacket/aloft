@@ -21,7 +21,6 @@ import com.inteliense.aloft.utils.encryption.SHA;
 import com.inteliense.aloft.utils.global.__;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -31,8 +30,11 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
     private int currentIndex = 0;
     private String name = null;
     private VariableTree state = new VariableTree();
+
+    private String parentComponent = "__root__";
     protected String veryUniqueId = null;
     protected String uniqueId = "";
+    protected String friendlyId = "";
 
     protected ArrayList<String> moduleSubclasses = new ArrayList<>();
     protected ArrayList<AloftStyleClass> classes = new ArrayList<>();
@@ -48,8 +50,17 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
     }
 
     public void addChild(AloftComponent component) {
+        component.setParentComponent(getName());
         this.children.add(component);
         setIds();
+    }
+
+    public String getParentComponent() {
+        return parentComponent;
+    }
+
+    public void setParentComponent(String name) {
+        this.parentComponent = name;
     }
 
     public void setIds() {
@@ -165,6 +176,8 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
         return this.name;
     }
 
+    public String getFriendlyId() { return this.friendlyId; }
+
     protected String createId(String seed) {
         String v = this.getClass().getName() + "_" + this.name + "_" + seed + "_" + __.hex(Rand.secure(32));
         String hash = SHA.getSha1(v);
@@ -174,8 +187,10 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
     @Override
     public HtmlElement html(AloftTheme theme, ElementMapper mapper) {
         HtmlElement root = create(theme, mapper);
-        System.out.println(this.uniqueId);
-        root.createUniqueId(this.uniqueId, true);
+        root.setParentComponent(parentComponent);
+        for(HtmlElement child : root.getChildren()) {
+            child.setParentComponent(getName());
+        }
         return root;
     }
 
@@ -183,18 +198,16 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
     public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
         if(this.children.size() == 1) {
             HtmlElement element = children.get(0).html(theme, mapper);
-            element.addAttribute("data-aid", A32.casified(SHA.getSha1(getName())));
             return element;
         } else if(this.children.size() > 1) {
             HtmlElement container = new HtmlElement(this.uniqueId) {
                 @Override
-                protected String getKey() {
+                public String getKey() {
                     return "div";
                 }
             };
             for(int i=0; i< children.size(); i++) {
                 HtmlElement element = children.get(i).html(theme, mapper);
-                element.addAttribute("data-aid", A32.casified(SHA.getSha1(getName())));
                 container.addChild(element);
             }
             container.addChild(listeners.get(0).getObject().getJs());

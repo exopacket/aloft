@@ -10,7 +10,6 @@ import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.types.Content;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class ButtonAloftElement extends AloftElement {
@@ -64,7 +63,6 @@ public class ButtonAloftElement extends AloftElement {
                 HtmlElement root = createElement("button");
                 Content content = new Content(var("text"));
                 root.addChild(content);
-                placeType(root);
                 applyStyle("button", ButtonAloftElement.class, root, theme);
                 applyListeners(root);
                 return root;

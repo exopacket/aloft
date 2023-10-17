@@ -1,5 +1,6 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
+import com.inteliense.aloft.compiler.lang.base.ElementMapper;
 import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElementSubtype;
@@ -40,11 +41,10 @@ public class TextAloftElement extends AloftElement {
 
     @Override
     public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
-        HtmlElement root = createElement("p", this.uniqueId);
+        HtmlElement root = createElement("p", this.uniqueId, this.getName());
         Content rootContent = new Content(var("text"));
         root.addChild(rootContent);
-        this.placeType(root);
-        this.addAll(root, theme);
+        this.addAll(root, theme, mapper);
         this.applyStyle(root, theme);
         this.applyListeners(root);
         return root;

@@ -2,26 +2,24 @@ package com.inteliense.aloft.server.html.elements.types;
 
 import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleCss;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
-import com.inteliense.aloft.server.html.elements.js.JavaScriptElement;
-import com.inteliense.aloft.server.html.elements.js.JavaScriptFile;
 
 public class Head extends HtmlElement {
 
     @Override
-    protected String getKey() {
+    public String getKey() {
         return "head";
     }
 
     public void addTitle(String title) {
-        this.addChild(HtmlElement.builder("title", title));
+        this.addChild(HtmlElement.builder("title", title, null));
     }
 
     public void addCss(AloftStyleCss css) {
-        this.addChild(HtmlElement.builder("style", css.css(null)));
+        this.addChild(HtmlElement.builder("style", css.css(null), null));
     }
 
     public void addCss(String css) {
-        this.addChild(HtmlElement.builder("style", css));
+        this.addChild(HtmlElement.builder("style", css, null));
     }
 
     public void addFavicon(String filepath) {

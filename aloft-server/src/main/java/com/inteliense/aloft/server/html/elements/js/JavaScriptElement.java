@@ -15,7 +15,7 @@ public class JavaScriptElement extends HtmlElement {
     }
 
     @Override
-    protected String getKey() {
+    public String getKey() {
         return "script";
     }
 

@@ -7,15 +7,11 @@ import com.inteliense.aloft.compiler.lang.base.BuildsJava;
 import com.inteliense.aloft.compiler.lang.base.ElementMapper;
 import com.inteliense.aloft.compiler.lang.keywords.components.AloftRoot;
 import com.inteliense.aloft.compiler.lang.keywords.elements.types.*;
-import com.inteliense.aloft.compiler.lang.keywords.listeners.types.AloftOnClickListener;
-import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleClass;
 import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleCss;
 import com.inteliense.aloft.compiler.lang.lib.colors.Colors;
 import com.inteliense.aloft.compiler.lang.lib.emojis.Emoji;
 import com.inteliense.aloft.compiler.lang.supporting.MountableComponent;
-import com.inteliense.aloft.server.html.Html;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
-import com.inteliense.aloft.server.html.elements.js.JSOV;
 import com.inteliense.aloft.server.html.elements.js.types.AlertObject;
 import com.inteliense.aloft.server.html.elements.types.Body;
 import com.inteliense.aloft.server.html.elements.types.Head;
@@ -24,7 +20,6 @@ import com.inteliense.aloft.server.http.supporting.*;
 import com.inteliense.aloft.utils.global.__;
 
 import java.io.File;
-import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -105,7 +100,7 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
             AloftRoot screen = new AloftRoot();
     //        screen.appendState("__root__.test", new StringT(), "value");
             FilledAloftElement container = new FilledAloftElement();
-            container.addStyle("background-image", bg.getEncodedUrl(theme));
+//            container.addStyle("background-image", bg.getEncodedUrl(theme));
             container.addStyle("background-repeat", "no-repeat");
             container.addStyle("background-size", "cover");
             container.useViewSize();
@@ -172,25 +167,24 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
 
     @Override
     public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
-        try {
-            buildPage();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return buildPage();
+        return buildPage(mapper);
     }
 
-    private Page buildPage() {
+    private HtmlElement getRoot(ElementMapper mapper) {
+        return root.html(this.theme, mapper).map(mapper);
+    }
+
+    private Page buildPage(ElementMapper mapper) {
         Page page = new Page();
-        Body body = buildBody();
+        Body body = buildBody(mapper);
         page.addChild(buildHead("Hello World!", null, new ArrayList<>()));
         page.addChild(body);
         return page;
     }
 
-    private Body buildBody() {
+    private Body buildBody(ElementMapper mapper) {
         Body body = new Body();
-        body.addChild(root.html(this.theme));
+        body.addChild(getRoot(mapper));
         return body;
     }
 

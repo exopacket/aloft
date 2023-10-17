@@ -8,7 +8,7 @@ public class JavaScriptFile extends HtmlElement {
     private String path;
 
     @Override
-    protected String getKey() {
+    public String getKey() {
         return "script";
     }
 

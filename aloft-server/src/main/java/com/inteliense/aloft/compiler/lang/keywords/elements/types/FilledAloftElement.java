@@ -1,9 +1,9 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
+import com.inteliense.aloft.compiler.lang.base.ElementMapper;
 import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElementSubtype;
-import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStylePair;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class FilledAloftElement extends AloftElement {
     @Override
     public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
         HtmlElement root = createElement("div");
-        addAll(root, theme);
+        addAll(root, theme, mapper);
         applyStyle(root, theme);
         return root;
     }

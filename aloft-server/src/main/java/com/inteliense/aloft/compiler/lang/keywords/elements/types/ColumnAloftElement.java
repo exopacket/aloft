@@ -1,10 +1,9 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.types;
 
+import com.inteliense.aloft.compiler.lang.base.ElementMapper;
 import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
-import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElementSubtype;
-import com.inteliense.aloft.compiler.lang.keywords.elements.base.TextAlign;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class ColumnAloftElement extends AloftElement {
     @Override
     public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
         HtmlElement root = createElement("div");
-        addAll(root, theme);
+        addAll(root, theme, mapper);
         applyStyle("col", ColumnAloftElement.class, root, theme);
         applyListeners(root);
         return root;

@@ -1,6 +1,8 @@
 package com.inteliense.aloft.server.html;
 
+import com.inteliense.aloft.compiler.lang.base.ElementMapper;
 import com.inteliense.aloft.compiler.lang.keywords.AloftPage;
+import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.lib._AloftComponent;
@@ -15,10 +17,12 @@ public class Html {
 
     private RenderType type;
     private Object object;
+    private AloftTheme theme;
 
-    public Html(RenderType type, Object object) {
+    public Html(RenderType type, Object object, AloftTheme theme) {
         this.type = type;
         this.object = object;
+        this.theme = theme;
     }
 
     public Response get(HttpExchange t) {
@@ -66,18 +70,18 @@ public class Html {
         return "";
     }
 
-    private String renderPage(AloftPage page) { return page.html(null).getHtml(); }
+    private String renderPage(AloftPage page) { return page.html(theme, new ElementMapper(false)).getHtml(); }
 
     private String renderComponent(AloftComponent component) {
         return "";
     }
 
     private String renderElement(AloftElement element) {
-        return element.html(null).getHtml();
+        return element.html(theme, null).getHtml();
     }
 
     private String renderPage(_AloftPage page) {
-        return page.getFromPath().html(null).getHtml();
+        return page.getFromPath().html(theme, null).getHtml();
     }
 
     private String renderComponent(_AloftComponent page) {
@@ -85,7 +89,7 @@ public class Html {
     }
 
     private String renderComponent(_AloftPage page, String[] ids) {
-        return page.getFromPath(ids).html(null).getHtml();
+        return page.getFromPath(ids).html(theme, null).getHtml();
     }
 
     private String renderElement(_AloftElement page) {

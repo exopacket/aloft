@@ -1,7 +1,6 @@
 package com.inteliense.aloft.server.html.elements.files;
 
 import com.inteliense.aloft.server.html.elements.HtmlElement;
-import com.inteliense.aloft.server.html.elements.types.Content;
 
 public class ImageElement extends HtmlElement {
 
@@ -60,7 +59,7 @@ public class ImageElement extends HtmlElement {
     }
 
     @Override
-    protected String getKey() {
+    public String getKey() {
         return "img";
     }
 

@@ -8,7 +8,7 @@ public class StylesheetFile extends HtmlElement {
     private String path;
 
     @Override
-    protected String getKey() {
+    public String getKey() {
         return "link";
     }
 

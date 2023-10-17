@@ -1,6 +1,7 @@
 package com.inteliense.aloft.server.http.supporting;
 
 import com.inteliense.aloft.compiler.lang.keywords.AloftPage;
+import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.lib._AloftPage;
 import com.inteliense.aloft.server.html.HtmlRenderer;
 import com.inteliense.aloft.server.html.elements.css.FontEndpoint;
@@ -95,9 +96,9 @@ public class Route {
         return construct.newInstance();
     }
 
-    public Response go(HttpExchange t, Endpoint endpoint) {
+    public Response go(HttpExchange t, Endpoint endpoint, AloftTheme theme) {
         if(endpoint.getClass() == AloftPage.class)
-            return HtmlRenderer.render((AloftPage) endpoint).get(t);
+            return HtmlRenderer.render((AloftPage) endpoint, theme).get(t);
         if(endpoint.getClass() == ScriptEndpoint.class)
             return JavaScriptRenderer.render((ScriptEndpoint) endpoint).get(t);
         if(endpoint.getClass() == StylesheetEndpoint.class)

@@ -10,7 +10,7 @@ public class Page extends HtmlElement {
     }
 
     @Override
-    protected String getKey() {
+    public String getKey() {
         return "html";
     }
 
