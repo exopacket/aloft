@@ -1,10 +1,13 @@
 package com.inteliense.aloft.compiler.lang.keywords.listeners.base;
 
 import com.inteliense.aloft.compiler.lang.base.BuildsJavascript;
+import com.inteliense.aloft.compiler.lang.keywords.elements.base.validation.Validator;
+import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptObject;
 import com.inteliense.aloft.server.html.elements.js.JSOV;
 import com.inteliense.aloft.server.html.elements.js.types.ElementRef;
 import com.inteliense.aloft.server.html.elements.js.types.FunctionObject;
+import com.inteliense.aloft.utils.global.__;
 import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
@@ -14,6 +17,10 @@ public abstract class AloftListener implements BuildsJavascript {
 
     protected ArrayList<String> required = new ArrayList<>();
     protected ArrayList<JSOV> vars;
+    protected String elementKey;
+    protected HtmlElement element;
+    protected ElementRef ref;
+    protected Validator validator = null;
 
     protected abstract JavaScriptObject create();
 
@@ -30,6 +37,12 @@ public abstract class AloftListener implements BuildsJavascript {
     protected abstract ArrayList<String> required(ArrayList<String> vars);
 
     public AloftListener(JSOV...variables) {
+        this.required = required(new ArrayList<>());
+        this.vars = new ArrayList<>(Arrays.asList(variables));
+    }
+
+    public AloftListener(Validator validator, JSOV... variables) {
+        this.validator = validator;
         this.required = required(new ArrayList<>());
         this.vars = new ArrayList<>(Arrays.asList(variables));
     }
@@ -51,6 +64,7 @@ public abstract class AloftListener implements BuildsJavascript {
         FunctionObject func = new FunctionObject();
         func.setVars(new String[]{"function", "function-slot"});
         func.setVars(vars);
+        if(__.isset(validator)) func.replaceVar("function-slot", validator.validation(ref).build());
         JavaScriptObject funcSlot = func.getVar("function-slot").get();
         funcSlot.build();
         func.build();
@@ -59,8 +73,27 @@ public abstract class AloftListener implements BuildsJavascript {
         return base;
     }
 
-    public void setRef(String key, ElementRef ref) {
-        this.vars.add(JSOV.v(key, ref));
+    public void setRef() {
+        ElementRef ref = ElementRef.el(element);
+        this.vars.add(JSOV.v("ref", ref));
+        this.ref = ref;
+    }
+
+    public void setElement(HtmlElement el) {
+        element = el;
+    }
+
+    public void inline() {
+        System.out.println(getObject().string());
+        System.out.println(getObject().build().getJs().getHtml());
+        element.addChild(getObject().getJs());
+    }
+    public void setElementKey(String key) {
+        this.elementKey = key;
+    }
+
+    public boolean match(String key) {
+        return this.elementKey.equals(key);
     }
 
 }

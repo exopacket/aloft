@@ -1,6 +1,9 @@
 package com.inteliense.aloft.server.html.elements.js.types;
 
+import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptObject;
+import com.inteliense.aloft.utils.encryption.A32;
+import com.inteliense.aloft.utils.encryption.SHA;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +14,13 @@ public class ElementRef extends JavaScriptObject {
     private ArrayList<Ref> refs = new ArrayList<>();
 
     public ElementRef(String id) { super(); this.id = id; }
+
+    public static ElementRef el(HtmlElement el) {
+        ElementRef ref = new ElementRef(A32.casified(SHA.getSha1(el.getVeryUniqueId())));
+        ElementRef.Selector selector = ElementRef.Selector.byAttribute("data-uid", el.getUniqueId());
+        ref.addRef(selector, ElementRef.Type.SINGLE);
+        return ref;
+    }
 
     public void addRef(Selector selector, Type type) {
         this.refs.add(new Ref(selector, type));
@@ -31,6 +41,7 @@ public class ElementRef extends JavaScriptObject {
                 chain("querySelector", FunctionArg.preset(selector));
             }
         }
+        end();
     }
 
     public static class Selector {

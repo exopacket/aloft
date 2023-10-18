@@ -11,7 +11,7 @@ public class JavaScriptElement extends HtmlElement {
 
     public JavaScriptElement(String v) {
         this.value = v;
-        addChild(new Content(value, false));
+        addChild(new Content(v));
     }
 
     @Override

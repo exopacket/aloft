@@ -171,7 +171,9 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
     }
 
     private HtmlElement getRoot(ElementMapper mapper) {
-        return root.html(this.theme, mapper).map(mapper);
+        HtmlElement root = this.root.html(this.theme, mapper).map(mapper);
+        this.root.javascript(this.js);
+        return root;
     }
 
     private Page buildPage(ElementMapper mapper) {

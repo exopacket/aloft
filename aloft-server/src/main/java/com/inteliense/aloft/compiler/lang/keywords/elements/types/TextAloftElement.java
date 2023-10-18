@@ -46,7 +46,7 @@ public class TextAloftElement extends AloftElement {
         root.addChild(rootContent);
         this.addAll(root, theme, mapper);
         this.applyStyle(root, theme);
-        this.applyListeners(root);
+        this.applyListeners("text", root);
         return root;
     }
 

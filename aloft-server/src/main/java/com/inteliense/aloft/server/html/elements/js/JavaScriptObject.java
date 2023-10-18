@@ -53,6 +53,10 @@ public abstract class JavaScriptObject {
         }
     }
 
+    public void replaceVar(String key, Object value) {
+        this.vars.replace(key, JSOV.v(key, value));
+    }
+
     public JSOV getVar(String key) {
         return this.vars.get(key);
     }
@@ -65,6 +69,17 @@ public abstract class JavaScriptObject {
             }
         }
         return slot;
+    }
+
+    public String string() {
+        StringBuilder builder = new StringBuilder();
+        for(int i=0; i<lines.size(); i++) {
+            Object obj = lines.get(i);
+            if (!__.isset(lines.get(i))) continue;
+            if (obj instanceof JavaScriptObject) builder.append(((JavaScriptObject) obj).getJs().getValue());
+            if (obj.getClass() == String.class) builder.append((String) obj);
+        }
+        return builder.toString();
     }
 
     public JavaScriptElement getJs() {
@@ -121,6 +136,7 @@ public abstract class JavaScriptObject {
             } else {
                 Object arg = args[i].getValue();
                 if(arg.getClass() == String.class) ln += "\"" + arg + "\"";
+                else if(arg instanceof JavaScriptObject) ln += ((JavaScriptObject) arg).build().getJs().getValue();
                 else ln += String.valueOf(arg);
             }
         }
@@ -135,6 +151,10 @@ public abstract class JavaScriptObject {
             ln += ")";
         }
         add(ln);
+    }
+
+    protected void variable(String var) {
+        add(var);
     }
 
     protected void declare(String var, boolean constant) {
@@ -209,12 +229,27 @@ public abstract class JavaScriptObject {
             this.value = value;
         }
 
+        public FunctionArg(JavaScriptObject value, boolean isVariable) {
+            this.isVariable = isVariable;
+            this.value = value;
+        }
+
         public static FunctionArg var(Object value) {
             return new FunctionArg(value, true);
         }
 
         public static FunctionArg preset(Object value) {
             return new FunctionArg(value, false);
+        }
+
+        public static FunctionArg raw(String value) {
+            JavaScriptObject obj = new JavaScriptObject() {
+                @Override
+                protected void create() {
+                    add(value);
+                }
+            };
+            return new FunctionArg(obj.build(), false);
         }
 
         public boolean isVariable() {

@@ -77,14 +77,6 @@ public abstract class AloftElement extends AloftComponent {
         for(int i=0; i<classes.size(); i++) element.addAttribute("class", classes.get(i).getTagClassName());
     }
 
-    protected void applyListeners(HtmlElement element) {
-        for(int i=0; i< listeners.size(); i++) {
-            AloftListener listener = listeners.get(i);
-            listener.setRef("ref", ref());
-            element.addChild(listener.getObject().getJs());
-        }
-    }
-
     private void setupSubtypes() {
         this.hasMultipleSubtypes = hasMultipleSubtypes();
     }

@@ -32,7 +32,7 @@ public class IconAloftElement extends AloftElement {
         icon.addAttribute("class", theme.getStyleModule().icon((String) vars.get("icon")));
         if(__.isset(vars.get("color"))) icon.addStyle("color", (String) vars.get("color"));
         if(__.isset(vars.get("size"))) icon.addStyle("font-size", String.valueOf(vars.get("size")) + "px");
-        applyListeners(icon);
+        applyListeners("icon", icon);
         return icon;
     }
 

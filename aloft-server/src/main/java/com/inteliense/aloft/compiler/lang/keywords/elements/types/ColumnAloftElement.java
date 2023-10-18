@@ -18,7 +18,6 @@ public class ColumnAloftElement extends AloftElement {
         HtmlElement root = createElement("div");
         addAll(root, theme, mapper);
         applyStyle("col", ColumnAloftElement.class, root, theme);
-        applyListeners(root);
         return root;
     }
 

@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class AloftOnBlurListener extends AloftListener {
 
-    public AloftOnBlurListener(JSOV...variables) {
-        super(variables);
+    public AloftOnBlurListener() {
+        super();
     }
 
     @Override

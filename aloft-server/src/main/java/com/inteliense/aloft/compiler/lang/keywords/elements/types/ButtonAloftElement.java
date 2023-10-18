@@ -64,7 +64,7 @@ public class ButtonAloftElement extends AloftElement {
                 Content content = new Content(var("text"));
                 root.addChild(content);
                 applyStyle("button", ButtonAloftElement.class, root, theme);
-                applyListeners(root);
+                applyListeners("button", root);
                 return root;
             }
             @Override

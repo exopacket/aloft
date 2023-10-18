@@ -112,6 +112,15 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
         return this.classes;
     }
 
+    protected void applyListeners(String key, HtmlElement element) {
+        for (int i = 0; i < listeners.size(); i++) {
+            AloftListener listener = listeners.get(i);
+            if (listener.match(key)) {
+                listener.setElement(element);
+            }
+        }
+    }
+
     public void addStyle(String property, String value) {
         this.style.addStyle(new AloftStylePair(property, value));
     }
@@ -216,28 +225,25 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
         return null;
     }
 
-    public ElementRef ref() {
-        ElementRef ref = new ElementRef(A32.casified(SHA.getSha1(this.uniqueId)));
-        ElementRef.Selector selector = ElementRef.Selector.byId(this.uniqueId);
-        ref.addRef(selector, ElementRef.Type.SINGLE);
-        return ref;
-    }
+//    public ElementRef ref(String override) {
+//        ElementRef ref = new ElementRef(override);
+//        ElementRef.Selector selector = ElementRef.Selector.byId(this.uniqueId);
+//        ref.addRef(selector, ElementRef.Type.SINGLE);
+//        return ref;
+//    }
 
-    public ElementRef ref(String override) {
-        ElementRef ref = new ElementRef(override);
-        ElementRef.Selector selector = ElementRef.Selector.byId(this.uniqueId);
-        ref.addRef(selector, ElementRef.Type.SINGLE);
-        return ref;
-    }
-
-    public void addListener(AloftListener listener) {
-        listener.setRef("ref", ref());
-        this.jsBuilder.addObject(listener.getObject());
+    public void addListener(String key, AloftListener listener) {
+        listener.setElementKey(key);
         this.listeners.add(listener);
     }
 
     @Override
     public void javascript(AtomicReference<AppJavaScript> js) {
+        for(int i=0; i<this.listeners.size(); i++) {
+            this.listeners.get(i).setRef();
+            this.listeners.get(i).inline();
+            jsBuilder.addObject(this.listeners.get(i).getObject());
+        }
         if(this.jsBuilder.empty()) {
             for(int i=0; i<this.children.size(); i++) this.children.get(i).javascript(js);
             return;

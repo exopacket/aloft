@@ -22,7 +22,6 @@ public abstract class HtmlElement {
     private String aid = "";
     private String parentComponent = "";
     protected String prependHtml = "";
-
     public abstract String getKey();
 
     public HtmlElement() {
@@ -64,6 +63,14 @@ public abstract class HtmlElement {
     public void addChild(HtmlElement element) {
         element.setParentComponent(this.parentComponent);
         this.children.add(element);
+    }
+
+    public String getVeryUniqueId() {
+        return veryUniqueId;
+    }
+
+    public String getUniqueId() {
+        return uniqueId;
     }
 
     public ArrayList<HtmlElement> getChildren() {

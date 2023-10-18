@@ -28,7 +28,6 @@ public class CenteredAloftElement extends AloftElement {
         if(alignment == TextAlign.RIGHT) child.addStyle("text-align", "right");
         applyStyle("root", CenteredAloftElement.class, root, theme);
         applyStyle("child", CenteredAloftElement.class, child, theme);
-        applyListeners(root);
         return root;
     }
 

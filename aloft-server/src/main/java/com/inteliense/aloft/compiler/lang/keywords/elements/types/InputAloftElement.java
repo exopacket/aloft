@@ -63,7 +63,7 @@ public class InputAloftElement extends AloftElement {
                 HtmlElement input = createElement("input");
                 applyStyle("text-input", InputAloftElement.class, input, theme);
                 if(__.isset(var("placeholder"))) input.addAttribute("placeholder", var("placeholder"));
-                applyListeners(input);
+                applyListeners("input", input);
                 group.addChild(input);
 
                 if(__.isset(var("help-text"))) {
@@ -112,7 +112,7 @@ public class InputAloftElement extends AloftElement {
                 HtmlElement input = createElement("input");
                 applyStyle("text-input", InputAloftElement.class, input, theme);
                 if(__.isset(var("placeholder"))) input.addAttribute("placeholder", var("placeholder"));
-                applyListeners(input);
+                applyListeners("input", input);
                 group.addChild(input);
 
                 if(__.isset(var("help-text"))) {
