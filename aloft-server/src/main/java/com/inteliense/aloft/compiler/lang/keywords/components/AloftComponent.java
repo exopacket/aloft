@@ -112,11 +112,21 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
         return this.classes;
     }
 
+    protected void applyListeners(String key, String ref, HtmlElement element) {
+        for (int i = 0; i < listeners.size(); i++) {
+            AloftListener listener = listeners.get(i);
+            if (listener.match(key)) {
+                element.setRef(ref);
+                listener.setElement(ref, element);
+            }
+        }
+    }
+
     protected void applyListeners(String key, HtmlElement element) {
         for (int i = 0; i < listeners.size(); i++) {
             AloftListener listener = listeners.get(i);
             if (listener.match(key)) {
-                listener.setElement(element);
+                listener.setElement(null, element);
             }
         }
     }

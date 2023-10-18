@@ -1,6 +1,5 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.base.validation;
 
-import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptObject;
 import com.inteliense.aloft.server.html.elements.js.types.ElementRef;
 

@@ -3,6 +3,7 @@ package com.inteliense.aloft.server.html.elements;
 import com.inteliense.aloft.compiler.lang.base.ElementMapper;
 import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
 import com.inteliense.aloft.server.html.elements.js.*;
+import com.inteliense.aloft.server.html.elements.js.types.ElementRef;
 import com.inteliense.aloft.server.html.elements.types.Content;
 import com.inteliense.aloft.utils.global.__;
 
@@ -22,6 +23,8 @@ public abstract class HtmlElement {
     private String aid = "";
     private String parentComponent = "";
     protected String prependHtml = "";
+
+    protected String ref = "";
     public abstract String getKey();
 
     public HtmlElement() {
@@ -60,7 +63,48 @@ public abstract class HtmlElement {
         return id != null && !id.isEmpty();
     }
 
+    public void setRef(String ref) {
+        this.ref = ref;
+    }
+
+    public String getRef() {
+        return ref;
+    }
+
+    public ElementRef ref() {
+        ElementRef root = ElementRef.el(this);
+        for(int i=0; i<children.size(); i++) {
+            ElementRef child = children.get(i).ref(root);
+            if(__.isset(child)) {
+                root.addChild(children.get(i).getRef(), child);
+            }
+        }
+        return root;
+    }
+
+    public ElementRef ref(ElementRef root) {
+        for(int i=0; i<children.size(); i++) {
+            ElementRef child = children.get(i).ref(root);
+            if(__.isset(child)) {
+                root.addChild(children.get(i).getRef(), child);
+            }
+        }
+        if(__.isset(ref)) {
+            ElementRef me = ElementRef.el(this);
+            root.addChild(getRef(), me);
+            return me;
+        }
+        return null;
+    }
+
     public void addChild(HtmlElement element) {
+        element.setRef(null);
+        element.setParentComponent(this.parentComponent);
+        this.children.add(element);
+    }
+
+    public void addChild(String key, HtmlElement element) {
+        element.setRef(key);
         element.setParentComponent(this.parentComponent);
         this.children.add(element);
     }

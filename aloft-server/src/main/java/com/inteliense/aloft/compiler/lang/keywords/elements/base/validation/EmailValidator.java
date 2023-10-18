@@ -15,14 +15,33 @@ public class EmailValidator extends Validator {
         return new JavaScriptObject() {
             @Override
             protected void create() {
-                child(ref.build());
+                ElementRef r = ref.getChild("input");
+                child(r.build());
                 JavaScriptVariableRef v = constant("val");
-                variable(ref.getId());
+                variable(r.getId());
                 chain(value);
                 end();
                 JavaScriptVariableRef res = constant("result");
                 construct("RegExp", FunctionArg.raw("/^(([^<>()[\\]\\\\.,;:\\s@\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\"]+)*)|.(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$/"));
                 chain( "test", FunctionArg.ref(v));
+                end();
+                variable(r.getId());
+                chain("style", "boxShadow");
+                set();
+                str("rgba(255, 0, 0, 0.45) 0px 0px 0px 3px");
+                end();
+                variable(r.getId());
+                chain("style", "border");
+                set();
+                str("solid 0.5px rgba(255, 0, 0, 0.7)");
+                end();
+                ElementRef help = ref.getChild("help-text");
+                child(help.build());
+                end();
+                variable(help.getId());
+                chain("innerHTML");
+                set();
+                str("TEST");
                 end();
                 setVars();
             }

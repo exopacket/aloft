@@ -8,7 +8,6 @@ import com.inteliense.aloft.server.html.elements.js.JSOV;
 import com.inteliense.aloft.server.html.elements.js.types.ElementRef;
 import com.inteliense.aloft.server.html.elements.js.types.FunctionObject;
 import com.inteliense.aloft.utils.global.__;
-import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +19,8 @@ public abstract class AloftListener implements BuildsJavascript {
     protected String elementKey;
     protected HtmlElement element;
     protected ElementRef ref;
+    protected ElementRef root;
+    protected String childRef = null;
     protected Validator validator = null;
 
     protected abstract JavaScriptObject create();
@@ -64,7 +65,7 @@ public abstract class AloftListener implements BuildsJavascript {
         FunctionObject func = new FunctionObject();
         func.setVars(new String[]{"function", "function-slot"});
         func.setVars(vars);
-        if(__.isset(validator)) func.replaceVar("function-slot", validator.validation(ref).build());
+        if(__.isset(validator)) func.replaceVar("function-slot", validator.validation(root).build());
         JavaScriptObject funcSlot = func.getVar("function-slot").get();
         funcSlot.build();
         func.build();
@@ -74,13 +75,15 @@ public abstract class AloftListener implements BuildsJavascript {
     }
 
     public void setRef() {
-        ElementRef ref = ElementRef.el(element);
+        this.root = element.ref();
+        ElementRef ref = this.root.getChild(childRef);
         this.vars.add(JSOV.v("ref", ref));
         this.ref = ref;
     }
 
-    public void setElement(HtmlElement el) {
-        element = el;
+    public void setElement(String childRef, HtmlElement el) {
+        this.childRef = childRef;
+        this.element = el;
     }
 
     public void inline() {

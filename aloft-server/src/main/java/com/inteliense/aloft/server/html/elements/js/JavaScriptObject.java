@@ -173,8 +173,17 @@ public abstract class JavaScriptObject {
     protected void chain(String var) {
         add("." + var);
     }
+
+    protected void set() {
+        add(" = ");
+    }
+
+    protected void str(String str) {
+        add("\"" + str + "\"");
+    }
+
     protected void chain(String... vars) {
-        String ln = ".";
+        String ln = "";
         for(int i=0; i<vars.length; i++) ln += "." + vars[i];
         add(ln);
     }

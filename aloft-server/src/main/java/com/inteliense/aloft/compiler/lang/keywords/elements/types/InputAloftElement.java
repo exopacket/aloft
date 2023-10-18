@@ -46,7 +46,7 @@ public class InputAloftElement extends AloftElement {
                     Content labelTxt = new Content(var("label"));
                     label.addChild(labelTxt);
                     applyStyle("label", InputAloftElement.class, label, theme);
-                    root.addChild(label);
+                    root.addChild("label", label);
                 }
 
                 if(__.isset(var("prepend-text"))) {
@@ -63,8 +63,7 @@ public class InputAloftElement extends AloftElement {
                 HtmlElement input = createElement("input");
                 applyStyle("text-input", InputAloftElement.class, input, theme);
                 if(__.isset(var("placeholder"))) input.addAttribute("placeholder", var("placeholder"));
-                applyListeners("input", input);
-                group.addChild(input);
+                group.addChild("input", input);
 
                 if(__.isset(var("help-text"))) {
                     Content helpTxt = new Content(var("help-text"));
@@ -72,10 +71,11 @@ public class InputAloftElement extends AloftElement {
                 }
 
                 applyStyle("help-text", InputAloftElement.class, below, theme);
-                group.addChild(below);
+                group.addChild("help-text", below);
                 applyStyle("text-group", InputAloftElement.class, group, theme);
                 root.addChild(group);
                 applyStyle("root", InputAloftElement.class, root, theme);
+                applyListeners("input", "input", root);
                 return root;
             }
             @Override
@@ -95,7 +95,7 @@ public class InputAloftElement extends AloftElement {
                     Content labelTxt = new Content(var("label"));
                     label.addChild(labelTxt);
                     applyStyle("label", InputAloftElement.class, label, theme);
-                    root.addChild(label);
+                    root.addChild("label", label);
                 }
 
                 if(__.isset(var("prepend-text"))) {
@@ -112,12 +112,11 @@ public class InputAloftElement extends AloftElement {
                 HtmlElement input = createElement("input");
                 applyStyle("text-input", InputAloftElement.class, input, theme);
                 if(__.isset(var("placeholder"))) input.addAttribute("placeholder", var("placeholder"));
-                applyListeners("input", input);
-                group.addChild(input);
+                group.addChild("input", input);
 
                 if(__.isset(var("help-text"))) {
                     Content helpTxt = new Content(var("help-text"));
-                    below.addChild(helpTxt);
+                    below.addChild("bottom-text", helpTxt);
                 }
 
                 applyStyle("help-text", InputAloftElement.class, below, theme);
@@ -125,6 +124,7 @@ public class InputAloftElement extends AloftElement {
                 applyStyle("text-group", InputAloftElement.class, group, theme);
                 root.addChild(group);
                 applyStyle("root", InputAloftElement.class, root, theme);
+                applyListeners("input", "input", root);
                 return root;
             }
             @Override

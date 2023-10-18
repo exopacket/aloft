@@ -8,11 +8,14 @@ import com.inteliense.aloft.utils.encryption.SHA;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class ElementRef extends JavaScriptObject {
 
     private String id;
     private ArrayList<Ref> refs = new ArrayList<>();
+
+    private HashMap<String, ElementRef> children = new HashMap<>();
 
     public ElementRef(String id) { super(); this.id = id; }
 
@@ -27,8 +30,24 @@ public class ElementRef extends JavaScriptObject {
         this.refs.add(new Ref(selector, type));
     }
 
+    public ElementRef getChild(String key) {
+        return children.get(key);
+    }
+
+    public void addChild(String key, ElementRef el) {
+        this.children.put(key, el);
+    }
+
+    public void addChild(String key, HtmlElement el) {
+        this.children.put(key, el(el));
+    }
+
     public String getId() {
         return id;
+    }
+
+    public int size() {
+        return children.size();
     }
 
     @Override
