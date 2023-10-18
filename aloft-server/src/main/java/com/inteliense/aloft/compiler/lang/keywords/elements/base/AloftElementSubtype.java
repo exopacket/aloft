@@ -63,7 +63,6 @@ public class AloftElementSubtype extends AloftElement {
 
     @Override
     protected String name() {
-        System.out.println(_name);
         return _name;
     }
 

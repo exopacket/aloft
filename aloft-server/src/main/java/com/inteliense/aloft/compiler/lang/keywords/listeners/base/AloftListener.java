@@ -84,8 +84,6 @@ public abstract class AloftListener implements BuildsJavascript {
     }
 
     public void inline() {
-        System.out.println(getObject().string());
-        System.out.println(getObject().build().getJs().getHtml());
         element.addChild(getObject().getJs());
     }
     public void setElementKey(String key) {

@@ -5,6 +5,7 @@ import com.inteliense.aloft.server.html.elements.js.JavaScriptObject;
 import com.inteliense.aloft.utils.encryption.A32;
 import com.inteliense.aloft.utils.encryption.SHA;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -26,7 +27,9 @@ public class ElementRef extends JavaScriptObject {
         this.refs.add(new Ref(selector, type));
     }
 
-    public String getId() { return id; }
+    public String getId() {
+        return id;
+    }
 
     @Override
     protected void create() {
@@ -34,10 +37,10 @@ public class ElementRef extends JavaScriptObject {
         var("document");
         for(int i=0; i<refs.size(); i++) {
             if(refs.get(i).getType() == Type.ARRAY) {
-                String selector = refs.get(i).getSelector().selectorString();
+                String selector = refs.get(i).getSelector().selectorString().trim();
                 chain("querySelectorAll", FunctionArg.preset(selector));
             } else if(refs.get(i).getType() == Type.SINGLE) {
-                String selector = refs.get(i).getSelector().selectorString();
+                String selector = refs.get(i).getSelector().selectorString().trim();
                 chain("querySelector", FunctionArg.preset(selector));
             }
         }

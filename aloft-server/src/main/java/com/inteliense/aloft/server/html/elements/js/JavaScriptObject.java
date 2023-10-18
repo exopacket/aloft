@@ -9,15 +9,21 @@ import java.util.HashMap;
 public abstract class JavaScriptObject {
 
     private HashMap<String, JSOV> vars = new HashMap<>();
+    private ArrayList<JavaScriptVariableRef> variableRefs = new ArrayList<>();
+    private ArrayList<JavaScriptFunctionRef> functionRefs = new ArrayList<>();
     protected ArrayList<Object> lines = new ArrayList<>();
     private int slotIndex = -1;
     private boolean built = false;
 
     public JavaScriptObject build() {
-        return build(false);
+        return build(new ArrayList<>(), new ArrayList<>(), false);
     }
 
-    public JavaScriptObject build(boolean refresh) {
+    public JavaScriptObject build(ArrayList<JavaScriptVariableRef> variableRefs, ArrayList<JavaScriptFunctionRef> functionRefs) {
+        return build(variableRefs, functionRefs, false);
+    }
+
+    public JavaScriptObject build(ArrayList<JavaScriptVariableRef> variableRefs, ArrayList<JavaScriptFunctionRef> functionRefs, boolean refresh) {
         if(refresh) {
             this.lines.clear();
             create();
@@ -109,6 +115,7 @@ public abstract class JavaScriptObject {
     protected void placeRef(FunctionArg var) {
         JSOV v = getVar((String) var.getValue());
         if(v.type() == ElementRef.class) child(((ElementRef) v.get()).build());
+
     }
 
     protected void var(FunctionArg var) {
@@ -136,11 +143,40 @@ public abstract class JavaScriptObject {
             } else {
                 Object arg = args[i].getValue();
                 if(arg.getClass() == String.class) ln += "\"" + arg + "\"";
-                else if(arg instanceof JavaScriptObject) ln += ((JavaScriptObject) arg).build().getJs().getValue();
+                else if(arg instanceof JavaScriptObject) ln += ((JavaScriptObject) arg).build(this.variableRefs, this.functionRefs).getJs().getValue();
+                else if(arg instanceof JavaScriptVariableRef) ln += getRef((JavaScriptVariableRef) arg);
                 else ln += String.valueOf(arg);
             }
         }
         return ln;
+    }
+
+    protected String getRef(String ref) {
+        for(JavaScriptVariableRef var : variableRefs) {
+            if(var.match(ref)) {
+                return var.get();
+            }
+        }
+        return "";
+    }
+
+    protected String getRef(JavaScriptVariableRef ref) {
+        if(ref.initialized()) return ref.get();
+        for(JavaScriptVariableRef var : variableRefs) {
+            if(var.match(ref.key())) {
+                return var.get();
+            }
+        }
+        return "";
+    }
+
+    protected void chain(String var) {
+        add("." + var);
+    }
+    protected void chain(String... vars) {
+        String ln = ".";
+        for(int i=0; i<vars.length; i++) ln += "." + vars[i];
+        add(ln);
     }
 
     protected void chain(String var, FunctionArg...args) {
@@ -153,12 +189,36 @@ public abstract class JavaScriptObject {
         add(ln);
     }
 
+    protected void result() {
+        add("return ");
+    }
+
+    protected void callEmpty() {
+        add("()");
+    }
+
     protected void variable(String var) {
         add(var);
     }
 
     protected void declare(String var, boolean constant) {
         lines.add(((constant) ? "const " : "let ") + var + " = ");
+    }
+
+    protected JavaScriptVariableRef let(String var) {
+        JavaScriptVariableRef ref = new JavaScriptVariableRef(var);
+        ref.set();
+        lines.add("let " + ref.get() + " = ");
+        variableRefs.add(ref);
+        return ref;
+    }
+
+    protected JavaScriptVariableRef constant(String var) {
+        JavaScriptVariableRef ref = new JavaScriptVariableRef(var);
+        ref.set();
+        lines.add("const " + ref.get() + " = ");
+        variableRefs.add(ref);
+        return ref;
     }
 
     protected void emptyObject() {
@@ -181,7 +241,7 @@ public abstract class JavaScriptObject {
     }
 
     protected void end() {
-        add(";");
+        add("; ");
     }
 
     protected void call(String name, FunctionArg...args) {
@@ -192,10 +252,13 @@ public abstract class JavaScriptObject {
     }
 
     public static JavaScriptObject function(String name, String...args) {
+
         return new JavaScriptObject() {
             @Override
             public void create() {
-                this.namedFunction(name, args);
+                JavaScriptFunctionRef ref = new JavaScriptFunctionRef(name, args);
+                ref.set();
+                this.namedFunction(ref.get(), ref.args());
                 this.blockStart();
                 this.slot();
                 this.blockEnd();
@@ -204,7 +267,15 @@ public abstract class JavaScriptObject {
     }
 
     protected void namedFunction(String name, String...args) {
-        lines.add(" function " + name + "()");
+        String lines = " function " + name + "(";
+        for(int i=0; i<args.length; i++) {
+            String line = "";
+            if(i > 0) line += ", ";
+            line += args[i];
+            lines += line;
+        }
+        lines += ")";
+        this.lines.add(lines);
     }
 
     protected void blockStart() {
@@ -232,6 +303,14 @@ public abstract class JavaScriptObject {
         public FunctionArg(JavaScriptObject value, boolean isVariable) {
             this.isVariable = isVariable;
             this.value = value;
+        }
+
+        public static FunctionArg ref(JavaScriptVariableRef ref) {
+            return new FunctionArg(ref, false);
+        }
+
+        public static FunctionArg ref(String key) {
+            return new FunctionArg(new JavaScriptVariableRef(key), false);
         }
 
         public static FunctionArg var(Object value) {
