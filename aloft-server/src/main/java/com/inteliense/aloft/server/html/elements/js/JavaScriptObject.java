@@ -4,6 +4,7 @@ import com.inteliense.aloft.server.html.elements.js.types.ElementRef;
 import com.inteliense.aloft.utils.global.__;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public abstract class JavaScriptObject {
@@ -198,6 +199,30 @@ public abstract class JavaScriptObject {
         add(ln);
     }
 
+    protected void _if(Condition... conditions) {
+        String ln = "if(";
+        for(int i=0; i<conditions.length; i++) {
+            if(i > 0) ln += " ";
+            ln += conditions[i].get();
+        }
+        ln += ")";
+        add(ln);
+    }
+
+    protected void _elseif(Condition... conditions) {
+        String ln = "else if(";
+        for(int i=0; i<conditions.length; i++) {
+            if(i > 0) ln += " ";
+            ln += conditions[i].get();
+        }
+        ln += ")";
+        add(ln);
+    }
+
+    protected void _else() {
+        add("else ");
+    }
+
     protected void result() {
         add("return ");
     }
@@ -275,6 +300,12 @@ public abstract class JavaScriptObject {
         };
     }
 
+    public void condition(ConditionGroup...groups) {
+        for(int i=0; i<groups.length; i++) {
+            child(groups[i].get(i > 0).build());
+        }
+    }
+
     protected void namedFunction(String name, String...args) {
         String lines = " function " + name + "(";
         for(int i=0; i<args.length; i++) {
@@ -297,6 +328,120 @@ public abstract class JavaScriptObject {
 
     protected void add(String ln) {
         lines.add(ln);
+    }
+
+    public static class ConditionGroup {
+
+        private ArrayList<Condition> conditions = new ArrayList<>();
+        private JavaScriptObject slot = null;
+
+        public ConditionGroup(Condition... conditions) {
+            this.conditions.addAll(Arrays.asList(conditions));
+        }
+
+        public ConditionGroup() { }
+
+        public static ConditionGroup createElse() {
+            return new ConditionGroup();
+        }
+
+        public void addCondition(Condition condition) {
+            this.conditions.add(condition);
+        }
+
+        public void setSlot(JavaScriptObject object) {
+            this.slot = object.build();
+        }
+
+        public JavaScriptObject get(boolean elseif) {
+            JavaScriptObject block = new JavaScriptObject() {
+                @Override
+                public void create() {
+
+                    if(conditions.isEmpty()) this._else();
+                    else if(elseif) {
+                        Condition[] arr = new Condition[conditions.size()];
+                        conditions.toArray(arr);
+                        this._elseif(arr);
+                    } else {
+                        Condition[] arr = new Condition[conditions.size()];
+                        conditions.toArray(arr);
+                        this._if(arr);
+                    }
+
+                    this.blockStart();
+                    this.slot();
+                    this.blockEnd();
+
+                }
+            };
+            block.build();
+            if(__.isset(slot)) block.setSlot(slot);
+            return block;
+        }
+
+    }
+
+    protected enum Compare {
+        AND,
+        OR
+    }
+
+    public static class Condition {
+
+        private String leftSide = null;
+        private String operator = null;
+        private String rightSide = null;
+        private String truthy = null;
+        private Compare comparison = null;
+
+        public Condition(String var, boolean not) {
+            this.truthy = ((not) ? "!" : "") + var;
+        }
+
+        public Condition(String left, String operator, String right) {
+            this.leftSide = left;
+            this.operator = operator;
+            this.rightSide = right;
+        }
+
+        public Condition(Compare comparison) {
+            this.comparison = comparison;
+        }
+
+        public static Condition compare(Compare comparison) {
+            return new Condition(comparison);
+        }
+
+        public static Condition truthy(String truthy) {
+            return new Condition(truthy, false);
+        }
+
+        public static Condition equals(String left, String right) {
+            return new Condition(left, "===", right);
+        }
+
+        public static Condition different(String left, String right) {
+            return new Condition(left, "!==", right);
+        }
+
+        public static Condition not(String var) {
+            return new Condition(var, true);
+        }
+
+        public static Condition create(String left, String operator, String right) {
+            return new Condition(left, operator, right);
+        }
+
+        public String get() {
+            if(__.isset(truthy)) return truthy;
+            if(__.isset(comparison)) {
+                if(comparison == Compare.AND) return " && ";
+                if(comparison == Compare.OR) return " || ";
+            }
+            return leftSide + " " + operator + " " + rightSide;
+        }
+
     }
 
     protected static class FunctionArg {

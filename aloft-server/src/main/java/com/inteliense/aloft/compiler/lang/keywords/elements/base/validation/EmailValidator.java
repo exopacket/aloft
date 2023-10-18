@@ -35,14 +35,35 @@ public class EmailValidator extends Validator {
                 set();
                 str("solid 0.5px rgba(255, 0, 0, 0.7)");
                 end();
-                ElementRef help = ref.getChild("help-text");
-                child(help.build());
-                end();
-                variable(help.getId());
-                chain("innerHTML");
-                set();
-                str("TEST");
-                end();
+                JavaScriptObject validObject = new JavaScriptObject() {
+                    @Override
+                    protected void create() {
+                        ElementRef help = ref.getChild("help-text");
+                        child(help.build());
+                        variable(help.getId());
+                        chain("innerHTML");
+                        set();
+                        str("VALID");
+                    }
+                }.build();
+                JavaScriptObject invalidObject = new JavaScriptObject() {
+                    @Override
+                    protected void create() {
+                        ElementRef help = ref.getChild("help-text");
+                        child(help.build());
+                        variable(help.getId());
+                        chain("innerHTML");
+                        set();
+                        str("INVALID");
+                    }
+                }.build();
+
+                ConditionGroup ifTrue = new ConditionGroup(Condition.truthy(res.get()));
+                ConditionGroup ifFalse = ConditionGroup.createElse();
+                ifTrue.setSlot(validObject);
+                ifFalse.setSlot(invalidObject);
+                condition(ifTrue, ifFalse);
+
                 setVars();
             }
         };
