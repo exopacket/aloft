@@ -146,6 +146,7 @@ public abstract class JavaScriptObject {
                 if(arg.getClass() == String.class) ln += "\"" + arg + "\"";
                 else if(arg instanceof JavaScriptObject) ln += ((JavaScriptObject) arg).build(this.variableRefs, this.functionRefs).getJs().getValue();
                 else if(arg instanceof JavaScriptVariableRef) ln += getRef((JavaScriptVariableRef) arg);
+                else if(arg instanceof JavaScriptFunctionRef) ln += getRef((JavaScriptFunctionRef) arg);
                 else ln += String.valueOf(arg);
             }
         }
@@ -164,6 +165,16 @@ public abstract class JavaScriptObject {
     protected String getRef(JavaScriptVariableRef ref) {
         if(ref.initialized()) return ref.get();
         for(JavaScriptVariableRef var : variableRefs) {
+            if(var.match(ref.key())) {
+                return var.get();
+            }
+        }
+        return "";
+    }
+
+    protected String getRef(JavaScriptFunctionRef ref) {
+        if(ref.initialized()) return ref.get();
+        for(JavaScriptFunctionRef var : functionRefs) {
             if(var.match(ref.key())) {
                 return var.get();
             }
@@ -283,6 +294,14 @@ public abstract class JavaScriptObject {
         ln += getArgsString(args);
         ln += ")";
         add(ln);
+    }
+
+    protected void call(JavaScriptFunctionRef ref) {
+        add(ref.call());
+    }
+
+    protected void placeFunction(JavaScriptFunctionRef ref) {
+        add(ref.get(true));
     }
 
     public static JavaScriptObject function(String name, String...args) {
@@ -461,6 +480,16 @@ public abstract class JavaScriptObject {
 
         public static FunctionArg ref(JavaScriptVariableRef ref) {
             return new FunctionArg(ref, false);
+        }
+
+        public static FunctionArg ref(JavaScriptFunctionRef ref) {
+            return ref(ref, true);
+        }
+
+        public static FunctionArg ref(JavaScriptFunctionRef ref, boolean willCall) {
+            JavaScriptFunctionRef _ref = new JavaScriptFunctionRef(ref);
+            if(willCall) _ref.willCall();
+            return new FunctionArg(_ref, false);
         }
 
         public static FunctionArg ref(String key) {

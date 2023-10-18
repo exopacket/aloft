@@ -3,6 +3,7 @@ package com.inteliense.aloft.compiler.lang.keywords.listeners.base;
 import com.inteliense.aloft.compiler.lang.base.BuildsJavascript;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.validation.Validator;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
+import com.inteliense.aloft.server.html.elements.js.JavaScriptFunctionRef;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptObject;
 import com.inteliense.aloft.server.html.elements.js.JSOV;
 import com.inteliense.aloft.server.html.elements.js.types.ElementRef;
@@ -49,19 +50,7 @@ public abstract class AloftListener implements BuildsJavascript {
     }
 
     protected JavaScriptObject buildBase(String method) {
-        JavaScriptObject base = new JavaScriptObject() {
-            @Override
-            public void create() {
-                this.placeRef(FunctionArg.var("ref"));
-                this.var(FunctionArg.var("ref"));
-                this.chain("addEventListener", FunctionArg.preset(method), FunctionArg.var("function"));
-                this.end();
-                this.slot();
-            }
-        };
-        base.setVars(new String[]{"ref", "function"});
-        base.setVars(vars);
-        base.build();
+
         FunctionObject func = new FunctionObject();
         func.setVars(new String[]{"function", "function-slot"});
         func.setVars(vars);
@@ -69,7 +58,22 @@ public abstract class AloftListener implements BuildsJavascript {
         JavaScriptObject funcSlot = func.getVar("function-slot").get();
         funcSlot.build();
         func.build();
+        JavaScriptFunctionRef functionRef = func.getRef();
         func.setSlot(funcSlot);
+
+        JavaScriptObject base = new JavaScriptObject() {
+            @Override
+            public void create() {
+                this.placeRef(FunctionArg.var("ref"));
+                this.var(FunctionArg.var("ref"));
+                this.chain("addEventListener", FunctionArg.preset(method), FunctionArg.ref(functionRef, false));
+                this.end();
+                this.slot();
+            }
+        };
+        base.setVars(new String[]{"ref", "function"});
+        base.setVars(vars);
+        base.build();
         base.setSlot(func);
         return base;
     }
