@@ -6,12 +6,15 @@ import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptFunctionRef;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptObject;
 import com.inteliense.aloft.server.html.elements.js.JSOV;
+import com.inteliense.aloft.server.html.elements.js.JavaScriptRefMapper;
 import com.inteliense.aloft.server.html.elements.js.types.ElementRef;
 import com.inteliense.aloft.server.html.elements.js.types.FunctionObject;
 import com.inteliense.aloft.utils.global.__;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 public abstract class AloftListener implements BuildsJavascript {
 
@@ -23,6 +26,7 @@ public abstract class AloftListener implements BuildsJavascript {
     protected ElementRef root;
     protected String childRef = null;
     protected Validator validator = null;
+    protected JavaScriptRefMapper mapper = null;
 
     protected abstract JavaScriptObject create();
 
@@ -33,7 +37,7 @@ public abstract class AloftListener implements BuildsJavascript {
         for (JSOV variable : vars)
             if (this.required.contains(variable.key())) listed++;
         assert listed == required : "Required variables for listener are not present.";
-        return create();
+        return (__.isset(mapper)) ? create().build(mapper) : create().build();
     }
 
     protected abstract ArrayList<String> required(ArrayList<String> vars);
@@ -43,10 +47,11 @@ public abstract class AloftListener implements BuildsJavascript {
         this.vars = new ArrayList<>(Arrays.asList(variables));
     }
 
-    public AloftListener(Validator validator, JSOV... variables) {
+    public AloftListener(Validator validator, JavaScriptRefMapper mapper, JSOV... variables) {
         this.validator = validator;
         this.required = required(new ArrayList<>());
         this.vars = new ArrayList<>(Arrays.asList(variables));
+        this.mapper = mapper;
     }
 
     protected JavaScriptObject buildBase(String method) {
@@ -54,7 +59,7 @@ public abstract class AloftListener implements BuildsJavascript {
         FunctionObject func = new FunctionObject();
         func.setVars(new String[]{"function", "function-slot"});
         func.setVars(vars);
-        if(__.isset(validator)) func.replaceVar("function-slot", validator.validation(root).build());
+        if(__.isset(validator)) func.replaceVar("function-slot", validator.validation(root));
         JavaScriptObject funcSlot = func.getVar("function-slot").get();
         funcSlot.build();
         func.build();
@@ -64,8 +69,8 @@ public abstract class AloftListener implements BuildsJavascript {
         JavaScriptObject base = new JavaScriptObject() {
             @Override
             public void create() {
-                this.placeRef(FunctionArg.var("ref"));
-                this.var(FunctionArg.var("ref"));
+                this.placeRef(ref);
+                this.variable(ref.getId());
                 this.chain("addEventListener", FunctionArg.preset(method), FunctionArg.ref(functionRef, false));
                 this.end();
                 this.slot();
@@ -73,9 +78,8 @@ public abstract class AloftListener implements BuildsJavascript {
         };
         base.setVars(new String[]{"ref", "function"});
         base.setVars(vars);
-        base.build();
         base.setSlot(func);
-        return base;
+        return base.build();
     }
 
     public void setRef() {
@@ -90,9 +94,18 @@ public abstract class AloftListener implements BuildsJavascript {
         this.element = el;
     }
 
+    public void setMapper(AtomicReference<JavaScriptRefMapper> mapper) {
+        this.mapper = mapper.get();
+    }
+
+    public void setMapper(JavaScriptRefMapper mapper) {
+        this.mapper = mapper;
+    }
+
     public void inline() {
         element.addChild(getObject().getJs());
     }
+
     public void setElementKey(String key) {
         this.elementKey = key;
     }

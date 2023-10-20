@@ -2,6 +2,9 @@ package com.inteliense.aloft.server.html.elements.types;
 
 import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleCss;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
+import com.inteliense.aloft.server.html.elements.js.JavaScript;
+
+import java.util.ArrayList;
 
 public class Head extends HtmlElement {
 
@@ -20,6 +23,14 @@ public class Head extends HtmlElement {
 
     public void addCss(String css) {
         this.addChild(HtmlElement.builder("style", css, null));
+    }
+
+    public void addJs(ArrayList<JavaScript> js) {
+        StringBuilder builder = new StringBuilder();
+        for(JavaScript script : js) {
+            builder.append(script.getValue());
+        }
+        this.addChild(HtmlElement.builder("script", builder.toString(), null, new String[][]{{"type", "application/js"}}));
     }
 
     public void addFavicon(String filepath) {

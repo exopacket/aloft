@@ -1,22 +1,31 @@
 package com.inteliense.aloft.compiler.lang.keywords.elements.base.validation;
 
+import com.inteliense.aloft.compiler.lang.keywords.elements.base.validation.conditionals.base.ConditionalValueObject;
+import com.inteliense.aloft.compiler.lang.keywords.elements.base.validation.conditionals.base.ConditionalValues;
+import com.inteliense.aloft.compiler.lang.keywords.elements.base.validation.conditionals.base.Conditions;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptObject;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptVariableRef;
 import com.inteliense.aloft.server.html.elements.js.types.ElementRef;
 
+import java.util.ArrayList;
+
 public class EmailValidator extends Validator {
 
-    public EmailValidator(String value) {
-        super(value);
+    private ConditionalValues conditionalValues;
+
+    public EmailValidator(String valueSelector, ConditionalValues values) {
+        super(valueSelector);
+        this.conditionalValues = values;
     }
 
     @Override
     public JavaScriptObject validation(ElementRef ref) {
+        this.conditionalValues.setRef(ref);
         return new JavaScriptObject() {
             @Override
             protected void create() {
                 ElementRef r = ref.getChild("input");
-                child(r.build());
+                placeRef(r);
                 JavaScriptVariableRef v = constant("val");
                 variable(r.getId());
                 chain(value);
@@ -25,45 +34,16 @@ public class EmailValidator extends Validator {
                 construct("RegExp", FunctionArg.raw("/^(([^<>()[\\]\\\\.,;:\\s@\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\"]+)*)|.(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$/"));
                 chain( "test", FunctionArg.ref(v));
                 end();
-                variable(r.getId());
-                chain("style", "boxShadow");
-                set();
-                str("rgba(255, 0, 0, 0.45) 0px 0px 0px 3px");
-                end();
-                variable(r.getId());
-                chain("style", "border");
-                set();
-                str("solid 0.5px rgba(255, 0, 0, 0.7)");
-                end();
-                JavaScriptObject validObject = new JavaScriptObject() {
-                    @Override
-                    protected void create() {
-                        ElementRef help = ref.getChild("help-text");
-                        child(help.build());
-                        variable(help.getId());
-                        chain("innerHTML");
-                        set();
-                        str("VALID");
-                    }
-                }.build();
-                JavaScriptObject invalidObject = new JavaScriptObject() {
-                    @Override
-                    protected void create() {
-                        ElementRef help = ref.getChild("help-text");
-                        child(help.build());
-                        variable(help.getId());
-                        chain("innerHTML");
-                        set();
-                        str("INVALID");
-                    }
-                }.build();
+                JavaScriptObject[] validValues = conditionalValues.getValue("input", "text-input-validation", Conditions.ACTIVATE);
+                JavaScriptObject[] invalidValues = conditionalValues.getValue("input", "text-input-validation", Conditions.INACTIVE);
+                JavaScriptObject validObject = JavaScriptObject.builder(validValues);
+                JavaScriptObject invalidObject = JavaScriptObject.builder(invalidValues);
 
-                ConditionGroup ifTrue = new ConditionGroup(Condition.truthy(res.get()));
-                ConditionGroup ifFalse = ConditionGroup.createElse();
+                ConditionGroup ifTrue = createCondition(Condition.truthy(res.get()));
+                ConditionGroup ifFalse = createElse();
                 ifTrue.setSlot(validObject);
                 ifFalse.setSlot(invalidObject);
                 condition(ifTrue, ifFalse);
-
                 setVars();
             }
         };

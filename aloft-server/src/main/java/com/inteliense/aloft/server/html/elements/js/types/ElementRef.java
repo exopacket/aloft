@@ -1,9 +1,11 @@
 package com.inteliense.aloft.server.html.elements.js.types;
 
+import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleConditionalClass;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.js.JavaScriptObject;
 import com.inteliense.aloft.utils.encryption.A32;
 import com.inteliense.aloft.utils.encryption.SHA;
+import com.inteliense.aloft.utils.global.__;
 
 import java.sql.SQLOutput;
 import java.util.ArrayList;
@@ -13,16 +15,25 @@ import java.util.HashMap;
 public class ElementRef extends JavaScriptObject {
 
     private String id;
+    private String elementKey = null;
     private ArrayList<Ref> refs = new ArrayList<>();
-
     private HashMap<String, ElementRef> children = new HashMap<>();
+    private ArrayList<AloftStyleConditionalClass> conditionalClasses = new ArrayList<>();
 
-    public ElementRef(String id) { super(); this.id = id; }
+    public ElementRef(String id, String elementKey) { super(); this.id = id; this.elementKey = elementKey; }
 
     public static ElementRef el(HtmlElement el) {
-        ElementRef ref = new ElementRef(A32.casified(SHA.getSha1(el.getVeryUniqueId())));
+        ElementRef ref = new ElementRef(A32.casified(SHA.getSha1(el.getVeryUniqueId())), el.getRef());
         ElementRef.Selector selector = ElementRef.Selector.byAttribute("data-uid", el.getUniqueId());
         ref.addRef(selector, ElementRef.Type.SINGLE);
+        return ref;
+    }
+
+    public static ElementRef el(HtmlElement el, ArrayList<AloftStyleConditionalClass> conditionalClasses) {
+        ElementRef ref = new ElementRef(A32.casified(SHA.getSha1(el.getVeryUniqueId())), el.getRef());
+        ElementRef.Selector selector = ElementRef.Selector.byAttribute("data-uid", el.getUniqueId());
+        ref.addRef(selector, ElementRef.Type.SINGLE);
+        ref.setConditionalClasses(conditionalClasses);
         return ref;
     }
 
@@ -30,12 +41,134 @@ public class ElementRef extends JavaScriptObject {
         this.refs.add(new Ref(selector, type));
     }
 
+    public void setConditionalClasses(ArrayList<AloftStyleConditionalClass> conditionalClasses) {
+        this.conditionalClasses = conditionalClasses;
+    }
+
     public ElementRef getChild(String key) {
+        if(__.same(key, elementKey)) return this;
+        if(!children.containsKey(key)) return null;
         return children.get(key);
+    }
+
+    public String getElementKey() {
+        return elementKey;
     }
 
     public void addChild(String key, ElementRef el) {
         this.children.put(key, el);
+    }
+
+    public JavaScriptObject replaceClass(String key, String groupId) {
+        ArrayList<AloftStyleConditionalClass> toAdd = new ArrayList<>();
+        ArrayList<AloftStyleConditionalClass> toRemove = new ArrayList<>();
+        ArrayList<AloftStyleConditionalClass> toPlace = new ArrayList<>();
+        ArrayList<String> toPlaceIds = new ArrayList<>();
+        for(AloftStyleConditionalClass c : conditionalClasses) {
+            if(c.match(groupId)) {
+                toPlace.add(c);
+                if (c.match(groupId, key)) toAdd.add(c);
+                else toRemove.add(c);
+            }
+        }
+        if(toAdd.isEmpty() && toRemove.isEmpty()) return null;
+        return new JavaScriptObject() {
+            @Override
+            protected void create() {
+                for(AloftStyleConditionalClass c : toPlace) {
+                    ElementRef ref = ElementRef.this;
+                    if(__.isset(children.get(c.getElementKey()))) ref = children.get(c.getElementKey());
+                    if(!toPlaceIds.contains(ref.getId())) {
+                        placeRef(ref);
+                        end();
+                        toPlaceIds.add(ref.getId());
+                    }
+                }
+                for(AloftStyleConditionalClass c : toAdd) {
+                    ElementRef ref = ElementRef.this;
+                    if(__.isset(children.get(c.getElementKey()))) ref = children.get(c.getElementKey());
+                    variable(ref.getId());
+                    chain("classList");
+                    chain("add", FunctionArg.raw("\"" + c.getClassName() + "\""));
+                    end();
+                }
+                for(AloftStyleConditionalClass c : toRemove) {
+                    ElementRef ref = ElementRef.this;
+                    if(__.isset(children.get(c.getElementKey()))) ref = children.get(c.getElementKey());
+                    variable(ref.getId());
+                    chain("classList");
+                    chain("remove", FunctionArg.raw("\"" + c.getClassName() + "\""));
+                    end();
+                }
+            }
+
+        }.build();
+    }
+
+    //TODO more dynamic class operations
+
+    public JavaScriptObject deactivateClass(String key, String groupId) {
+        ArrayList<AloftStyleConditionalClass> toRemove = new ArrayList<>();
+        ArrayList<AloftStyleConditionalClass> toPlace = new ArrayList<>();
+        ArrayList<String> toPlaceIds = new ArrayList<>();
+        for(AloftStyleConditionalClass c : conditionalClasses) {
+            if(c.match(groupId)) {
+                if (c.match(groupId, key)) {
+                    toRemove.add(c);
+                    toPlace.add(c);
+                }
+            }
+        }
+        if(toRemove.isEmpty()) return null;
+        return new JavaScriptObject() {
+            @Override
+            protected void create() {
+                for(AloftStyleConditionalClass c : toPlace) {
+                    ElementRef ref = ElementRef.this;
+                    if(__.isset(children.get(c.getElementKey()))) ref = children.get(c.getElementKey());
+                    if(!toPlaceIds.contains(ref.getId())) {
+                        placeRef(ref);
+                        end();
+                        toPlaceIds.add(ref.getId());
+                    }
+                }
+                for(AloftStyleConditionalClass c : toRemove) {
+                    ElementRef ref = ElementRef.this;
+                    if(__.isset(children.get(c.getElementKey()))) ref = children.get(c.getElementKey());
+                    variable(ref.getId());
+                    chain("classList");
+                    chain("remove", FunctionArg.raw("\"" + c.getClassName() + "\""));
+                    end();
+                }
+            }
+
+        }.build();
+    }
+
+    public JavaScriptObject deactivateGroup(String groupId) {
+        ArrayList<AloftStyleConditionalClass> toRemove = new ArrayList<>();
+        for(AloftStyleConditionalClass c : conditionalClasses) if(c.inGroup(groupId)) toRemove.add(c);
+        if(toRemove.isEmpty()) return null;
+        return new JavaScriptObject() {
+            @Override
+            protected void create() {
+                for(AloftStyleConditionalClass c : conditionalClasses) {
+                    ElementRef ref = ElementRef.this;
+                    if(__.isset(children.get(c.getElementKey()))) ref = children.get(c.getElementKey());
+                    placeRef(ref);
+                    end();
+                }
+                for(AloftStyleConditionalClass c : toRemove) {
+                    ElementRef ref = ElementRef.this;
+                    if(__.isset(children.get(c.getElementKey()))) ref = children.get(c.getElementKey());
+                    variable(ref.getId());
+                    chain("classList");
+                    chain("remove", FunctionArg.raw("\"" + c.getClassName() + "\""));
+                    end();
+                }
+            }
+
+        }.build();
     }
 
     public void addChild(String key, HtmlElement el) {

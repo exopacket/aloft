@@ -41,7 +41,12 @@ public class JavaScriptBuilder {
     }
 
     public JavaScriptElement getElement() {
-        return null;
+        return new JavaScriptObject() {
+            @Override
+            protected void create() {
+                for(JavaScriptObject object : objects) child(object);
+            }
+        }.build().getJs();
     }
 
     public JavaScriptFile getFile() {

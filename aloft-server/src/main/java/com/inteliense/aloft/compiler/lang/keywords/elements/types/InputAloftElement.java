@@ -4,6 +4,8 @@ import com.inteliense.aloft.compiler.lang.base.ElementMapper;
 import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElementSubtype;
+import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyle;
+import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStylePair;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
 import com.inteliense.aloft.server.html.elements.types.Content;
 import com.inteliense.aloft.utils.global.__;
@@ -195,6 +197,24 @@ public class InputAloftElement extends AloftElement {
 
         vars.put("active-color", null);
         addOverride("active-color", "background-color", "focus");
+
+        AloftStyle s1 = new AloftStyle();
+        s1.addStyle(new AloftStylePair("box-shadow", "rgba(255, 0, 0, 0.45) 0px 0px 0px 3px", true));
+        s1.addStyle(new AloftStylePair("border", "solid 0.5px rgba(255, 0, 0, 0.7)", true));
+        addConditionalStyle("text-input-validation", "input-error", "input", s1);
+
+        AloftStyle s2 = new AloftStyle();
+        s2.addStyle(new AloftStylePair("box-shadow", "rgba(0, 255, 0, 0.45) 0px 0px 0px 3px", true));
+        s2.addStyle(new AloftStylePair("border", "solid 0.5px rgba(0, 255, 0, 0.7)", true));
+        addConditionalStyle("text-input-validation","input-success", "input", s2);
+
+        AloftStyle s3 = new AloftStyle();
+        s3.addStyle(new AloftStylePair("color", "red", true));
+        addConditionalStyle("text-input-validation","input-error", "help-text", s3);
+
+        AloftStyle s4 = new AloftStyle();
+        s4.addStyle(new AloftStylePair("color", "green", true));
+        addConditionalStyle("text-input-validation","input-success", "help-text", s4);
     }
 
 }

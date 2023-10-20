@@ -4,6 +4,7 @@ import com.inteliense.aloft.compiler.lang.base.ElementMapper;
 import com.inteliense.aloft.compiler.lang.keywords.AloftTheme;
 import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
 import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
+import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyle;
 import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleClass;
 import com.inteliense.aloft.compiler.lang.lib.ModuleElementAttributes;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
@@ -71,6 +72,7 @@ public abstract class AloftElement extends AloftComponent {
         theme.getStyleModule().get(c).fromKey(key).apply(element, this.getModuleSubclasses());
         applyStyle(element, theme);
     }
+
 
     protected void applyStyle(HtmlElement element, AloftTheme theme) {
 //        setClasses(theme.mergeByHash(getStyle().getHashes()), theme);

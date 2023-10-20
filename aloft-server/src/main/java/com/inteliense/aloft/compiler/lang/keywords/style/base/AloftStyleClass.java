@@ -2,8 +2,8 @@ package com.inteliense.aloft.compiler.lang.keywords.style.base;
 
 public class AloftStyleClass {
 
-    private AloftStyle style;
-    private String className;
+    protected AloftStyle style;
+    protected String className;
 
     public AloftStyleClass(String className, AloftStyle style) {
         this.className = className;
@@ -17,6 +17,10 @@ public class AloftStyleClass {
     public String getTagClassName() {
         if(className.contains(":")) return className.split(":")[0];
         return className;
+    }
+
+    public boolean isConditional() {
+        return false;
     }
 
     public String getClassName() {

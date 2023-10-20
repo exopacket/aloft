@@ -1,5 +1,6 @@
 package com.inteliense.aloft.server.html.elements.js;
 
+import com.inteliense.aloft.server.html.elements.js.types.ElementRef;
 import com.inteliense.aloft.utils.encryption.A32;
 import com.inteliense.aloft.utils.encryption.SHA;
 import com.inteliense.aloft.utils.global.__;
@@ -13,11 +14,23 @@ public class JavaScriptFunctionRef {
     private ArrayList<JavaScriptVariableRef> args = new ArrayList<>();
     private boolean call = false;
 
+    public JavaScriptFunctionRef(String key) {
+        this.key = key;
+    }
+
     public JavaScriptFunctionRef(String key, String... args) {
         this.key = key;
         for(int i=0; i<args.length; i++) {
-            JavaScriptVariableRef var = new JavaScriptVariableRef(args[i]);
+            JavaScriptVariableRef var = new JavaScriptVariableRef(args[i], true);
             var.set();
+            this.args.add(var);
+        }
+    }
+
+    public JavaScriptFunctionRef(String key, JavaScriptVariableRef... args) {
+        this.key = key;
+        for(int i=0; i<args.length; i++) {
+            JavaScriptVariableRef var = args[i];
             this.args.add(var);
         }
     }
@@ -65,16 +78,26 @@ public class JavaScriptFunctionRef {
         return this.var;
     }
 
+    public String get(Object...args) {;
+        return call(args);
+    }
+
     public void willCall() {
         this.call = true;
     }
 
-    public String call() {
+    public String call(Object...args) {
         String ln = this.var + "(";
-        for(int i=0; i< args.size(); i++) {
+        for(int i=0; i< args.length; i++) {
             if(i > 0) ln += ", ";
-            JavaScriptVariableRef ref = args.get(i);
-            ln += ref.get();
+            String str = "";
+            Object arg = args[i];
+            if(arg instanceof String) str = ((String) arg);
+            else if(arg instanceof JavaScriptVariableRef) str = ((JavaScriptVariableRef) arg).get();
+            else if(arg instanceof JavaScriptFunctionRef) str = ((JavaScriptFunctionRef) arg).get();
+            else if(arg instanceof ElementRef) str = ((ElementRef) arg).getId();
+            else str = String.valueOf(arg);
+            ln += str;
         }
         ln += ")";
         return ln;

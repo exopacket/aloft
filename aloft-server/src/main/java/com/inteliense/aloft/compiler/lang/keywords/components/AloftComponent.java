@@ -8,10 +8,7 @@ import com.inteliense.aloft.compiler.lang.keywords.listeners.base.AloftListener;
 import com.inteliense.aloft.compiler.lang.keywords.style.base.*;
 import com.inteliense.aloft.compiler.lang.types.base.T;
 import com.inteliense.aloft.server.html.elements.HtmlElement;
-import com.inteliense.aloft.server.html.elements.js.AppJavaScript;
-import com.inteliense.aloft.server.html.elements.js.JavaScript;
-import com.inteliense.aloft.server.html.elements.js.JavaScriptBuilder;
-import com.inteliense.aloft.server.html.elements.js.JavaScriptWriterType;
+import com.inteliense.aloft.server.html.elements.js.*;
 import com.inteliense.aloft.server.html.elements.js.types.ElementRef;
 import com.inteliense.aloft.server.http.supporting.VariableNode;
 import com.inteliense.aloft.server.http.supporting.VariableTree;
@@ -108,6 +105,10 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
 
     public void applyOverrides() {  }
 
+    public void addConditionalStyle(String groupId, String key, String elementKey, AloftStyle style) {
+        this.classes.add(new AloftStyleConditionalClass(A32.casified(SHA.getHmac256(key, elementKey)), style, groupId, key, elementKey));
+    }
+
     public ArrayList<AloftStyleClass> getAloftClasses() {
         return this.classes;
     }
@@ -203,9 +204,16 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
         return A32.casified(hash);
     }
 
+    private ArrayList<AloftStyleConditionalClass> getConditionalClasses() {
+        ArrayList<AloftStyleConditionalClass> conditionalClasses = new ArrayList<>();
+        for(AloftStyleClass c : classes) if(c.isConditional()) conditionalClasses.add((AloftStyleConditionalClass) c);
+        return conditionalClasses;
+    }
+
     @Override
     public HtmlElement html(AloftTheme theme, ElementMapper mapper) {
         HtmlElement root = create(theme, mapper);
+        root.setConditionalClasses(getConditionalClasses());
         root.setParentComponent(parentComponent);
         for(HtmlElement child : root.getChildren()) {
             child.setParentComponent(getName());
@@ -249,16 +257,17 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
 
     @Override
     public void javascript(AtomicReference<AppJavaScript> js) {
+        AppJavaScript appJs = js.get();
         for(int i=0; i<this.listeners.size(); i++) {
             this.listeners.get(i).setRef();
-            this.listeners.get(i).inline();
+            this.listeners.get(i).setMapper(appJs.getMapper());
+//            this.listeners.get(i).inline();
             jsBuilder.addObject(this.listeners.get(i).getObject());
         }
         if(this.jsBuilder.empty()) {
             for(int i=0; i<this.children.size(); i++) this.children.get(i).javascript(js);
             return;
         }
-        AppJavaScript appJs = js.get();
         this.scripts = appJs.apply(new JavaScript(JavaScriptWriterType.ELEMENT, this.jsBuilder));
         js.set(appJs);
         for(int i=0; i<this.children.size(); i++) this.children.get(i).javascript(js);

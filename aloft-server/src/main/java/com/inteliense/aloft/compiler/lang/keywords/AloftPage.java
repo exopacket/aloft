@@ -173,6 +173,7 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
     private HtmlElement getRoot(ElementMapper mapper) {
         HtmlElement root = this.root.html(this.theme, mapper).map(mapper);
         this.root.javascript(this.js);
+        this.root.appendCss(this.css);
         return root;
     }
 
@@ -187,6 +188,7 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
     private Body buildBody(ElementMapper mapper) {
         Body body = new Body();
         body.addChild(getRoot(mapper));
+        body.addJs(this.js.get().get());
         return body;
     }
 
@@ -200,6 +202,7 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
         head.addCss(theme.getStyleModule().rootVars());
         head.addCss(css);
         head.addCss("html, body { margin: 0; height: 100%; }");
+//        head.addJs(this.js.get().get());
         return head;
     }
 

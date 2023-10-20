@@ -21,6 +21,7 @@ public class WebServerHandler implements HttpHandler {
         try {
             app(t);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }

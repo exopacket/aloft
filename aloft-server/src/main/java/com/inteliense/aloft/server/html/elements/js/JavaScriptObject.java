@@ -10,33 +10,127 @@ import java.util.HashMap;
 public abstract class JavaScriptObject {
 
     private HashMap<String, JSOV> vars = new HashMap<>();
-    private ArrayList<JavaScriptVariableRef> variableRefs = new ArrayList<>();
-    private ArrayList<JavaScriptFunctionRef> functionRefs = new ArrayList<>();
+    private HashMap<Integer, ArrayList<JavaScriptVariableRef>> variableRefs = new HashMap<>();
+    private HashMap<Integer, ArrayList<JavaScriptFunctionRef>> functionRefs = new HashMap<>();
+
     protected ArrayList<Object> lines = new ArrayList<>();
+    protected HashMap<Integer, ArrayList<String>> placedRefs = new HashMap<>();
+    protected HashMap<Integer, ArrayList<String>> parentPlacedRefs = new HashMap<>();
+    protected boolean inheritsRefs = true;
     private int slotIndex = -1;
+    private JavaScriptObject slot;
     private boolean built = false;
 
     public JavaScriptObject build() {
-        return build(new ArrayList<>(), new ArrayList<>(), false);
+        return build(null, false);
     }
 
-    public JavaScriptObject build(ArrayList<JavaScriptVariableRef> variableRefs, ArrayList<JavaScriptFunctionRef> functionRefs) {
-        return build(variableRefs, functionRefs, false);
+    public JavaScriptObject build(JavaScriptRefMapper mapper) {
+        return build(mapper, built);
     }
 
-    public JavaScriptObject build(ArrayList<JavaScriptVariableRef> variableRefs, ArrayList<JavaScriptFunctionRef> functionRefs, boolean refresh) {
-        if(refresh) {
-            this.lines.clear();
-            create();
-            built = true;
-        } else if(!built) {
-            create();
-            built = true;
+    public JavaScriptObject build(JavaScriptRefMapper mapper, boolean refresh) {
+        if(__.isset(mapper)) {
+            HashMap<Integer, ArrayList<String>> placedRefs = mapper.getPlacedRefs();
+            if (inheritsRefs) {
+                if ((!this.placedRefs.isEmpty() && !this.parentPlacedRefs.isEmpty()) || built) {
+                    updateRefs(mapper, true);
+                    this.placedRefs.clear();
+                    for (int i = 0; i < this.parentPlacedRefs.size(); i++) {
+                        this.placedRefs.put(i + 1, parentPlacedRefs.get(i + 1));
+                    }
+                } else if (this.parentPlacedRefs.isEmpty() && this.placedRefs.isEmpty()) {
+                    for (int i = 0; i < placedRefs.size(); i++) {
+                        this.parentPlacedRefs.put(i + 1, placedRefs.get(i + 1));
+                        this.placedRefs.put(i + 1, placedRefs.get(i + 1));
+                    }
+                }
+            }
+            if (refresh) {
+                this.lines.clear();
+                this.vars.clear();
+                this.variableRefs.clear();
+                this.functionRefs.clear();
+                this.variableRefs.putAll(mapper.getVariableRefs());
+                this.functionRefs.putAll(mapper.getFunctionRefs());
+                create();
+                if (slotIndex >= 0 && __.isset(setSlot())) setSlot();
+                postCreate(mapper);
+                built = true;
+            } else if (!built) {
+                this.variableRefs.putAll(mapper.getVariableRefs());
+                this.functionRefs.putAll(mapper.getFunctionRefs());
+                create();
+                if (slotIndex >= 0 && __.isset(setSlot())) setSlot();
+                postCreate(mapper);
+                built = true;
+            }
+            if (inheritsRefs) updateRefs(mapper, false);
+        } else {
+            if (refresh) {
+                this.lines.clear();
+                this.vars.clear();
+                create();
+                if (slotIndex >= 0 && __.isset(setSlot())) setSlot();
+                built = true;
+            } else if (!built) {
+                create();
+                if (slotIndex >= 0 && __.isset(setSlot())) setSlot();
+                built = true;
+            }
         }
         return this;
     }
 
     protected abstract void create();
+
+    public void postCreate(JavaScriptRefMapper mapper) {
+        int level = (placedRefs.isEmpty()) ? 1 : placedRefs.size();
+        if(!placedRefs.containsKey(level)) placedRefs.put(level, new ArrayList<>());
+        for(int i=0; i<lines.size(); i++) {
+            Object line = lines.get(i);
+            if(line instanceof ElementRef) {
+                String id = ((ElementRef) line).getId();
+                if (placedRefsContains(id, level)) {
+                    lines.set(i, new Void());
+                } else {
+                    placedRefs.get(level).add(id);
+                    lines.set(i, ((ElementRef) line).build());
+                }
+            } else if(line instanceof ConditionGroup) {
+                lines.set(i, ((ConditionGroup) line).build(mapper));
+            } else if(line instanceof BlockStart) {
+                lines.set(i, ((BlockStart) line).build());
+                level++;
+                placedRefs.put(level, new ArrayList<>());
+            } else if(line instanceof BlockEnd) {
+                lines.set(i, ((BlockEnd) line).build());
+                placedRefs.remove(level);
+                level--;
+            } else if(line instanceof JavaScriptObject) {
+                lines.set(i, ((JavaScriptObject) line).build(mapper));
+            }
+        }
+    }
+
+    private boolean placedRefsContains(String id, int level) {
+        if(placedRefs.size() < level) return false;
+        for(int i=0; i<level; i++) {
+            if(placedRefs.get(i + 1).contains(id)) return true;
+        }
+        return false;
+    }
+
+    private boolean placedRefsContains(HashMap<Integer, ArrayList<String>> placedRefs, String id, int level) {
+        int x = level;
+        if(placedRefs.size() < level) x = placedRefs.size();
+        for(int i=0; i<x; i++) {
+            if(!placedRefs.containsKey(i + 1)) continue;
+            if(!__.isset(placedRefs.get(i + 1))) continue;
+            if(placedRefs.get(i + 1).contains(id)) return true;
+        }
+        return false;
+    }
 
     public void setVars(String[] vars) {
         for(int i=0; i<vars.length; i++) {
@@ -69,13 +163,26 @@ public abstract class JavaScriptObject {
     }
 
     public JavaScriptObject setSlot(JavaScriptObject slot) {
+        this.slot = slot;
+        if(slotIndex < 0) return this.slot;
         for(int i=0; i<lines.size(); i++) {
             if(slotIndex == i) {
                 lines.set(i, slot);
                 break;
             }
         }
-        return slot;
+        return this.slot;
+    }
+
+    public JavaScriptObject setSlot() {
+        if(!__.isset(slot)) return null;
+        for(int i=0; i<lines.size(); i++) {
+            if(slotIndex == i) {
+                lines.set(i, slot);
+                break;
+            }
+        }
+        return this.slot;
     }
 
     public String string() {
@@ -83,6 +190,7 @@ public abstract class JavaScriptObject {
         for(int i=0; i<lines.size(); i++) {
             Object obj = lines.get(i);
             if (!__.isset(lines.get(i))) continue;
+            if (obj instanceof Void) continue;
             if (obj instanceof JavaScriptObject) builder.append(((JavaScriptObject) obj).getJs().getValue());
             if (obj.getClass() == String.class) builder.append((String) obj);
         }
@@ -94,6 +202,7 @@ public abstract class JavaScriptObject {
         for(int i=0; i<lines.size(); i++) {
             Object obj = lines.get(i);
             if (!__.isset(lines.get(i))) continue;
+            if (obj instanceof Void) continue;
             if (obj instanceof JavaScriptObject) builder.append(((JavaScriptObject) obj).getJs().getValue());
             if (obj.getClass() == String.class) builder.append((String) obj);
         }
@@ -113,10 +222,55 @@ public abstract class JavaScriptObject {
         add(var);
     }
 
+    public void updateRefs(JavaScriptRefMapper mapper, boolean remove) {
+        HashMap<Integer, ArrayList<String>> parent = mapper.getPlacedRefs();
+        if(!__.isset(parent)) parent = new HashMap<>();
+        for(Integer key : placedRefs.keySet()) {
+            ArrayList<String> currentRefs = placedRefs.get(key);
+            ArrayList<String> parentRefs = (remove) ? parentPlacedRefs.get(key) : new ArrayList<>();
+            if(!remove) {
+                if (parent.containsKey(key)) {
+                    if(!__.isset(parent.get(key))) parent.put(key, new ArrayList<>());
+                    for (String ref : currentRefs) {
+                        if(!placedRefsContains(parent, ref, key)) parent.get(key).add(ref);
+                    }
+                } else {
+                    for (String ref : currentRefs) {
+                        if(!placedRefsContains(parent, ref, key) && !parentRefs.contains(ref)) parentRefs.add(ref);
+                    }
+                    parent.put(key, parentRefs);
+                }
+            } else {
+                for (String ref : currentRefs) {
+                    if (!placedRefsContains(parentPlacedRefs, ref, key) && placedRefsContains(parent, ref, key)) parent.get(key).remove(ref);
+                }
+                if(__.isset(parent.get(key)) && parent.get(key).isEmpty() && parent.size() > 1) parent.remove(key);
+            }
+        }
+        mapper.syncRefs(parent);
+    }
+
+    public void removeUniqueRefs(HashMap<Integer, ArrayList<String>> parent) {
+        for(Integer key : placedRefs.keySet()) {
+            ArrayList<String> currentRefs = placedRefs.get(key);
+            ArrayList<String> parentRefs = new ArrayList<>();
+            if(parent.containsKey(key)) parentRefs.addAll(parent.get(key));
+            else {
+                for(String ref : currentRefs) {
+                    if(!parentRefs.contains(ref)) parentRefs.add(ref);
+                }
+            }
+            parent.put(key, parentRefs);
+        }
+    }
+
     protected void placeRef(FunctionArg var) {
         JSOV v = getVar((String) var.getValue());
-        if(v.type() == ElementRef.class) child(((ElementRef) v.get()).build());
+        if(v.type() == ElementRef.class) placeRef(((ElementRef) v.get()));
+    }
 
+    protected void placeRef(ElementRef ref) {
+        this.lines.add(ref);
     }
 
     protected void var(FunctionArg var) {
@@ -144,9 +298,9 @@ public abstract class JavaScriptObject {
             } else {
                 Object arg = args[i].getValue();
                 if(arg.getClass() == String.class) ln += "\"" + arg + "\"";
-                else if(arg instanceof JavaScriptObject) ln += ((JavaScriptObject) arg).build(this.variableRefs, this.functionRefs).getJs().getValue();
                 else if(arg instanceof JavaScriptVariableRef) ln += getRef((JavaScriptVariableRef) arg);
                 else if(arg instanceof JavaScriptFunctionRef) ln += getRef((JavaScriptFunctionRef) arg);
+                else if(arg instanceof JavaScriptObject) ln += ((JavaScriptObject) arg).build().getJs().getValue();
                 else ln += String.valueOf(arg);
             }
         }
@@ -154,9 +308,11 @@ public abstract class JavaScriptObject {
     }
 
     protected String getRef(String ref) {
-        for(JavaScriptVariableRef var : variableRefs) {
-            if(var.match(ref)) {
-                return var.get();
+        for(Integer key : variableRefs.keySet()) {
+            for (JavaScriptVariableRef var : variableRefs.get(key)) {
+                if (var.match(ref)) {
+                    return var.get();
+                }
             }
         }
         return "";
@@ -164,9 +320,11 @@ public abstract class JavaScriptObject {
 
     protected String getRef(JavaScriptVariableRef ref) {
         if(ref.initialized()) return ref.get();
-        for(JavaScriptVariableRef var : variableRefs) {
-            if(var.match(ref.key())) {
-                return var.get();
+        for(Integer key : variableRefs.keySet()) {
+            for (JavaScriptVariableRef var : variableRefs.get(key)) {
+                if (var.match(ref.key())) {
+                    return var.get();
+                }
             }
         }
         return "";
@@ -174,9 +332,11 @@ public abstract class JavaScriptObject {
 
     protected String getRef(JavaScriptFunctionRef ref) {
         if(ref.initialized()) return ref.get();
-        for(JavaScriptFunctionRef var : functionRefs) {
-            if(var.match(ref.key())) {
-                return var.get();
+        for(Integer key : functionRefs.keySet()) {
+            for (JavaScriptFunctionRef var : functionRefs.get(key)) {
+                if (var.match(ref.key())) {
+                    return var.get();
+                }
             }
         }
         return "";
@@ -210,7 +370,7 @@ public abstract class JavaScriptObject {
         add(ln);
     }
 
-    protected void _if(Condition... conditions) {
+    protected void _if(ConditionGroup.Condition[] conditions) {
         String ln = "if(";
         for(int i=0; i<conditions.length; i++) {
             if(i > 0) ln += " ";
@@ -220,7 +380,7 @@ public abstract class JavaScriptObject {
         add(ln);
     }
 
-    protected void _elseif(Condition... conditions) {
+    protected void _elseif(ConditionGroup.Condition[] conditions) {
         String ln = "else if(";
         for(int i=0; i<conditions.length; i++) {
             if(i > 0) ln += " ";
@@ -251,18 +411,26 @@ public abstract class JavaScriptObject {
     }
 
     protected JavaScriptVariableRef let(String var) {
-        JavaScriptVariableRef ref = new JavaScriptVariableRef(var);
-        ref.set();
+        JavaScriptVariableRef ref = new JavaScriptVariableRef(false);
         lines.add("let " + ref.get() + " = ");
-        variableRefs.add(ref);
+        return ref;
+    }
+
+    protected JavaScriptVariableRef let() {
+        JavaScriptVariableRef ref = new JavaScriptVariableRef(false);
         return ref;
     }
 
     protected JavaScriptVariableRef constant(String var) {
-        JavaScriptVariableRef ref = new JavaScriptVariableRef(var);
+        JavaScriptVariableRef ref = new JavaScriptVariableRef(var, true);
         ref.set();
         lines.add("const " + ref.get() + " = ");
-        variableRefs.add(ref);
+        return ref;
+    }
+
+    protected JavaScriptVariableRef constant() {
+        JavaScriptVariableRef ref = new JavaScriptVariableRef(true);
+        lines.add("const " + ref.get() + " = ");
         return ref;
     }
 
@@ -304,24 +472,9 @@ public abstract class JavaScriptObject {
         add(ref.get(true));
     }
 
-    public static JavaScriptObject function(String name, String...args) {
-
-        return new JavaScriptObject() {
-            @Override
-            public void create() {
-                JavaScriptFunctionRef ref = new JavaScriptFunctionRef(name, args);
-                ref.set();
-                this.namedFunction(ref.get(), ref.args());
-                this.blockStart();
-                this.slot();
-                this.blockEnd();
-            }
-        };
-    }
-
     public void condition(ConditionGroup...groups) {
         for(int i=0; i<groups.length; i++) {
-            child(groups[i].get(i > 0).build());
+            child(groups[i].get(i > 0));
         }
     }
 
@@ -338,67 +491,95 @@ public abstract class JavaScriptObject {
     }
 
     protected void blockStart() {
-        lines.add(" { ");
+        lines.add(new BlockStart());
     }
 
     protected void blockEnd() {
-        lines.add(" } ");
+        lines.add(new BlockEnd());
     }
 
     protected void add(String ln) {
         lines.add(ln);
     }
 
-    public static class ConditionGroup {
+    protected ConditionGroup createCondition(Condition...conditions) {
+        return new ConditionGroup(conditions);
+    }
+
+    protected ConditionGroup createElse() {
+        return new ConditionGroup();
+    }
+
+    public static JavaScriptObject builder(JavaScriptObject... objects) {
+        return new JavaScriptObject() {
+            @Override
+            protected void create() {
+                for(int i=0; i<objects.length; i++) {
+                    JavaScriptObject object = objects[i];
+                    if(object instanceof ElementRef) placeRef((ElementRef) object);
+                    else child(object);
+                }
+            }
+        }.build();
+    }
+    public class ConditionGroup extends JavaScriptObject {
 
         private ArrayList<Condition> conditions = new ArrayList<>();
-        private JavaScriptObject slot = null;
-
+        private boolean elseif = false;
         public ConditionGroup(Condition... conditions) {
             this.conditions.addAll(Arrays.asList(conditions));
         }
 
         public ConditionGroup() { }
 
-        public static ConditionGroup createElse() {
-            return new ConditionGroup();
-        }
-
         public void addCondition(Condition condition) {
             this.conditions.add(condition);
         }
 
-        public void setSlot(JavaScriptObject object) {
-            this.slot = object.build();
-        }
+        @Override
+        protected void create() {
+            if(conditions.isEmpty()) this._else();
+            else if(elseif) {
+                Condition[] arr = new Condition[conditions.size()];
+                conditions.toArray(arr);
+                this._elseif(arr);
+            } else {
+                Condition[] arr = new Condition[conditions.size()];
+                conditions.toArray(arr);
+                this._if(arr);
+            }
 
+            this.blockStart();
+            this.slot();
+            this.blockEnd();
+        }
         public JavaScriptObject get(boolean elseif) {
-            JavaScriptObject block = new JavaScriptObject() {
-                @Override
-                public void create() {
-
-                    if(conditions.isEmpty()) this._else();
-                    else if(elseif) {
-                        Condition[] arr = new Condition[conditions.size()];
-                        conditions.toArray(arr);
-                        this._elseif(arr);
-                    } else {
-                        Condition[] arr = new Condition[conditions.size()];
-                        conditions.toArray(arr);
-                        this._if(arr);
-                    }
-
-                    this.blockStart();
-                    this.slot();
-                    this.blockEnd();
-
-                }
-            };
-            block.build();
-            if(__.isset(slot)) block.setSlot(slot);
-            return block;
+            this.elseif = elseif;
+            return this;
         }
 
+    }
+
+    private static class Void extends JavaScriptObject {
+        @Override
+        protected void create() {
+        }
+    }
+
+    private static class BlockStart extends JavaScriptObject {
+
+        @Override
+        protected void create() {
+            add(" { ");
+        }
+    }
+
+    private static class BlockEnd extends JavaScriptObject {
+
+        @Override
+        protected void create() {
+            add(" } ");
+        }
     }
 
     protected enum Compare {
@@ -493,7 +674,7 @@ public abstract class JavaScriptObject {
         }
 
         public static FunctionArg ref(String key) {
-            return new FunctionArg(new JavaScriptVariableRef(key), false);
+            return new FunctionArg(new JavaScriptVariableRef(key, true), false);
         }
 
         public static FunctionArg var(Object value) {

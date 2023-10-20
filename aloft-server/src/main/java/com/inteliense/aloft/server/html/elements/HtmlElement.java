@@ -2,6 +2,7 @@ package com.inteliense.aloft.server.html.elements;
 
 import com.inteliense.aloft.compiler.lang.base.ElementMapper;
 import com.inteliense.aloft.compiler.lang.keywords.components.AloftComponent;
+import com.inteliense.aloft.compiler.lang.keywords.style.base.AloftStyleConditionalClass;
 import com.inteliense.aloft.server.html.elements.js.*;
 import com.inteliense.aloft.server.html.elements.js.types.ElementRef;
 import com.inteliense.aloft.server.html.elements.types.Content;
@@ -16,6 +17,7 @@ public abstract class HtmlElement {
     private ArrayList<HtmlElement> children = new ArrayList<HtmlElement>();
     private ArrayList<String[]> styles = new ArrayList<String[]>();
     private HashMap<String, String> attributes = new HashMap<String, String>();
+    private ArrayList<AloftStyleConditionalClass> conditionalClasses = new ArrayList<>();
     private String id;
     private String friendlyId = "";
     private String uniqueId = "";
@@ -71,8 +73,12 @@ public abstract class HtmlElement {
         return ref;
     }
 
+    public void setConditionalClasses(ArrayList<AloftStyleConditionalClass> conditionalClasses) {
+        this.conditionalClasses = conditionalClasses;
+    }
+
     public ElementRef ref() {
-        ElementRef root = ElementRef.el(this);
+        ElementRef root = ElementRef.el(this, conditionalClasses);
         for(int i=0; i<children.size(); i++) {
             ElementRef child = children.get(i).ref(root);
             if(__.isset(child)) {

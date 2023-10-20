@@ -2,6 +2,9 @@ package com.inteliense.aloft.compiler.tests.components;
 
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.AloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.base.validation.EmailValidator;
+import com.inteliense.aloft.compiler.lang.keywords.elements.base.validation.conditionals.base.ConditionalValueSet;
+import com.inteliense.aloft.compiler.lang.keywords.elements.base.validation.conditionals.base.ConditionalValueType;
+import com.inteliense.aloft.compiler.lang.keywords.elements.base.validation.conditionals.base.ConditionalValues;
 import com.inteliense.aloft.compiler.lang.keywords.elements.types.ButtonAloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.types.CenteredAloftElement;
 import com.inteliense.aloft.compiler.lang.keywords.elements.types.ColumnAloftElement;
@@ -10,6 +13,7 @@ import com.inteliense.aloft.compiler.lang.keywords.listeners.types.AloftOnInputL
 import com.inteliense.aloft.compiler.lang.lib._AloftComponent;
 import com.inteliense.aloft.compiler.tests.elements._MyTextFieldElement;
 import com.inteliense.aloft.server.html.elements.js.JSOV;
+import com.inteliense.aloft.server.html.elements.js.JavaScriptRefMapper;
 
 import java.util.HashMap;
 
@@ -34,7 +38,12 @@ public class _MyLoginForm extends _AloftComponent {
         btn.addSubclass("sm");
         column.addChild(txt);
         AloftElement b = b();
-        b.addListener("input", new AloftOnInputListener(new EmailValidator("value"), JSOV.v("function", "v")));
+        ConditionalValues conditionalValues = new ConditionalValues();
+        ConditionalValueSet set1 = ConditionalValueSet.create("The email address you entered is valid.", "The email address you entered is not valid.");
+        ConditionalValueSet set2 = ConditionalValueSet.create("input-success", "input-error");
+        conditionalValues.add("input", "text-input-validation", ConditionalValueType.INNER_HTML, set1, "help-text");
+        conditionalValues.add("input", "text-input-validation", ConditionalValueType.CLASS, set2);
+        b.addListener("input", new AloftOnInputListener(new EmailValidator("value", conditionalValues), JSOV.v("function", "v")));
         column.addChild(b);
         column.addChild(b());
         column.addChild(btn);
