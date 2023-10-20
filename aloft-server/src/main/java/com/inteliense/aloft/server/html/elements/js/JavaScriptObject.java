@@ -411,26 +411,28 @@ public abstract class JavaScriptObject {
     }
 
     protected JavaScriptVariableRef let(String var) {
-        JavaScriptVariableRef ref = new JavaScriptVariableRef(false);
-        lines.add("let " + ref.get() + " = ");
+        JavaScriptVariableRef ref = new JavaScriptVariableRef(var,false);
+        ref.set();
+        lines.add(ref);
         return ref;
     }
 
     protected JavaScriptVariableRef let() {
         JavaScriptVariableRef ref = new JavaScriptVariableRef(false);
+        lines.add(ref);
         return ref;
     }
 
     protected JavaScriptVariableRef constant(String var) {
         JavaScriptVariableRef ref = new JavaScriptVariableRef(var, true);
         ref.set();
-        lines.add("const " + ref.get() + " = ");
+        lines.add(ref);
         return ref;
     }
 
     protected JavaScriptVariableRef constant() {
         JavaScriptVariableRef ref = new JavaScriptVariableRef(true);
-        lines.add("const " + ref.get() + " = ");
+        lines.add(ref);
         return ref;
     }
 
