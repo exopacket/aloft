@@ -49,6 +49,19 @@ public class JSON {
 
     }
 
+    public static String getString(JsonObject obj, boolean format) {
+
+        try {
+
+            Gson gson = (format) ? (new GsonBuilder().setPrettyPrinting().create()) : (new GsonBuilder().create());
+            return gson.toJson(obj);
+
+        } catch (Exception ignored) { }
+
+        return "{}";
+
+    }
+
     public static String getString(JSONObject obj, boolean format) {
 
         try {
@@ -144,6 +157,7 @@ public class JSON {
 
                 if(mNum.find()) {
                     String tmp = match.substring(mNum.start(), mNum.end());
+
                     if(tmp.length() == match.length()) {
                         numValVerified = 1;
                     } else {

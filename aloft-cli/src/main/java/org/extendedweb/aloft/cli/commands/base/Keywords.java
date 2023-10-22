@@ -1,7 +1,7 @@
 package org.extendedweb.aloft.cli.commands.base;
 
-import com.inteliense.aloft.cli.commands.keywords.*;
-import org.extendedweb.aloft.cli.cli.commands.keywords.*;
+import org.extendedweb.aloft.cli.commands.keywords.*;
+import org.extendedweb.aloft.cli.commands.keywords.*;
 import org.extendedweb.aloft.cli.commands.keywords.*;
 import org.extendedweb.aloft.cli.commands.keywords.Module;
 
@@ -47,7 +47,7 @@ public class Keywords {
 
     public static Class getClass(String cmd) {
         try {
-            return Class.forName("com.inteliense.aloft.cli.commands.keywords." + cmd.substring(0, 1).toUpperCase() + cmd.substring(1));
+            return Class.forName("org.extendedweb.aloft.cli.commands.keywords." + cmd.substring(0, 1).toUpperCase() + cmd.substring(1));
         } catch (Exception ignored) {}
         return null;
     }
