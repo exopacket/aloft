@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Serve" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="org.extendedweb.aloft.server.run.Main" />
+    <module name="server" />
+    <option name="PROGRAM_PARAMETERS" value="serve" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

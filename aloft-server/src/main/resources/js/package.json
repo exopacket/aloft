@@ -1,7 +1,7 @@
 {
-  "name": "com.inteliense.aloft.js",
+  "name": "org.extendedweb.aloft.server.js",
   "version": "1.0.0",
-  "description": "com.inteliense.aloft.js",
+  "description": "org.extendedweb.aloft.server.js",
   "main": "main.js",
   "scripts": {
     "test": "node main.js"

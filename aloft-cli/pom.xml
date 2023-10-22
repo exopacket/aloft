@@ -33,7 +33,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.inteliense.aloft.cli.Main</mainClass>
+                            <mainClass>org.extendedweb.aloft.cli.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
