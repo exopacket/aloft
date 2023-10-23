@@ -1,4 +1,4 @@
 package org.extendedweb.aloft.lib.js;
 
-public class Clazz {
+public class Ref {
 }

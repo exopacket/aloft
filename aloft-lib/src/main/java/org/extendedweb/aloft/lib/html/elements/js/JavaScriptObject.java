@@ -528,7 +528,7 @@ public abstract class JavaScriptObject {
             }
         }.build();
     }
-    public class ConditionGroup extends JavaScriptObject {
+    public static class ConditionGroup extends JavaScriptObject {
 
         private ArrayList<Condition> conditions = new ArrayList<>();
         private boolean elseif = false;
@@ -559,6 +559,7 @@ public abstract class JavaScriptObject {
             this.slot();
             this.blockEnd();
         }
+
         public JavaScriptObject get(boolean elseif) {
             this.elseif = elseif;
             return this;
@@ -588,7 +589,7 @@ public abstract class JavaScriptObject {
         }
     }
 
-    protected enum Compare {
+    public enum Compare {
         AND,
         OR
     }
