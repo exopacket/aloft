@@ -7,7 +7,6 @@ import org.extendedweb.aloft.lib.tests.pages._TestProjectHome;
 public class _AloftProject {
 
     private AppConfig config;
-
     private String projectName;
     private String context;
     private _AloftObjects objects = new _AloftObjects();

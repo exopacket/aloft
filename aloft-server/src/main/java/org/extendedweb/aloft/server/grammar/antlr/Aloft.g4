@@ -7,7 +7,7 @@ component : COMPONENT_KEYWORD var_name curly_block ;
 element : ELEMENT_KEYWORD var_name curly_block ;
 theme : THEME_KEYWORD var_name curly_block ;
 model : MODEL_KEYWORD var_name curly_block ;
-page : PAGE_KEYWORD path curly_block ;
+page : PAGE_KEYWORD var_name curly_block ;
 animation : ANIMATION_KEYWORD var_name curly_block ;
 module : MODULE_KEYWORD var_name curly_block ;
 //TODO make params a rule for query and more (arg1, arg2, ...args)

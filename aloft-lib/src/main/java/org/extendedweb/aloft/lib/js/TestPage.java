@@ -7,13 +7,13 @@ public class TestPage extends JS {
     @Override
     protected JavaScriptObject create() {
         return container(
-                let("name", Str.v("value")),
-                function("name", Args.none(), ((args) -> {
+                Let("name", Str.v("value")),
+                Function("name", Args.none(), ((args) -> {
                     return container(
-                            let("name", Raw.v("true")),
-                            decide(
-                                    vif(expr(truthy("var")), container(
-                                            let("name", Bool.t())
+                            Let("name", Raw.v("true")),
+                            Decide(
+                                    If(Expr(Truthy("var")), container(
+                                            Let("name", Bool.t())
                                     ))
                             )
                     );

@@ -638,8 +638,8 @@ public class AloftParser extends Parser {
 	@SuppressWarnings("CheckReturnValue")
 	public static class PageContext extends ParserRuleContext {
 		public TerminalNode PAGE_KEYWORD() { return getToken(AloftParser.PAGE_KEYWORD, 0); }
-		public PathContext path() {
-			return getRuleContext(PathContext.class,0);
+		public Var_nameContext var_name() {
+			return getRuleContext(Var_nameContext.class,0);
 		}
 		public Curly_blockContext curly_block() {
 			return getRuleContext(Curly_blockContext.class,0);
@@ -667,7 +667,7 @@ public class AloftParser extends Parser {
 			setState(120);
 			match(PAGE_KEYWORD);
 			setState(121);
-			path();
+			var_name();
 			setState(122);
 			curly_block();
 			}
@@ -2780,7 +2780,7 @@ public class AloftParser extends Parser {
 		"\u000f\u0000\u0000qr\u0003,\u0016\u0000rs\u0003:\u001d\u0000s\t\u0001"+
 		"\u0000\u0000\u0000tu\u0005\u0014\u0000\u0000uv\u0003,\u0016\u0000vw\u0003"+
 		":\u001d\u0000w\u000b\u0001\u0000\u0000\u0000xy\u0005\u0013\u0000\u0000"+
-		"yz\u0003\u001a\r\u0000z{\u0003:\u001d\u0000{\r\u0001\u0000\u0000\u0000"+
+		"yz\u0003,\u0016\u0000z{\u0003:\u001d\u0000{\r\u0001\u0000\u0000\u0000"+
 		"|}\u0005\u0012\u0000\u0000}~\u0003,\u0016\u0000~\u007f\u0003:\u001d\u0000"+
 		"\u007f\u000f\u0001\u0000\u0000\u0000\u0080\u0081\u0005\u000e\u0000\u0000"+
 		"\u0081\u0082\u0003,\u0016\u0000\u0082\u0083\u0003:\u001d\u0000\u0083\u0011"+

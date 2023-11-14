@@ -65,29 +65,38 @@ public class AppConfig {
 
     public AppConfig(RouteCache routes) {
         //FIXME ....FOR TESTING
-        File file = new File("/home/ryan/aloft/aloft-cli/my-project/my-project.json");
-        if(!file.exists()) throw new RuntimeException("Config does not exist");
-        Scanner scnr = null;
-        try {
-            scnr = new Scanner(file);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        String content = "";
-        while(scnr.hasNextLine()) content += scnr.nextLine();
-        parseObjects(JSON.getObject(content));
+        readConfig("");
         MiddlewareList list = new MiddlewareList();
         HasHeaders m = new HasHeaders(new String[]{"X-Test-Header"});
         m.appendAppliesTo(ApplyToType.PUBLIC_API, new Route[]{new Route("/index/main", "GET")});
         list.appendAppMiddleware(m);
         this.middleware = list;
-        cache = new AppCache(routes);
         theme = new AloftTheme();
         theme.setUsesBootstrap();
         theme.setColors(new Colors("#e03d3d", "#269447", "#3d7be0", "#f23737", "#727a8a"));
         theme.setUsesDefaultIcons();
         theme.setUsesDefaultFont();
         theme.setIconModule(new BootstrapIcons());
+        buildCache(routes);
+    }
+
+    public AppConfig(String configPath) {
+        readConfig("");
+        MiddlewareList list = new MiddlewareList();
+        HasHeaders m = new HasHeaders(new String[]{"X-Test-Header"});
+        m.appendAppliesTo(ApplyToType.PUBLIC_API, new Route[]{new Route("/index/main", "GET")});
+        list.appendAppMiddleware(m);
+        this.middleware = list;
+        theme = new AloftTheme();
+        theme.setUsesBootstrap();
+        theme.setColors(new Colors("#e03d3d", "#269447", "#3d7be0", "#f23737", "#727a8a"));
+        theme.setUsesDefaultIcons();
+        theme.setUsesDefaultFont();
+        theme.setIconModule(new BootstrapIcons());
+    }
+
+    public void buildCache(RouteCache routes) {
+        cache = new AppCache(routes);
         scriptEndpoints = new JavaScriptEndpointList();
         stylesheetEndpoints = new StylesheetEndpointList();
         fontEndpoints = new FontEndpointList();
@@ -103,10 +112,15 @@ public class AppConfig {
         }
     }
 
-    public AppConfig(String configPath) throws FileNotFoundException {
-        File file = new File(configPath);
+    private void readConfig(String configPath) {
+        File file = new File("/home/ryan/aloft/aloft-cli/my-project/my-project.json");
         if(!file.exists()) throw new RuntimeException("Config does not exist");
-        Scanner scnr = new Scanner(file);
+        Scanner scnr = null;
+        try {
+            scnr = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         String content = "";
         while(scnr.hasNextLine()) content += scnr.nextLine();
         parseObjects(JSON.getObject(content));
