@@ -14,6 +14,8 @@ Security is of upmost importance with aloft. Sites and modules will be bundled i
 
 # features
 
+<b>These features are fairly old and basic. As this project progresses, expect changes to syntax and features.</b>
+
   - Object oriented focus with custom classes
   - Mutiple object types (component, element, theme, model, page, animation, module, query, and callable) to define the different parts of your web application
   - Dynamic types for variables, arrays, and data objects similar to Javascript and PHP. Either define the type or don't.
