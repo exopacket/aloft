@@ -3,6 +3,9 @@ package org.extendedweb.aloft.server.compiler.compile.supporting;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.extendedweb.aloft.lib.lang.types.t.DynamicT;
 import org.extendedweb.aloft.lib.lang.types.t.StringT;
+import org.extendedweb.aloft.server.compiler.compile.base.AloftFunction;
+import org.extendedweb.aloft.server.compiler.compile.base.AloftFunctionCompiler;
+import org.extendedweb.aloft.server.compiler.compile.base.register.CompiledObjectsRegister;
 import org.extendedweb.aloft.server.grammar.antlr.AloftParser;
 import org.extendedweb.aloft.utils.global.__;
 
@@ -16,14 +19,16 @@ public abstract class AloftObject implements CompilesAloftObjects {
     private String named = null;
     private ArrayList<AloftObjectProperty> defaultProperties = new ArrayList<>();
     protected ArrayList<AloftObjectProperty> properties = new ArrayList<>();
+    protected ArrayList<AloftVariable> variables = new ArrayList<>();
+    protected ArrayList<AloftFunction> functions = new ArrayList<>();
     private Class<?> type = null;
     protected ArrayList<AloftObject> objects;
     private AloftComponentClass c = null;
 
-    public AloftObject(ParserRuleContext ctx) {
+    public AloftObject(ParserRuleContext ctx, CompiledObjectsRegister register) {
         properties(defaultProperties);
         List<AloftParser.SyntaxContext> syntax = preCompile(ctx);
-        this.objects = compile(syntax);
+        this.objects = compile(syntax, register);
     }
 
     @Override
@@ -51,22 +56,43 @@ public abstract class AloftObject implements CompilesAloftObjects {
     }
 
     @Override
+    public void parseVariables(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) {
+        System.out.println("PARSE VARS");
+        for(AloftParser.SyntaxContext ctx : syntax) {
+            AloftParser.Declare_variableContext declareCtx = ctx.declare_variable();
+            if(!__.isset(declareCtx)) continue;
+            variables.add(AloftVariable.fromContext(declareCtx));
+        }
+        System.out.println("DONE");
+    }
+
+    @Override
     public void parseProperties(List<AloftParser.SyntaxContext> syntax) {
         System.out.println("PARSE PROPS");
         for(AloftParser.SyntaxContext ctx : syntax) {
             AloftParser.PropertyContext pCtx = ctx.property();
-            if(!__.isset(pCtx)) throw new RuntimeException("TEST");
+            if(!__.isset(pCtx)) continue;
             AloftParser.Var_nameContext varCtx = pCtx.var_name();
-            if(!__.isset(varCtx)) throw new RuntimeException("VAR NAME NOT SET");
             String var_name = varCtx.getText();
             AloftParser.Property_valueContext pValCtx = pCtx.property_value();
-            if(!__.isset(pValCtx)) throw new RuntimeException("VAR VALUE NOT SET");
             String var_value = pValCtx.getText();
             AloftObjectProperty property = findProperty(var_name);
-            if(!__.isset(property)) throw new RuntimeException("INVALID PROPERTY");
             properties.add(property.cloneProperty(var_value));
             System.out.println(var_name + " = " + var_value);
         }
+        System.out.println("DONE");
+    }
+
+    @Override
+    public void parseFunctions(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) {
+        System.out.println("PARSE FUNCTIONS");
+        for(AloftParser.SyntaxContext ctx : syntax) {
+            AloftParser.FunctionsContext fCtx = ctx.functions();
+            if(!__.isset(fCtx)) continue;
+            AloftFunction func = AloftFunctionCompiler.compile(fCtx, register);
+            functions.add(func);
+        }
+        System.out.println("DONE");
     }
 
     private AloftObjectProperty findProperty(String name) {

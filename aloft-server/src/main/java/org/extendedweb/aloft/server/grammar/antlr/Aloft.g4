@@ -2,7 +2,7 @@
 /* First ANTLR experience (no clue if it works) */
 grammar Aloft;
 r : syntax+ EOF;
-syntax : switch_block | if | loop | functions  | query  | constructor | source | component | element | model | theme | callable | page | animation | module  | declare_variable | condtional | property | NEW_LINE+;
+syntax : switch_block | if | loop | functions  | query  | constructor | source | component | element | model | theme | callable | page | animation | module | declare_variable | condtional | property | NEW_LINE+;
 component : COMPONENT_KEYWORD var_name curly_block ;
 element : ELEMENT_KEYWORD var_name curly_block ;
 theme : THEME_KEYWORD var_name curly_block ;

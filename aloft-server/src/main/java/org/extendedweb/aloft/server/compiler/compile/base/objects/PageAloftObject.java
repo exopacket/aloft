@@ -5,6 +5,7 @@ import org.extendedweb.aloft.lib._AloftPage;
 import org.extendedweb.aloft.lib.application.cache.RouteCache;
 import org.extendedweb.aloft.lib.lang.supporting.MountableComponent;
 import org.extendedweb.aloft.lib.lang.types.t.StringT;
+import org.extendedweb.aloft.server.compiler.compile.base.register.CompiledObjectsRegister;
 import org.extendedweb.aloft.server.compiler.compile.supporting.*;
 import org.extendedweb.aloft.server.grammar.antlr.AloftParser;
 import org.extendedweb.aloft.utils.global.__;
@@ -16,17 +17,17 @@ import java.util.List;
 
 public class PageAloftObject extends AloftObject {
 
-    public PageAloftObject(ParserRuleContext ctx) {
-        super(ctx);
+    public PageAloftObject(ParserRuleContext ctx, CompiledObjectsRegister register) {
+        super(ctx, register);
     }
 
-    public static PageAloftObject createIf(List<AloftParser.SyntaxContext> root, int index) {
+    public static PageAloftObject createIf(List<AloftParser.SyntaxContext> root, CompiledObjectsRegister register, int index) {
         try {
             Object element = root.get(index);
             Method method = element.getClass().getMethod(getMethod());
             Object ctx = getContextClass().cast(method.invoke(element));
             if(!__.isset(ctx)) return null;
-            return new PageAloftObject((ParserRuleContext) getContextClass().cast(ctx));
+            return new PageAloftObject((ParserRuleContext) getContextClass().cast(ctx), register);
         } catch (Exception ignored) { }
         return null;
     }
@@ -49,8 +50,10 @@ public class PageAloftObject extends AloftObject {
     }
 
     @Override
-    public ArrayList<AloftObject> compile(List<AloftParser.SyntaxContext> syntax) {
+    public ArrayList<AloftObject> compile(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) {
+        parseVariables(syntax, register);
         parseProperties(syntax);
+        parseFunctions(syntax, register); //TODO remove for page
         return null;
     }
 

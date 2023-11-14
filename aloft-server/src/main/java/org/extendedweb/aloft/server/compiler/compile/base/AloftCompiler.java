@@ -56,7 +56,7 @@ public class AloftCompiler {
                 root = r.syntax();
                 if(!isset(root)) break;
                 index++;
-                PageAloftObject page = PageAloftObject.createIf(root, index);
+                PageAloftObject page = PageAloftObject.createIf(root, compiledObjects, index);
                 if(isset(page)) {
 //                    compiledObjects.getApp().append(page.getCompiled());
                     continue;
