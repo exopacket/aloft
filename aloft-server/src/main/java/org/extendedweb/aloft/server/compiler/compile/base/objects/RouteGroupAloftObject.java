@@ -67,4 +67,5 @@ public class RouteGroupAloftObject extends AloftObject {
     public static Class<?> getObjectClass() {
         return null;
     }
+
 }

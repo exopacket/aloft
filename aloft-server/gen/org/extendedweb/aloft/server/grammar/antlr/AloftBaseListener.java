@@ -185,6 +185,30 @@ public class AloftBaseListener implements AloftListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterPath_with_var(AloftParser.Path_with_varContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPath_with_var(AloftParser.Path_with_varContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPath_var(AloftParser.Path_varContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPath_var(AloftParser.Path_varContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterPath(AloftParser.PathContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -192,6 +216,18 @@ public class AloftBaseListener implements AloftListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitPath(AloftParser.PathContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArray(AloftParser.ArrayContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArray(AloftParser.ArrayContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -564,6 +600,30 @@ public class AloftBaseListener implements AloftListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitEnclosed_vars(AloftParser.Enclosed_varsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterGoto(AloftParser.GotoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitGoto(AloftParser.GotoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFile_name(AloftParser.File_nameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFile_name(AloftParser.File_nameContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

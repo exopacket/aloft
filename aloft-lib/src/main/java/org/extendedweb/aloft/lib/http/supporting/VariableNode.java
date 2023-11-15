@@ -82,7 +82,7 @@ public class VariableNode extends ReturnsVariableNodes {
         }
 
         public <Any> Any get() {
-            return this.t.value(this.v);
+            return this.t.value();
         }
 
     }

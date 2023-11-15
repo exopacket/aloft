@@ -148,6 +148,26 @@ public interface AloftListener extends ParseTreeListener {
 	 */
 	void exitConstructor(AloftParser.ConstructorContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AloftParser#path_with_var}.
+	 * @param ctx the parse tree
+	 */
+	void enterPath_with_var(AloftParser.Path_with_varContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#path_with_var}.
+	 * @param ctx the parse tree
+	 */
+	void exitPath_with_var(AloftParser.Path_with_varContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AloftParser#path_var}.
+	 * @param ctx the parse tree
+	 */
+	void enterPath_var(AloftParser.Path_varContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#path_var}.
+	 * @param ctx the parse tree
+	 */
+	void exitPath_var(AloftParser.Path_varContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AloftParser#path}.
 	 * @param ctx the parse tree
 	 */
@@ -157,6 +177,16 @@ public interface AloftListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPath(AloftParser.PathContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AloftParser#array}.
+	 * @param ctx the parse tree
+	 */
+	void enterArray(AloftParser.ArrayContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#array}.
+	 * @param ctx the parse tree
+	 */
+	void exitArray(AloftParser.ArrayContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AloftParser#string}.
 	 * @param ctx the parse tree
@@ -467,4 +497,24 @@ public interface AloftListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitEnclosed_vars(AloftParser.Enclosed_varsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AloftParser#goto}.
+	 * @param ctx the parse tree
+	 */
+	void enterGoto(AloftParser.GotoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#goto}.
+	 * @param ctx the parse tree
+	 */
+	void exitGoto(AloftParser.GotoContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AloftParser#file_name}.
+	 * @param ctx the parse tree
+	 */
+	void enterFile_name(AloftParser.File_nameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#file_name}.
+	 * @param ctx the parse tree
+	 */
+	void exitFile_name(AloftParser.File_nameContext ctx);
 }

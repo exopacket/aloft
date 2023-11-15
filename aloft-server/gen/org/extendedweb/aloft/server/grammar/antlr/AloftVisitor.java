@@ -95,11 +95,29 @@ public interface AloftVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitConstructor(AloftParser.ConstructorContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AloftParser#path_with_var}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPath_with_var(AloftParser.Path_with_varContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AloftParser#path_var}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPath_var(AloftParser.Path_varContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AloftParser#path}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitPath(AloftParser.PathContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AloftParser#array}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArray(AloftParser.ArrayContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AloftParser#string}.
 	 * @param ctx the parse tree
@@ -286,4 +304,16 @@ public interface AloftVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitEnclosed_vars(AloftParser.Enclosed_varsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AloftParser#goto}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGoto(AloftParser.GotoContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AloftParser#file_name}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFile_name(AloftParser.File_nameContext ctx);
 }

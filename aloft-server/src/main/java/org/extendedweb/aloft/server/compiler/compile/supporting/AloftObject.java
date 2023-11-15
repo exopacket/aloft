@@ -78,7 +78,8 @@ public abstract class AloftObject implements CompilesAloftObjects {
             AloftParser.Property_valueContext pValCtx = pCtx.property_value();
             String var_value = pValCtx.getText();
             AloftObjectProperty property = findProperty(var_name);
-//            properties.add(property.cloneProperty(var_value));
+            if(__.isset(property)) properties.add(property.cloneProperty(pValCtx));
+            else properties.add(new AloftObjectProperty(var_name, false).cloneProperty(pValCtx));
             System.out.println(var_name + " = " + var_value);
         }
         System.out.println("DONE");
@@ -112,4 +113,5 @@ public abstract class AloftObject implements CompilesAloftObjects {
     public void type(Class<?> c) {
         this.type = c;
     }
+
 }

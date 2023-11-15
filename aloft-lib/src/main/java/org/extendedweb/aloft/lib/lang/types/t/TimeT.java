@@ -1,10 +1,12 @@
 package org.extendedweb.aloft.lib.lang.types.t;
 
 import org.extendedweb.aloft.lib.lang.types.base.T;
+import org.extendedweb.aloft.lib.lang.types.base.V;
 
 public class TimeT extends T {
     @Override
-    public <Any> Any value(Object v) {
+    public V value() {
         return null;
     }
+
 }
