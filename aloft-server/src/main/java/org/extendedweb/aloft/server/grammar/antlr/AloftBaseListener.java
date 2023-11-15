@@ -89,6 +89,18 @@ public class AloftBaseListener implements AloftListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterRoutes(AloftParser.RoutesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRoutes(AloftParser.RoutesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterPage(AloftParser.PageContext ctx) { }
 	/**
 	 * {@inheritDoc}

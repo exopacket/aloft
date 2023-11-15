@@ -2,11 +2,12 @@
 /* First ANTLR experience (no clue if it works) */
 grammar Aloft;
 r : syntax+ EOF;
-syntax : switch_block | if | loop | functions  | query  | constructor | source | component | element | model | theme | callable | page | animation | module | declare_variable | property | NEW_LINE;
+syntax : switch_block | if | loop | functions  | query  | constructor | source | component | element | model | theme | callable | routes | page | animation | module | declare_variable | property | NEW_LINE;
 component : COMPONENT_KEYWORD var_name curly_block ;
 element : ELEMENT_KEYWORD var_name curly_block ;
 theme : THEME_KEYWORD var_name curly_block ;
 model : MODEL_KEYWORD var_name curly_block ;
+routes: ROUTES_KEYWORD path curly_block ;
 page : PAGE_KEYWORD var_name curly_block ;
 animation : ANIMATION_KEYWORD var_name curly_block ;
 module : MODULE_KEYWORD var_name curly_block ;
@@ -28,6 +29,7 @@ THEME_KEYWORD : ('theme') ;
 ELEMENT_KEYWORD : ('element') ;
 COMPONENT_KEYWORD : ('component') ;
 ANIMATION_KEYWORD : ('animation') ;
+ROUTES_KEYWORD : ('routes') ;
 PAGE_KEYWORD : ('page') ;
 MODEL_KEYWORD : ('model') ;
 NUMBERS : (DIGITS | DECIMALS) ;

@@ -68,6 +68,16 @@ public interface AloftListener extends ParseTreeListener {
 	 */
 	void exitModel(AloftParser.ModelContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AloftParser#routes}.
+	 * @param ctx the parse tree
+	 */
+	void enterRoutes(AloftParser.RoutesContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#routes}.
+	 * @param ctx the parse tree
+	 */
+	void exitRoutes(AloftParser.RoutesContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AloftParser#page}.
 	 * @param ctx the parse tree
 	 */

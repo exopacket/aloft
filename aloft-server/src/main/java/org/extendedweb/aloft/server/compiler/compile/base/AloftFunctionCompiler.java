@@ -7,6 +7,14 @@ import java.util.ArrayList;
 
 public class AloftFunctionCompiler {
 
+    public static AloftFunctionContainer queue(AloftParser.FunctionsContext ctx, CompiledObjectsRegister register) {
+        AloftFunctionType type = AloftFunctionType.VOID;
+        String name = "";
+        ArrayList<String> args = getArgs(ctx);
+        ArrayList<String> problematicArgs = argCheck(args, register);
+        return new AloftFunctionContainer(type, name, args, ctx.curly_block());
+    }
+
     public static AloftFunction compile(AloftParser.FunctionsContext ctx, CompiledObjectsRegister register) {
         AloftFunctionType type;
         String name = "";

@@ -5,6 +5,7 @@ import org.extendedweb.aloft.lib.lang.types.t.DynamicT;
 import org.extendedweb.aloft.lib.lang.types.t.StringT;
 import org.extendedweb.aloft.server.compiler.compile.base.AloftFunction;
 import org.extendedweb.aloft.server.compiler.compile.base.AloftFunctionCompiler;
+import org.extendedweb.aloft.server.compiler.compile.base.AloftFunctionContainer;
 import org.extendedweb.aloft.server.compiler.compile.base.register.CompiledObjectsRegister;
 import org.extendedweb.aloft.server.grammar.antlr.AloftParser;
 import org.extendedweb.aloft.utils.global.__;
@@ -20,7 +21,7 @@ public abstract class AloftObject implements CompilesAloftObjects {
     private ArrayList<AloftObjectProperty> defaultProperties = new ArrayList<>();
     protected ArrayList<AloftObjectProperty> properties = new ArrayList<>();
     protected ArrayList<AloftVariable> variables = new ArrayList<>();
-    protected ArrayList<AloftFunction> functions = new ArrayList<>();
+    protected ArrayList<AloftFunctionContainer> functions = new ArrayList<>();
     private Class<?> type = null;
     protected ArrayList<AloftObject> objects;
     private AloftComponentClass c = null;
@@ -77,7 +78,7 @@ public abstract class AloftObject implements CompilesAloftObjects {
             AloftParser.Property_valueContext pValCtx = pCtx.property_value();
             String var_value = pValCtx.getText();
             AloftObjectProperty property = findProperty(var_name);
-            properties.add(property.cloneProperty(var_value));
+//            properties.add(property.cloneProperty(var_value));
             System.out.println(var_name + " = " + var_value);
         }
         System.out.println("DONE");
@@ -89,7 +90,7 @@ public abstract class AloftObject implements CompilesAloftObjects {
         for(AloftParser.SyntaxContext ctx : syntax) {
             AloftParser.FunctionsContext fCtx = ctx.functions();
             if(!__.isset(fCtx)) continue;
-            AloftFunction func = AloftFunctionCompiler.compile(fCtx, register);
+            AloftFunctionContainer func = AloftFunctionCompiler.queue(fCtx, register);
             functions.add(func);
         }
         System.out.println("DONE");
