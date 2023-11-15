@@ -1,4 +1,4 @@
-// Generated from Aloft.g4 by ANTLR 4.13.1
+// Generated from /home/ryan/aloft/aloft-server/src/main/java/org/extendedweb/aloft/server/grammar/antlr/Aloft.g4 by ANTLR 4.13.1
 package org.extendedweb.aloft.server.grammar.antlr;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -197,42 +197,6 @@ public class AloftBaseListener implements AloftListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunctions(AloftParser.FunctionsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFunctions(AloftParser.FunctionsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFunction(AloftParser.FunctionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFunction(AloftParser.FunctionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFunction_types(AloftParser.Function_typesContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFunction_types(AloftParser.Function_typesContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterDeclare_variable(AloftParser.Declare_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -281,18 +245,6 @@ public class AloftBaseListener implements AloftListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrivate_named(AloftParser.Private_namedContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitPrivate_named(AloftParser.Private_namedContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterVar_name_with_params(AloftParser.Var_name_with_paramsContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -329,13 +281,37 @@ public class AloftBaseListener implements AloftListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVar_expression(AloftParser.Var_expressionContext ctx) { }
+	@Override public void enterFunctions(AloftParser.FunctionsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVar_expression(AloftParser.Var_expressionContext ctx) { }
+	@Override public void exitFunctions(AloftParser.FunctionsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunction(AloftParser.FunctionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunction(AloftParser.FunctionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunction_types(AloftParser.Function_typesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunction_types(AloftParser.Function_typesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -461,18 +437,6 @@ public class AloftBaseListener implements AloftListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterComma_separated_var_expression(AloftParser.Comma_separated_var_expressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitComma_separated_var_expression(AloftParser.Comma_separated_var_expressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterProperty_value(AloftParser.Property_valueContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -521,13 +485,13 @@ public class AloftBaseListener implements AloftListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNamed_with_params_special(AloftParser.Named_with_params_specialContext ctx) { }
+	@Override public void enterCondtional(AloftParser.CondtionalContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNamed_with_params_special(AloftParser.Named_with_params_specialContext ctx) { }
+	@Override public void exitCondtional(AloftParser.CondtionalContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

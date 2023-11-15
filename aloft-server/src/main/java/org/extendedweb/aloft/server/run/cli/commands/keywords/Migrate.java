@@ -162,7 +162,7 @@ public class Migrate extends HandlesCommands {
                 if(__.isset(variable)) {
                     AloftParser.VariableContext var = variable.variable();
                     AloftParser.Var_typeContext type = variable.var_type();
-                    AloftParser.ExpressionContext expression = variable.expression();
+                    AloftParser.Var_expressionContext expression = variable.var_expression();
                     if(!__.isset(var)) {
                         System.err.println();
                         System.exit(1);
@@ -184,13 +184,9 @@ public class Migrate extends HandlesCommands {
                     String typeString = type.getText();
                     String expressionValue = null;
                     if(__.isset(expression)) {
-                        TerminalNode equals = expression.EQUALS();
                         TerminalNode numbers = expression.NUMBERS();
                         AloftParser.StringContext str = expression.string();
-                        if(!__.isset(equals)) {
-                            System.err.println();
-                            System.exit(5);
-                        }
+
                         if(__.isset(numbers)) {
                             expressionValue = numbers.getText();
                         } else if(__.isset(str)) {

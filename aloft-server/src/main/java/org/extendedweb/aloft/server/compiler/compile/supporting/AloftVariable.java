@@ -32,7 +32,7 @@ public class AloftVariable {
         AloftParser.Var_typeContext typeCtx = ctx.var_type();
         type = getType(typeCtx.getText());
         System.out.println(typeCtx.getText());
-        AloftParser.ExpressionContext exprCtx = ctx.expression();
+        AloftParser.Var_expressionContext exprCtx = ctx.var_expression();
         value = parseExpression(exprCtx);
         return new AloftVariable(access, identifier, type, value);
     }
@@ -54,7 +54,7 @@ public class AloftVariable {
         }
     }
 
-    private static AloftExpression parseExpression(AloftParser.ExpressionContext ctx) {
+    private static AloftExpression parseExpression(AloftParser.Var_expressionContext ctx) {
         return new AloftExpression();
     }
 

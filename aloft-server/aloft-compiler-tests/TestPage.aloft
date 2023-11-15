@@ -1,8 +1,19 @@
 page index {
 
-    v number = 0
+    v number = 1
+    val string = "test"
 
     root: "ROOT"
     title: "Test"
 
+    void (testFunction)() {
+        person User = getUser()
+    }
+
+}
+
+query getUser(user_id) {
+    select: *
+    where: test == user_id, test2 == user_id
+    using: User
 }
