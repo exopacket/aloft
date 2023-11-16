@@ -4,6 +4,7 @@ import org.extendedweb.aloft.lib._AloftProject;
 import org.extendedweb.aloft.server.compiler.compile.base.objects.PageAloftObject;
 import org.extendedweb.aloft.server.compiler.compile.base.objects.RouteGroupAloftObject;
 import org.extendedweb.aloft.server.compiler.compile.base.register.CompiledObjectsRegister;
+import org.extendedweb.aloft.server.compiler.exceptions.CompilerException;
 import org.extendedweb.aloft.server.grammar.antlr.AloftLexer;
 import org.extendedweb.aloft.server.grammar.antlr.AloftParser;
 import org.antlr.v4.runtime.*;
@@ -53,12 +54,12 @@ public class AloftCompiler {
             AloftParser.RContext r = parser.r();
             List<AloftParser.SyntaxContext> root = r.syntax();
             for(int i=0; i<root.size(); i++) {
-                PageAloftObject page = PageAloftObject.createIf(root, compiledObjects, i);
+                PageAloftObject page = PageAloftObject.createIf(root, compiledObjects, i, file);
                 if(isset(page)) {
 //                    compiledObjects.getApp().append(page.getCompiled());
                     continue;
                 }
-                RouteGroupAloftObject routeGroup = RouteGroupAloftObject.createIf(root, compiledObjects, i);
+                RouteGroupAloftObject routeGroup = RouteGroupAloftObject.createIf(root, compiledObjects, i, file);
                 if(isset(routeGroup)) {
                     continue;
                 }
@@ -66,6 +67,8 @@ public class AloftCompiler {
             _AloftProject project = compiledObjects.buildProject();
         } catch (Exception e) {
             e.printStackTrace();
+        } catch (CompilerException e) {
+            e.handle();
         }
     }
 

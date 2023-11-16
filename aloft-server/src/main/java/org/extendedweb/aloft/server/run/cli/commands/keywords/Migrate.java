@@ -184,7 +184,7 @@ public class Migrate extends HandlesCommands {
                     String typeString = type.getText();
                     String expressionValue = null;
                     if(__.isset(expression)) {
-                        TerminalNode numbers = expression.NUMBERS();
+                        AloftParser.NumberContext numbers = expression.number();
                         AloftParser.StringContext str = expression.string();
 
                         if(__.isset(numbers)) {

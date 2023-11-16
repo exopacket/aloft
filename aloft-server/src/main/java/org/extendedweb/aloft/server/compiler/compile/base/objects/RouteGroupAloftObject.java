@@ -9,27 +9,31 @@ import org.extendedweb.aloft.server.compiler.compile.base.register.CompiledObjec
 import org.extendedweb.aloft.server.compiler.compile.supporting.AloftObject;
 import org.extendedweb.aloft.server.compiler.compile.supporting.AloftObjectProperty;
 import org.extendedweb.aloft.server.compiler.compile.supporting.ComponentTreeT;
+import org.extendedweb.aloft.server.compiler.exceptions.CompilerException;
 import org.extendedweb.aloft.server.grammar.antlr.AloftParser;
 import org.extendedweb.aloft.utils.global.__;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RouteGroupAloftObject extends AloftObject {
 
-    public RouteGroupAloftObject(ParserRuleContext ctx, CompiledObjectsRegister register) {
-        super(ctx, register);
+    public RouteGroupAloftObject(ParserRuleContext ctx, CompiledObjectsRegister register, File file) throws CompilerException {
+        super(ctx, register, file);
     }
 
-    public static RouteGroupAloftObject createIf(List<AloftParser.SyntaxContext> root, CompiledObjectsRegister register, int index) {
+    public static RouteGroupAloftObject createIf(List<AloftParser.SyntaxContext> root, CompiledObjectsRegister register, int index, File file) {
         try {
             Object element = root.get(index);
             Method method = element.getClass().getMethod(getMethod());
             Object ctx = getContextClass().cast(method.invoke(element));
             if(!__.isset(ctx)) return null;
-            return new RouteGroupAloftObject((ParserRuleContext) getContextClass().cast(ctx), register);
-        } catch (Exception ignored) { }
+            return new RouteGroupAloftObject((ParserRuleContext) getContextClass().cast(ctx), register, file);
+        } catch (Exception ignored) { } catch (CompilerException e) {
+            throw new RuntimeException(e);
+        }
         return null;
     }
 
@@ -47,7 +51,7 @@ public class RouteGroupAloftObject extends AloftObject {
     }
 
     @Override
-    public ArrayList<AloftObject> compile(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) {
+    public ArrayList<AloftObject> compile(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) throws CompilerException {
         parseProperties(syntax);
         return null;
     }

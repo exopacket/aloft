@@ -174,8 +174,8 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
             if(!__.isset(node)) return;
             create = true;
         }
-        if(node.getValue().getClass() == VariableTree.class && !create) {
-            ((VariableTree) node.getValue()).addNode(key, t, v);
+        if(node.getValue().get().getClass() == VariableTree.class && !create) {
+            ((VariableTree) node.getValue().get()).addNode(key, t, v);
         } else {
             node.setValue(v);
         }

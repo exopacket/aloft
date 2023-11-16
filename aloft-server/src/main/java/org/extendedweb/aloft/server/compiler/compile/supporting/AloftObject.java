@@ -7,9 +7,11 @@ import org.extendedweb.aloft.server.compiler.compile.base.AloftFunction;
 import org.extendedweb.aloft.server.compiler.compile.base.AloftFunctionCompiler;
 import org.extendedweb.aloft.server.compiler.compile.base.AloftFunctionContainer;
 import org.extendedweb.aloft.server.compiler.compile.base.register.CompiledObjectsRegister;
+import org.extendedweb.aloft.server.compiler.exceptions.CompilerException;
 import org.extendedweb.aloft.server.grammar.antlr.AloftParser;
 import org.extendedweb.aloft.utils.global.__;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -24,9 +26,11 @@ public abstract class AloftObject implements CompilesAloftObjects {
     protected ArrayList<AloftFunctionContainer> functions = new ArrayList<>();
     private Class<?> type = null;
     protected ArrayList<AloftObject> objects;
+    protected File file = null;
     private AloftComponentClass c = null;
 
-    public AloftObject(ParserRuleContext ctx, CompiledObjectsRegister register) {
+    public AloftObject(ParserRuleContext ctx, CompiledObjectsRegister register, File file) throws CompilerException {
+        this.file = file;
         properties(defaultProperties);
         List<AloftParser.SyntaxContext> syntax = preCompile(ctx);
         this.objects = compile(syntax, register);
@@ -68,7 +72,7 @@ public abstract class AloftObject implements CompilesAloftObjects {
     }
 
     @Override
-    public void parseProperties(List<AloftParser.SyntaxContext> syntax) {
+    public void parseProperties(List<AloftParser.SyntaxContext> syntax) throws CompilerException {
         System.out.println("PARSE PROPS");
         for(AloftParser.SyntaxContext ctx : syntax) {
             AloftParser.PropertyContext pCtx = ctx.property();
@@ -76,10 +80,11 @@ public abstract class AloftObject implements CompilesAloftObjects {
             AloftParser.Var_nameContext varCtx = pCtx.var_name();
             String var_name = varCtx.getText();
             AloftParser.Property_valueContext pValCtx = pCtx.property_value();
+            ContextContainer valueCtx = new ContextContainer(pValCtx, file);
             String var_value = pValCtx.getText();
             AloftObjectProperty property = findProperty(var_name);
-            if(__.isset(property)) properties.add(property.cloneProperty(pValCtx));
-            else properties.add(new AloftObjectProperty(var_name, false).cloneProperty(pValCtx));
+            if(__.isset(property)) properties.add(property.cloneProperty(valueCtx));
+            else properties.add(new AloftObjectProperty(var_name, false).cloneProperty(valueCtx));
             System.out.println(var_name + " = " + var_value);
         }
         System.out.println("DONE");
@@ -99,6 +104,7 @@ public abstract class AloftObject implements CompilesAloftObjects {
 
     private AloftObjectProperty findProperty(String name) {
         for(AloftObjectProperty prop : defaultProperties) {
+            System.out.println(prop.getName());
             if(__.same(prop.getName(), name)) return prop;
         }
         return null;

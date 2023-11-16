@@ -185,6 +185,18 @@ public class AloftBaseListener implements AloftListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterNumber(AloftParser.NumberContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNumber(AloftParser.NumberContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterPath_with_var(AloftParser.Path_with_varContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -372,6 +384,18 @@ public class AloftBaseListener implements AloftListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExpression(AloftParser.ExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterExpression_value(AloftParser.Expression_valueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExpression_value(AloftParser.Expression_valueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -1,6 +1,7 @@
 package org.extendedweb.aloft.lib.http.supporting;
 
 import org.extendedweb.aloft.lib.lang.types.base.T;
+import org.extendedweb.aloft.lib.lang.types.base.V;
 import org.extendedweb.aloft.utils.global.__;
 
 import java.util.Arrays;
@@ -30,7 +31,7 @@ public class VariableNode extends ReturnsVariableNodes {
         return key;
     }
 
-    public <Any> Any getValue() {
+    public V getValue() {
         if (!__.isset(value)) return null;
         return value.get();
     }
@@ -81,8 +82,8 @@ public class VariableNode extends ReturnsVariableNodes {
             this.v = v;
         }
 
-        public <Any> Any get() {
-            return this.t.value();
+        public V get() {
+            return this.t.value(v);
         }
 
     }

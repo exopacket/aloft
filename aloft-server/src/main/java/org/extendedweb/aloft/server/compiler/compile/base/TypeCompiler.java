@@ -1,39 +1,138 @@
 package org.extendedweb.aloft.server.compiler.compile.base;
 
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.extendedweb.aloft.lib.lang.types.base.T;
 import org.extendedweb.aloft.lib.lang.types.base.V;
+import org.extendedweb.aloft.lib.lang.types.t.*;
+import org.extendedweb.aloft.lib.lang.types.v.NullV;
+import org.extendedweb.aloft.server.compiler.compile.supporting.ContextContainer;
+import org.extendedweb.aloft.server.compiler.exceptions.CompilerException;
 import org.extendedweb.aloft.server.grammar.antlr.AloftParser;
+import org.extendedweb.aloft.utils.global.__;
+
+import java.util.List;
 
 public class TypeCompiler {
 
-    public static V compile(Object o) {
-        if(o instanceof AloftParser.Property_valueContext) return property((AloftParser.Property_valueContext) o);
+    public static V compile(ContextContainer ctx) {
+        ParserRuleContext o = ctx.context();
+        if(o instanceof AloftParser.Property_valueContext) return property(ctx);
         return null;
     }
 
-    public static V compile(T type, Object o) {
-        if(o instanceof AloftParser.Property_valueContext) return property(type, (AloftParser.Property_valueContext) o);
+    public static V compile(T type, ContextContainer ctx) throws CompilerException {
+        ParserRuleContext o = ctx.context();
+        if(o instanceof AloftParser.Property_valueContext)
+            if(type instanceof DynamicT) return property(ctx);
+            else return property(type, ctx);
         return null;
     }
 
-    private static V property(AloftParser.Property_valueContext val) {
+    private static V property(ContextContainer val) {
+        return new DynamicT().value(getValue(val));
+    }
+
+    private static V property(T type, ContextContainer val) throws CompilerException {
+        AloftParser.Property_valueContext ctx = (AloftParser.Property_valueContext) val.context();
+        if(type instanceof StringT) {
+            if(!assertString(ctx)) val.e("Property value got unexpected data type, expected string.", CompilerException.ExceptionType.CRITICAL);
+            String str = string(ctx);
+            return type.value(str);
+        }
+        if(type instanceof PathT) {
+            if(!assertPath(ctx)) val.e("Property value got unexpected data type, expected path.", CompilerException.ExceptionType.CRITICAL);
+            String path = path(ctx);
+            return type.value(path);
+        }
+        if(type instanceof NumberT) {
+            if(!assertPath(ctx)) val.e("Property value got unexpected data type, expected number.", CompilerException.ExceptionType.CRITICAL);
+            String num = number(ctx);
+            return type.value(num);
+        }
+        if(type instanceof ArrayT) {
+            if(!assertPath(ctx)) val.e("Property value got unexpected data type, expected array.", CompilerException.ExceptionType.CRITICAL);
+            Object[] arr = array(ctx);
+            return type.value(arr);
+        }
+        return new NullV();
+    }
+
+    private static boolean assertString(AloftParser.Property_valueContext ctx) {
+        AloftParser.StringContext strCtx = ctx.string();
+        return __.isset(strCtx);
+    }
+
+    private static boolean assertPath(AloftParser.Property_valueContext ctx) {
+        AloftParser.PathContext pathCtx = ctx.path();
+        return __.isset(pathCtx);
+    }
+
+    private static boolean assertArray(AloftParser.Property_valueContext ctx) {
+        AloftParser.ArrayContext arrCtx = ctx.array();
+        return __.isset(arrCtx);
+    }
+
+    private static boolean assertNumber(AloftParser.Property_valueContext ctx) {
+        AloftParser.NumberContext numCtx = ctx.number();
+        return __.isset(numCtx);
+    }
+
+    private static String string(ParserRuleContext ctx) {
+        if(ctx instanceof AloftParser.Property_valueContext) return string((AloftParser.Property_valueContext) ctx);
         return null;
     }
 
-    private static V property(T type, AloftParser.Property_valueContext val) {
+    private static String string(AloftParser.Property_valueContext ctx) {
+        if(!assertString(ctx)) return null;
+        return ctx.string().getText();
+    }
+
+    private static String number(ParserRuleContext ctx) {
+        if(ctx instanceof AloftParser.Property_valueContext) return number((AloftParser.Property_valueContext) ctx);
         return null;
     }
 
-    private static boolean assertString(AloftParser.Property_valueContext val) {
-        return true;
+    private static String number(AloftParser.Property_valueContext ctx) {
+        if(!assertNumber(ctx)) return null;
+        return ctx.number().getText();
     }
 
-    private static boolean assertPath(AloftParser.Property_valueContext val) {
-        return true;
+    private static String path(ParserRuleContext ctx) {
+        if(ctx instanceof AloftParser.Property_valueContext) return path((AloftParser.Property_valueContext) ctx);
+        return null;
     }
 
-    private static boolean assertArray(AloftParser.Property_valueContext val) {
-        return true;
+    private static String path(AloftParser.Property_valueContext ctx) {
+        if(!assertPath(ctx)) return null;
+        return ctx.path().getText();
+    }
+
+    private static V[] array(ParserRuleContext ctx) {
+        if(ctx instanceof AloftParser.Property_valueContext) return array((AloftParser.Property_valueContext) ctx);
+        return null;
+    }
+
+    private static V[] array(AloftParser.Property_valueContext ctx) {
+        if(!assertArray(ctx)) return null;
+        AloftParser.ArrayContext arrCtx = ctx.array();
+        List<AloftParser.Property_valueContext> values = arrCtx.property_value();
+        V[] arr = new V[values.size()];
+        for(int i=0; i< values.size(); i++) {
+            arr[i] = getValue(values.get(i));
+        }
+        return arr;
+    }
+
+    private static V getValue(ContextContainer ctx) {
+        return getValue(ctx.context());
+    }
+
+    private static V getValue(ParserRuleContext val) {
+        if(__.isset(string(val))) return new StringT().value(string(val));
+        if(__.isset(number(val))) return new NumberT().value(number(val));
+        if(__.isset(path(val))) return new PathT().value(path(val));
+        if(__.isset(array(val))) return new ArrayT().value(array(val));
+        return new NullV();
     }
 
 }

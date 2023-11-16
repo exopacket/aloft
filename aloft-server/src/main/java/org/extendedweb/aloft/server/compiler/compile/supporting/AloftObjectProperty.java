@@ -3,9 +3,9 @@ package org.extendedweb.aloft.server.compiler.compile.supporting;
 import org.extendedweb.aloft.lib.lang.types.base.T;
 import org.extendedweb.aloft.lib.lang.types.base.V;
 import org.extendedweb.aloft.lib.lang.types.t.DynamicT;
-import org.extendedweb.aloft.lib.lang.types.t.StringT;
+import org.extendedweb.aloft.lib.lang.types.v.NullV;
 import org.extendedweb.aloft.server.compiler.compile.base.TypeCompiler;
-import org.extendedweb.aloft.server.grammar.antlr.AloftParser;
+import org.extendedweb.aloft.server.compiler.exceptions.CompilerException;
 
 public class AloftObjectProperty {
 
@@ -26,26 +26,26 @@ public class AloftObjectProperty {
         this.required = required;
     }
 
-    public AloftObjectProperty cloneProperty(T type, AloftParser.Property_valueContext value) {
+    public AloftObjectProperty cloneProperty(T type, ContextContainer value) throws CompilerException {
         AloftObjectProperty property = new AloftObjectProperty(this.name, this.required);
         property.set(type, value);
         return property;
     }
 
-    public AloftObjectProperty cloneProperty(AloftParser.Property_valueContext value) {
+    public AloftObjectProperty cloneProperty(ContextContainer value) throws CompilerException {
         AloftObjectProperty property = new AloftObjectProperty(this.name, this.required);
         property.set(type, value);
         return property;
     }
 
-    public void set(T type, AloftParser.Property_valueContext value) {
+    public void set(T type, ContextContainer value) throws CompilerException {
         this.type = type;
         this.value = compileValue(value);
     }
 
-    private V compileValue(AloftParser.Property_valueContext value) {
-        if(type instanceof DynamicT) return TypeCompiler.compile(value);
-        return null;
+    private V compileValue(ContextContainer value) throws CompilerException {
+        if(type instanceof DynamicT) return new NullV();
+        return TypeCompiler.compile(type, value);
     }
 
     public String getName() {

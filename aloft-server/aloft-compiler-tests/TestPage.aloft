@@ -4,7 +4,8 @@ page index {
     val string = "test"
 
     root: "ROOT"
-    title: "Test"
+    title: "adfsasdf"
+    favicon: /var/www/html/resources/favicon.png
 
     void (testFunction)() {
         person User = getUser()
