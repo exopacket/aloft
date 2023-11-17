@@ -161,13 +161,13 @@ public class Migrate extends HandlesCommands {
                 }
                 if(__.isset(variable)) {
                     AloftParser.VariableContext var = variable.variable();
-                    AloftParser.Var_typeContext type = variable.var_type();
+                    AloftParser.Var_typeContext type = var.var_type();
                     AloftParser.Var_expressionContext expression = variable.var_expression();
                     if(!__.isset(var)) {
                         System.err.println();
                         System.exit(1);
                     }
-                    TerminalNode access = var.VAR_ACCESS();
+                    AloftParser.Var_accessContext access = var.var_access();
                     boolean required = false;
                     if(__.isset(access)) {
                         if(!access.getText().equals("*")) {

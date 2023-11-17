@@ -1,4 +1,4 @@
-package org.extendedweb.aloft.server.compiler.compile.base.register.classes;
+package org.extendedweb.aloft.server.compiler.compile.base.builtin;
 
 import org.extendedweb.aloft.server.compiler.compile.supporting.AloftComponentClass;
 import org.extendedweb.aloft.server.compiler.compile.supporting.AloftComponentPropertyTypes;

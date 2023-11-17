@@ -258,6 +258,16 @@ public interface AloftListener extends ParseTreeListener {
 	 */
 	void exitVariable(AloftParser.VariableContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AloftParser#var_names}.
+	 * @param ctx the parse tree
+	 */
+	void enterVar_names(AloftParser.Var_namesContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#var_names}.
+	 * @param ctx the parse tree
+	 */
+	void exitVar_names(AloftParser.Var_namesContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AloftParser#any_var}.
 	 * @param ctx the parse tree
 	 */
@@ -268,15 +278,15 @@ public interface AloftListener extends ParseTreeListener {
 	 */
 	void exitAny_var(AloftParser.Any_varContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link AloftParser#any_function}.
+	 * Enter a parse tree produced by {@link AloftParser#name_declaration}.
 	 * @param ctx the parse tree
 	 */
-	void enterAny_function(AloftParser.Any_functionContext ctx);
+	void enterName_declaration(AloftParser.Name_declarationContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link AloftParser#any_function}.
+	 * Exit a parse tree produced by {@link AloftParser#name_declaration}.
 	 * @param ctx the parse tree
 	 */
-	void exitAny_function(AloftParser.Any_functionContext ctx);
+	void exitName_declaration(AloftParser.Name_declarationContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AloftParser#private_named}.
 	 * @param ctx the parse tree
@@ -287,6 +297,16 @@ public interface AloftListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPrivate_named(AloftParser.Private_namedContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AloftParser#private_named_multiple}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrivate_named_multiple(AloftParser.Private_named_multipleContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#private_named_multiple}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrivate_named_multiple(AloftParser.Private_named_multipleContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AloftParser#var_name_with_params}.
 	 * @param ctx the parse tree
@@ -378,15 +398,35 @@ public interface AloftListener extends ParseTreeListener {
 	 */
 	void exitIf(AloftParser.IfContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link AloftParser#variable_options}.
+	 * Enter a parse tree produced by {@link AloftParser#var_access}.
 	 * @param ctx the parse tree
 	 */
-	void enterVariable_options(AloftParser.Variable_optionsContext ctx);
+	void enterVar_access(AloftParser.Var_accessContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link AloftParser#variable_options}.
+	 * Exit a parse tree produced by {@link AloftParser#var_access}.
 	 * @param ctx the parse tree
 	 */
-	void exitVariable_options(AloftParser.Variable_optionsContext ctx);
+	void exitVar_access(AloftParser.Var_accessContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AloftParser#required_field}.
+	 * @param ctx the parse tree
+	 */
+	void enterRequired_field(AloftParser.Required_fieldContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#required_field}.
+	 * @param ctx the parse tree
+	 */
+	void exitRequired_field(AloftParser.Required_fieldContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AloftParser#static_field}.
+	 * @param ctx the parse tree
+	 */
+	void enterStatic_field(AloftParser.Static_fieldContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#static_field}.
+	 * @param ctx the parse tree
+	 */
+	void exitStatic_field(AloftParser.Static_fieldContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AloftParser#var_options}.
 	 * @param ctx the parse tree

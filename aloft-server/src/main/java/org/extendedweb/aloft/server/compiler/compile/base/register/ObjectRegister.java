@@ -1,8 +1,7 @@
 package org.extendedweb.aloft.server.compiler.compile.base.register;
 
-import org.extendedweb.aloft.server.compiler.compile.base.register.classes.RegisterElementClasses;
+import org.extendedweb.aloft.server.compiler.compile.base.builtin.RegisterElementClasses;
 import org.extendedweb.aloft.server.compiler.compile.supporting.AloftComponentClass;
-import org.extendedweb.aloft.server.compiler.compile.supporting.AloftObject;
 
 import java.util.ArrayList;
 

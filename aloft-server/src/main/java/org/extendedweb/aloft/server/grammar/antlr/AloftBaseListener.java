@@ -317,6 +317,18 @@ public class AloftBaseListener implements AloftListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterVar_names(AloftParser.Var_namesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVar_names(AloftParser.Var_namesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAny_var(AloftParser.Any_varContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -329,13 +341,13 @@ public class AloftBaseListener implements AloftListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAny_function(AloftParser.Any_functionContext ctx) { }
+	@Override public void enterName_declaration(AloftParser.Name_declarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAny_function(AloftParser.Any_functionContext ctx) { }
+	@Override public void exitName_declaration(AloftParser.Name_declarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -348,6 +360,18 @@ public class AloftBaseListener implements AloftListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitPrivate_named(AloftParser.Private_namedContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPrivate_named_multiple(AloftParser.Private_named_multipleContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPrivate_named_multiple(AloftParser.Private_named_multipleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -461,13 +485,37 @@ public class AloftBaseListener implements AloftListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVariable_options(AloftParser.Variable_optionsContext ctx) { }
+	@Override public void enterVar_access(AloftParser.Var_accessContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVariable_options(AloftParser.Variable_optionsContext ctx) { }
+	@Override public void exitVar_access(AloftParser.Var_accessContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterRequired_field(AloftParser.Required_fieldContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRequired_field(AloftParser.Required_fieldContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterStatic_field(AloftParser.Static_fieldContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitStatic_field(AloftParser.Static_fieldContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

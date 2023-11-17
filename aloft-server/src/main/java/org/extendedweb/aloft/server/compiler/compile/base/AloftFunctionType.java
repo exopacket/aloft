@@ -10,5 +10,5 @@ public enum AloftFunctionType {
     ELEMENT,
     COMPONENT,
     MODEL,
-    NAMED_OBJECT
+    VARIABLE
 }

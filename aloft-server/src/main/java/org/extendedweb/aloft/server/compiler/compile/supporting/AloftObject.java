@@ -66,7 +66,7 @@ public abstract class AloftObject implements CompilesAloftObjects {
         for(AloftParser.SyntaxContext ctx : syntax) {
             AloftParser.Declare_variableContext declareCtx = ctx.declare_variable();
             if(!__.isset(declareCtx)) continue;
-            variables.add(AloftVariable.fromContext(declareCtx));
+            variables.addAll(AloftVariable.fromContext(declareCtx));
         }
         System.out.println("DONE");
     }

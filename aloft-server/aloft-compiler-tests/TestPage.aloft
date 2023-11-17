@@ -1,7 +1,7 @@
 page index {
 
     v number = 1
-    val string = "test"
+    ::(val, val2) string = "test"
 
     root: Text(text: "Hello World")
     title: "adfsasdf"

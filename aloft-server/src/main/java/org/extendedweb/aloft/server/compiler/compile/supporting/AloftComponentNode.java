@@ -6,7 +6,6 @@ import org.extendedweb.aloft.lib.lang.types.t.DynamicT;
 import org.extendedweb.aloft.server.compiler.compile.base.TypeCompiler;
 import org.extendedweb.aloft.server.compiler.exceptions.CompilerException;
 import org.extendedweb.aloft.server.grammar.antlr.AloftParser;
-import org.extendedweb.aloft.utils.global.__;
 
 import java.util.ArrayList;
 import java.util.List;
