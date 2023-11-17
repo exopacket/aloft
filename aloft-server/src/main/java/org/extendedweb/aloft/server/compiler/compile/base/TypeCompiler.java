@@ -5,6 +5,7 @@ import org.extendedweb.aloft.lib.lang.types.base.T;
 import org.extendedweb.aloft.lib.lang.types.base.V;
 import org.extendedweb.aloft.lib.lang.types.t.*;
 import org.extendedweb.aloft.lib.lang.types.v.NullV;
+import org.extendedweb.aloft.server.compiler.compile.supporting.ComponentDefinitionT;
 import org.extendedweb.aloft.server.compiler.compile.supporting.ContextContainer;
 import org.extendedweb.aloft.server.compiler.exceptions.CompilerException;
 import org.extendedweb.aloft.server.grammar.antlr.AloftParser;
@@ -54,6 +55,10 @@ public class TypeCompiler {
             Object[] arr = array(ctx);
             return type.value(arr);
         }
+        if(type instanceof ComponentDefinitionT) {
+            if(!assertComponent(ctx)) val.e("Property value got unexpected data type, expected component.", CompilerException.ExceptionType.CRITICAL);
+            return type.value(new ContextContainer(((AloftParser.Property_valueContext) val.context()).component_tree(), val.getFile()));
+        }
         return new NullV();
     }
 
@@ -75,6 +80,11 @@ public class TypeCompiler {
     private static boolean assertNumber(AloftParser.Property_valueContext ctx) {
         AloftParser.NumberContext numCtx = ctx.number();
         return __.isset(numCtx);
+    }
+
+    private static boolean assertComponent(AloftParser.Property_valueContext ctx) {
+        AloftParser.Component_treeContext componentCtx = ctx.component_tree();
+        return __.isset(componentCtx);
     }
 
     private static String string(ParserRuleContext ctx) {

@@ -1,14 +1,10 @@
 package org.extendedweb.aloft.server.compiler.compile.base.objects;
 
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.extendedweb.aloft.lib._AloftComponent;
 import org.extendedweb.aloft.lib._AloftRoute;
-import org.extendedweb.aloft.lib.application.cache.RouteCache;
-import org.extendedweb.aloft.lib.lang.types.t.StringT;
 import org.extendedweb.aloft.server.compiler.compile.base.register.CompiledObjectsRegister;
 import org.extendedweb.aloft.server.compiler.compile.supporting.AloftObject;
 import org.extendedweb.aloft.server.compiler.compile.supporting.AloftObjectProperty;
-import org.extendedweb.aloft.server.compiler.compile.supporting.ComponentTreeT;
 import org.extendedweb.aloft.server.compiler.exceptions.CompilerException;
 import org.extendedweb.aloft.server.grammar.antlr.AloftParser;
 import org.extendedweb.aloft.utils.global.__;

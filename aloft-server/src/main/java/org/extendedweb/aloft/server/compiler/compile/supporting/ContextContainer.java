@@ -19,6 +19,10 @@ public class ContextContainer {
         this.file = file;
     }
 
+    public File getFile() {
+        return file;
+    }
+
     public void e(ParserRuleContext ctx, String message, CompilerException.ExceptionType type) throws CompilerException {
         throw new CompilerException(ctx.start.getLine(), file, message, ctx.getText(), type);
     }

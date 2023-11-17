@@ -84,7 +84,8 @@ public abstract class AloftObject implements CompilesAloftObjects {
             String var_value = pValCtx.getText();
             AloftObjectProperty property = findProperty(var_name);
             if(__.isset(property)) properties.add(property.cloneProperty(valueCtx));
-            else properties.add(new AloftObjectProperty(var_name, false).cloneProperty(valueCtx));
+            else if(allowsWildcardProperties()) properties.add(new AloftObjectProperty(var_name, false).cloneProperty(valueCtx));
+            else new ContextContainer(varCtx, file).e("Unknown property name for object.", CompilerException.ExceptionType.CRITICAL);
             System.out.println(var_name + " = " + var_value);
         }
         System.out.println("DONE");

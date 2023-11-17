@@ -533,13 +533,25 @@ public class AloftBaseListener implements AloftListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterComma_separated_var_expression(AloftParser.Comma_separated_var_expressionContext ctx) { }
+	@Override public void enterHtml_element(AloftParser.Html_elementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitComma_separated_var_expression(AloftParser.Comma_separated_var_expressionContext ctx) { }
+	@Override public void exitHtml_element(AloftParser.Html_elementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterComponent_tree(AloftParser.Component_treeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitComponent_tree(AloftParser.Component_treeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

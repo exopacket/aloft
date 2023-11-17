@@ -185,6 +185,18 @@ public class AloftBaseListener implements AloftListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterNumber(AloftParser.NumberContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNumber(AloftParser.NumberContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterPath_with_var(AloftParser.Path_with_varContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -377,6 +389,18 @@ public class AloftBaseListener implements AloftListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterExpression_value(AloftParser.Expression_valueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExpression_value(AloftParser.Expression_valueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterVar_expression(AloftParser.Var_expressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -509,13 +533,25 @@ public class AloftBaseListener implements AloftListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterComma_separated_var_expression(AloftParser.Comma_separated_var_expressionContext ctx) { }
+	@Override public void enterHtml_element(AloftParser.Html_elementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitComma_separated_var_expression(AloftParser.Comma_separated_var_expressionContext ctx) { }
+	@Override public void exitHtml_element(AloftParser.Html_elementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterComponent_tree(AloftParser.Component_treeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitComponent_tree(AloftParser.Component_treeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

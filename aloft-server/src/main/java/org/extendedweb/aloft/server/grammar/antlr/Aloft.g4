@@ -77,9 +77,10 @@ var_type : ('string') | ('number') | ('bool') | ('boolean') | ('dynamic') | ('fu
 param_values : EMPTY_PARENTHESIS | named_with_params_special ;
 var_args : EMPTY_PARENTHESIS | named_with_params_special ;
 property : var_name COLON property_value (STATEMENT_END | NEW_LINE)?;
-comma_separated_var_expression: (expression (COMMA expression)+) ;
+html_element: HTML_ELEMENT ;
+component_tree : var_name OPEN_PARENTHESES (html_element COMMA)? property ((COMMA property)+)? CLOSE_PARENTHESES ;
 //PROPERTY_VALUES : (number | QUOTED_STRING | path | HTML_ELEMENT | NAMED | NAMED_DOT | (NAMED_VAR | NAMED) | NULL_VALUE | '*') ; // | BRACES_ARRAY_BLOCK | NAMED_PROPERTY_OBJECT | NAMED_PROPERTY ;
-property_value : path | array | expression | comma_separated_var_expression | (number | string | HTML_ELEMENT | NAMED | NAMED_DOT | (NAMED_VAR | NAMED) | NULL_VALUE | '*') ;
+property_value : var_name_with_params | path | array | expression | component_tree | (number | string | html_element | NAMED | NAMED_DOT | (NAMED_VAR | NAMED) | NULL_VALUE | '*') ;
 loop : LOOP_DECLARATION ;
 LOOP_DECLARATION :  ('repeat') ; // (((('through') NAMED  ('as') NAMED) | (('until') ([(])? var_expression+ ([)])? (('from') number)?) | (('while') ([(])? var_expression+ ([)])?))) curly_block ;
 switch_block :  SWITCH_KEYWORD named_switch SWITCH_CURLY_BLOCK ;

@@ -3,7 +3,7 @@ page index {
     v number = 1
     val string = "test"
 
-    root: "ROOT"
+    root: Text(text: "Hello World")
     title: "adfsasdf"
     favicon: /var/www/html/resources/favicon.png
 
@@ -15,6 +15,6 @@ page index {
 
 query getUser(user_id) {
     select: *
-    where: test == user_id, test2 == user_id
+    where: test == user_id && test2 == user_id
     using: User
 }

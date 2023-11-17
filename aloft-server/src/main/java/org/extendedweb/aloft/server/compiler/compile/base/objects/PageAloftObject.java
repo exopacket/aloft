@@ -39,6 +39,7 @@ public class PageAloftObject extends AloftObject {
     public void properties(ArrayList<AloftObjectProperty> properties) {
         properties.add(new AloftObjectProperty("favicon", new PathT(), false));
         properties.add(new AloftObjectProperty("title", new StringT(),false));
+        properties.add(new AloftObjectProperty("root", new ComponentDefinitionT(), true));
     }
 
     @Override
