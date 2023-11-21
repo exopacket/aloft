@@ -3,6 +3,9 @@ package org.extendedweb.aloft.server.compiler.compile.base.register;
 import org.extendedweb.aloft.lib._AloftObjects;
 import org.extendedweb.aloft.lib._AloftProject;
 import org.extendedweb.aloft.lib.application.config.AppConfig;
+import org.extendedweb.aloft.server.compiler.compile.supporting.AloftObject;
+import org.extendedweb.aloft.server.compiler.compile.supporting.ContextContainer;
+import org.extendedweb.aloft.server.compiler.exceptions.CompilerException;
 import org.extendedweb.aloft.utils.global.__;
 
 import java.util.ArrayList;
@@ -10,17 +13,18 @@ import java.util.HashMap;
 
 public class CompiledObjectsRegister {
 
-    private HashMap<Class<?>, ArrayList<String>> registered = new HashMap<>();
-    private HashMap<Class<?>, ArrayList<String>> queued = new HashMap<>();
-    private _AloftObjects objects = new _AloftObjects();
+    private HashMap<Class<?>, HashMap<String, AloftObject>> register = new HashMap<>();
     private AppConfig config = null;
 
     public CompiledObjectsRegister(String configPath) {
         config = parseConfig(configPath);
     }
 
-    public void register(Class<?> c, String identifier, Object instance) {
-
+    public void register(Class<?> c, AloftObject instance, ContextContainer ctx) throws CompilerException {
+        String identifier = instance.getName();
+        if(exists(c, identifier)) ctx.e("Duplicate object name", CompilerException.ExceptionType.CRITICAL);
+        if(!register.containsKey(c)) register.put(c, new HashMap<>());
+        register.get(c).put(identifier, instance);
     }
 
     //TODO
@@ -28,28 +32,9 @@ public class CompiledObjectsRegister {
         return false;
     }
 
-    public void exists(Class<?> c, String identifier) {
-        if(registered.isEmpty() || !registered.containsKey(c)) {
-            if(queued.isEmpty() || !queued.containsKey(c)) {
-                queued.put(c, new ArrayList<>());
-            }
-            queued.get(c).add(identifier);
-        } else {
-            ArrayList<String> list = registered.get(c);
-            boolean found = false;
-            for(String id : list) {
-                if(__.same(id, identifier)) {
-                    found = true;
-                    break;
-                }
-            }
-            if(!found) {
-                if(queued.isEmpty() || !queued.containsKey(c)) {
-                    queued.put(c, new ArrayList<>());
-                }
-                queued.get(c).add(identifier);
-            }
-        }
+    private boolean exists(Class<?> c, String identifier) {
+        if(register.isEmpty() || !register.containsKey(c)) return false;
+        return register.get(c).containsKey(identifier);
     }
 
     public _AloftProject buildProject() {

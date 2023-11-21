@@ -2,13 +2,13 @@ package org.extendedweb.aloft.lib.lang.types.v;
 
 import org.extendedweb.aloft.lib.lang.types.base.T;
 import org.extendedweb.aloft.lib.lang.types.base.V;
-import org.extendedweb.aloft.lib.lang.types.t.StringT;
+import org.extendedweb.aloft.lib.lang.types.t.ObjectT;
 
-public class StringV extends V {
+public class ObjectV extends V {
 
     private String value;
 
-    public StringV(String value) { this.value = value; }
+    public ObjectV(String value) { this.value = value; }
 
     @Override
     public <Any> Any get() {
@@ -17,7 +17,7 @@ public class StringV extends V {
 
     @Override
     public T type() {
-        return new StringT();
+        return new ObjectT();
     }
 
 }

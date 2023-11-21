@@ -37,9 +37,9 @@ public class PageAloftObject extends AloftObject {
 
     @Override
     public void properties(ArrayList<AloftObjectProperty> properties) {
+        properties.add(new AloftObjectProperty("root", new ComponentDefinitionT(), true));
         properties.add(new AloftObjectProperty("favicon", new PathT(), false));
         properties.add(new AloftObjectProperty("title", new StringT(),false));
-        properties.add(new AloftObjectProperty("root", new ComponentDefinitionT(), true));
     }
 
     @Override
@@ -56,11 +56,11 @@ public class PageAloftObject extends AloftObject {
     public ArrayList<AloftObject> compile(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) throws CompilerException {
         parseVariables(syntax, register);
         parseProperties(syntax);
-        parseFunctions(syntax, register); //TODO remove for page
+//        parseFunctions(syntax, register); //TODO remove for page
         return null;
     }
 
-    public _AloftPage getCompiled(RouteCache routes) {
+    public _AloftPage getCompiled() {
         return new _AloftPage("", "Test Page", "/") {
             @Override
             protected MountableComponent buildTree() throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {

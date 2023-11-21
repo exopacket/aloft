@@ -45,7 +45,7 @@ QUOTED_STRING : QUOTES .*? QUOTES;
 functions : function curly_block ;
 ARRAY_TYPE_SUFFIX : [[][\]] ;
 function : (function_types ARRAY_TYPE_SUFFIX?) (STATIC_ACCESS? name_declaration var_args) ;
-function_types: var_type | ('update') | ('void') | ('element') | ('component') | ('model') ;
+function_types: var_type | ('update') | ('void') | var_name ;
 declare_variable : ((variable var_options? (assignment var_expression)?)) (STATEMENT_END | NEW_LINE) ;
 variable : var_access? (var_names | private_named_multiple) var_type?;
 var_names : (var_name ((COMMA var_name)+)?) ;

@@ -2,6 +2,7 @@ package org.extendedweb.aloft.lib.lang.structure.elements.types;
 
 import org.extendedweb.aloft.lib.lang.base.ElementMapper;
 import org.extendedweb.aloft.lib.lang.structure.AloftTheme;
+import org.extendedweb.aloft.lib.lang.structure.components.AloftObjectProperties;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftBuilder;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElement;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElementSubtype;
@@ -9,7 +10,6 @@ import org.extendedweb.aloft.lib.ModuleElement;
 import org.extendedweb.aloft.lib.html.elements.HtmlElement;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class AlertAloftElement extends AloftElement {
 
@@ -19,7 +19,6 @@ public class AlertAloftElement extends AloftElement {
     public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
         ModuleElement m = theme.getStyleModule().get(this.getClass());
         HtmlElement root = createElement("div", m.fromKey("root"));
-        addVar("modal-id", root.getId());
         HtmlElement dialog = createElement("div", m.fromKey("dialog"));
         root.addChild(dialog);
         HtmlElement content = createElement("div", m.fromKey("content"));
@@ -78,7 +77,7 @@ public class AlertAloftElement extends AloftElement {
     }
 
     @Override
-    protected void setupVariables(HashMap<String, Object> vars) {
+    protected void setupProperties(AloftObjectProperties vars) {
 
     }
 

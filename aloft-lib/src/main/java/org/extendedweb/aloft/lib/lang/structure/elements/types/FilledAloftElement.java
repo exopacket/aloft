@@ -2,12 +2,12 @@ package org.extendedweb.aloft.lib.lang.structure.elements.types;
 
 import org.extendedweb.aloft.lib.lang.base.ElementMapper;
 import org.extendedweb.aloft.lib.lang.structure.AloftTheme;
+import org.extendedweb.aloft.lib.lang.structure.components.AloftObjectProperties;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElement;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElementSubtype;
 import org.extendedweb.aloft.lib.html.elements.HtmlElement;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class FilledAloftElement extends AloftElement {
 
@@ -76,10 +76,10 @@ public class FilledAloftElement extends AloftElement {
     }
 
     @Override
-    protected void setupVariables(HashMap<String, Object> vars) {
-        vars.put("scrollbar-y", false);
-        vars.put("scrollbar-x", false);
-        vars.put("use-view", false);
+    protected void setupProperties(AloftObjectProperties vars) {
+        this.vars.put("scrollbar-y", false);
+        this.vars.put("scrollbar-x", false);
+        this.vars.put("use-view", false);
     }
 
     @Override

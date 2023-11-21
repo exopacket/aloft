@@ -2,6 +2,7 @@ package org.extendedweb.aloft.lib.lang.structure.elements.types;
 
 import org.extendedweb.aloft.lib.lang.base.ElementMapper;
 import org.extendedweb.aloft.lib.lang.structure.AloftTheme;
+import org.extendedweb.aloft.lib.lang.structure.components.AloftObjectProperties;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElement;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElementSubtype;
 import org.extendedweb.aloft.lib.html.elements.HtmlElement;
@@ -54,7 +55,7 @@ public class VectorAloftElement extends AloftElement {
         VectorAloftElement element = new VectorAloftElement() {
             @Override
             public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
-                HtmlElement svg = (HtmlElement) this.vars.get("element");
+                HtmlElement svg = var("element");
                 svg.addAttribute("xmlns", "http://www.w3.org/2000/svg");
                 svg.addAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
                 svg.addAttribute("version", "1.1");
@@ -89,7 +90,7 @@ public class VectorAloftElement extends AloftElement {
         VectorAloftElement element = new VectorAloftElement() {
             @Override
             public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
-                HtmlElement svg = (HtmlElement) this.vars.get("element");
+                HtmlElement svg = var("element");
                 svg.addAttribute("xmlns", "http://www.w3.org/2000/svg");
                 svg.addAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
                 svg.addAttribute("version", "1.1");
@@ -181,11 +182,11 @@ public class VectorAloftElement extends AloftElement {
     }
 
     @Override
-    protected void setupVariables(HashMap<String, Object> vars) {
-        vars.put("view-box", null);
-        vars.put("width", null);
-        vars.put("height", null);
-        vars.put("element", null);
+    protected void setupProperties(AloftObjectProperties vars) {
+        this.vars.put("view-box", null);
+        this.vars.put("width", null);
+        this.vars.put("height", null);
+        this.vars.put("element", null);
     }
 
     @Override

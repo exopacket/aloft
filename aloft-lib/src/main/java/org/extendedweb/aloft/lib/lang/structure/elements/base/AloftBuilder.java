@@ -31,7 +31,7 @@ public class AloftBuilder {
         ComponentRequirement req = components.get(key);
         AloftElement element = createInstance(req.getType());
         if(!__.isset(element)) return;
-        for(int i=0; i<vars.length; i++) element.addVar(vars[i][0], vars[i][1]);
+//        for(int i=0; i<vars.length; i++) element.addVar(vars[i][0], vars[i][1]);
         elements.add(new AloftBuilderElement(key, element));
     }
 

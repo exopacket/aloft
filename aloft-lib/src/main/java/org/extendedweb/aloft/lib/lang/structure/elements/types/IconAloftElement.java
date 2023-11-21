@@ -2,13 +2,13 @@ package org.extendedweb.aloft.lib.lang.structure.elements.types;
 
 import org.extendedweb.aloft.lib.lang.base.ElementMapper;
 import org.extendedweb.aloft.lib.lang.structure.AloftTheme;
+import org.extendedweb.aloft.lib.lang.structure.components.AloftObjectProperties;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElement;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElementSubtype;
 import org.extendedweb.aloft.lib.html.elements.HtmlElement;
 import org.extendedweb.aloft.utils.global.__;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class IconAloftElement extends AloftElement {
 
@@ -29,9 +29,9 @@ public class IconAloftElement extends AloftElement {
     @Override
     public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
         HtmlElement icon = createElement("i");
-        icon.addAttribute("class", theme.getStyleModule().icon((String) vars.get("icon")));
-        if(__.isset(vars.get("color"))) icon.addStyle("color", (String) vars.get("color"));
-        if(__.isset(vars.get("size"))) icon.addStyle("font-size", String.valueOf(vars.get("size")) + "px");
+        icon.addAttribute("class", theme.getStyleModule().icon(var("icon")));
+        if(__.isset(vars.get("color"))) icon.addStyle("color", var("color"));
+        if(__.isset(vars.get("size"))) icon.addStyle("font-size", (var("size") + "px"));
         applyListeners("icon", icon);
         return icon;
     }
@@ -72,10 +72,10 @@ public class IconAloftElement extends AloftElement {
     }
 
     @Override
-    protected void setupVariables(HashMap<String, Object> vars) {
-        vars.put("icon", null);
-        vars.put("size", null);
-        vars.put("color", null);
+    protected void setupProperties(AloftObjectProperties vars) {
+        this.vars.put("icon", null);
+        this.vars.put("size", null);
+        this.vars.put("color", null);
     }
 
     @Override

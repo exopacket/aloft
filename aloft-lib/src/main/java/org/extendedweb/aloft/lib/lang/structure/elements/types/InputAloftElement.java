@@ -2,6 +2,7 @@ package org.extendedweb.aloft.lib.lang.structure.elements.types;
 
 import org.extendedweb.aloft.lib.lang.base.ElementMapper;
 import org.extendedweb.aloft.lib.lang.structure.AloftTheme;
+import org.extendedweb.aloft.lib.lang.structure.components.AloftObjectProperties;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElement;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElementSubtype;
 import org.extendedweb.aloft.lib.lang.structure.style.AloftStyle;
@@ -11,7 +12,6 @@ import org.extendedweb.aloft.lib.html.elements.types.Content;
 import org.extendedweb.aloft.utils.global.__;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class InputAloftElement extends AloftElement {
 
@@ -270,30 +270,30 @@ public class InputAloftElement extends AloftElement {
     }
 
     @Override
-    protected void setupVariables(HashMap<String, Object> vars) {
-        vars.put("placeholder", null);
-        vars.put("label", null);
-        vars.put("prepend-text", null);
-        vars.put("help-text", null);
-        vars.put("icon", null);
-        vars.put("placement", null);
+    protected void setupProperties(AloftObjectProperties vars) {
+        this.vars.put("placeholder", null);
+        this.vars.put("label", null);
+        this.vars.put("prepend-text", null);
+        this.vars.put("help-text", null);
+        this.vars.put("icon", null);
+        this.vars.put("placement", null);
 
-        vars.put("color", null);
+        this.vars.put("color", null);
         addOverride("color", "background-color");
 
-        vars.put("pulse-shadow", null);
-        vars.put("pulse-shadow-active", null);
+        this.vars.put("pulse-shadow", null);
+        this.vars.put("pulse-shadow-active", null);
         addOverride("pulse-shadow", "box-shadow", "after");
         addOverride("pulse-shadow-active", "box-shadow", "active", "after");
 
-        vars.put("ring-color", null);
+        this.vars.put("ring-color", null);
         addOverride("ring-color", "box-shadow", "hover");
         addOverride("ring-color", "box-shadow", "focus");
 
-        vars.put("border-color", null);
+        this.vars.put("border-color", null);
         addOverride("border-color", "border");
 
-        vars.put("active-color", null);
+        this.vars.put("active-color", null);
         addOverride("active-color", "background-color", "focus");
 
         AloftStyle s1 = new AloftStyle();

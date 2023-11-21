@@ -1,9 +1,6 @@
 package org.extendedweb.aloft.server.compiler.compile.supporting;
 
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.extendedweb.aloft.lib.lang.types.t.DynamicT;
-import org.extendedweb.aloft.lib.lang.types.t.StringT;
-import org.extendedweb.aloft.server.compiler.compile.base.AloftFunction;
 import org.extendedweb.aloft.server.compiler.compile.base.AloftFunctionCompiler;
 import org.extendedweb.aloft.server.compiler.compile.base.AloftFunctionContainer;
 import org.extendedweb.aloft.server.compiler.compile.base.register.CompiledObjectsRegister;
@@ -119,6 +116,10 @@ public abstract class AloftObject implements CompilesAloftObjects {
     @Override
     public void type(Class<?> c) {
         this.type = c;
+    }
+
+    public String getName() {
+        return named;
     }
 
 }

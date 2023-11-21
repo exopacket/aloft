@@ -1,15 +1,10 @@
 page index {
 
-    v number = 1
-    ::(val, val2) string = "test"
-
     root: Text(text: "Hello World")
     title: "adfsasdf"
     favicon: /var/www/html/resources/favicon.png
 
-    void (testFunction)() {
-        person User = getUser()
-    }
+
 
 }
 
@@ -17,4 +12,15 @@ query getUser(user_id) {
     select: *
     where: test == user_id && test2 == user_id
     using: User
+}
+
+component MyComponent {
+
+    v number = 1
+    ::(val, val2) string = "test"
+
+    void (testFunction)() {
+        person User = getUser()
+    }
+
 }

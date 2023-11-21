@@ -3,9 +3,12 @@ package org.extendedweb.aloft.lib.lang.structure.elements.base;
 import org.extendedweb.aloft.lib.lang.base.ElementMapper;
 import org.extendedweb.aloft.lib.lang.structure.AloftTheme;
 import org.extendedweb.aloft.lib.lang.structure.components.AloftComponent;
+import org.extendedweb.aloft.lib.lang.structure.components.AloftObjectProperties;
+import org.extendedweb.aloft.lib.lang.structure.components.AloftObjectProperty;
 import org.extendedweb.aloft.lib.lang.structure.style.AloftStyleClass;
 import org.extendedweb.aloft.lib.ModuleElementAttributes;
 import org.extendedweb.aloft.lib.html.elements.HtmlElement;
+import org.extendedweb.aloft.lib.lang.types.base.V;
 import org.extendedweb.aloft.utils.global.__;
 
 import java.util.ArrayList;
@@ -55,7 +58,7 @@ public abstract class AloftElement extends AloftComponent {
     protected abstract boolean isExtensible();
     protected abstract boolean hasMultipleSubtypes();
     protected abstract boolean acceptsChild();
-    protected abstract void setupVariables(HashMap<String, Object> vars);
+    protected abstract void setupProperties(AloftObjectProperties vars);
     protected abstract void subtypes(ArrayList<AloftElementSubtype> subtypes);
 
     protected String id() {
@@ -164,11 +167,36 @@ public abstract class AloftElement extends AloftComponent {
         for (AloftComponent child : children) element.addChild(child.html(theme, mapper));
     }
 
+    protected void addProperty(String variable, Object v) {
+
+    }
+
     protected void addOverride(String variable, String property) {
         if(!overrides.containsKey("\34")) overrides.put("\34", new ArrayList<>());
         ArrayList<String[]> list = overrides.get("\34");
         list.add(new String[]{property + ":" + variable, null});
         overrides.replace("\34", list);
+    }
+
+    protected void addOverride(String[] subtypes, String variable, String property) {
+        if(!overrides.containsKey("\34")) overrides.put("\34", new ArrayList<>());
+        ArrayList<String[]> list = overrides.get("\34");
+        list.add(new String[]{property + ":" + variable, null});
+        overrides.replace("\34", list);
+    }
+
+    protected void addOverride(String[] subtypes, String variable, String property, String...events) {
+        String key = "";
+        for(int i=0; i<events.length; i++) key += ":" + events[i];
+        if(!overrides.containsKey(key)) overrides.put(key, new ArrayList<>());
+        ArrayList<String[]> list = overrides.get(key);
+        String[] arr = new String[events.length + 2];
+        arr[0] = property + ":" + variable;
+        arr[1] = null;
+        int x = 0;
+        for(int i=2; i<arr.length; i++) { arr[i] = events[x]; x++; }
+        list.add(arr);
+        overrides.replace(key, list);
     }
 
     protected void addOverride(String variable, String property, String...events) {
@@ -202,6 +230,31 @@ public abstract class AloftElement extends AloftComponent {
     }
 
     protected void addFlaggedOverride(String flag, String property, String value) {
+        if(!__.isset(var(flag))) return;
+        if(!((boolean) var(flag))) return;
+        if(!overrides.containsKey("\34")) overrides.put("\34", new ArrayList<>());
+        ArrayList<String[]> list = overrides.get("\34");
+        list.add(new String[]{property, value});
+        overrides.replace("\34", list);
+    }
+
+    protected void addFlaggedOverride(String[] subtypes, String flag, String property, String value, String...events) {
+        if(!__.isset(var(flag))) return;
+        if(!((boolean) var(flag))) return;
+        String key = "";
+        for(int i=0; i<events.length; i++) key += ":" + events[i];
+        if(!overrides.containsKey(flag)) overrides.put(flag, new ArrayList<>());
+        ArrayList<String[]> list = overrides.get(flag);
+        String[] arr = new String[events.length + 2];
+        arr[0] = property;
+        arr[1] = value;
+        int x = 0;
+        for(int i=2; i<arr.length; i++) { arr[i] = events[x]; x++; }
+        list.add(arr);
+        overrides.replace(flag, list);
+    }
+
+    protected void addFlaggedOverride(String[] subtypes, String flag, String property, String value) {
         if(!__.isset(var(flag))) return;
         if(!((boolean) var(flag))) return;
         if(!overrides.containsKey("\34")) overrides.put("\34", new ArrayList<>());
@@ -289,13 +342,11 @@ public abstract class AloftElement extends AloftComponent {
         return el;
     }
 
-    public void addVar(String key, String value) {
-        if(vars.containsKey(key)) vars.replace(key, value);
-        else vars.put(key, value);
-    }
-
     protected <Any> Any var(String key) {
-        return (Any) vars.get(key);
+        AloftObjectProperty property = null;
+        if(__.isset(vars.get(getName(), key))) property = vars.get(getName(), key);
+        else return null;
+        return property.value().get();
     }
 
     public void builder(String key, String[]...vars) {
@@ -310,7 +361,7 @@ public abstract class AloftElement extends AloftComponent {
     public void refresh() {
         setupExtensions();
         if(this.isExtensible) assert !this.requiredElements.isEmpty();
-        if(this.vars.isEmpty()) setupVariables(this.vars);
+        setupProperties(this.vars);
         setupBuilder();
         if(this.requiresBuilder || this.acceptsBuilder) setupBuilder(new AloftBuilder());
         setupIterator();
@@ -320,6 +371,10 @@ public abstract class AloftElement extends AloftComponent {
     @Override
     public String getName() {
         return name();
+    }
+
+    public static AloftObjectProperties properties() {
+        return AloftComponent.properties();
     }
 
 }

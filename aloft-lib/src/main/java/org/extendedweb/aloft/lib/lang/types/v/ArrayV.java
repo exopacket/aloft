@@ -1,6 +1,8 @@
 package org.extendedweb.aloft.lib.lang.types.v;
 
+import org.extendedweb.aloft.lib.lang.types.base.T;
 import org.extendedweb.aloft.lib.lang.types.base.V;
+import org.extendedweb.aloft.lib.lang.types.t.ArrayT;
 import org.extendedweb.aloft.lib.lang.types.t.DynamicT;
 
 public class ArrayV extends V {
@@ -18,6 +20,11 @@ public class ArrayV extends V {
     @Override
     public <Any> Any get() {
         return (Any) arr;
+    }
+
+    @Override
+    public T type() {
+        return new ArrayT();
     }
 
     public int size() {

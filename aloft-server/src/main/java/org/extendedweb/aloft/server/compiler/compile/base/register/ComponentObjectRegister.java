@@ -5,11 +5,11 @@ import org.extendedweb.aloft.server.compiler.compile.supporting.AloftComponentCl
 
 import java.util.ArrayList;
 
-public class ObjectRegister {
+public class ComponentObjectRegister {
 
     private ArrayList<AloftComponentClass> classes = new ArrayList<>();
 
-    public ObjectRegister() {
+    public ComponentObjectRegister() {
         RegisterElementClasses.register(classes);
     }
 

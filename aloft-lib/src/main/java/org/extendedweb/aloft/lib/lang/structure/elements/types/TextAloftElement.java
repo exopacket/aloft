@@ -2,13 +2,14 @@ package org.extendedweb.aloft.lib.lang.structure.elements.types;
 
 import org.extendedweb.aloft.lib.lang.base.ElementMapper;
 import org.extendedweb.aloft.lib.lang.structure.AloftTheme;
+import org.extendedweb.aloft.lib.lang.structure.components.AloftObjectProperties;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElement;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElementSubtype;
 import org.extendedweb.aloft.lib.html.elements.HtmlElement;
 import org.extendedweb.aloft.lib.html.elements.types.Content;
+import org.extendedweb.aloft.lib.lang.types.base.T;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class TextAloftElement extends AloftElement {
 
@@ -86,13 +87,19 @@ public class TextAloftElement extends AloftElement {
     }
 
     @Override
-    protected void setupVariables(HashMap<String, Object> vars) {
-        vars.put("text", null);
+    protected void setupProperties(AloftObjectProperties vars) {
+
     }
 
     @Override
     protected void subtypes(ArrayList<AloftElementSubtype> subtypes) {
 
+    }
+
+    public static AloftObjectProperties properties() {
+        AloftObjectProperties props = new AloftObjectProperties();
+        props.put("text", T.string());
+        return props;
     }
 
 }

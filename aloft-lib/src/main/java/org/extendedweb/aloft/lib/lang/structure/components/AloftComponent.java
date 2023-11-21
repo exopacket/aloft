@@ -12,6 +12,7 @@ import org.extendedweb.aloft.lib.html.elements.HtmlElement;
 import org.extendedweb.aloft.lib.html.elements.js.*;
 import org.extendedweb.aloft.lib.http.supporting.VariableNode;
 import org.extendedweb.aloft.lib.http.supporting.VariableTree;
+import org.extendedweb.aloft.lib.lang.types.base.V;
 import org.extendedweb.aloft.utils.encryption.A32;
 import org.extendedweb.aloft.utils.encryption.Rand;
 import org.extendedweb.aloft.utils.encryption.SHA;
@@ -37,13 +38,14 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
     protected ArrayList<AloftStyleClass> classes = new ArrayList<>();
     protected AloftStyle style = new AloftStyle();
     protected ArrayList<AloftListener> listeners = new ArrayList<>();
-    public HashMap<String, Object> vars = new HashMap<>();
+    protected AloftObjectProperties vars;
     protected JavaScriptBuilder jsBuilder = new JavaScriptBuilder();
     protected JavaScript scripts = null;
 
     public AloftComponent() {
         this.name = getName();
         setIds("__root__");
+        vars = properties();
     }
 
     public void addChild(AloftComponent component) {
@@ -241,6 +243,14 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
             return container;
         }
         return null;
+    }
+
+    public static AloftObjectProperties properties() {
+        return new AloftObjectProperties();
+    }
+
+    protected void fillProperties() {
+
     }
 
 //    public ElementRef ref(String override) {

@@ -11,7 +11,6 @@ public abstract class AloftComponentProperty {
     public AloftComponentProperty() { }
 
     public Object get(String key) {
-        for(ComponentClassValue v : values) if(__.same(key, v.getComponentClass().getKey())) return v.getValue();
         return null;
     }
 

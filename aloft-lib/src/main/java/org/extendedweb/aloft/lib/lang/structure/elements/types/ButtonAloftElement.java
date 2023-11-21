@@ -2,15 +2,16 @@ package org.extendedweb.aloft.lib.lang.structure.elements.types;
 
 import org.extendedweb.aloft.lib.lang.base.ElementMapper;
 import org.extendedweb.aloft.lib.lang.structure.AloftTheme;
+import org.extendedweb.aloft.lib.lang.structure.components.AloftObjectProperties;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElement;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElementSubtype;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftIconPlacement;
 import org.extendedweb.aloft.lib.colors.ColorUtils;
 import org.extendedweb.aloft.lib.html.elements.HtmlElement;
 import org.extendedweb.aloft.lib.html.elements.types.Content;
+import org.extendedweb.aloft.lib.lang.types.base.T;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ButtonAloftElement extends AloftElement {
 
@@ -120,33 +121,33 @@ public class ButtonAloftElement extends AloftElement {
     }
 
     @Override
-    protected void setupVariables(HashMap<String, Object> vars) {
-        vars.put("text", null);
-        vars.put("icon", null);
-        vars.put("placement", null);
+    protected void setupProperties(AloftObjectProperties vars) {
+        this.vars.put("text", null);
+        this.vars.put("icon", null);
+        this.vars.put("placement", null);
 
-        vars.put("color", null);
+        this.vars.put("color", null);
         addOverride("color", "background-color");
 
-        vars.put("pulse-shadow", null);
-        vars.put("pulse-shadow-active", null);
+        this.vars.put("pulse-shadow", null);
+        this.vars.put("pulse-shadow-active", null);
         addOverride("pulse-shadow", "box-shadow", "after");
         addOverride("pulse-shadow-active", "box-shadow", "active", "after");
 
-        vars.put("ring-color", null);
+        this.vars.put("ring-color", null);
         addOverride("ring-color", "box-shadow", "hover");
         addOverride("ring-color", "box-shadow", "focus");
 
-        vars.put("border-color", null);
+        this.vars.put("border-color", null);
         addOverride("border-color", "border");
 
-        vars.put("hover-color", null);
+        this.vars.put("hover-color", null);
         addOverride("hover-color", "background-color", "hover");
 
-        vars.put("active-color", null);
+        this.vars.put("active-color", null);
         addOverride("active-color", "background-color", "focus");
 
-        vars.put("animated", true);
+        this.vars.put("animated", true);
         addFlaggedOverride("animated", "position", "relative");
         addFlaggedOverride("animated", "transition-duration", "0.4s");
         addFlaggedOverride("animated", "-webkit-transition-duration", "0.4s");
@@ -162,8 +163,8 @@ public class ButtonAloftElement extends AloftElement {
         addFlaggedOverride("animated", "height", "100%", "after");
         addFlaggedOverride("animated", "opacity", "0", "after");
         addFlaggedOverride("animated", "transition", "all 0.5s", "after");
-//        addFlaggedOverride("animated", "box-shadow", "0 0 10px 40px white", "after");
-//        addFlaggedOverride("animated", "box-shadow", "0 0 0 0 white", "active", "after");
+        addFlaggedOverride("animated", "box-shadow", "0 0 10px 40px grey", "after");
+        addFlaggedOverride("animated", "box-shadow", "0 0 0 0 grey", "active", "after");
         addFlaggedOverride("animated", "position", "absolute", "active", "after");
         addFlaggedOverride("animated", "border-radius", "0.2rem", "active", "after");
         addFlaggedOverride("animated", "left", "0", "active", "after");
@@ -173,4 +174,11 @@ public class ButtonAloftElement extends AloftElement {
 
     }
 
+    public static AloftObjectProperties properties() {
+        AloftObjectProperties props = new AloftObjectProperties();
+        props.put("text", T.instance("text", T.string()));
+        props.put("color", T.instance("color", T.instance(T.string())));
+        props.put("icon", T.instance());
+        return props;
+    }
 }

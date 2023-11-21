@@ -4,12 +4,13 @@ import org.extendedweb.aloft.lib._AloftProject;
 import org.extendedweb.aloft.server.compiler.compile.base.objects.PageAloftObject;
 import org.extendedweb.aloft.server.compiler.compile.base.objects.RouteGroupAloftObject;
 import org.extendedweb.aloft.server.compiler.compile.base.register.CompiledObjectsRegister;
+import org.extendedweb.aloft.server.compiler.compile.supporting.ContextContainer;
 import org.extendedweb.aloft.server.compiler.exceptions.CompilerException;
 import org.extendedweb.aloft.server.grammar.antlr.AloftLexer;
 import org.extendedweb.aloft.server.grammar.antlr.AloftParser;
 import org.antlr.v4.runtime.*;
 import org.extendedweb.aloft.server.base.debug.FileWatcher;
-import org.extendedweb.aloft.server.compiler.compile.base.register.ObjectRegister;
+import org.extendedweb.aloft.server.compiler.compile.base.register.ComponentObjectRegister;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,13 +22,13 @@ public class AloftCompiler {
     private File dir = null;
     private boolean debug = false;
     private FileWatcher watcher = null;
-    private ObjectRegister register = null;
+    private ComponentObjectRegister register = null;
     private CompiledObjectsRegister compiledObjects = null;
 
     public AloftCompiler(String dir, boolean debug) {
         this.dir = new File(dir);
         this.debug = debug;
-        this.register = new ObjectRegister();
+        this.register = new ComponentObjectRegister();
         this.compiledObjects = new CompiledObjectsRegister("");
         compileAll();
         if(this.debug) {
@@ -56,11 +57,12 @@ public class AloftCompiler {
             for(int i=0; i<root.size(); i++) {
                 PageAloftObject page = PageAloftObject.createIf(root, compiledObjects, i, file);
                 if(isset(page)) {
-//                    compiledObjects.getApp().append(page.getCompiled());
+                    compiledObjects.register(PageAloftObject.class, page, new ContextContainer(root.get(i).page().var_name(), file));
                     continue;
                 }
                 RouteGroupAloftObject routeGroup = RouteGroupAloftObject.createIf(root, compiledObjects, i, file);
                 if(isset(routeGroup)) {
+                    compiledObjects.register(RouteGroupAloftObject.class, routeGroup, new ContextContainer(root.get(i).routes().path(), file));
                     continue;
                 }
             }

@@ -1,5 +1,6 @@
 package org.extendedweb.aloft.lib.lang.structure.elements.base;
 
+import org.extendedweb.aloft.lib.lang.structure.components.AloftObjectProperties;
 import org.extendedweb.aloft.lib.lang.structure.listeners.base.AloftListener;
 import org.extendedweb.aloft.lib.lang.structure.style.AloftStyle;
 
@@ -23,7 +24,7 @@ public class AloftElementSubtype extends AloftElement {
                                boolean requiresBuilder,
                                boolean isExtensible,
                                boolean acceptsChild,
-                               HashMap<String, Object> vars,
+                               AloftObjectProperties vars,
                                ArrayList<String> subclasses,
                                HashMap<String, ArrayList<String[]>> overrides,
                                AloftStyle style
@@ -49,7 +50,7 @@ public class AloftElementSubtype extends AloftElement {
         this._requiresBuilder = (boolean) args[3];
         this._isExtensible = (boolean) args[4];
         this._acceptsChild = (boolean) args[5];
-        this.vars = (HashMap<String, Object>) args[6];
+        this.vars = (AloftObjectProperties) args[6];
         this.moduleSubclasses = (ArrayList<String>) args[7];
         this.overrides = (HashMap<String, ArrayList<String[]>>) args[8];
         this.style = (AloftStyle) args[9];
@@ -95,7 +96,7 @@ public class AloftElementSubtype extends AloftElement {
     }
 
     @Override
-    protected void setupVariables(HashMap<String, Object> vars) { }
+    protected void setupProperties(AloftObjectProperties vars) { }
 
     @Override
     protected void subtypes(ArrayList<AloftElementSubtype> subtypes) { }

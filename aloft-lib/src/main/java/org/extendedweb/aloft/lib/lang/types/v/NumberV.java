@@ -1,6 +1,8 @@
 package org.extendedweb.aloft.lib.lang.types.v;
 
+import org.extendedweb.aloft.lib.lang.types.base.T;
 import org.extendedweb.aloft.lib.lang.types.base.V;
+import org.extendedweb.aloft.lib.lang.types.t.NumberT;
 
 public abstract class NumberV extends V {
 
@@ -10,4 +12,8 @@ public abstract class NumberV extends V {
         return null;
     }
 
+    @Override
+    public T type() {
+        return new NumberT();
+    }
 }
