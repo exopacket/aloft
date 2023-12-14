@@ -1,5 +1,7 @@
 package org.extendedweb.aloft.lib.lang.types.base;
 
+import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftInstance;
+import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftStyleInstance;
 import org.extendedweb.aloft.lib.lang.types.t.*;
 import org.extendedweb.aloft.lib.lang.types.v.NullV;
 import org.extendedweb.aloft.utils.global.__;
@@ -20,6 +22,10 @@ public abstract class T {
         return new ArrayT();
     }
 
+    public static T array(T type) {
+        return new ArrayT(type);
+    }
+
     public static T dynamic() {
         return new DynamicT();
     }
@@ -38,6 +44,22 @@ public abstract class T {
 
     public static T instance() {
         return new InstanceT();
+    }
+
+    public static T style() {
+        return new InstanceT(AloftStyleInstance.class);
+    }
+
+    public static T child() {
+        return new AloftComponentT();
+    }
+
+    public static T children() {
+        return new ArrayT(new AloftComponentT());
+    }
+
+    public static T instance(Class<? extends AloftInstance> instanceType) {
+        return new InstanceT(instanceType);
     }
 
     public static T instance(String property) {

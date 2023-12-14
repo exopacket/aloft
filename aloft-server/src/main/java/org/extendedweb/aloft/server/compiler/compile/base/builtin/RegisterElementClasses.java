@@ -5,11 +5,13 @@ import org.extendedweb.aloft.server.compiler.compile.supporting.AloftBuiltInComp
 import org.extendedweb.aloft.server.compiler.compile.supporting.AloftComponentClass;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RegisterElementClasses {
 
-    public static void register(ArrayList<AloftComponentClass> list) {
-        list.add(new AloftBuiltInComponentClass(ButtonAloftElement.class));
+    public static void register(HashMap<String, AloftComponentClass> list) {
+        AloftBuiltInComponentClass c = new AloftBuiltInComponentClass(ButtonAloftElement.class);
+        list.put("Button", c);
     }
 
 }

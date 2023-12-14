@@ -166,6 +166,12 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
         return create(theme, mapper);
     }
 
+    //UNUSED OVERRIDE
+    @Override
+    public HtmlElement html(AloftTheme theme, ElementMapper mapper, HashMap<String, Object> properties) {
+        return html(theme, mapper);
+    }
+
     @Override
     public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
         return buildPage(mapper);

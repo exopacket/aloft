@@ -1,5 +1,6 @@
 package org.extendedweb.aloft.lib.lang.types.t;
 
+import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftInstance;
 import org.extendedweb.aloft.lib.lang.types.base.T;
 import org.extendedweb.aloft.lib.lang.types.base.V;
 import org.extendedweb.aloft.lib.lang.types.v.InstanceV;
@@ -10,10 +11,13 @@ import java.util.HashMap;
 
 public class InstanceT extends T {
 
+    private Class<? extends AloftInstance> instanceType = null;
     private String property = "";
     private T[] innerTypes = null;
 
     public InstanceT() { }
+
+    public InstanceT(Class<? extends AloftInstance> instanceType) { }
 
     public InstanceT(String property) {
         this.property = property;
@@ -24,8 +28,16 @@ public class InstanceT extends T {
         this.innerTypes = innerTypes;
     }
 
+    public InstanceT(Class<? extends AloftInstance> instanceType, String property) {
+        this.property = property;
+    }
+
+    public InstanceT(Class<? extends AloftInstance> instanceType, String property, T... innerTypes) {
+        this.property = property;
+        this.innerTypes = innerTypes;
+    }
+
     public V value(InstanceV v) {
-        if(!__.isset(property)) return new NullV(); //FIXME return constructor value based off of AloftInstance Class
         if(!__.empty(property) && __.isset(v.get(property))) {
             V val = v.get(property);
             if(__.isset(innerTypes) && val instanceof InstanceV && allowed(val)) {
@@ -60,10 +72,6 @@ public class InstanceT extends T {
     private InstanceT getInstanceType() {
         for(T type : innerTypes) if(type instanceof InstanceT) return (InstanceT) type;
         return new InstanceT();
-    }
-
-    private V getConstructorValue() {
-        return new NullV();
     }
 
 }

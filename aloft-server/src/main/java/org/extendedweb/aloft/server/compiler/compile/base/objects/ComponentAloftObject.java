@@ -7,7 +7,7 @@ import org.extendedweb.aloft.lib.lang.types.t.StringT;
 import org.extendedweb.aloft.server.compiler.compile.base.register.CompiledObjectsRegister;
 import org.extendedweb.aloft.server.compiler.compile.supporting.AloftObject;
 import org.extendedweb.aloft.server.compiler.compile.supporting.AloftObjectProperty;
-import org.extendedweb.aloft.server.compiler.compile.supporting.ComponentDefinitionT;
+import org.extendedweb.aloft.server.compiler.compile.supporting.BuiltComponentContainerT;
 import org.extendedweb.aloft.server.compiler.exceptions.CompilerException;
 import org.extendedweb.aloft.server.grammar.antlr.AloftParser;
 import org.extendedweb.aloft.utils.global.__;
@@ -38,7 +38,7 @@ public class ComponentAloftObject extends AloftObject {
 
     @Override
     public void properties(ArrayList<AloftObjectProperty> properties) {
-        properties.add(new AloftObjectProperty("root", new ComponentDefinitionT(), true));
+        properties.add(new AloftObjectProperty("root", new BuiltComponentContainerT(), true));
         properties.add(new AloftObjectProperty("favicon", new StringT(), false));
         properties.add(new AloftObjectProperty("title", new StringT(),false));
     }

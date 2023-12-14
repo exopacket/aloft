@@ -12,9 +12,11 @@ public class AloftObjectProperty {
     private String name;
     private T type = null;
     private V value = null;
+    private boolean required = false;
 
-    public AloftObjectProperty(String name) {
+    public AloftObjectProperty(String name, boolean required) {
         this.name = name;
+        this.required = required;
     }
 
     public AloftObjectProperty(String name, Object v) {
@@ -22,9 +24,10 @@ public class AloftObjectProperty {
         set(v);
     }
 
-    public AloftObjectProperty(String name, T type) {
+    public AloftObjectProperty(String name, T type, boolean required) {
         this.type = type;
         this.name = name;
+        this.required = required;
     }
 
     public AloftObjectProperty(String name, T type, Object value) {
@@ -60,6 +63,10 @@ public class AloftObjectProperty {
         else if(__.isset(T.type(v))) this.value = T.type(v).value(v);
         else { this.value = new NullV(); return false; }
         return true;
+    }
+
+    public boolean isRequired() {
+        return required;
     }
 
     public String getName() {

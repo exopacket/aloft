@@ -6,13 +6,11 @@ import org.extendedweb.aloft.lib.lang.base.ElementMapper;
 import org.extendedweb.aloft.lib.lang.structure.AloftTheme;
 import org.extendedweb.aloft.lib.lang.structure.listeners.base.AloftListener;
 import org.extendedweb.aloft.lib.lang.structure.style.*;
-import org.extendedweb.aloft.lib.lang.structure.style.*;
 import org.extendedweb.aloft.lib.lang.types.base.T;
 import org.extendedweb.aloft.lib.html.elements.HtmlElement;
 import org.extendedweb.aloft.lib.html.elements.js.*;
 import org.extendedweb.aloft.lib.http.supporting.VariableNode;
 import org.extendedweb.aloft.lib.http.supporting.VariableTree;
-import org.extendedweb.aloft.lib.lang.types.base.V;
 import org.extendedweb.aloft.utils.encryption.A32;
 import org.extendedweb.aloft.utils.encryption.Rand;
 import org.extendedweb.aloft.utils.encryption.SHA;
@@ -45,7 +43,13 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
     public AloftComponent() {
         this.name = getName();
         setIds("__root__");
-        vars = properties();
+        vars = getProperties();
+    }
+
+    public AloftComponent(HashMap<String, Object> properties) {
+        this.name = getName();
+        setIds("__root__");
+        resetProperties(properties);
     }
 
     public void addChild(AloftComponent component) {
@@ -132,6 +136,10 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
                 listener.setElement(null, element);
             }
         }
+    }
+
+    protected AloftObjectProperties getProperties() {
+        return new AloftObjectProperties();
     }
 
     public void addStyle(String property, String value) {
@@ -224,6 +232,12 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
     }
 
     @Override
+    public HtmlElement html(AloftTheme theme, ElementMapper mapper, HashMap<String, Object> properties) {
+        resetProperties(properties);
+        return html(theme, mapper);
+    }
+
+    @Override
     public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
         if(this.children.size() == 1) {
             HtmlElement element = children.get(0).html(theme, mapper);
@@ -245,12 +259,11 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
         return null;
     }
 
-    public static AloftObjectProperties properties() {
-        return new AloftObjectProperties();
-    }
-
-    protected void fillProperties() {
-
+    public void resetProperties(HashMap<String, Object> properties) {
+        vars = getProperties();
+        for(String key : properties.keySet()) {
+            vars.replace(key, properties.get(key));
+        }
     }
 
 //    public ElementRef ref(String override) {

@@ -15,9 +15,11 @@ public class CompiledObjectsRegister {
 
     private HashMap<Class<?>, HashMap<String, AloftObject>> register = new HashMap<>();
     private AppConfig config = null;
+    private ComponentObjectRegister components;
 
-    public CompiledObjectsRegister(String configPath) {
+    public CompiledObjectsRegister(String configPath, ComponentObjectRegister components) {
         config = parseConfig(configPath);
+        this.components = components;
     }
 
     public void register(Class<?> c, AloftObject instance, ContextContainer ctx) throws CompilerException {

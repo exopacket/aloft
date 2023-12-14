@@ -14,18 +14,13 @@ public class CenteredAloftElement extends AloftElement {
 
     public CenteredAloftElement() { super(); init(); }
 
-    public void setTextAlign(TextAlign alignment) { this.vars.replace("text-align", alignment); }
-
     @Override
     public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
         HtmlElement root = createElement("div");
         HtmlElement child = createElement("div");
         addAll(child, theme, mapper);
         root.addChild(child);
-        TextAlign alignment = (TextAlign) this.vars.get("text-align").value().get(); //FIXME
-        if(alignment == TextAlign.CENTER) child.addStyle("text-align", "center");
-        if(alignment == TextAlign.LEFT) child.addStyle("text-align", "left");
-        if(alignment == TextAlign.RIGHT) child.addStyle("text-align", "right");
+        child.addStyle("text-align", "center");
         applyStyle("root", CenteredAloftElement.class, root, theme);
         applyStyle("child", CenteredAloftElement.class, child, theme);
         return root;
@@ -68,7 +63,7 @@ public class CenteredAloftElement extends AloftElement {
 
     @Override
     protected void setupProperties(AloftObjectProperties vars) {
-        this.vars.put("text-align", TextAlign.CENTER);
+
     }
 
     @Override

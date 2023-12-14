@@ -96,9 +96,15 @@ public class TextAloftElement extends AloftElement {
 
     }
 
+    @Override
+    protected AloftObjectProperties getProperties() {
+        return properties();
+    }
+
     public static AloftObjectProperties properties() {
         AloftObjectProperties props = new AloftObjectProperties();
-        props.put("text", T.string());
+        props.put("text", T.string(), true);
+        props.put("style", T.style());
         return props;
     }
 

@@ -9,16 +9,18 @@ import org.extendedweb.aloft.utils.global.__;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class AloftStyleInstance {
+public class AloftStyleInstance extends AloftInstance {
 
     private String key = null;
     private HashMap<String, Object> values;
 
     public AloftStyleInstance(InstanceV v) {
+        super("style");
         values = v.getMap();
     }
 
     public AloftStyleInstance(String key, InstanceV v) {
+        super(key);
         this.key = key;
         values = v.getMap();
     }
@@ -29,7 +31,7 @@ public class AloftStyleInstance {
             Object object = values.get(key);
             if(object instanceof InstanceV) {
                 V v = ((InstanceV) object).get();
-                if(v instanceof InstanceV) {
+                if(v instanceof AloftInstance) {
                     AloftStyleInstance instance = getInstance(key, (InstanceV) v);
                     styles.addAll(instance.pairs());
                 } else {

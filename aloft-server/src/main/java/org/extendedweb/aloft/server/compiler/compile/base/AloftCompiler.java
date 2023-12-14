@@ -22,14 +22,12 @@ public class AloftCompiler {
     private File dir = null;
     private boolean debug = false;
     private FileWatcher watcher = null;
-    private ComponentObjectRegister register = null;
     private CompiledObjectsRegister compiledObjects = null;
 
     public AloftCompiler(String dir, boolean debug) {
         this.dir = new File(dir);
         this.debug = debug;
-        this.register = new ComponentObjectRegister();
-        this.compiledObjects = new CompiledObjectsRegister("");
+        this.compiledObjects = new CompiledObjectsRegister("", new ComponentObjectRegister());
         compileAll();
         if(this.debug) {
             watcher = new FileWatcher(this.dir) {

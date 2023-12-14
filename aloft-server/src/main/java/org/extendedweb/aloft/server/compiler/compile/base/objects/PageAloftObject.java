@@ -2,7 +2,6 @@ package org.extendedweb.aloft.server.compiler.compile.base.objects;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.extendedweb.aloft.lib._AloftPage;
-import org.extendedweb.aloft.lib.application.cache.RouteCache;
 import org.extendedweb.aloft.lib.lang.supporting.MountableComponent;
 import org.extendedweb.aloft.lib.lang.types.t.PathT;
 import org.extendedweb.aloft.lib.lang.types.t.StringT;
@@ -37,7 +36,7 @@ public class PageAloftObject extends AloftObject {
 
     @Override
     public void properties(ArrayList<AloftObjectProperty> properties) {
-        properties.add(new AloftObjectProperty("root", new ComponentDefinitionT(), true));
+        properties.add(new AloftObjectProperty("root", new BuiltComponentContainerT(), true));
         properties.add(new AloftObjectProperty("favicon", new PathT(), false));
         properties.add(new AloftObjectProperty("title", new StringT(),false));
     }

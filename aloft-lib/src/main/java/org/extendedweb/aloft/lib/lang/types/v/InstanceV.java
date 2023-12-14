@@ -53,7 +53,7 @@ public class InstanceV extends V {
     public HashMap<String, Object> getMap() {
         HashMap<String, Object> ret = new HashMap<>();
         for(String key : keys()) {
-            ret.put(key, properties.get(key));
+            ret.put(key, properties.get(key).get());
             if(!__.isset(key)) break;
         }
         return ret;

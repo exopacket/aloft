@@ -8,8 +8,14 @@ import org.extendedweb.aloft.lib.lang.types.v.InstanceV;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class AloftInstance {
+public abstract class AloftInstance extends InstanceV {
 
+    public AloftInstance(String name) {
+        super(name);
+    }
 
+    public AloftInstance(String name, HashMap<String, V> properties) {
+        super(name, properties);
+    }
 
 }

@@ -4,17 +4,18 @@ import org.extendedweb.aloft.server.compiler.compile.base.builtin.RegisterElemen
 import org.extendedweb.aloft.server.compiler.compile.supporting.AloftComponentClass;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ComponentObjectRegister {
 
-    private ArrayList<AloftComponentClass> classes = new ArrayList<>();
+    private HashMap<String, AloftComponentClass> classes = new HashMap<>();
 
     public ComponentObjectRegister() {
         RegisterElementClasses.register(classes);
     }
 
-    public void register(AloftComponentClass c) {
-        classes.add(c);
+    public void register(String name, AloftComponentClass c) {
+        classes.put(name, c);
     }
 
 }

@@ -176,7 +176,7 @@ public class ButtonAloftElement extends AloftElement {
 
     public static AloftObjectProperties properties() {
         AloftObjectProperties props = new AloftObjectProperties();
-        props.put("text", T.instance("text", T.string()));
+        props.put("text", T.instance("text", T.string()), true);
         props.put("color", T.instance("color", T.instance(T.string())));
         props.put("icon", T.instance());
         return props;

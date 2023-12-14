@@ -47,6 +47,17 @@ public abstract class AloftElement extends AloftComponent {
         setSubtype(subtype);
     }
 
+    public AloftElement(HashMap<String, Object> properties) {
+        super(properties);
+        this.subtype.resetProperties(properties);
+    }
+
+    public AloftElement(HashMap<String, Object> properties, String subtype) {
+        super(properties);
+        setSubtype(subtype);
+        this.subtype.resetProperties(properties);
+    }
+
     protected void init() {
         refresh();
     }
@@ -371,10 +382,6 @@ public abstract class AloftElement extends AloftComponent {
     @Override
     public String getName() {
         return name();
-    }
-
-    public static AloftObjectProperties properties() {
-        return AloftComponent.properties();
     }
 
 }

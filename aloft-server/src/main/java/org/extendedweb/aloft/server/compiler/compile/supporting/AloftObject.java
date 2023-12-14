@@ -100,6 +100,10 @@ public abstract class AloftObject implements CompilesAloftObjects {
         System.out.println("DONE");
     }
 
+    protected void registration(CompiledObjectsRegister register) {
+
+    }
+
     private AloftObjectProperty findProperty(String name) {
         for(AloftObjectProperty prop : defaultProperties) {
             System.out.println(prop.getName());

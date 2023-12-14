@@ -2,8 +2,6 @@ package org.extendedweb.aloft.lib.lang.structure.components;
 
 import org.extendedweb.aloft.lib.lang.types.base.T;
 import org.extendedweb.aloft.lib.lang.types.base.V;
-import org.extendedweb.aloft.lib.lang.types.t.DynamicT;
-import org.extendedweb.aloft.lib.lang.types.v.NullV;
 import org.extendedweb.aloft.utils.global.__;
 
 import java.util.ArrayList;
@@ -70,6 +68,16 @@ public class AloftObjectProperties {
         return put(collection.get(subtype), prop);
     }
 
+//    public boolean replace(AloftObjectProperty prop, String subtype) {
+//        if(!collection.containsKey(subtype)) return false;
+//        return put(collection.get(subtype), prop);
+//    }
+//
+//    public boolean replace(AloftObjectProperty prop) {
+//        if(!collection.containsKey("*")) return false;
+//        return put(collection.get("*"), prop);
+//    }
+
     public void put(String name) {
         put(name, V.nothing());
     }
@@ -84,14 +92,26 @@ public class AloftObjectProperties {
         put(name, type, V.nothing());
     }
 
-    public void put(String name, T type, String subtype) {
-        put(name, type, V.nothing(), subtype);
+    public void put(String name, T type, boolean required) {
+        AloftObjectProperty prop = new AloftObjectProperty(name, type, required);
+        if(!collection.containsKey("*")) collection.put("*", new ArrayList<>());
+        put(collection.get("*"), prop);
     }
 
-    public void put(String name, Object v, String subtype) {
+    public void put(String name, T type, boolean required, String...subtypes) {
+        AloftObjectProperty prop = new AloftObjectProperty(name, type, required);
+        for(String subtype : subtypes) {
+            if (!collection.containsKey(subtype)) collection.put(subtype, new ArrayList<>());
+            put(collection.get(subtype), prop);
+        }
+    }
+
+    public void put(String name, Object v, String... subtypes) {
         AloftObjectProperty prop = new AloftObjectProperty(name, v);
-        if(!collection.containsKey(subtype)) collection.put(subtype, new ArrayList<>());
-        put(collection.get("*"), prop);
+        for(String subtype : subtypes) {
+            if (!collection.containsKey(subtype)) collection.put(subtype, new ArrayList<>());
+            put(collection.get(subtype), prop);
+        }
     }
 
     public void put(String name, T type, Object value) {
@@ -100,10 +120,12 @@ public class AloftObjectProperties {
         put(collection.get("*"), prop);
     }
 
-    public void put(String name, T type, Object value, String subtype) {
+    public void put(String name, T type, Object value, String... subtypes) {
         AloftObjectProperty prop = new AloftObjectProperty(name, type, value);
-        if(!collection.containsKey(subtype)) collection.put(subtype, new ArrayList<>());
-        put(collection.get(subtype), prop);
+        for(String subtype : subtypes) {
+            if (!collection.containsKey(subtype)) collection.put(subtype, new ArrayList<>());
+            put(collection.get(subtype), prop);
+        }
     }
 
     private boolean put(ArrayList<AloftObjectProperty> current, AloftObjectProperty property) {
