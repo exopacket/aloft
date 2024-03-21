@@ -100,7 +100,7 @@ public class FileSystem {
     }
 
     public void createDotFile(String path) {
-        File dotFile = createFile(path + "/.tt", false);
+        File dotFile = createFile(path + "/.adir", false);
         Print.setPrinter(dotFile);
         Print.ln(projectDir.getAbsolutePath());
         Print.ln(projectConfig.getAbsolutePath());

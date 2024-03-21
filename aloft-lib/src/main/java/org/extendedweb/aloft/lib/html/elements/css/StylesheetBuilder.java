@@ -1,5 +1,6 @@
 package org.extendedweb.aloft.lib.html.elements.css;
 
+import org.extendedweb.aloft.lib.html.elements.HtmlElement;
 import org.extendedweb.aloft.lib.lang.structure.style.AloftStyleCss;
 import org.extendedweb.aloft.utils.global.__;
 
@@ -26,12 +27,16 @@ public class StylesheetBuilder {
     }
 
     public StylesheetElement getElement() {
-        return null;
+        StylesheetElement el = new StylesheetElement();
+        el.addAttribute("href", stylesheetPath);
+        el.addAttribute("rel", "stylesheet");
+        el.addAttribute("type", "text/css");
+        return el;
     }
 
     public StylesheetFile getFile() {
-        if(!__.isset(file)) return null;
-        if(!file.exists()) return null;
+        if(!__.isset(file)) System.exit(12);
+        if(!file.exists()) System.exit(13);
         try {
             Scanner scnr = new Scanner(file);
             StringBuilder builder = new StringBuilder();

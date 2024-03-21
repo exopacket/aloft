@@ -1,23 +1,59 @@
-import axios from "axios";
-import ApiResult from "./Response.js";
-import Config from "../Config.js"
-
-axios.defaults.baseURL = Config.getApiBase()
+import Response from "./Response.js";
+import axios from "../../node_modules/axios/index.js"
+import VarManager from "../Vars";
 
 export class Request {
 
+    headers = []
     parameters = []
-    path = "";
+    requestBody = null
+    formData = null
+    path = "/";
+    validator = {}
 
-    constructor (path, ...parameters) {
-        parameters.forEach((item) => {
-            this.push(item[0], item[1])
+    constructor(endpoint, path, params = [], headers = [], body = null) {
+        if(!endpoint) this.path = path
+        else this.path = vars.endpoints()[endpoint] + path
+        this.headers = headers
+        if(body) body(body)
+        params.forEach((param) => {
+            if(param.length === 2) {
+                this.param(param[0], param[1])
+            }
         })
-        this.path = path
-        return this
     }
 
-    push(key, value, type = ParameterType.STRING) {
+    #getHeaders(headers = []) {
+        console.log(headers)
+        if(headers.length === 0) return null
+        let obj = {}
+        headers.forEach((header) => {
+            obj[header[0]] = header[1]
+        })
+        return Object.keys(obj).length > 0 ? obj : null
+    }
+
+    getConfig() {
+        let obj = {}
+        let headers = []
+        for(let i=0; i<this.headers.length; i++) {
+            const v = this.headers[i]
+            if(v instanceof String || typeof(v) == "string") {
+                const h = VarManager.getDefaultHeader(v)
+                h.forEach((p) => {
+                    headers.push(p)
+                })
+            } else if(v instanceof Array && v.length === 2) {
+                headers.push(v)
+            }
+        }
+        const all = this.#getHeaders(headers)
+        if(all) obj['headers'] = all
+        console.log(obj)
+        return obj
+    }
+
+    param(key, value) {
         for(let i=0; i<this.parameters.length; i++) {
             let param = this.parameters[i]
             if(param.key === key) {
@@ -25,94 +61,69 @@ export class Request {
                 return this;
             }
         }
-        this.parameters.push(new Parameter(key, value, type))
+        this.parameters.push(new Parameter(key, value, ValueType.STRING))
         return this;
     }
 
-    encodeGetParams(p) {
-        return Object.entries(p).map(kv => kv.map(encodeURIComponent).join("=")).join("&").toString();
+    validation(key, type) {
+        this.validator[key] = type
     }
 
-    save() {
-        return this; //FIXME clear errors and so forth
+    header(key, value = null) {
+        if(!value) this.headers.push(key)
+        else this.headers.push([key, value])
     }
 
-    json() {
-        return JSON.stringify(this); //for use with return object
+    body(body) {
+        this.requestBody = null
+        if(body instanceof FormData) this.formData = body
+        else if(body instanceof String) {
+            if(validJson(body)) this.requestBody = JSON.parse(body)
+            else this.requestBody = body
+        } else if (body instanceof Object || body instanceof Array) {
+            this.requestBody = JSON.parse(JSON.stringify(body))
+        }
     }
 
-    data() {
+    put(key, value) {
+        this.requestBody = null
+        if(!this.formData) this.formData = new FormData()
+        this.formData.push(key, value)
+    }
+
+    encodeUrlParams() {
+        if(this.parameters.length === 0) return ""
         let params = {};
         for(let i=0; i<this.parameters.length; i++) {
             params[this.parameters[i].key] = this.parameters[i].value;
         }
-        return params;
+        return "?" + Object.entries(params).map(kv => kv.map(encodeURIComponent).join("=")).join("&").toString();
     }
 
-    async post(formData = null) {
-        let resp = {}
-        let data = formData ?? this.data();
-        try {
-            resp = formData !== null ? await axios.postForm("/api" + this.path, data) : await axios.post("/api" + this.path, data);
-            let obj = new ApiResult(resp)
-            return obj;
-        } catch (e) {
-            let obj = ApiResult.exception(e.response.data, e.response.status, e.response.headers)
-            return obj;
-        }
+    isForm() {
+        return this.requestBody == null && this.formData != null
     }
 
-    async postAsync(loaderText = null, loaderCallback = null, formData = null) {
-        let resp = {}
-        let data = formData ?? this.data();
+    async post() {
+        const body = this.isForm() ? this.formData : (this.requestBody) ? this.requestBody : "{}"
         try {
-            if(loaderCallback) {
-                let loader = {
-                    style: 1,
-                    message: loaderText
-                }
-                loaderCallback(loader)
-            }
-            resp = formData !== null ? await axios.postForm("/api" + this.path, data) : await axios.post("/api" + this.path, data);
-            let obj = new ApiResult(resp)
-            return obj;
+            const resp = this.isForm() ? await axios.postForm("/api" + this.path + this.encodeUrlParams(), body, this.getConfig()) : await axios.post("/api" + this.path + this.encodeUrlParams(), body, this.getConfig());
+            return new Response(resp)
         } catch (e) {
-            let obj = ApiResult.exception(e.response.data, e.response.status, e.response.headers, loaderCallback)
-            return obj;
+            return Response.exception(e.response.data, e.response.status, e.response.headers)
         }
     }
 
     async get() {
-        let resp = {}
+        let uri = this.path + this.encodeUrlParams()
         try {
-            let data = this.data();
-            let url = "/api" + this.path + "?" + this.encodeGetParams(data);
-            resp = await axios.get(url);
+            const resp = await axios.get(uri, this.getConfig());
+            return new Response(resp)
         } catch (e) {
-            resp = e.response ?? false
+            console.log(e.toString())
+            if(!e.response) return Response.uncaught(uri, "GET", e)
+            return Response.exception(e.response.data, e.response.status, e.response.headers)
         }
-        let obj = new ApiResult(resp)
-        return obj;
-    }
-
-    async getAsync(loaderText = null, loaderCallback = null) {
-        let resp = {}
-        try {
-            if(loaderCallback) {
-                let loader = {
-                    style: 1,
-                    message: loaderText
-                }
-                loaderCallback(loader)
-            }
-            let data = this.data();
-            let url = "/api" + this.path + "?" + this.encodeGetParams(data);
-            resp = await axios.get(url);
-        } catch (e) {
-            resp = e.response ?? false
-        }
-        let obj = new ApiResult(resp, loaderCallback)
-        return obj;
     }
 
 }
@@ -123,7 +134,7 @@ export class Parameter {
     value = "";
     type = "";
 
-    constructor(key, value, type = ParameterType.STRING) {
+    constructor(key, value, type = ValueType.STRING) {
         this.key = key
         this.value = value
         this.type = type
@@ -131,7 +142,7 @@ export class Parameter {
 
 }
 
-export const ParameterType = {
+export const ValueType = {
     STRING: 0,
     BOOLEAN: 1,
     DECIMAL: 2,

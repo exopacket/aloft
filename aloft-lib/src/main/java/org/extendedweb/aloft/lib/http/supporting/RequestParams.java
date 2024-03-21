@@ -39,6 +39,14 @@ public class RequestParams {
         return null;
     }
 
+    public String getUriString() {
+        return this.requestUri.getPath();
+    }
+
+    public HeaderList getHeaders() {
+        return headers;
+    }
+
     public String getBody() {
         return body;
     }

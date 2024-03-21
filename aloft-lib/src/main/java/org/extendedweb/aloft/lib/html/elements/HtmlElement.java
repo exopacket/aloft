@@ -22,7 +22,7 @@ public abstract class HtmlElement {
     private String uniqueId = "";
     private String veryUniqueId = "";
     private String aid = "";
-    private String parentComponent = "";
+    protected String parentComponent = null;
     protected String prependHtml = "";
 
     protected String ref = "";
@@ -161,6 +161,16 @@ public abstract class HtmlElement {
         return this;
     }
 
+    public HtmlElement addAttribute(String key, String value, boolean overwrite) {
+        if(this.attributes.containsKey(key)) {
+            if(overwrite) this.attributes.put(key, value);
+            System.out.println(this.attributes.get(key));
+        } else {
+            this.attributes.put(key, value);
+        }
+        return this;
+    }
+
     public HtmlElement addAttributes(String key, String...values) {
         for(int i=0; i<values.length; i++) addAttribute(key, values[i]);
         return this;
@@ -193,7 +203,7 @@ public abstract class HtmlElement {
 
     public String getHtml() {
         if(!__.empty(prependHtml)) prependHtml += "\n";
-        if(this.children.isEmpty()) return prependHtml + this.buildTag();
+        if(this.children.isEmpty() && !__.same("script", getKey())) return prependHtml + this.buildTag();
         else {
             String html = prependHtml + this.buildTag(false);
             for(int i=0; i<this.children.size(); i++) {
@@ -217,8 +227,8 @@ public abstract class HtmlElement {
     private String buildTag() {
         if(this.getKey() == null) return "";
         String tag = "<" + this.getKey();
-        tag += " " + this.buildAttributes();
-        tag += "></" + this.getKey() + ">";
+        tag += this.buildAttributes();
+        tag += "/>";
         return tag;
     }
 
@@ -231,7 +241,7 @@ public abstract class HtmlElement {
             attrs += key + "=\"" + value + "\" ";
         }
         if(!__.empty(getId())) attrs += "id=\"" + getId() + "\"";
-        return attrs;
+        return " " + attrs;
     }
 
     private String buildStyles() {

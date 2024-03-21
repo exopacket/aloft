@@ -2,6 +2,11 @@ package org.extendedweb.aloft.lib.application.config;
 
 import org.extendedweb.aloft.lib.application.cache.AppCache;
 import org.extendedweb.aloft.lib.application.cache.RouteCache;
+import org.extendedweb.aloft.lib.client.SessionManager;
+import org.extendedweb.aloft.lib.db.internal.Db;
+import org.extendedweb.aloft.lib.http.supporting.AloftRequestType;
+import org.extendedweb.aloft.lib.http.supporting.RequestType;
+import org.extendedweb.aloft.lib.http.supporting.RoutePath;
 import org.extendedweb.aloft.lib.lang.structure.AloftTheme;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElement;
 import org.extendedweb.aloft.lib.BootstrapIcons;
@@ -25,6 +30,7 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -36,11 +42,18 @@ public class AppConfig {
     private LoadBalancingConfig loadBalancing;
     private ProxiesConfig proxies;
     private RoutesConfig routes;
+    private HashMap<String, Db> dbs;
+    private SessionManager sessionManager;
 
     //APPLICATION CONFIGURATION
-    private String name = "";
-    private String key = "";
-    private String pkg = "";
+    private String name = "My App Name";
+    private String key = "ajahfjiuhe";
+    private String serverKey = "akdfjlka";
+    private String pkg = "com.mine";
+    private String version = "1.0.0.1";
+    private String mode = "debug";
+    private File entryPoint;
+    private String projectRootPath;
 
     //MODULES
     private ModuleList modules;
@@ -115,6 +128,7 @@ public class AppConfig {
     private void readConfig(String configPath) {
         File file = new File("/home/ryan/aloft/aloft-cli/my-project/my-project.json");
         if(!file.exists()) throw new RuntimeException("Config does not exist");
+        this.projectRootPath = file.getParent();
         Scanner scnr = null;
         try {
             scnr = new Scanner(file);
@@ -129,12 +143,31 @@ public class AppConfig {
     public ArrayList<HtmlElement> getStaticFiles() {
         ArrayList<HtmlElement> staticFiles = new ArrayList<>();
         for(int i=0; i< scriptEndpoints.size(); i++) {
+            System.out.println(i);
             staticFiles.add(scriptEndpoints.next().getTag());
         }
         for(int i=0; i< stylesheetEndpoints.size(); i++) {
             staticFiles.add(stylesheetEndpoints.next().getTag());
         }
         return staticFiles;
+    }
+
+    public String getName() { return name; }
+
+    public String getKey() {
+        return key;
+    }
+
+    public String getMode() {
+        return mode;
+    }
+
+    public String getPkg() {
+        return pkg;
+    }
+
+    public String getVersion() {
+        return version;
     }
 
     public AtomicReference<AppJavaScript> getAppJs() {
@@ -154,15 +187,20 @@ public class AppConfig {
     }
 
     private void buildStaticJavaScript() {
-        ArrayList<String[]> paths = new ArrayList<>();
         if(this.theme.usesBootstrap()) {
-            paths.addAll(getBootstrapJsResources());
             ArrayList<File> bootstrapJs = getFileList(getBootstrapJsResources());
             for(int i=0; i< bootstrapJs.size(); i++){
                 JavaScriptBuilder builder = new JavaScriptBuilder(getBootstrapJsResources().get(i)[1], bootstrapJs.get(i));
                 JavaScript js = new JavaScript(JavaScriptWriterType.FILE, builder);
                 scriptEndpoints.appendAppScriptEndpoints(js);
             }
+        }
+
+        ArrayList<File> aloftJs = getFileList(getAloftJsResources());
+        for(int i=0; i< aloftJs.size(); i++){
+            JavaScriptBuilder builder = new JavaScriptBuilder(getAloftJsResources().get(i)[1], aloftJs.get(i));
+            JavaScript js = new JavaScript(JavaScriptWriterType.FILE, builder, true);
+            scriptEndpoints.appendAppScriptEndpoints(js);
         }
     }
 
@@ -171,6 +209,13 @@ public class AppConfig {
         resources.add(new String[]{"/bootstrap/bootstrap.bundle.js", this.routes.javascript() + "/bootstrap.js"});
         return resources;
     }
+
+    private ArrayList<String[]> getAloftJsResources() {
+        ArrayList<String[]> resources = new ArrayList<>();
+        resources.add(new String[]{"/js/aloft.bundle.js", this.routes.javascript() + "/client.js"});
+        return resources;
+    }
+
     private void buildStaticStylesheets() {
         ArrayList<String[]> paths = new ArrayList<>();
         if(this.theme.usesBootstrap()) {
@@ -278,8 +323,8 @@ public class AppConfig {
         return this.theme;
     }
 
-    public Route getRoute(String path, String requestType) {
-        return this.cache.fetchRoute(path, requestType);
+    public Route getRoute(String path, RequestType requestType) {
+        return this.cache.fetchRoute(path, requestType.name());
     }
 
     public void addElementExtensions(AloftElement element) {
@@ -297,20 +342,76 @@ public class AppConfig {
         JSONObject server = (JSONObject) json.get("server");
         project(project);
         server(server);
+        this.dbs = getConnectionsFromConfig((JSONArray) json.get("databases"));
+    }
+
+    public Db db(String connectionName) {
+        return this.dbs.get(connectionName);
     }
 
     private void project(JSONObject json) {
         this.name = (String) json.get("name");
         this.key = (String) json.get("key");
         this.pkg = (String) json.get("pkg");
+        String entryPoint = (String) json.get("entry-point");
+        File file = new File(entryPoint);
+        if(!file.exists()) throw new RuntimeException();
+        this.entryPoint = file;
+    }
+
+    private HashMap<String, Db> getConnectionsFromConfig(JSONArray dbConnections) {
+        HashMap<String, Db> connections = new HashMap<>();
+        ArrayList<String> names = dbConnectionNames(dbConnections);
+        for(String name : names) {
+            connections.put(name, createConnection(name, dbConnectionDetails(dbConnections, name)));
+        }
+        return connections;
+    }
+
+    private Db createConnection(String name, HashMap<String, Object> options) {
+        return null;
+    }
+
+    public ArrayList<String> dbConnectionNames(JSONArray dbConnections) {
+        ArrayList<String> names = new ArrayList<>();
+        for(int i=0; i<dbConnections.size(); i++) {
+            JSONObject connection = (JSONObject) ((JSONObject) dbConnections.get(i)).get("connection");
+            String name = (String) connection.get("name");
+            names.add(name);
+        }
+        return names;
+    }
+
+    public HashMap<String, Object> dbConnectionDetails(JSONArray dbConnections, String connectionName) {
+        HashMap<String, Object> map = new HashMap<>();
+        for(int i=0; i<dbConnections.size(); i++) {
+            JSONObject connection = (JSONObject) ((JSONObject) dbConnections.get(i)).get("connection");
+            String name = (String) connection.get("name");
+            if(__.same(connectionName, name)) {
+                for(Object key : connection.keySet()) {
+                    String str = String.valueOf(key);
+                    Object v = connection.get(str);
+                    map.put(str, v);
+                }
+                return map;
+            }
+        }
+        return map;
     }
 
     private void server(JSONObject server) {
-        routes((JSONObject) server.get("routes"));
+        JSONObject routes = (server.containsKey("endpoints")) ? ((JSONObject) server.get("endpoints")) : new JSONObject();
+        routes(routes);
     }
 
     private void routes(JSONObject json) {
         this.routes = new RoutesConfig(json);
     }
+
+    public File getEntryPoint() {
+        return entryPoint;
+    }
+
+    public String getProjectRootPath() { return projectRootPath; }
 
 }

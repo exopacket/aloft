@@ -1,10 +1,15 @@
 package org.extendedweb.aloft.lib.lang.structure;
 
 import org.extendedweb.aloft.lib.application.config.AppConfig;
+import org.extendedweb.aloft.lib.client.ClientInfo;
+import org.extendedweb.aloft.lib.client.ClientSession;
+import org.extendedweb.aloft.lib.html.elements.js.JavaScriptBuilder;
+import org.extendedweb.aloft.lib.html.elements.types.Content;
 import org.extendedweb.aloft.lib.lang.base.AssertsLanguage;
 import org.extendedweb.aloft.lib.lang.base.BuildsHtml;
 import org.extendedweb.aloft.lib.lang.base.BuildsJava;
 import org.extendedweb.aloft.lib.lang.base.ElementMapper;
+import org.extendedweb.aloft.lib.lang.structure.components.AloftComponent;
 import org.extendedweb.aloft.lib.lang.structure.components.AloftRoot;
 import org.extendedweb.aloft.lib.lang.structure.elements.types.*;
 import org.extendedweb.aloft.lib.lang.structure.style.AloftStyleCss;
@@ -28,7 +33,7 @@ import java.util.HashMap;
 public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, BuildsHtml {
 
     private String favicon = null;
-    private String title = null;
+    private String title = "Home";
     private ArrayList<Meta> meta = new ArrayList<>();
     private MountableComponent root = null;
     private AloftStyleCss css = new AloftStyleCss();
@@ -37,12 +42,8 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
 //        super(route, type, internalType, vars);
 //    }
 
-    public AloftPage(Route route, RequestType type, AloftRequestType internalType, VariableTree vars, AppConfig config) {
-        super(route, type, internalType, vars, config);
-    }
-
-    public AloftPage(Route route, RequestType type, AloftRequestType internalType, VariableTree vars, AppConfig config, MountableComponent root) {
-        super(route, type, internalType, vars, config);
+    public AloftPage(RequestParams params, AppConfig config, MountableComponent root) {
+        super(params, config);
         this.root = root;
     }
 
@@ -98,7 +99,6 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
             svgVars.put("color7", theme.color("primary", Colors.Shade.LIGHT).getHex());
             svgVars.put("color8", theme.color("primary", Colors.Shade.LIGHT).getHex(0.66F));
             VectorAloftElement bg = VectorAloftElement.fromFile(file, svgVars);
-            AloftRoot screen = new AloftRoot();
     //        screen.appendState("__root__.test", new StringT(), "value");
             FilledAloftElement container = new FilledAloftElement();
 //            container.addStyle("background-image", bg.getEncodedUrl(theme));
@@ -144,10 +144,9 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
             centered.addChild(alert);
             container.addChild(centered);
             container.setClasses(theme.mergeByHash(container.getStyle().getHashes()), theme);
-            screen.addChild(container);
-            this.root = screen;
+            this.root = new AloftRoot(centered);
             this.root.appendCss(this.css);
-            this.root.javascript(this.js);
+//            this.root.javascript(this.js);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -163,6 +162,7 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
 
     @Override
     public HtmlElement html(AloftTheme theme, ElementMapper mapper) {
+        if(!__.isset(theme)) theme = this.theme;
         return create(theme, mapper);
     }
 
@@ -174,42 +174,49 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
 
     @Override
     public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
-        return buildPage(mapper);
+        return buildPage(theme, mapper);
     }
 
-    private HtmlElement getRoot(ElementMapper mapper) {
-        HtmlElement root = this.root.html(this.theme, mapper).map(mapper);
-        this.root.javascript(this.js);
+    private HtmlElement getRoot(AloftTheme theme, ElementMapper mapper) {
+        HtmlElement root = this.root.html(theme, mapper).map(mapper);
+        System.out.println("JGHDLHSDF:GKOJHSFKGJHDFSGKLHJ");
+//        this.root.javascript(this.js);
         this.root.appendCss(this.css);
+        System.out.println("JGHDLHSDF:GKOJHSFKGJHDFSGKLfadsfasdfasdfHJ");
         return root;
     }
 
-    private Page buildPage(ElementMapper mapper) {
+    private Page buildPage(AloftTheme theme, ElementMapper mapper) {
         Page page = new Page();
-        Body body = buildBody(mapper);
-        page.addChild(buildHead("Hello World!", null, new ArrayList<>()));
+        Body body = buildBody(theme, mapper);
+        page.addChild(buildHead());
         page.addChild(body);
+        System.out.println("NO BODY");
+        System.out.println(page.getHtml());
         return page;
     }
 
-    private Body buildBody(ElementMapper mapper) {
+    private Body buildBody(AloftTheme theme, ElementMapper mapper) {
         Body body = new Body();
-        body.addChild(getRoot(mapper));
-        body.addJs(this.js.get().get());
+        body.addChild(getRoot(theme, mapper));
+//        body.addJs(this.js.get().get());
+        System.out.println("NO JS");
         return body;
     }
 
-    private Head buildHead(String title, String favicon, ArrayList<AloftPage.Meta> meta) {
+    private Head buildHead() {
         Head head = new Head();
+        head.addCharset("ISO-8859-1");
         head.addTitle(title);
-        try { head.addFavicon(Paths.get(this.getClass().getResource("/images/aloft-favicon.png").toURI()).toString()); } catch (Exception ignored) { }
-        for(int i=0; i<this.staticFiles.size(); i++) {
-            head.addChild(this.staticFiles.get(i));
-        }
+//        try { head.addFavicon(Paths.get(this.getClass().getResource("/images/aloft-favicon.png").toURI()).toString()); } catch (Exception e) { e.printStackTrace(); }
+        System.out.println("buldHead staticFiles START");
+        head.addStatic(this.staticFiles);
+        System.out.println("buldHead staticFiles END");
         head.addCss(theme.getStyleModule().rootVars());
         head.addCss(css);
         head.addCss("html, body { margin: 0; height: 100%; }");
 //        head.addJs(this.js.get().get());
+        System.out.println("RETURN HEAD");
         return head;
     }
 

@@ -18,27 +18,19 @@ public class Stylesheet {
     }
 
     public HtmlElement getTag() {
-        if(type == StylesheetWriterType.ELEMENT && __.isset(getElement())) return getElement();
-        else if(type == StylesheetWriterType.FILE && __.isset(getFile())) return getFile();
-        return null;
+        return getElement();
     }
 
     public String getValue() {
-        if(type == StylesheetWriterType.ELEMENT && __.isset(getElement())) return getElement().getValue();
-        else if(type == StylesheetWriterType.FILE && __.isset(getFile())) return getFile().getValue();
-        return "";
+        return getFile().getValue();
     }
 
     private StylesheetElement getElement() {
-        if(type == StylesheetWriterType.ELEMENT)
-            return css.getElement();
-        return null;
+        return css.getElement();
     }
 
     public StylesheetFile getFile() {
-        if(type == StylesheetWriterType.FILE)
-            return css.getFile();
-        return null;
+        return css.getFile();
     }
 
 }

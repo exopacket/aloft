@@ -4,7 +4,6 @@ import org.extendedweb.aloft.server.run.cli.commands.keywords.Build;
 import org.extendedweb.aloft.server.run.cli.commands.keywords.Extension;
 import org.extendedweb.aloft.server.run.cli.commands.keywords.Serve;
 import org.extendedweb.aloft.server.run.cli.commands.keywords.Debug;
-import org.extendedweb.aloft.server.run.cli.commands.keywords.Migrate;
 
 import java.sql.Array;
 import java.util.Arrays;
@@ -17,7 +16,6 @@ public class Keywords {
         Serve.class,
         Build.class,
         Debug.class,
-        Migrate.class,
         Extension.class
     };
 

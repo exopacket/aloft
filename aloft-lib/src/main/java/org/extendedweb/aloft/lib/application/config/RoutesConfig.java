@@ -11,8 +11,8 @@ public class RoutesConfig {
 
     public RoutesConfig(JSONObject json) {
         appendConfig(json, "api");
-        appendConfig(json, "public-api");
-        appendConfig(json, "update-state");
+        appendConfig(json, "public");
+        appendConfig(json, "state");
         appendConfig(json, "javascript");
         appendConfig(json, "stylesheets");
         appendConfig(json, "images");
@@ -24,11 +24,11 @@ public class RoutesConfig {
     }
 
     public String publicApi() {
-        return getValue("public-api");
+        return getValue("api");
     }
 
-    public String updateState() {
-        return getValue("update-state");
+    public String state() {
+        return getValue("state");
     }
 
     public String javascript() {
@@ -55,8 +55,8 @@ public class RoutesConfig {
         if(json.containsKey(key)) config.put(key, (String) json.get(key));
         else {
             if(__.same(key, "api")) config.put(key, "/ajax");
-            if(__.same(key, "public-api")) config.put(key, "/api");
-            if(__.same(key, "update-state")) config.put(key, "/state");
+            if(__.same(key, "public")) config.put(key, "/api");
+            if(__.same(key, "state")) config.put(key, "/state");
             if(__.same(key, "javascript")) config.put(key, "/js");
             if(__.same(key, "stylesheets")) config.put(key, "/css");
             if(__.same(key, "images")) config.put(key, "/image");

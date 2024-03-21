@@ -19,7 +19,7 @@ public class Debug extends HandlesCommands {
 
     @Override
     public void run(AppConfig config) {
-        File dot = new File(".tt");
+        File dot = new File(".");
         if (!dot.exists()) {
             File cwd = new File("");
             String fullPath = cwd.getAbsolutePath();
@@ -30,11 +30,11 @@ public class Debug extends HandlesCommands {
                     if(i == parts.length - 1) break;
                     path += parts[i] + "/src/";
                 }
-                String _dot = path + ".tt";
+                String _dot = path + ".adir";
                 dot = new File(_dot);
                 if (!dot.exists()) command.exit("Could not find the aloft project from this directory.", 1);
             } else {
-                dot = new File("src/.tt");
+                dot = new File("src/.adir");
                 if (!dot.exists()) command.exit("Could not find the aloft project from this directory.", 1);
             }
         }
@@ -61,7 +61,7 @@ public class Debug extends HandlesCommands {
                     throw new RuntimeException(e);
                 }
             } else {
-                command.exit("Corrupt .tt file.", 1);
+                command.exit("Corrupt .adir file.", 1);
             }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);

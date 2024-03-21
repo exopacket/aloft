@@ -1,6 +1,7 @@
 package org.extendedweb.aloft.lib;
 
 import org.extendedweb.aloft.lib.lang.structure.components.AloftComponent;
+import org.extendedweb.aloft.lib.lang.structure.components.AloftRoot;
 import org.extendedweb.aloft.lib.lang.supporting.DynamicMountableComponent;
 import org.extendedweb.aloft.lib.lang.supporting.MountPoint;
 import org.extendedweb.aloft.lib.lang.supporting.MountableComponent;
@@ -35,7 +36,7 @@ public abstract class _AloftPage {
 
     protected abstract MountableComponent buildTree() throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException;
 
-    public MountableComponent getFromPath(String...ids) {
+    public AloftComponent getFromPath(String...ids) {
         return this.root;
     }
 
@@ -75,6 +76,10 @@ public abstract class _AloftPage {
         return arr;
     }
 
+    protected MountableComponent page(Object... comp) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+        return new AloftRoot((mountable(comp)));
+    }
+
     protected MountableComponent mountable(Object... comp) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         return new MountableComponent() {
             @Override
@@ -95,7 +100,7 @@ public abstract class _AloftPage {
         };
     }
 
-    protected DynamicMountableComponent group(Class<?>... m) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+    protected DynamicMountableComponent slot(Class<?> i, Class<?>... m) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         DynamicMountableComponent dmc = new DynamicMountableComponent() {
             @Override
             protected void mountables(HashMap<String, MountableComponent> map) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {

@@ -88,7 +88,7 @@ public abstract class AloftElement extends AloftComponent {
 
 
     protected void applyStyle(HtmlElement element, AloftTheme theme) {
-//        setClasses(theme.mergeByHash(getStyle().getHashes()), theme);
+        setClasses(theme.mergeByHash(getStyle().getHashes()), theme);
         for(int i=0; i<classes.size(); i++) element.addAttribute("class", classes.get(i).getTagClassName());
     }
 

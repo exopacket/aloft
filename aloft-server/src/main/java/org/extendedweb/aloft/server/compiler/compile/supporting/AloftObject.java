@@ -1,8 +1,10 @@
 package org.extendedweb.aloft.server.compiler.compile.supporting;
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.extendedweb.aloft.server.compiler.compile.base.AloftFunction;
 import org.extendedweb.aloft.server.compiler.compile.base.AloftFunctionCompiler;
 import org.extendedweb.aloft.server.compiler.compile.base.AloftFunctionContainer;
+import org.extendedweb.aloft.server.compiler.compile.base.AloftFunctionDivider;
 import org.extendedweb.aloft.server.compiler.compile.base.register.CompiledObjectsRegister;
 import org.extendedweb.aloft.server.compiler.exceptions.CompilerException;
 import org.extendedweb.aloft.server.grammar.antlr.AloftParser;
@@ -25,6 +27,8 @@ public abstract class AloftObject implements CompilesAloftObjects {
     protected ArrayList<AloftObject> objects;
     protected File file = null;
     private AloftComponentClass c = null;
+
+    public AloftObject() { }
 
     public AloftObject(ParserRuleContext ctx, CompiledObjectsRegister register, File file) throws CompilerException {
         this.file = file;
@@ -92,12 +96,21 @@ public abstract class AloftObject implements CompilesAloftObjects {
     public void parseFunctions(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) {
         System.out.println("PARSE FUNCTIONS");
         for(AloftParser.SyntaxContext ctx : syntax) {
-            AloftParser.FunctionsContext fCtx = ctx.functions();
+            AloftParser.FunctionContext fCtx = ctx.function();
             if(!__.isset(fCtx)) continue;
             AloftFunctionContainer func = AloftFunctionCompiler.queue(fCtx, register);
             functions.add(func);
         }
         System.out.println("DONE");
+    }
+
+    @Override
+    public ArrayList<AloftFunction> getFunctions() {
+        ArrayList<AloftFunction> list = new ArrayList<>();
+        for(AloftFunctionContainer container : functions) {
+            list.add(new AloftFunction(container));
+        }
+        return list;
     }
 
     protected void registration(CompiledObjectsRegister register) {

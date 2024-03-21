@@ -1,6 +1,7 @@
 import h from "virtual-dom/h.js";
 import Element from "./Element.js";
 import {diff, patch} from "virtual-dom";
+import ComponentState from "../state/ComponentState.js";
 
 export default class Component {
 
@@ -13,10 +14,10 @@ export default class Component {
     #properties = []
     #propertyMap = []
     #variables = []
-    #state = []
+    #state
 
-    constructor(id, json, state = {}) {
-        const obj = (json instanceof String) ? JSON.parse(json) : json
+    constructor(id, obj, state) {
+        this.#state = new ComponentState(state, this.setState)
         this.#id = obj.id
         const properties = obj.properties ?? []
         this.#propertyMap = obj.properties ?? []
@@ -29,6 +30,10 @@ export default class Component {
 
     #init(state, globalState) {
 
+    }
+
+    setState() {
+        this.#tree = this.#render()
     }
 
     get() {

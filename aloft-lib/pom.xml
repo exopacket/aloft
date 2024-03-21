@@ -33,6 +33,24 @@
             <artifactId>commons-httpclient</artifactId>
             <version>3.1</version>
         </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>4.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.mindrot</groupId>-->
+        <!--            <artifactId>jbcrypt</artifactId>-->
+        <!--            <version>0.4</version>-->
+        <!--            <scope>system</scope>-->
+        <!--            <systemPath>${project.aloft.dir}/deps-src/jBCrypt/target/jbcrypt-0.4.jar</systemPath>-->
+        <!--        </dependency>-->
+
     </dependencies>
 
     <build>

@@ -1,6 +1,7 @@
 package org.extendedweb.aloft.server.compiler.compile.supporting;
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.extendedweb.aloft.server.compiler.compile.base.AloftFunction;
 import org.extendedweb.aloft.server.compiler.compile.base.register.CompiledObjectsRegister;
 import org.extendedweb.aloft.server.compiler.exceptions.CompilerException;
 import org.extendedweb.aloft.server.grammar.antlr.AloftParser;
@@ -22,4 +23,5 @@ public interface CompilesAloftObjects {
     void parseProperties(List<AloftParser.SyntaxContext> syntax) throws CompilerException;
     void parseVariables(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) throws CompilerException;
     void parseFunctions(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) throws CompilerException;
+    ArrayList<AloftFunction> getFunctions();
 }

@@ -49,6 +49,7 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
     public AloftComponent(HashMap<String, Object> properties) {
         this.name = getName();
         setIds("__root__");
+        vars = getProperties();
         resetProperties(properties);
     }
 
@@ -223,6 +224,7 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
     @Override
     public HtmlElement html(AloftTheme theme, ElementMapper mapper) {
         HtmlElement root = create(theme, mapper);
+        if(!__.isset(root)) System.out.println(this.getName());
         root.setConditionalClasses(getConditionalClasses());
         root.setParentComponent(parentComponent);
         for(HtmlElement child : root.getChildren()) {

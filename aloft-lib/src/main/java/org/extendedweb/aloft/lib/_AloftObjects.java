@@ -1,7 +1,6 @@
 package org.extendedweb.aloft.lib;
 
 import org.extendedweb.aloft.lib.application.cache.RouteCache;
-import org.extendedweb.aloft.lib.model._AloftModel;
 import org.extendedweb.aloft.lib.http.supporting.Route;
 
 import java.lang.reflect.Constructor;

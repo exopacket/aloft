@@ -88,10 +88,10 @@
         "https": 443
       }
     },
-    "routes": {
+    "endpoints": {
       "api": "/ajax",
-      "public-api": "/api",
-      "update-state": "/state",
+      "public": "/api",
+      "state": "/state",
       "javascript": "/js",
       "stylesheets": "/css",
       "images": "/image",

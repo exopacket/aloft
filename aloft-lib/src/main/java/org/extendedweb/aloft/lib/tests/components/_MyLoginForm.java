@@ -5,10 +5,7 @@ import org.extendedweb.aloft.lib.lang.structure.elements.base.validation.EmailVa
 import org.extendedweb.aloft.lib.lang.structure.elements.base.validation.conditionals.base.ConditionalValueSet;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.validation.conditionals.base.ConditionalValueType;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.validation.conditionals.base.ConditionalValues;
-import org.extendedweb.aloft.lib.lang.structure.elements.types.ButtonAloftElement;
-import org.extendedweb.aloft.lib.lang.structure.elements.types.CenteredAloftElement;
-import org.extendedweb.aloft.lib.lang.structure.elements.types.ColumnAloftElement;
-import org.extendedweb.aloft.lib.lang.structure.elements.types.TextAloftElement;
+import org.extendedweb.aloft.lib.lang.structure.elements.types.*;
 import org.extendedweb.aloft.lib.lang.structure.listeners.types.AloftOnInputListener;
 import org.extendedweb.aloft.lib._AloftComponent;
 import org.extendedweb.aloft.lib.tests.elements._MyPasswordFieldElement;
@@ -32,7 +29,8 @@ public class _MyLoginForm extends _AloftComponent {
         CenteredAloftElement centered = new CenteredAloftElement();
         ColumnAloftElement column = new ColumnAloftElement();
         ButtonAloftElement btn = new ButtonAloftElement("__button_default__");
-        TextAloftElement txt = new TextAloftElement("LOG IN");
+  //      TextAloftElement txt = new TextAloftElement("LOG IN");
+        HeaderAloftElement txt = new HeaderAloftElement("LOG IN");
         btn.setText("Sign in");
         btn.addSubclass("primary");
         btn.addSubclass("sm");

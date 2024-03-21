@@ -1,0 +1,108 @@
+{
+  "project": {
+    "name": "my-project",
+    "package": "com.inteliense.my_project",
+    "author": "",
+    "description": "",
+    "key": "4d671a682bb27eb65ce36cd0649853077520f2e3dfac29bd58e68de3a251b8af",
+    "version": "1.0.0",
+    "build-type": "debug",
+    "aloft-version": "1.0.0",
+    "project-file": "/home/ryan/aloft/aloft-server/fake-project/src/MyProject.aloft"
+  },
+  "databases": [
+    {
+      "connection": {
+        "name": "aloft_test",
+        "type": "mysql",
+        "port": 3306,
+        "host": "127.0.0.1",
+        "username": "root",
+        "password": "secretpass"
+      }
+    }
+  ],
+  "modules": [
+    {
+      "aloft/tailwindcss": {
+        "git": "git://path/to/repo",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "aloft/base-components": {
+        "git": "git://path/to/repo",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "aloft/crypto": {
+        "git": "git://path/to/repo",
+        "version": "1.0.0"
+      }
+    }
+  ],
+  "middleware": [
+    {
+      "HasHeader": {
+        "apply": "*",
+        "hard-fail": false,
+        "route-specific": false
+      }
+    },
+    {
+      "has-api-key": {
+        "apply": "api/*",
+        "hard-fail": false,
+        "route-specific": false
+      }
+    },
+    {
+      "SessionExists": {
+        "hard-fail": false,
+        "route-specific": true
+      }
+    }
+  ],
+  "server": {
+    "debug": {
+      "https": false,
+      "enable-hot-reload": true,
+      "ports": {
+        "http": 8181,
+        "https": 8182,
+        "hot-reload": 3030
+      },
+      "bind-all": false
+    },
+    "public": {
+      "public-domain": "mydomain.com",
+      "content-root": "/home/aloft/sites/my-project",
+      "https": true,
+      "ssl": {
+        "certificate-filepath": "/path/to/ssl/certificate",
+        "certificate-key-filepath": "/path/to/ssl/certificate/key",
+        "certificate-chain-filepath": "/path/to/ssl/certificate/chain"
+      },
+      "ports": {
+        "http": 80,
+        "https": 443
+      }
+    },
+    "endpoints": {
+      "api": "/ajax",
+      "public": "/api",
+      "state": "/state",
+      "javascript": "/js",
+      "stylesheets": "/css",
+      "images": "/image",
+      "files": "/attachments"
+    },
+    "load-balancing": {},
+    "proxies": {},
+    "cloud": {
+      "provider": "aws",
+      "secret-key": "SECRET_KEY"
+    }
+  }
+}

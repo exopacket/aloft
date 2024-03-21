@@ -1,12 +1,28 @@
 package org.extendedweb.aloft.lib.lang.types.base;
 
+import org.extendedweb.aloft.lib._AloftModel;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftInstance;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftStyleInstance;
 import org.extendedweb.aloft.lib.lang.types.t.*;
 import org.extendedweb.aloft.lib.lang.types.v.NullV;
 import org.extendedweb.aloft.utils.global.__;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 public abstract class T {
+
+    private A accessScope;
+
+    public T() { accessScope = new A(A.Scope.SERVER_SIDE); }
+
+    public T(A accessScope) {
+        this.accessScope = accessScope;
+    }
+
+    public A.Scope getAccessScope() {
+        return accessScope.getScope();
+    }
 
     public abstract V value(Object v);
 
@@ -54,12 +70,25 @@ public abstract class T {
         return new AloftComponentT();
     }
 
+    public static T model(_AloftModel base) {
+        return new ModelT(base.getName(), base);
+    }
+
+    public static T model(String name, _AloftModel base) {
+        return new ModelT(name, base);
+    }
+
     public static T children() {
         return new ArrayT(new AloftComponentT());
     }
 
     public static T instance(Class<? extends AloftInstance> instanceType) {
-        return new InstanceT(instanceType);
+        try {
+            Constructor construct = instanceType.getConstructor();
+            return ((V) construct.newInstance()).type();
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static T instance(String property) {

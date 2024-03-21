@@ -5,13 +5,27 @@ import org.extendedweb.aloft.lib.lang.base.BuildsJavascript;
 import org.extendedweb.aloft.server.compiler.compile.supporting.BuildsJava;
 
 public class AloftFunction implements BuildsJava, BuildsJavascript {
-    @Override
-    public JavaScriptObject getObject() {
-        return null;
+
+    private JavaScriptObject js;
+    private AloftServerCode server;
+
+    public AloftFunction(AloftFunctionContainer container) {
+        this.js = container.js();
+        this.server = container.server();
     }
 
     @Override
-    public AloftServerCode serverCode() {
-        return null;
+    public JavaScriptObject getObject() {
+        return js;
     }
+
+    @Override
+    public AloftServerCode server() {
+        return server;
+    }
+
+    public void merge(AloftServerCode collection) {
+        collection.merge(server);
+    }
+
 }

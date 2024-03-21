@@ -35,7 +35,7 @@ public class New extends HandlesCommands {
 
     private void create(String type, String value, String file) {
         String content = getContent(type, value);
-        String filename = file.replace(".ss", "") + ".ss";
+        String filename = file.replace(".aloft", "") + ".aloft";
         File out = new File(filename);
         try {
             if (out.exists()) appendFile(out, content);

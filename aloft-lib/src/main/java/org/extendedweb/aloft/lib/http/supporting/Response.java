@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpExchange;
 import org.json.simple.JSONObject;
 
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class Response {
@@ -40,15 +41,17 @@ public class Response {
         this.code = code;
         this.content = JSON.getString(content);
     }
+
     public boolean send() {
         try {
+            headers.appendResponse(t.getResponseHeaders());
             t.sendResponseHeaders(code, 0);
             OutputStream os = t.getResponseBody();
-            if(!binary) os.write(content.getBytes());
+            if(!binary) os.write(content.getBytes(StandardCharsets.UTF_8));
             else os.write(bytes);
             os.close();
             return true;
-        } catch (Exception e) { return false; }
+        } catch (Exception e) { e.printStackTrace(); return false; }
     }
 
     public void addHeader(String key, String value) {
@@ -56,7 +59,7 @@ public class Response {
     }
 
     public void addHeader(String key, List<String> value) {
-        headers.addHeader(new Header(key, value));
+        headers.addHeader(new Header(key, value, value.size()));
     }
 
     private String strFromArr(String[] arr) {

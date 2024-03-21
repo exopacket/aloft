@@ -1,5 +1,6 @@
 package org.extendedweb.aloft.lib.html.elements.types;
 
+import org.extendedweb.aloft.lib.html.StaticSourceFile;
 import org.extendedweb.aloft.lib.lang.structure.style.AloftStyleCss;
 import org.extendedweb.aloft.lib.html.elements.HtmlElement;
 import org.extendedweb.aloft.lib.html.elements.js.JavaScript;
@@ -13,6 +14,8 @@ public class Head extends HtmlElement {
         return "head";
     }
 
+    public void addCharset(String charset) { this.addChild(HtmlElement.builder("meta", null, null).addAttribute("charset", charset)); }
+
     public void addTitle(String title) {
         this.addChild(HtmlElement.builder("title", title, null));
     }
@@ -25,12 +28,8 @@ public class Head extends HtmlElement {
         this.addChild(HtmlElement.builder("style", css, null));
     }
 
-    public void addJs(ArrayList<JavaScript> js) {
-        StringBuilder builder = new StringBuilder();
-        for(JavaScript script : js) {
-            builder.append(script.getValue());
-        }
-        this.addChild(HtmlElement.builder("script", builder.toString(), null, new String[][]{{"type", "application/js"}}));
+    public void addStatic(ArrayList<HtmlElement> list) {
+        for(HtmlElement el : list) this.addChild(el);
     }
 
     public void addFavicon(String filepath) {
@@ -38,7 +37,7 @@ public class Head extends HtmlElement {
         if(!filepath.contains(".")) return;
         int count = filepath.length() - filepath.replace(".", "").length();
         String[] parts = filepath.split("\\.");
-        String fileType = "image/" + parts[count - 1];
+        String fileType = "image/" + parts[count];
         this.addChild(HtmlElement.builder("link", null, null, new String[][]{
                 { "rel", "icon" },
                 { "type", fileType },

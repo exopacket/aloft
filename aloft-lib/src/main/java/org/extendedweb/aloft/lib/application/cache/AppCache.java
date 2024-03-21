@@ -1,6 +1,7 @@
 package org.extendedweb.aloft.lib.application.cache;
 
 import org.extendedweb.aloft.lib.application.config.*;
+import org.extendedweb.aloft.lib.db.internal.connectors.RedisConnection;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElement;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElementExtension;
 import org.extendedweb.aloft.lib.html.elements.css.Font;
@@ -16,6 +17,7 @@ public class AppCache {
 
     private RouteCache routeCache;
     private HashMap<String, ArrayList<AloftElementExtension>> extensions = new HashMap<>();
+    private RedisConnection redis;
 
     public AppCache(RouteCache routes) {
         this.routeCache = routes;

@@ -45,7 +45,7 @@ public class AloftVariable {
         AloftParser.Var_typeContext typeCtx = varCtx.var_type();
         type = (__.isset(typeCtx)) ? getType(typeCtx.getText()) : new DynamicT();
         System.out.println(__.isset(typeCtx) ? typeCtx.getText() : "dynamic");
-        AloftParser.Var_expressionContext exprCtx = ctx.var_expression();
+        AloftParser.ExpressionContext exprCtx = ctx.expression();
         value = parseExpression(exprCtx);
         for(String identifier : indentifiers) {
             allVars.add(new AloftVariable(access, identifier, type, value));
@@ -73,12 +73,13 @@ public class AloftVariable {
             case "time":
                 return new TimeT();
             case "dynamic":
-            default:
                 return new DynamicT();
+            default:
+                return new NamedT(type);
         }
     }
 
-    private static AloftExpression parseExpression(AloftParser.Var_expressionContext ctx) {
+    private static AloftExpression parseExpression(AloftParser.ExpressionContext ctx) {
         return new AloftExpression(false, null, null, null);
     }
 
@@ -95,16 +96,16 @@ public class AloftVariable {
     }
 
     private static AloftAccess getAccess(AloftParser.VariableContext ctx) {
-        boolean isPrivate = __.isset(ctx.private_named_multiple());
-        boolean isStatic = __.isset(ctx.var_access()) && __.isset(ctx.var_access().static_field());
-        boolean isRequired = __.isset(ctx.var_access()) && __.isset(ctx.var_access().required_field());
-        if(!isPrivate && !isRequired && !isStatic) return AloftAccess.PUBLIC;
-        else if(isPrivate && !isRequired && !isStatic) return AloftAccess.PRIVATE;
-        else if(isPrivate && isRequired && !isStatic) return AloftAccess.PRIVATE_REQUIRED;
-        else if(isPrivate && !isRequired) return AloftAccess.PRIVATE_STATIC;
-        else if(!isPrivate && isRequired && !isStatic) return AloftAccess.PUBLIC_REQUIRED;
-        else if(!isPrivate && !isRequired) return AloftAccess.PUBLIC_STATIC;
-        return AloftAccess.PUBLIC; //FIXME (compiler error)
+//        boolean isPrivate = __.isset(ctx.private_named_multiple());
+//        boolean isStatic = __.isset(ctx.var_access()) && __.isset(ctx.var_access().static_field());
+//        boolean isRequired = __.isset(ctx.var_access()) && __.isset(ctx.var_access().required_field());
+//        if(!isPrivate && !isRequired && !isStatic) return AloftAccess.PUBLIC;
+//        else if(isPrivate && !isRequired && !isStatic) return AloftAccess.PRIVATE;
+//        else if(isPrivate && isRequired && !isStatic) return AloftAccess.PRIVATE_REQUIRED;
+//        else if(isPrivate && !isRequired) return AloftAccess.PRIVATE_STATIC;
+//        else if(!isPrivate && isRequired && !isStatic) return AloftAccess.PUBLIC_REQUIRED;
+//        else if(!isPrivate && !isRequired) return AloftAccess.PUBLIC_STATIC;
+        return new AloftAccess(AloftAccess.AloftAccessType.PUBLIC, true, false); //FIXME (compiler error)
     }
 
 }

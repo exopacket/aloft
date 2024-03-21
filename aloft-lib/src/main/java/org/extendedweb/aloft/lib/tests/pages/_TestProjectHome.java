@@ -14,7 +14,7 @@ public class _TestProjectHome extends _AloftPage {
 
     @Override
     protected MountableComponent buildTree() throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
-        return mountable(
+        return page(
                 _MyLoginForm.class
         );
     }

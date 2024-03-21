@@ -12,13 +12,7 @@ public class AloftRenderConditionGroup {
 
     public AloftRenderConditionGroup() { }
 
-    public AloftRenderConditionGroup subgroup() {
-        return new AloftRenderConditionGroup();
-    }
-
-    public AloftRenderConditionGroup add(AloftFunction left, ComparisonV operator, V right) {
-        return this;
-    }
+    public AloftRenderConditionGroup(AloftFunction left, ComparisonV operator, V right) { }
 
     public AloftRenderConditionGroup or(AloftFunction left, ComparisonV operator, V right) {
         return this;
@@ -26,6 +20,14 @@ public class AloftRenderConditionGroup {
 
     public AloftRenderConditionGroup and(AloftFunction left, ComparisonV operator, V right) {
         return this;
+    }
+
+    public static AloftRenderConditionGroup create(AloftFunction left, ComparisonV operator, V right) {
+        return new AloftRenderConditionGroup(left, operator, right);
+    }
+
+    public static AloftRenderConditionGroup create() {
+        return new AloftRenderConditionGroup();
     }
 
     public V get() {

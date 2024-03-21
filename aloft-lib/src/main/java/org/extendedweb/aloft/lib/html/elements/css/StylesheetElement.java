@@ -5,7 +5,7 @@ import org.extendedweb.aloft.lib.html.elements.types.Content;
 
 public class StylesheetElement extends HtmlElement {
 
-    protected String value = "";
+    protected String value = null;
 
     public StylesheetElement() { }
 
@@ -16,7 +16,7 @@ public class StylesheetElement extends HtmlElement {
 
     @Override
     public String getKey() {
-        return "style";
+        return "link";
     }
 
     public String getValue() {

@@ -5,7 +5,7 @@ import org.extendedweb.aloft.lib.html.elements.types.Content;
 
 public class JavaScriptElement extends HtmlElement {
 
-    protected String value = "";
+    protected String value = null;
 
     public JavaScriptElement() { }
 

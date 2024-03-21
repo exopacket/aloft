@@ -1,5 +1,8 @@
 package org.extendedweb.aloft.lib.lang.supporting;
 
+import org.extendedweb.aloft.lib.html.elements.HtmlElement;
+import org.extendedweb.aloft.lib.lang.base.ElementMapper;
+import org.extendedweb.aloft.lib.lang.structure.AloftTheme;
 import org.extendedweb.aloft.lib.lang.structure.components.AloftComponent;
 
 import java.lang.reflect.InvocationTargetException;
@@ -14,27 +17,19 @@ public abstract class MountableComponent extends AloftComponent {
         super();
         try {
             components = build();
-            for(AloftComponent component : components) addChild(component);
+            for (AloftComponent component : components) addChild(component);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    //        ArrayList<AloftComponent> v = build();
-//        boolean hasSlot = false;
-//        for(AloftComponent component : v) {
-//            if(component instanceof MountPoint) {
-//                hasSlot = true;
-//                break;
-//            }
-//        }
-//        slot = new DynamicMountableComponent() {
-//            @Override
-//            protected void mountables(HashMap<String, MountableComponent> map) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
-//                ArrayList<AloftComponent> v = build();
-//                for(AloftComponent component : v) { }
-////                    map.put(component.getId());
-////                }
-//            }
-//        };
+    }
+
+    public MountableComponent(AloftComponent base) {
+        super();
+        try {
+            components.add(base);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -43,6 +38,14 @@ public abstract class MountableComponent extends AloftComponent {
     }
 
     protected abstract ArrayList<AloftComponent> build() throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException;
+
+    @Override
+    public HtmlElement html(AloftTheme theme, ElementMapper mapper) {
+        this.children.clear();
+        //TODO apply dynamic slots
+        this.children.addAll(this.components);
+        return super.html(theme, mapper);
+    }
 
     public void appendComponent(AloftComponent component) {
         this.components.add(component);

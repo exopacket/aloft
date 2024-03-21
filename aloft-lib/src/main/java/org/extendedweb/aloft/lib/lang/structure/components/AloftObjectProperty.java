@@ -19,7 +19,7 @@ public class AloftObjectProperty {
         this.required = required;
     }
 
-    public AloftObjectProperty(String name, Object v) {
+    public AloftObjectProperty(String name, V v) {
         this.name = name;
         set(v);
     }

@@ -82,6 +82,13 @@ public class BootstrapModule extends StyleModule {
         return element;
     }
 
+//    @Override
+//    protected ModuleElement filledAloftElement(ModuleElement element) {
+//        element.addClasses("root","d-flex", "w-100", "h-100", "p-3");
+//        element.addClasses("child","mx-auto", "my-auto", "w-100");
+//        return element;
+//    }
+
     @Override
     protected ModuleElement columnAloftElement(ModuleElement element) {
         element.addClasses("col","d-flex", "flex-column");

@@ -41,6 +41,18 @@ public class AloftBaseListener implements AloftListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterFunction_syntax(AloftParser.Function_syntaxContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunction_syntax(AloftParser.Function_syntaxContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterComponent(AloftParser.ComponentContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -257,18 +269,6 @@ public class AloftBaseListener implements AloftListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunctions(AloftParser.FunctionsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFunctions(AloftParser.FunctionsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterFunction(AloftParser.FunctionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -276,6 +276,30 @@ public class AloftBaseListener implements AloftListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFunction(AloftParser.FunctionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunction_declaration(AloftParser.Function_declarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunction_declaration(AloftParser.Function_declarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunction_call(AloftParser.Function_callContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunction_call(AloftParser.Function_callContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -300,6 +324,18 @@ public class AloftBaseListener implements AloftListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitDeclare_variable(AloftParser.Declare_variableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAssign_variable(AloftParser.Assign_variableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAssign_variable(AloftParser.Assign_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -449,6 +485,18 @@ public class AloftBaseListener implements AloftListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterReturn(AloftParser.ReturnContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReturn(AloftParser.ReturnContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterIsset(AloftParser.IssetContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -581,6 +629,18 @@ public class AloftBaseListener implements AloftListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterReturn_value(AloftParser.Return_valueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReturn_value(AloftParser.Return_valueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterHtml_element(AloftParser.Html_elementContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -617,6 +677,18 @@ public class AloftBaseListener implements AloftListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterReturn_property_value(AloftParser.Return_property_valueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReturn_property_value(AloftParser.Return_property_valueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterLoop(AloftParser.LoopContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -648,6 +720,18 @@ public class AloftBaseListener implements AloftListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCurly_block(AloftParser.Curly_blockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunction_curly_block(AloftParser.Function_curly_blockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunction_curly_block(AloftParser.Function_curly_blockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

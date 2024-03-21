@@ -8,7 +8,6 @@ public class Content extends HtmlElement {
 
     public Content(String value) {
         super();
-        value = value.replaceAll("\n", "<br>");
         this.value = value;
     }
 

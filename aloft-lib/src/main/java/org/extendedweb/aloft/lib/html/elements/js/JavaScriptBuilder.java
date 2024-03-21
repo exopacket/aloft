@@ -41,6 +41,11 @@ public class JavaScriptBuilder {
     }
 
     public JavaScriptElement getElement() {
+        if(objects.isEmpty()) {
+            JavaScriptElement el = new JavaScriptElement();
+            el.addAttribute("src", path);
+            return el;
+        }
         return new JavaScriptObject() {
             @Override
             protected void create() {

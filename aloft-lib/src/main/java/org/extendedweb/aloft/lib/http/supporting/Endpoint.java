@@ -1,6 +1,9 @@
 package org.extendedweb.aloft.lib.http.supporting;
 
 import org.extendedweb.aloft.lib.application.config.AppConfig;
+import org.extendedweb.aloft.lib.client.ClientInfo;
+import org.extendedweb.aloft.lib.client.ClientSession;
+import org.extendedweb.aloft.lib.http.protocol.responses.defined.ApplicationInfoResponse;
 import org.extendedweb.aloft.lib.lang.structure.AloftPage;
 import org.extendedweb.aloft.lib.lang.structure.AloftTheme;
 import org.extendedweb.aloft.lib._AloftPage;
@@ -23,34 +26,29 @@ public class Endpoint {
     protected AloftTheme theme;
     protected ArrayList<HtmlElement> staticFiles;
     protected AtomicReference<AppJavaScript> js;
+    protected AppConfig config;
+    protected RequestParams params;
 
-    public Endpoint(Route route, RequestType type, AloftRequestType internalType, VariableTree vars) {
-        this.path = route.getPath();
-        this.type = type;
-        this.internalType = internalType;
-        this.vars = vars;
-    }
-
-    public Endpoint(Route route, RequestType type, AloftRequestType internalType, VariableTree vars, AppConfig config) {
-        this.path = route.getPath();
-        this.type = type;
-        this.internalType = internalType;
-        this.vars = vars;
+    public Endpoint(RequestParams params, AppConfig config) {
+        this.path = params.route().getPath();
+        this.type = params.getRequestType();
+        this.internalType = params.getInternalRequestType();
+        this.vars = params.route().getPath().getVariables(params.getUriString());
         this.theme = config.getTheme();
         this.staticFiles = config.getStaticFiles();
         this.js = config.getAppJs();
+        this.config = config;
+        this.params = params;
     }
 
-    public static Endpoint create(String requestPath, Route route, RequestType type, AloftRequestType internalType, AppConfig config) throws Exception {
-        if(internalType == AloftRequestType.JAVASCRIPT_FILE) return new ScriptEndpoint(route, type, internalType, route.getPath().getVariables(requestPath), config.getStaticJavaScript(route.getPath().getPathString()));
-        if(internalType == AloftRequestType.STYLESHEET_FILE) return new StylesheetEndpoint(route, type, internalType, route.getPath().getVariables(requestPath), config.getStaticStylesheet(route.getPath().getPathString()));
-        if(internalType == AloftRequestType.FONT_FILE) return new FontEndpoint(route, type, internalType, route.getPath().getVariables(requestPath), config.getStaticFont(route.getPath().getPathString()));
-        if(internalType == AloftRequestType.SERVER_SIDE_RENDERING) return new AloftPage(route, type, internalType, route.getPath().getVariables(requestPath), config, ((_AloftPage) route.instantiate()).getRoot());
-        return new AloftPage(route, type, internalType, route.getPath().getVariables(requestPath), config);
-    }
-
-    public static Endpoint create(String requestPath, Route route, RequestType type, AloftRequestType internalType, AppConfig config, String[] componentPath) {
-        return new AloftPage(route, type, internalType, route.getPath().getVariables(requestPath), config);
+    public static Endpoint create(RequestParams params, AppConfig config) throws Exception {
+        AloftRequestType internalType = params.getInternalRequestType();
+        if(internalType == AloftRequestType.JAVASCRIPT_FILE) return new ScriptEndpoint(params, config, config.getStaticJavaScript(params.route().getPath().getPathString()));
+        if(internalType == AloftRequestType.STYLESHEET_FILE) return new StylesheetEndpoint(params, config, config.getStaticStylesheet(params.route().getPath().getPathString()));
+        if(internalType == AloftRequestType.FONT_FILE) return new FontEndpoint(params, config, config.getStaticFont(params.route().getPath().getPathString()));
+        if(internalType == AloftRequestType.SERVER_SIDE_RENDERING) return new AloftPage(params, config, ((_AloftPage) params.route().instantiate()).getRoot());
+        if(internalType == AloftRequestType.APPLICATION_INFO) return new ApplicationInfoResponse(params, config);
+        return null;
     }
 
     public RoutePath getPath() {

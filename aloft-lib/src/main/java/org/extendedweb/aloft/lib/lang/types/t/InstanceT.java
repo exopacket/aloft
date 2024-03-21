@@ -17,7 +17,17 @@ public class InstanceT extends T {
 
     public InstanceT() { }
 
-    public InstanceT(Class<? extends AloftInstance> instanceType) { }
+    //TODO create mechanism to have a static collection of properties within an AloftInstance
+    // may need to discard the static class w/ constructor for an object instance
+    //  because the AloftInstance class extends the InstanceV class, static methods would make this messy
+    //   & the InstanceV class should not contain static methods
+    //    ...
+    //     there's a lot of refactoring ahead for this
+    //      ...
+    //       yes Ryan, you were high when you wrote this todo.
+    public InstanceT(Class<? extends AloftInstance> instanceType) {
+
+    }
 
     public InstanceT(String property) {
         this.property = property;

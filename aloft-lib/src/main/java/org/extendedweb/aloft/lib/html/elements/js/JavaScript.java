@@ -7,10 +7,17 @@ public class JavaScript {
 
     private JavaScriptWriterType type;
     private JavaScriptBuilder js;
+    private boolean isModule = false;
 
     public JavaScript(JavaScriptWriterType type, JavaScriptBuilder js) {
         this.type = type;
         this.js = js;
+    }
+
+    public JavaScript(JavaScriptWriterType type, JavaScriptBuilder js, boolean isModule) {
+        this.type = type;
+        this.js = js;
+        this.isModule = isModule;
     }
 
     public JavaScriptWriterType getType() {
@@ -22,9 +29,10 @@ public class JavaScript {
     }
 
     public HtmlElement getTag() {
-        if(type == JavaScriptWriterType.ELEMENT && __.isset(getElement())) return getElement();
-        else if(type == JavaScriptWriterType.FILE && __.isset(getFile())) return getFile();
-        return null;
+        HtmlElement tag = getElement();
+        if(isModule) tag.addAttribute("type", "module", true);
+        System.out.println("MADE IT");
+        return tag;
     }
 
     public String getValue() {
@@ -34,9 +42,7 @@ public class JavaScript {
     }
 
     private JavaScriptElement getElement() {
-        if(type == JavaScriptWriterType.ELEMENT)
-            return js.getElement();
-        return null;
+        return js.getElement();
     }
 
     public JavaScriptFile getFile() {

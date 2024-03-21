@@ -12,8 +12,7 @@ public class StringT extends T {
         if(v.getClass() != String.class) return new NullV();
         String str = String.valueOf(v);
         if(str.matches("^\".*\"$")) return new StringV(str.replace("\"", ""));
-        if(!__.isset(type(v, true))) return new StringV(str);
-        return new NullV();
+        return new StringV(str);
     }
 
 }

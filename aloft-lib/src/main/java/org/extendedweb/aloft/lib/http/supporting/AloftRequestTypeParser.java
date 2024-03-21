@@ -1,6 +1,7 @@
 package org.extendedweb.aloft.lib.http.supporting;
 
 import org.extendedweb.aloft.lib.application.config.AppConfig;
+import org.extendedweb.aloft.utils.global.__;
 
 public class AloftRequestTypeParser {
 
@@ -29,6 +30,12 @@ public class AloftRequestTypeParser {
         if(path.indexOf(config.getRoutesConfig().javascript()) == 0) return AloftRequestType.JAVASCRIPT_FILE;
         if(path.indexOf(config.getRoutesConfig().images()) == 0) return AloftRequestType.IMAGE;
         if(path.indexOf(config.getRoutesConfig().files()) == 0) return AloftRequestType.FILE;
+
+        if(headers.has("X-Aloft-Protocol-Method")) {
+            String method = headers.get("X-Aloft-Protocol-Method");
+            if(__.same(method, "Application-Info")) return AloftRequestType.APPLICATION_INFO;
+        }
+
         return AloftRequestType.SERVER_SIDE_RENDERING;
     }
 

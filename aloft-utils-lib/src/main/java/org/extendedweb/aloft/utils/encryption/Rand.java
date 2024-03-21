@@ -1,6 +1,7 @@
 package org.extendedweb.aloft.utils.encryption;
 
 import javax.crypto.spec.IvParameterSpec;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Random;
 
@@ -10,6 +11,16 @@ public class Rand {
 
         byte[] bytes = new byte[len];
         new SecureRandom().nextBytes(bytes);
+        return bytes;
+
+    }
+
+    public static byte[] secure(int len, String seed) {
+
+        byte[] bytes = new byte[len];
+        SecureRandom rand = new SecureRandom();
+        rand.setSeed(seed.getBytes(StandardCharsets.UTF_8));
+        rand.nextBytes(bytes);
         return bytes;
 
     }

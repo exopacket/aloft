@@ -1,6 +1,8 @@
 package org.extendedweb.aloft.lib.http.supporting;
 
 import org.extendedweb.aloft.lib.application.config.AppConfig;
+import org.extendedweb.aloft.lib.html.JsonObjectRenderer;
+import org.extendedweb.aloft.lib.http.protocol.responses.base.DefinedResponse;
 import org.extendedweb.aloft.lib.lang.structure.AloftPage;
 import org.extendedweb.aloft.lib.lang.structure.AloftTheme;
 import org.extendedweb.aloft.lib.html.HtmlRenderer;
@@ -96,6 +98,8 @@ public class Route {
     }
 
     public Response go(HttpExchange t, Endpoint endpoint, AloftTheme theme, AppConfig config) {
+//        if(endpoint instanceof DefinedResponse)
+//            return JsonObjectRenderer.render((DefinedResponse) endpoint).get(t);
         if(endpoint.getClass() == AloftPage.class)
             return HtmlRenderer.render((AloftPage) endpoint, theme, config).get(t);
         if(endpoint.getClass() == ScriptEndpoint.class)

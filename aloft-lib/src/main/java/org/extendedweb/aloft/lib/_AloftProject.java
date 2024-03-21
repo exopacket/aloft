@@ -1,8 +1,11 @@
 package org.extendedweb.aloft.lib;
 
 import org.extendedweb.aloft.lib.application.config.AppConfig;
-import org.extendedweb.aloft.lib.tests.models._User;
+import org.extendedweb.aloft.lib.db.internal.Db;
 import org.extendedweb.aloft.lib.tests.pages._TestProjectHome;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class _AloftProject {
 
@@ -40,7 +43,7 @@ public class _AloftProject {
     }
 
     private void buildModels() throws Exception {
-        objects.append(_User.class);
+//        objects.append(_User.class);
     }
 
     private void buildRoutes() throws Exception {

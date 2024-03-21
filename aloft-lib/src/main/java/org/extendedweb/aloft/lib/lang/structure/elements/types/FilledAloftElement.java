@@ -6,6 +6,7 @@ import org.extendedweb.aloft.lib.lang.structure.components.AloftObjectProperties
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElement;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElementSubtype;
 import org.extendedweb.aloft.lib.html.elements.HtmlElement;
+import org.extendedweb.aloft.lib.lang.types.base.T;
 
 import java.util.ArrayList;
 
@@ -80,6 +81,14 @@ public class FilledAloftElement extends AloftElement {
         this.vars.put("scrollbar-y", false);
         this.vars.put("scrollbar-x", false);
         this.vars.put("use-view", false);
+    }
+
+    public static AloftObjectProperties properties() {
+        AloftObjectProperties props = new AloftObjectProperties();
+        props.put("scrollbar-y", T.bool());
+        props.put("scrollbar-x", T.bool());
+        props.put("use-view", T.bool());
+        return props;
     }
 
     @Override

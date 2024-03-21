@@ -56,16 +56,14 @@ public class AloftObjectProperties {
         boolean success = true;
         ArrayList<String> occurrences = containedIn(name);
         for(String key : occurrences) {
-            AloftObjectProperty prop = new AloftObjectProperty(name, v);
-            if(!put(collection.get(key), prop) && success) success = false;
+            if(!put(collection.get(key), name, v) && success) success = false;
         }
         return success;
     }
 
     public boolean replace(String name, Object v, String subtype) {
         if(!collection.containsKey(subtype)) return false;
-        AloftObjectProperty prop = new AloftObjectProperty(name, v);
-        return put(collection.get(subtype), prop);
+        return put(collection.get(subtype), name, v);
     }
 
 //    public boolean replace(AloftObjectProperty prop, String subtype) {
@@ -78,15 +76,6 @@ public class AloftObjectProperties {
 //        return put(collection.get("*"), prop);
 //    }
 
-    public void put(String name) {
-        put(name, V.nothing());
-    }
-
-    public void put(String name, Object v) {
-        AloftObjectProperty prop = new AloftObjectProperty(name, v);
-        if(!collection.containsKey("*")) collection.put("*", new ArrayList<>());
-        put(collection.get("*"), prop);
-    }
 
     public void put(String name, T type) {
         put(name, type, V.nothing());
@@ -107,10 +96,9 @@ public class AloftObjectProperties {
     }
 
     public void put(String name, Object v, String... subtypes) {
-        AloftObjectProperty prop = new AloftObjectProperty(name, v);
         for(String subtype : subtypes) {
             if (!collection.containsKey(subtype)) collection.put(subtype, new ArrayList<>());
-            put(collection.get(subtype), prop);
+            put(collection.get(subtype), name, v);
         }
     }
 
@@ -135,6 +123,15 @@ public class AloftObjectProperties {
             }
         }
         current.add(property);
+        return true;
+    }
+
+    private boolean put(ArrayList<AloftObjectProperty> current, String propName, Object propValue) {
+        for(AloftObjectProperty prop : current) {
+            if(__.same(prop.getName(), propName)) {
+                return prop.replace(propValue);
+            }
+        }
         return true;
     }
 

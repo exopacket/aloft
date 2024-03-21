@@ -34,9 +34,19 @@ public class CompiledObjectsRegister {
         return false;
     }
 
-    private boolean exists(Class<?> c, String identifier) {
+    public boolean exists(Class<?> c, String identifier) {
         if(register.isEmpty() || !register.containsKey(c)) return false;
         return register.get(c).containsKey(identifier);
+    }
+
+    public AloftObject get(Class<?> c, String identifier) {
+        if(!exists(c, identifier)) return null;
+        HashMap<String, AloftObject> map = register.get(c);
+        return map.get(identifier);
+    }
+
+    public AppConfig getConfig() {
+        return config;
     }
 
     public _AloftProject buildProject() {

@@ -3,6 +3,7 @@ package org.extendedweb.aloft.lib.http.supporting;
 import org.extendedweb.aloft.lib.application.config.AppConfig;
 import org.extendedweb.aloft.lib.application.config.MiddlewareList;
 import org.extendedweb.aloft.lib.client.ClientInfo;
+import org.extendedweb.aloft.lib.client.ClientSession;
 import org.extendedweb.aloft.lib.http.middleware.base.MiddlewareResultCollection;
 import org.extendedweb.aloft.utils.global.__;
 import com.sun.net.httpserver.HttpExchange;
@@ -29,10 +30,10 @@ public class DirectRequest {
         if(path.length() > 256) exit("Request.js path length is too large.", 403);
         this.requestType = getRequestType();
         this.internalRequestType = getInternalRequestType(path);
-        this.route = config.getRoute(path, t.getRequestMethod().toUpperCase());
+        this.route = config.getRoute(path, requestType);
         if(!__.isset(this.route)) exit("Page not found.", 404);
         try {
-            this.endpoint = Endpoint.create(path, route, requestType, internalRequestType, config);
+            this.endpoint = Endpoint.create(this.buildParams(), this.config);
         } catch (Exception e) {
             e.printStackTrace();
             exit("Server error", 500);
@@ -60,6 +61,7 @@ public class DirectRequest {
     }
 
     private AloftRequestType getInternalRequestType(String path) {
+        System.out.println(AloftRequestTypeParser.get(headers, path, requestType, config).name());
         return AloftRequestTypeParser.get(headers, path, requestType, config);
     }
 
@@ -90,6 +92,9 @@ public class DirectRequest {
     }
 
     public boolean validate() {
+
+        //return this.endpoint.valid();
+
         MiddlewareResultCollection middlewareResult = middleware();
         if(!middlewareResult.passed()) exit(middlewareResult.getJson(), middlewareResult.getCode());
         return !exited;

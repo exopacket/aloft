@@ -27,8 +27,8 @@ public class Header {
 
     private void setVars(String key, List<String> values, int maxValues) {
         this.key = key;
-        this.values = listToArray(values);
         this.maxValues = maxValues;
+        this.values = listToArray(values);
     }
 
     public String next() {
@@ -44,6 +44,10 @@ public class Header {
         return key;
     }
 
+    public String get() {
+        return values[0];
+    }
+
     public String[] getArray() {
         return values;
     }
@@ -57,6 +61,7 @@ public class Header {
     }
 
     private String[] listToArray(List<String> values) {
+        if(values.isEmpty()) return new String[]{null};
         String[] arr = new String[values.size()];
         int limit = Math.min(values.size(), maxValues);
         for(int i=0; i<limit; i++) arr[i] = values.get(i);

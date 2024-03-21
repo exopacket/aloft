@@ -13,6 +13,7 @@ import org.extendedweb.aloft.lib.http.supporting.Response;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Html {
 
@@ -29,7 +30,10 @@ public class Html {
     }
 
     public Response get(HttpExchange t) {
-        return buildResponse(t);
+        System.out.println("buildResponse");
+        Response resp = buildResponse(t);
+        System.out.println("buildResponse COMPLETE");
+        return resp;
     }
 
     private Response buildResponse(HttpExchange t) {
@@ -38,10 +42,13 @@ public class Html {
         values.add("text/html");
         values.add("charset=utf-8");
         response.addHeader("Content-Type", values);
+        response.addHeader("X-Content-Type-Options", Collections.singletonList("nosniff"));
         return response;
     }
 
     public String string() {
+        System.out.println(type.name());
+        System.out.println(object.getClass().getSimpleName());
         if(type == RenderType.PAGE && object.getClass() == AloftPage.class)
             return renderPage((AloftPage) object);
         if(type == RenderType.PAGE && object.getClass() == _AloftPage.class)

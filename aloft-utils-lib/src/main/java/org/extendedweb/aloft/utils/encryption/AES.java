@@ -359,6 +359,24 @@ public class AES {
 
     }
 
+    public static byte[] ecb(byte[] input, byte[] key, boolean noPadding, boolean encrypt) {
+
+        try {
+
+            SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
+            String padding = (noPadding) ? "AES/ECB/NoPadding" : "AES/ECB/PKCS5Padding";
+            Cipher cipher = Cipher.getInstance(padding);
+            cipher.init((encrypt) ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, secretKeySpec);
+            return cipher.doFinal(input);
+
+        } catch (Exception ex) {
+
+        }
+
+        return null;
+
+    }
+
     public static byte[] cbc(byte[] input, byte[] key, byte[] iv, boolean encrypt) {
 
         try {

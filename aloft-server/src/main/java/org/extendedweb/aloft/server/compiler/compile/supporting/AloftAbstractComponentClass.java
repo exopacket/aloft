@@ -1,5 +1,7 @@
 package org.extendedweb.aloft.server.compiler.compile.supporting;
 
+import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElement;
+
 import java.util.ArrayList;
 
 public abstract class AloftAbstractComponentClass extends AloftComponentClass {
@@ -7,7 +9,10 @@ public abstract class AloftAbstractComponentClass extends AloftComponentClass {
     private boolean hasChild = false;
     private boolean hasChildren = false;
 
-    public AloftAbstractComponentClass() { addPropertyTypes(types); }
+    public AloftAbstractComponentClass(Class<? extends AloftElement> c) {
+        super(c);
+        addPropertyTypes(types);
+    }
 
     protected abstract void addPropertyTypes(ArrayList<AloftComponentPropertyTypes> types);
     public abstract String getKey();

@@ -12,11 +12,11 @@ public class StylesheetFile extends HtmlElement {
         return "link";
     }
 
-    public StylesheetFile(String endpoint, String js) {
+    public StylesheetFile(String endpoint, String css) {
         addAttribute("rel", "stylesheet");
         addAttribute("href", endpoint);
         path = endpoint;
-        value = js;
+        value = css;
     }
 
     public String getValue() {

@@ -4,19 +4,20 @@
   "description": "org.extendedweb.aloft.server.js",
   "main": "main.js",
   "scripts": {
-    "test": "node main.js"
+    "test": "node main.js",
+    "build" : "node builder.js",
+    "bundle": "esbuild main.js --bundle --minify --outfile=aloft.bundle.js",
+    "target-bundle": "esbuild main.js --bundle --minify --outfile=aloft.bundle.js --target=chrome58,firefox57,safari11,edge16"
   },
-  "type": "module",
   "author": "Ryan Fitzgerald",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.5.0",
-    "browserify": "^17.0.0",
-    "crypto-js": "^4.1.1",
-    "history": "^5.3.0",
+    "crypto-js": "^4.2.0",
     "js-cookie": "^3.0.5",
-    "local-storage": "^2.0.0",
-    "pace-js": "^1.2.4",
-    "virtual-dom": "^2.1.1"
+    "buffer": "^6.0.3"
+  },
+  "devDependencies": {
+    "esbuild": "0.19.9"
   }
 }
