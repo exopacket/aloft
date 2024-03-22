@@ -1,4 +1,10 @@
 package org.extendedweb.aloft.lib.lang.types.v;
 
-public class UndefinedV {
+import org.extendedweb.aloft.lib.lang.types.base.V;
+
+public class UndefinedV extends DynamicV {
+
+    public UndefinedV() {
+        super(V.unset());
+    }
 }

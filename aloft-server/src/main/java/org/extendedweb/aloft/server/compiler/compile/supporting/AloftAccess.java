@@ -18,4 +18,15 @@ public class AloftAccess {
 
     }
 
+    public AloftAccessType getType() {
+        return null;
+    }
+
+    public static AloftAccessType getFunctionType(boolean isStatic, boolean isPrivate) {
+        if(isPrivate && isStatic) return AloftAccessType.PRIVATE_STATIC;
+        if(isPrivate & !isStatic) return AloftAccessType.PRIVATE;
+        if(isStatic) return AloftAccessType.STATIC;
+        return AloftAccessType.PUBLIC;
+    }
+
 }

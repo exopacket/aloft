@@ -1,0 +1,16 @@
+component MyHomeComponent {
+    name string
+
+    mounted: Centered(
+        child: Text(text: getName())
+    )
+
+    string (getName)() {
+        return "Hello " + (name ?? "World") + "!"
+    }
+
+    update setName(name) {
+        this.name = name
+    }
+
+}

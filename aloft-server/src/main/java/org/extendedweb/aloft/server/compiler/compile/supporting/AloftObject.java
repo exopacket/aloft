@@ -94,14 +94,12 @@ public abstract class AloftObject implements CompilesAloftObjects {
 
     @Override
     public void parseFunctions(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) {
-        System.out.println("PARSE FUNCTIONS");
         for(AloftParser.SyntaxContext ctx : syntax) {
             AloftParser.FunctionContext fCtx = ctx.function();
             if(!__.isset(fCtx)) continue;
             AloftFunctionContainer func = AloftFunctionCompiler.queue(fCtx, register);
             functions.add(func);
         }
-        System.out.println("DONE");
     }
 
     @Override

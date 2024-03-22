@@ -88,6 +88,16 @@ public interface AloftListener extends ParseTreeListener {
 	 */
 	void exitRoutes(AloftParser.RoutesContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AloftParser#project}.
+	 * @param ctx the parse tree
+	 */
+	void enterProject(AloftParser.ProjectContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#project}.
+	 * @param ctx the parse tree
+	 */
+	void exitProject(AloftParser.ProjectContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AloftParser#page}.
 	 * @param ctx the parse tree
 	 */
@@ -297,6 +307,16 @@ public interface AloftListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVar_names(AloftParser.Var_namesContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AloftParser#this}.
+	 * @param ctx the parse tree
+	 */
+	void enterThis(AloftParser.ThisContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#this}.
+	 * @param ctx the parse tree
+	 */
+	void exitThis(AloftParser.ThisContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AloftParser#any_var}.
 	 * @param ctx the parse tree

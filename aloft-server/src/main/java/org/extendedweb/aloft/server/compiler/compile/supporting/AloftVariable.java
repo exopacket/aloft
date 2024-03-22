@@ -12,19 +12,19 @@ import java.util.List;
 
 public class AloftVariable {
 
-    private AloftAccess access;
+    private AloftAccess.AloftAccessType access;
     private String identifier;
     private T type;
     private V value;
 
-    public AloftVariable(AloftAccess access, String identifier, T type, V value) {
+    public AloftVariable(AloftAccess.AloftAccessType access, String identifier, T type, V value) {
         this.access = access;
         this.identifier = identifier;
         this.type = type;
         this.value = value;
     }
 
-    public AloftVariable(AloftAccess access, String identifier, T type, AloftExpression value) {
+    public AloftVariable(AloftAccess.AloftAccessType access, String identifier, T type, AloftExpression value) {
         this.access = access;
         this.identifier = identifier;
         this.type = type;
@@ -48,7 +48,7 @@ public class AloftVariable {
         AloftParser.ExpressionContext exprCtx = ctx.expression();
         value = parseExpression(exprCtx);
         for(String identifier : indentifiers) {
-            allVars.add(new AloftVariable(access, identifier, type, value));
+            allVars.add(new AloftVariable(access.getType(), identifier, type, value));
         }
         return allVars;
     }

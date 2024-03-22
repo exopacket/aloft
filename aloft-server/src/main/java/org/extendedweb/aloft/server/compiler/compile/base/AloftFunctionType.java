@@ -9,6 +9,5 @@ public enum AloftFunctionType {
     TIME,
     ELEMENT,
     COMPONENT,
-    MODEL,
-    VARIABLE
+    MODEL
 }

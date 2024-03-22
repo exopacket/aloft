@@ -15,17 +15,24 @@ import java.util.HashMap;
 public class AloftFunctionContainer {
 
     private AloftFunctionType type;
+    private boolean isArray = false;
     private String name;
     private ArrayList<String> args;
     private AloftParser.Function_curly_blockContext body;
-    private HashMap<String, AloftVariable> variables;
+    private HashMap<String, AloftVariable> variables = new HashMap<>();
+    private AloftAccess.AloftAccessType access;
     private AloftFunctionDivider divider;
 
-    public AloftFunctionContainer(AloftFunctionType type, String name, ArrayList<String> args, AloftParser.Function_curly_blockContext body, CompiledObjectsRegister register) {
+    public AloftFunctionContainer(AloftFunctionType type, boolean isArray, AloftAccess.AloftAccessType access, String name, ArrayList<String> args, AloftParser.Function_curly_blockContext body, CompiledObjectsRegister register) {
         this.type = type;
+        this.isArray = isArray;
+        this.access = access;
         this.name = name;
         this.args = args;
         this.body = body;
+        for(String arg : args) {
+            variables.put(arg, new AloftVariable(AloftAccess.AloftAccessType.FUNCTION_ARG, arg, T.dynamic(), V.unset()));
+        }
         this.divider = new AloftFunctionDivider(body, variables, register);
     }
 

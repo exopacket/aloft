@@ -38,9 +38,7 @@ public class ComponentAloftObject extends AloftObject {
 
     @Override
     public void properties(ArrayList<AloftObjectProperty> properties) {
-        properties.add(new AloftObjectProperty("root", new BuiltComponentContainerT(), true));
-        properties.add(new AloftObjectProperty("favicon", new StringT(), false));
-        properties.add(new AloftObjectProperty("title", new StringT(),false));
+        properties.add(new AloftObjectProperty("mounted", new BuiltComponentContainerT(), true));
     }
 
     @Override
@@ -57,7 +55,7 @@ public class ComponentAloftObject extends AloftObject {
     public ArrayList<AloftObject> compile(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) throws CompilerException {
         parseVariables(syntax, register);
         parseProperties(syntax);
-        parseFunctions(syntax, register); //TODO remove for page
+        parseFunctions(syntax, register);
         return null;
     }
 
