@@ -10,7 +10,7 @@ public class AloftFunction implements BuildsJava, BuildsJavascript {
     private AloftServerCode server;
 
     public AloftFunction(AloftFunctionContainer container) {
-        this.js = container.js();
+//        this.js = container.js()[0];
         this.server = container.server();
     }
 
@@ -22,10 +22,6 @@ public class AloftFunction implements BuildsJava, BuildsJavascript {
     @Override
     public AloftServerCode server() {
         return server;
-    }
-
-    public void merge(AloftServerCode collection) {
-        collection.merge(server);
     }
 
 }

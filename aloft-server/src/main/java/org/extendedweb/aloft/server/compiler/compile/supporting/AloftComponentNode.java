@@ -1,6 +1,7 @@
 package org.extendedweb.aloft.server.compiler.compile.supporting;
 
 import org.extendedweb.aloft.lib.lang.structure.components.AloftComponent;
+import org.extendedweb.aloft.lib.lang.structure.elements.types.TextAloftElement;
 import org.extendedweb.aloft.lib.lang.types.base.V;
 import org.extendedweb.aloft.lib.lang.types.t.ArrayT;
 import org.extendedweb.aloft.lib.lang.types.t.DynamicT;
@@ -70,7 +71,7 @@ public class AloftComponentNode {
     }
 
     public AloftComponent component() {
-        return null;
+        return new TextAloftElement("Test");
     }
 
     private static class AloftComponentProperty {

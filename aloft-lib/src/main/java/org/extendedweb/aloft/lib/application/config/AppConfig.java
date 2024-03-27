@@ -94,11 +94,9 @@ public class AppConfig {
     }
 
     public AppConfig(String configPath) {
-        readConfig("");
+        System.out.println(configPath);
+        readConfig(configPath);
         MiddlewareList list = new MiddlewareList();
-        HasHeaders m = new HasHeaders(new String[]{"X-Test-Header"});
-        m.appendAppliesTo(ApplyToType.PUBLIC_API, new Route[]{new Route("/index/main", "GET")});
-        list.appendAppMiddleware(m);
         this.middleware = list;
         theme = new AloftTheme();
         theme.setUsesBootstrap();
@@ -126,7 +124,7 @@ public class AppConfig {
     }
 
     private void readConfig(String configPath) {
-        File file = new File("/home/ryan/aloft/aloft-cli/my-project/my-project.json");
+        File file = new File(configPath);
         if(!file.exists()) throw new RuntimeException("Config does not exist");
         this.projectRootPath = file.getParent();
         Scanner scnr = null;
@@ -352,8 +350,8 @@ public class AppConfig {
     private void project(JSONObject json) {
         this.name = (String) json.get("name");
         this.key = (String) json.get("key");
-        this.pkg = (String) json.get("pkg");
-        String entryPoint = (String) json.get("entry-point");
+        this.pkg = (String) json.get("package");
+        String entryPoint = (String) json.get("project-file");
         File file = new File(entryPoint);
         if(!file.exists()) throw new RuntimeException();
         this.entryPoint = file;

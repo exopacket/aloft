@@ -88,6 +88,16 @@ public interface AloftListener extends ParseTreeListener {
 	 */
 	void exitRoutes(AloftParser.RoutesContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AloftParser#routes_through}.
+	 * @param ctx the parse tree
+	 */
+	void enterRoutes_through(AloftParser.Routes_throughContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#routes_through}.
+	 * @param ctx the parse tree
+	 */
+	void exitRoutes_through(AloftParser.Routes_throughContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AloftParser#project}.
 	 * @param ctx the parse tree
 	 */
@@ -228,6 +238,66 @@ public interface AloftListener extends ParseTreeListener {
 	 */
 	void exitString(AloftParser.StringContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link AloftParser#param_values}.
+	 * @param ctx the parse tree
+	 */
+	void enterParam_values(AloftParser.Param_valuesContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#param_values}.
+	 * @param ctx the parse tree
+	 */
+	void exitParam_values(AloftParser.Param_valuesContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AloftParser#var_args}.
+	 * @param ctx the parse tree
+	 */
+	void enterVar_args(AloftParser.Var_argsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#var_args}.
+	 * @param ctx the parse tree
+	 */
+	void exitVar_args(AloftParser.Var_argsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AloftParser#property}.
+	 * @param ctx the parse tree
+	 */
+	void enterProperty(AloftParser.PropertyContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#property}.
+	 * @param ctx the parse tree
+	 */
+	void exitProperty(AloftParser.PropertyContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AloftParser#return_value}.
+	 * @param ctx the parse tree
+	 */
+	void enterReturn_value(AloftParser.Return_valueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#return_value}.
+	 * @param ctx the parse tree
+	 */
+	void exitReturn_value(AloftParser.Return_valueContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AloftParser#html_element}.
+	 * @param ctx the parse tree
+	 */
+	void enterHtml_element(AloftParser.Html_elementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#html_element}.
+	 * @param ctx the parse tree
+	 */
+	void exitHtml_element(AloftParser.Html_elementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AloftParser#component_tree}.
+	 * @param ctx the parse tree
+	 */
+	void enterComponent_tree(AloftParser.Component_treeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#component_tree}.
+	 * @param ctx the parse tree
+	 */
+	void exitComponent_tree(AloftParser.Component_treeContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link AloftParser#function}.
 	 * @param ctx the parse tree
 	 */
@@ -247,6 +317,26 @@ public interface AloftListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunction_declaration(AloftParser.Function_declarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AloftParser#update}.
+	 * @param ctx the parse tree
+	 */
+	void enterUpdate(AloftParser.UpdateContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#update}.
+	 * @param ctx the parse tree
+	 */
+	void exitUpdate(AloftParser.UpdateContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AloftParser#update_declaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterUpdate_declaration(AloftParser.Update_declarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#update_declaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitUpdate_declaration(AloftParser.Update_declarationContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AloftParser#function_call}.
 	 * @param ctx the parse tree
@@ -508,66 +598,6 @@ public interface AloftListener extends ParseTreeListener {
 	 */
 	void exitVar_type(AloftParser.Var_typeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link AloftParser#param_values}.
-	 * @param ctx the parse tree
-	 */
-	void enterParam_values(AloftParser.Param_valuesContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AloftParser#param_values}.
-	 * @param ctx the parse tree
-	 */
-	void exitParam_values(AloftParser.Param_valuesContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link AloftParser#var_args}.
-	 * @param ctx the parse tree
-	 */
-	void enterVar_args(AloftParser.Var_argsContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AloftParser#var_args}.
-	 * @param ctx the parse tree
-	 */
-	void exitVar_args(AloftParser.Var_argsContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link AloftParser#property}.
-	 * @param ctx the parse tree
-	 */
-	void enterProperty(AloftParser.PropertyContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AloftParser#property}.
-	 * @param ctx the parse tree
-	 */
-	void exitProperty(AloftParser.PropertyContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link AloftParser#return_value}.
-	 * @param ctx the parse tree
-	 */
-	void enterReturn_value(AloftParser.Return_valueContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AloftParser#return_value}.
-	 * @param ctx the parse tree
-	 */
-	void exitReturn_value(AloftParser.Return_valueContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link AloftParser#html_element}.
-	 * @param ctx the parse tree
-	 */
-	void enterHtml_element(AloftParser.Html_elementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AloftParser#html_element}.
-	 * @param ctx the parse tree
-	 */
-	void exitHtml_element(AloftParser.Html_elementContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link AloftParser#component_tree}.
-	 * @param ctx the parse tree
-	 */
-	void enterComponent_tree(AloftParser.Component_treeContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AloftParser#component_tree}.
-	 * @param ctx the parse tree
-	 */
-	void exitComponent_tree(AloftParser.Component_treeContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link AloftParser#property_value}.
 	 * @param ctx the parse tree
 	 */
@@ -577,6 +607,16 @@ public interface AloftListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitProperty_value(AloftParser.Property_valueContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AloftParser#static_var}.
+	 * @param ctx the parse tree
+	 */
+	void enterStatic_var(AloftParser.Static_varContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#static_var}.
+	 * @param ctx the parse tree
+	 */
+	void exitStatic_var(AloftParser.Static_varContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AloftParser#return_property_value}.
 	 * @param ctx the parse tree
@@ -637,6 +677,26 @@ public interface AloftListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitNamed_with_params_special(AloftParser.Named_with_params_specialContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AloftParser#vars_with_params_special}.
+	 * @param ctx the parse tree
+	 */
+	void enterVars_with_params_special(AloftParser.Vars_with_params_specialContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#vars_with_params_special}.
+	 * @param ctx the parse tree
+	 */
+	void exitVars_with_params_special(AloftParser.Vars_with_params_specialContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AloftParser#var_param}.
+	 * @param ctx the parse tree
+	 */
+	void enterVar_param(AloftParser.Var_paramContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AloftParser#var_param}.
+	 * @param ctx the parse tree
+	 */
+	void exitVar_param(AloftParser.Var_paramContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link AloftParser#named_switch}.
 	 * @param ctx the parse tree

@@ -2,13 +2,13 @@
   "project": {
     "name": "my-project",
     "package": "com.inteliense.my_project",
+    "project-file": "/home/ryan/aloft/aloft-server/fake-project/src/MyProject.aloft",
     "author": "",
     "description": "",
     "key": "4d671a682bb27eb65ce36cd0649853077520f2e3dfac29bd58e68de3a251b8af",
     "version": "1.0.0",
     "build-type": "debug",
-    "aloft-version": "1.0.0",
-    "project-file": "/home/ryan/aloft/aloft-server/fake-project/src/MyProject.aloft"
+    "aloft-version": "1.0.0"
   },
   "databases": [
     {

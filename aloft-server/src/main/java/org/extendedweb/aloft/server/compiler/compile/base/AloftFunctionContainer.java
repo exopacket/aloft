@@ -6,6 +6,7 @@ import org.extendedweb.aloft.lib.lang.types.base.V;
 import org.extendedweb.aloft.server.compiler.compile.base.functions.base.AloftFunctionObject;
 import org.extendedweb.aloft.server.compiler.compile.base.register.CompiledObjectsRegister;
 import org.extendedweb.aloft.server.compiler.compile.supporting.AloftAccess;
+import org.extendedweb.aloft.server.compiler.compile.supporting.AloftObject;
 import org.extendedweb.aloft.server.compiler.compile.supporting.AloftVariable;
 import org.extendedweb.aloft.server.grammar.antlr.AloftParser;
 
@@ -23,7 +24,7 @@ public class AloftFunctionContainer {
     private AloftAccess.AloftAccessType access;
     private AloftFunctionDivider divider;
 
-    public AloftFunctionContainer(AloftFunctionType type, boolean isArray, AloftAccess.AloftAccessType access, String name, ArrayList<String> args, AloftParser.Function_curly_blockContext body, CompiledObjectsRegister register) {
+    public AloftFunctionContainer(AloftFunctionType type, boolean isArray, AloftAccess.AloftAccessType access, String name, ArrayList<String> args, AloftParser.Function_curly_blockContext body, CompiledObjectsRegister register, AloftObject aloftObject) {
         this.type = type;
         this.isArray = isArray;
         this.access = access;
@@ -33,14 +34,26 @@ public class AloftFunctionContainer {
         for(String arg : args) {
             variables.put(arg, new AloftVariable(AloftAccess.AloftAccessType.FUNCTION_ARG, arg, T.dynamic(), V.unset()));
         }
-        this.divider = new AloftFunctionDivider(body, variables, register);
+        this.divider = (type == AloftFunctionType.UPDATE) ? new AloftFunctionDivider(true, body, variables, register, aloftObject) : new AloftFunctionDivider(body, variables, register, aloftObject);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isArray() {
+        return isArray;
+    }
+
+    public ArrayList<String> getArgs() {
+        return args;
     }
 
     public ArrayList<AloftFunctionObject> objects() {
         return null;
     }
 
-    public JavaScriptObject js() {
+    public JavaScriptObject[] js() {
         return null;
     }
 

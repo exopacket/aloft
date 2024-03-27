@@ -17,6 +17,7 @@ import java.util.HashMap;
 public class _MyLoginForm extends _AloftComponent {
 
     public _MyLoginForm() {
+        super("my_login_form");
         addChild(a());
     }
 

@@ -1,5 +1,6 @@
 package org.extendedweb.aloft.lib.lang.structure.elements.base;
 
+import org.extendedweb.aloft.lib.AloftElementImpl;
 import org.extendedweb.aloft.lib.lang.base.ElementMapper;
 import org.extendedweb.aloft.lib.lang.structure.AloftTheme;
 import org.extendedweb.aloft.lib.lang.structure.components.AloftComponent;

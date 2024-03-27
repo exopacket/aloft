@@ -32,8 +32,24 @@ public class FunctionAloftObject extends AloftObject {
     }
 
     @Override
-    public ArrayList<AloftObject> compile(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) {
+    public void compile(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) {
+
+    }
+
+    @Override
+    public ArrayList<String> imports() {
         return null;
     }
+
+    @Override
+    public String extendsClassName() {
+        return null;
+    }
+
+    @Override
+    public String[] constructorArgs() {
+        return new String[0];
+    }
+
 
 }

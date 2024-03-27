@@ -1,10 +1,11 @@
 package org.extendedweb.aloft.server.compiler.compile.supporting;
 
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.extendedweb.aloft.lib.lang.types.base.V;
+import org.extendedweb.aloft.lib.lang.types.t.PathT;
 import org.extendedweb.aloft.server.compiler.compile.base.AloftFunction;
 import org.extendedweb.aloft.server.compiler.compile.base.AloftFunctionCompiler;
 import org.extendedweb.aloft.server.compiler.compile.base.AloftFunctionContainer;
-import org.extendedweb.aloft.server.compiler.compile.base.AloftFunctionDivider;
 import org.extendedweb.aloft.server.compiler.compile.base.register.CompiledObjectsRegister;
 import org.extendedweb.aloft.server.compiler.exceptions.CompilerException;
 import org.extendedweb.aloft.server.grammar.antlr.AloftParser;
@@ -24,17 +25,19 @@ public abstract class AloftObject implements CompilesAloftObjects {
     protected ArrayList<AloftVariable> variables = new ArrayList<>();
     protected ArrayList<AloftFunctionContainer> functions = new ArrayList<>();
     private Class<?> type = null;
-    protected ArrayList<AloftObject> objects;
+    private List<AloftParser.SyntaxContext> syntax;
     protected File file = null;
-    private AloftComponentClass c = null;
+    protected ParserRuleContext ctx;
 
     public AloftObject() { }
 
     public AloftObject(ParserRuleContext ctx, CompiledObjectsRegister register, File file) throws CompilerException {
         this.file = file;
+        this.ctx = ctx;
         properties(defaultProperties);
         List<AloftParser.SyntaxContext> syntax = preCompile(ctx);
-        this.objects = compile(syntax, register);
+        this.syntax = syntax;
+        compile(syntax, register);
     }
 
     @Override
@@ -61,6 +64,10 @@ public abstract class AloftObject implements CompilesAloftObjects {
         }
     }
 
+    protected CompiledAloftObject getCompiled() {
+        return null;
+    }
+
     @Override
     public void parseVariables(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) {
         System.out.println("PARSE VARS");
@@ -73,33 +80,67 @@ public abstract class AloftObject implements CompilesAloftObjects {
     }
 
     @Override
-    public void parseProperties(List<AloftParser.SyntaxContext> syntax) throws CompilerException {
-        System.out.println("PARSE PROPS");
+    public void parseProperties(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) throws CompilerException {
+        System.out.println("PARSE PROPS -- INNER");
         for(AloftParser.SyntaxContext ctx : syntax) {
             AloftParser.PropertyContext pCtx = ctx.property();
+            System.out.println(pCtx.getText());
             if(!__.isset(pCtx)) continue;
             AloftParser.Var_nameContext varCtx = pCtx.var_name();
             String var_name = varCtx.getText();
             AloftParser.Property_valueContext pValCtx = pCtx.property_value();
             ContextContainer valueCtx = new ContextContainer(pValCtx, file);
             String var_value = pValCtx.getText();
+            System.out.println("var_name=" + var_name);
+            System.out.println("var_value=" + var_value);
             AloftObjectProperty property = findProperty(var_name);
+            System.out.println("TEST=" + __.isset(property));
+            System.out.println("v=" + property.cloneProperty(valueCtx).getType().getClass());
             if(__.isset(property)) properties.add(property.cloneProperty(valueCtx));
-            else if(allowsWildcardProperties()) properties.add(new AloftObjectProperty(var_name, false).cloneProperty(valueCtx));
+            else if(allowsWildcardProperties()) properties.add(new AloftObjectProperty(var_name, new PathT(), false).cloneProperty(valueCtx));
             else new ContextContainer(varCtx, file).e("Unknown property name for object.", CompilerException.ExceptionType.CRITICAL);
-            System.out.println(var_name + " = " + var_value);
+            System.out.println(properties.size());
         }
         System.out.println("DONE");
     }
 
+    protected V getProperty(String key) {
+        System.out.println(key);
+        for(AloftObjectProperty prop : properties) {
+            System.out.println(prop.getName());
+            if(__.same(prop.getName(), key)) return prop.getValue();
+        }
+        return V.nothing();
+    }
+
     @Override
-    public void parseFunctions(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) {
+    public void parseFunctions(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) throws CompilerException {
+        for(AloftParser.SyntaxContext ctx : syntax) {
+            AloftParser.UpdateContext fCtx = ctx.update();
+            if(!__.isset(fCtx)) continue;
+            AloftFunctionContainer func = AloftFunctionCompiler.compile(this, fCtx, register);
+            if(__.isset(func)) functions.add(func);
+            else new ContextContainer(fCtx, file).e("Duplicate function name.", CompilerException.ExceptionType.FATAL);
+        }
         for(AloftParser.SyntaxContext ctx : syntax) {
             AloftParser.FunctionContext fCtx = ctx.function();
             if(!__.isset(fCtx)) continue;
-            AloftFunctionContainer func = AloftFunctionCompiler.queue(fCtx, register);
-            functions.add(func);
+            AloftFunctionContainer func = AloftFunctionCompiler.compile(this, fCtx, register, false);
+            if(__.isset(func)) functions.add(func);
+            else new ContextContainer(fCtx, file).e("Duplicate function name.", CompilerException.ExceptionType.FATAL);
         }
+    }
+
+    public AloftFunctionContainer getFunctionByName(String name, CompiledObjectsRegister register) throws CompilerException {
+        //todo check for array typed functions
+        for(AloftParser.SyntaxContext ctx : syntax) {
+            AloftParser.FunctionContext fCtx = ctx.function();
+            if(!__.isset(fCtx)) continue;
+            String curName = AloftFunctionCompiler.getFunctionName(fCtx.function_declaration(), register, this);
+            if(!__.same(curName, name)) continue;
+            return AloftFunctionCompiler.compile(this, fCtx, register, true);
+        }
+        return null;
     }
 
     @Override
@@ -111,13 +152,29 @@ public abstract class AloftObject implements CompilesAloftObjects {
         return list;
     }
 
+    public boolean functionExists(String functionName, boolean isArray, ArrayList<String> args) {
+        for(AloftFunctionContainer func : functions) {
+            boolean exists = true;
+            if(!__.same(func.getName(), functionName)) continue;
+            if(func.isArray() != isArray) exists = false;
+            if(func.getArgs().size() != args.size()) exists = false;
+            return exists;
+        }
+        return false;
+    }
+
     protected void registration(CompiledObjectsRegister register) {
 
     }
 
-    private AloftObjectProperty findProperty(String name) {
+    @Override
+    public String className() {
+        return "_" + named + extendsClassName();
+    }
+
+    protected AloftObjectProperty findProperty(String name) {
         for(AloftObjectProperty prop : defaultProperties) {
-            System.out.println(prop.getName());
+            System.out.println("propName=" + prop.getName());
             if(__.same(prop.getName(), name)) return prop;
         }
         return null;

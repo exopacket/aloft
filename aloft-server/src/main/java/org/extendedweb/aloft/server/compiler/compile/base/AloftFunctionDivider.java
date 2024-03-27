@@ -3,6 +3,7 @@ package org.extendedweb.aloft.server.compiler.compile.base;
 import org.extendedweb.aloft.lib.html.elements.js.JavaScriptObject;
 import org.extendedweb.aloft.server.compiler.compile.base.functions.base.AloftFunctionObject;
 import org.extendedweb.aloft.server.compiler.compile.base.register.CompiledObjectsRegister;
+import org.extendedweb.aloft.server.compiler.compile.supporting.AloftObject;
 import org.extendedweb.aloft.server.compiler.compile.supporting.AloftVariable;
 import org.extendedweb.aloft.server.grammar.antlr.AloftParser;
 
@@ -14,8 +15,16 @@ public class AloftFunctionDivider {
     private AloftServerCode server;
     private JavaScriptObject js;
 
-    public AloftFunctionDivider(AloftParser.Function_curly_blockContext ctx, HashMap<String, AloftVariable> variables, CompiledObjectsRegister register) {
-        ArrayList<AloftFunctionObject> linkedObjects = AloftFunctionCompiler.compileChild(ctx, register);
+    public AloftFunctionDivider(AloftParser.Function_curly_blockContext ctx, HashMap<String, AloftVariable> variables, CompiledObjectsRegister register, AloftObject aloftObject) {
+        ArrayList<AloftFunctionObject> linkedObjects = AloftFunctionCompiler.compileChild(ctx, register, aloftObject, false);
+        ArrayList<AloftFunctionObject> clientObjects = clientObjects(linkedObjects);
+        ArrayList<AloftFunctionObject> serverObjects = serverObjects(linkedObjects);
+        this.server = buildServer(serverObjects);
+        this.js = buildJs(clientObjects);
+    }
+
+    public AloftFunctionDivider(boolean update, AloftParser.Function_curly_blockContext ctx, HashMap<String, AloftVariable> variables, CompiledObjectsRegister register, AloftObject aloftObject) {
+        ArrayList<AloftFunctionObject> linkedObjects = AloftFunctionCompiler.compileChild(ctx, register, aloftObject, update);
         ArrayList<AloftFunctionObject> clientObjects = clientObjects(linkedObjects);
         ArrayList<AloftFunctionObject> serverObjects = serverObjects(linkedObjects);
         this.server = buildServer(serverObjects);

@@ -42,7 +42,7 @@ public class Serve extends HandlesCommands {
             @Override
             protected void onStart() {
                 try {
-                    setVar("server", new WebServer((int) getVar("port"), 443, !hasFlag("public"), new _AloftProject[]{_TestProject.launch(new String[]{"MY_PROJECT", "/"})}));
+                    setVar("server", new WebServer((int) getVar("port"), 443, !hasFlag("public"), _TestProject.launch(new String[]{"MY_PROJECT", "/"})));
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }

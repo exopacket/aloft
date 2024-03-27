@@ -14,13 +14,17 @@ public interface CompilesAloftObjects {
     void properties(ArrayList<AloftObjectProperty> properties);
     boolean allowsWildcardProperties();
     String namedVar();
-    ArrayList<AloftObject> compile(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) throws CompilerException;
+    void compile(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) throws CompilerException;
+    ArrayList<String> imports();
+    String className();
+    String extendsClassName();
+    String[] constructorArgs();
 
     //super implemented
     void named(String named);
     void type(Class<?> c);
     List<AloftParser.SyntaxContext> preCompile(ParserRuleContext ctx);
-    void parseProperties(List<AloftParser.SyntaxContext> syntax) throws CompilerException;
+    void parseProperties(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) throws CompilerException;
     void parseVariables(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) throws CompilerException;
     void parseFunctions(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) throws CompilerException;
     ArrayList<AloftFunction> getFunctions();

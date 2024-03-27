@@ -78,11 +78,11 @@ public class Debug extends HandlesCommands {
             }
             @Override
             protected void onStart() {
-                try {
-                    setVar("server", new DebugServer(config, (int) getVar("port"), hasFlag("secure"), !hasFlag("public")));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+//                try {
+////                    setVar("server", new DebugServer(config, (int) getVar("port"), hasFlag("secure"), !hasFlag("public")));
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
             }
             @Override
             protected void onStop() {

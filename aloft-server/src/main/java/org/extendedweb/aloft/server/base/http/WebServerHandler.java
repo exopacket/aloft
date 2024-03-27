@@ -16,7 +16,7 @@ public class WebServerHandler implements HttpHandler {
 
     private _AloftProject project;
 
-    public WebServerHandler(_AloftProject project) {
+    public      WebServerHandler(_AloftProject project) {
         this.project = project;
     }
 

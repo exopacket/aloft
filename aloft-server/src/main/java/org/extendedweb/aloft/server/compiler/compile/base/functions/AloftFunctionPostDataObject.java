@@ -1,12 +1,18 @@
 package org.extendedweb.aloft.server.compiler.compile.base.functions;
 
 import org.extendedweb.aloft.lib.html.elements.js.JavaScriptObject;
+import org.extendedweb.aloft.lib.lang.types.base.V;
+import org.extendedweb.aloft.server.compiler.compile.base.AloftServerCode;
 import org.extendedweb.aloft.server.compiler.compile.base.functions.base.AloftMutualFunctionObject;
 import org.extendedweb.aloft.server.compiler.compile.base.functions.base.AloftFunctionObject;
 
 import java.util.ArrayList;
 
 public class AloftFunctionPostDataObject extends AloftMutualFunctionObject {
+
+    public AloftFunctionPostDataObject(Type type, V... args) {
+        super(type, args);
+    }
 
     @Override
     public JavaScriptObject js() {
@@ -18,4 +24,13 @@ public class AloftFunctionPostDataObject extends AloftMutualFunctionObject {
         return null;
     }
 
+    @Override
+    public JavaScriptObject getObject() {
+        return null;
+    }
+
+    @Override
+    public AloftServerCode server() {
+        return null;
+    }
 }

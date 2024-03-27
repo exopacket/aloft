@@ -7,7 +7,7 @@ import org.extendedweb.aloft.lib.lang.types.v.NullV;
 import org.extendedweb.aloft.server.compiler.compile.base.TypeCompiler;
 import org.extendedweb.aloft.server.compiler.exceptions.CompilerException;
 
-public class AloftObjectProperty {
+public class  AloftObjectProperty {
 
     private String name;
     private boolean required;
@@ -44,8 +44,11 @@ public class AloftObjectProperty {
     }
 
     private V compileValue(ContextContainer value) throws CompilerException {
-        if(type instanceof DynamicT) return new NullV();
         return TypeCompiler.compile(type, value);
+    }
+
+    public T getType() {
+        return type;
     }
 
     public String getName() {

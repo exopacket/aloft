@@ -58,30 +58,4 @@ public class Extension extends HandlesCommands {
         };
         return thr;
     }
-
-    private DetachedThread getServerThread(String config, int port) {
-        DetachedThread thr = new DetachedThread(5000) {
-            @Override
-            protected boolean execute() {
-                return true;
-            }
-            @Override
-            protected void onStart() {
-                try {
-                    setVar("server", new DebugServer(config, (int) getVar("port"), hasFlag("secure"), !hasFlag("public")));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            @Override
-            protected void onStop() {
-                if(!issetVar("server")) return;
-                ((DebugServer) getVar("server")).stop();
-                removeVar("server");
-            }
-        };
-        thr.setVar("port", port);
-        return thr;
-    }
-
 }

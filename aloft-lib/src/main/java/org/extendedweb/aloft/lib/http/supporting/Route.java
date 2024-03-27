@@ -12,6 +12,7 @@ import org.extendedweb.aloft.lib.html.elements.css.StylesheetEndpoint;
 import org.extendedweb.aloft.lib.html.elements.css.StylesheetRenderer;
 import org.extendedweb.aloft.lib.html.elements.js.JavaScriptRenderer;
 import org.extendedweb.aloft.lib.html.elements.js.ScriptEndpoint;
+import org.extendedweb.aloft.lib.lang.structure.components.AloftComponent;
 import org.extendedweb.aloft.utils.data.BaseX;
 import org.extendedweb.aloft.utils.encryption.SHA;
 import org.extendedweb.aloft.utils.global.__;
@@ -27,7 +28,8 @@ public class Route {
     private String requestTypeStr;
     private RequestType requestType;
     private AloftRequestType aloftRequestType;
-    private Class<?> content;
+    private Class<?> content = null;
+    private Object instantiated = null;
 
     private VariableTree vars;
 
@@ -48,7 +50,7 @@ public class Route {
         this.id = BaseX.encode64(SHA.Bites.getSha1(typeStr + ":" + path));
     }
 
-    public Route(String path, String typeStr, Class<?> content) {
+    public Route(String path, String typeStr, Class<? extends AloftPage> content) {
         typeStr = typeStr.toUpperCase();
         if(!__.isset(getRequestType(typeStr))) return;
         this.path = new RoutePath(path);
@@ -56,6 +58,16 @@ public class Route {
         this.requestType = getRequestType(typeStr);
         this.id = BaseX.encode64(SHA.Bites.getSha1(typeStr + ":" + path));
         this.content = content;
+    }
+
+    public Route(String path, String typeStr, Object instantiated) {
+        typeStr = typeStr.toUpperCase();
+        if(!__.isset(getRequestType(typeStr))) return;
+        this.path = new RoutePath(path);
+        this.requestTypeStr = typeStr;
+        this.requestType = getRequestType(typeStr);
+        this.id = BaseX.encode64(SHA.Bites.getSha1(typeStr + ":" + path));
+        this.instantiated = instantiated;
     }
 
     public Route(String path, RequestType type, String typeStr, VariableTree vars) {
@@ -93,6 +105,7 @@ public class Route {
     }
 
     public Object instantiate() throws Exception {
+        if(__.isset(instantiated)) return instantiated;
         Constructor<?> construct = content.getConstructor();
         return construct.newInstance();
     }

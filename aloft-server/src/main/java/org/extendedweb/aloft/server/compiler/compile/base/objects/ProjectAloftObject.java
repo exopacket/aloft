@@ -1,7 +1,6 @@
 package org.extendedweb.aloft.server.compiler.compile.base.objects;
 
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.extendedweb.aloft.lib._AloftRoute;
 import org.extendedweb.aloft.server.compiler.compile.base.register.CompiledObjectsRegister;
 import org.extendedweb.aloft.server.compiler.compile.supporting.AloftObject;
 import org.extendedweb.aloft.server.compiler.compile.supporting.AloftObjectProperty;
@@ -43,17 +42,27 @@ public class ProjectAloftObject extends AloftObject {
 
     @Override
     public String namedVar() {
-        return "path";
+        return "var_name";
     }
 
     @Override
-    public ArrayList<AloftObject> compile(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) throws CompilerException {
-        parseProperties(syntax);
+    public void compile(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) throws CompilerException {
+        parseProperties(syntax, register);
+    }
+
+    @Override
+    public ArrayList<String> imports() {
         return null;
     }
 
-    public ArrayList<_AloftRoute> getCompiled() {
+    @Override
+    public String extendsClassName() {
         return null;
+    }
+
+    @Override
+    public String[] constructorArgs() {
+        return new String[0];
     }
 
     public static String getMethod() {

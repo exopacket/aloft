@@ -59,6 +59,18 @@ public interface AloftVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitRoutes(AloftParser.RoutesContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AloftParser#routes_through}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRoutes_through(AloftParser.Routes_throughContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AloftParser#project}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitProject(AloftParser.ProjectContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AloftParser#page}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -137,6 +149,42 @@ public interface AloftVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitString(AloftParser.StringContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link AloftParser#param_values}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitParam_values(AloftParser.Param_valuesContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AloftParser#var_args}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVar_args(AloftParser.Var_argsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AloftParser#property}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitProperty(AloftParser.PropertyContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AloftParser#return_value}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReturn_value(AloftParser.Return_valueContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AloftParser#html_element}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitHtml_element(AloftParser.Html_elementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AloftParser#component_tree}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitComponent_tree(AloftParser.Component_treeContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link AloftParser#function}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -148,6 +196,18 @@ public interface AloftVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFunction_declaration(AloftParser.Function_declarationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AloftParser#update}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUpdate(AloftParser.UpdateContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AloftParser#update_declaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUpdate_declaration(AloftParser.Update_declarationContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AloftParser#function_call}.
 	 * @param ctx the parse tree
@@ -184,6 +244,12 @@ public interface AloftVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitVar_names(AloftParser.Var_namesContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AloftParser#this}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitThis(AloftParser.ThisContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AloftParser#any_var}.
 	 * @param ctx the parse tree
@@ -299,47 +365,17 @@ public interface AloftVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVar_type(AloftParser.Var_typeContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link AloftParser#param_values}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitParam_values(AloftParser.Param_valuesContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link AloftParser#var_args}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitVar_args(AloftParser.Var_argsContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link AloftParser#property}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitProperty(AloftParser.PropertyContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link AloftParser#return_value}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitReturn_value(AloftParser.Return_valueContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link AloftParser#html_element}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitHtml_element(AloftParser.Html_elementContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link AloftParser#component_tree}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitComponent_tree(AloftParser.Component_treeContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link AloftParser#property_value}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitProperty_value(AloftParser.Property_valueContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AloftParser#static_var}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStatic_var(AloftParser.Static_varContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AloftParser#return_property_value}.
 	 * @param ctx the parse tree
@@ -376,6 +412,18 @@ public interface AloftVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitNamed_with_params_special(AloftParser.Named_with_params_specialContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AloftParser#vars_with_params_special}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVars_with_params_special(AloftParser.Vars_with_params_specialContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link AloftParser#var_param}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVar_param(AloftParser.Var_paramContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link AloftParser#named_switch}.
 	 * @param ctx the parse tree

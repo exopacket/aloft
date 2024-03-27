@@ -40,6 +40,10 @@ public class TypeCompiler {
             String str = string(ctx);
             return type.value(str);
         }
+        if(type instanceof NamedT) {
+            if(!assertVariable(ctx)) val.e("Property value got unexpected data type, expected variable.", CompilerException.ExceptionType.CRITICAL);
+            return type.value(ctx.any_var().getText());
+        }
         if(type instanceof PathT) {
             if(!assertPath(ctx)) val.e("Property value got unexpected data type, expected path.", CompilerException.ExceptionType.CRITICAL);
             String path = path(ctx);
@@ -55,11 +59,16 @@ public class TypeCompiler {
             Object[] arr = array(ctx);
             return type.value(arr);
         }
-        if(type instanceof BuiltComponentContainerT) {
-            if(!assertComponent(ctx)) val.e("Property value got unexpected data type, expected component.", CompilerException.ExceptionType.CRITICAL);
-            return type.value(new ContextContainer(((AloftParser.Property_valueContext) val.context()).component_tree(), val.getFile()));
-        }
+//        if(type instanceof BuiltComponentContainerT) {
+//            if(!assertComponent(ctx)) val.e("Property value got unexpected data type, expected component.", CompilerException.ExceptionType.CRITICAL);
+//            return type.value(new ContextContainer(((AloftParser.Property_optionalContext) val.context()).component_tree(), val.getFile()));
+//        }
         return new NullV();
+    }
+
+    private static boolean assertVariable(AloftParser.Property_valueContext ctx) {
+        AloftParser.Any_varContext varContext = ctx.any_var();
+        return __.isset(varContext);
     }
 
     private static boolean assertString(AloftParser.Property_valueContext ctx) {
@@ -80,11 +89,6 @@ public class TypeCompiler {
     private static boolean assertNumber(AloftParser.Property_valueContext ctx) {
         AloftParser.NumberContext numCtx = ctx.number();
         return __.isset(numCtx);
-    }
-
-    private static boolean assertComponent(AloftParser.Property_valueContext ctx) {
-        AloftParser.Component_treeContext componentCtx = ctx.component_tree();
-        return __.isset(componentCtx);
     }
 
     private static String string(ParserRuleContext ctx) {

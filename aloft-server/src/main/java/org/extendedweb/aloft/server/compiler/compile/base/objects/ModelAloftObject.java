@@ -1,10 +1,7 @@
 package org.extendedweb.aloft.server.compiler.compile.base.objects;
 
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.extendedweb.aloft.lib._AloftModel;
 import org.extendedweb.aloft.lib.lang.types.base.T;
-import org.extendedweb.aloft.lib.model.AloftModelCollection;
-import org.extendedweb.aloft.lib.model.AloftModelQuery;
 import org.extendedweb.aloft.server.compiler.compile.base.register.CompiledObjectsRegister;
 import org.extendedweb.aloft.server.compiler.compile.supporting.AloftObject;
 import org.extendedweb.aloft.server.compiler.compile.supporting.AloftObjectProperty;
@@ -67,31 +64,24 @@ public class ModelAloftObject extends AloftObject {
     }
 
     @Override
-    public ArrayList<AloftObject> compile(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) throws CompilerException {
+    public void compile(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) throws CompilerException {
         parseVariables(syntax, register);
         parseFunctions(syntax, register);
+    }
+
+    @Override
+    public ArrayList<String> imports() {
         return null;
     }
 
-    public _AloftModel getCompiled() {
-        return new _AloftModel(modelName(), connectionName()) {
+    @Override
+    public String extendsClassName() {
+        return null;
+    }
 
-            @Override
-            public HashMap<String, T> fields() {
-                return createFields();
-            }
-
-            @Override
-            public void query(AloftModelQuery aloftModelQuery) {
-
-            }
-
-            @Override
-            public AloftModelCollection getQuery(AloftModelQuery aloftModelQuery) {
-                return null;
-            }
-
-        };
+    @Override
+    public String[] constructorArgs() {
+        return new String[0];
     }
 
     private HashMap<String, T> createFields() {

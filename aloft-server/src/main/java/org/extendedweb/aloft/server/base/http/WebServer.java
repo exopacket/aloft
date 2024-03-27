@@ -11,12 +11,10 @@ public class WebServer {
 
     HttpServer httpServer = null;
 
-    public WebServer(int httpPort, int httpsPort, boolean localhostOnly, _AloftProject[] projects) throws Exception {
+    public WebServer(int httpPort, int httpsPort, boolean localhostOnly, _AloftProject project) throws Exception {
 
         httpServer = HttpServer.create(buildBindAddr(httpPort, localhostOnly), 0);
-        for(int i=0; i<projects.length; i++) {
-            httpServer.createContext(projects[i].getContext(), new WebServerHandler(projects[i]));
-        }
+        httpServer.createContext(project.getContext(), new WebServerHandler(project));
         httpServer.setExecutor(null);
         httpServer.start();
 

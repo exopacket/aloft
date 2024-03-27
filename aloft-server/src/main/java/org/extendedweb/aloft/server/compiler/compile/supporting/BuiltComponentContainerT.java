@@ -20,6 +20,8 @@ public class BuiltComponentContainerT extends T {
                 e.handle();
             }
         }
+        System.out.println(o.getClass());
+        System.exit(5);
         return null;
     }
 

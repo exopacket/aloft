@@ -1,4 +1,4 @@
-source MyRoutes.aloft
+source ./MyRoutes.aloft
 
 ::project MyProject {
     entryPoint: routes::home

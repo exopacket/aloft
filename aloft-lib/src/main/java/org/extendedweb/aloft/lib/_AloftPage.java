@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public abstract class _AloftPage {
+public abstract class _AloftPage implements AloftPageImpl {
 
     //MountableComponent: a component that belongs to a slot (acts like vue router for every component in DOM)
     //DynamicMountableComponent: alternative components / multiple conditional slot values

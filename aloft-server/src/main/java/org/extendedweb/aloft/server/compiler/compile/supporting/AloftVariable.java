@@ -75,7 +75,7 @@ public class AloftVariable {
             case "dynamic":
                 return new DynamicT();
             default:
-                return new NamedT(type);
+                return new NamedT();
         }
     }
 

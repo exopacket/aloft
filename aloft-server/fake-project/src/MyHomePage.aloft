@@ -1,6 +1,6 @@
-source "./MyHomeComponent.aloft"
+source ./MyHomeComponent.aloft
 
 ::page MyHomePage {
     title: "Home"
-    mountable: MyHomeComponent
+    mount: MyHomeComponent
 }

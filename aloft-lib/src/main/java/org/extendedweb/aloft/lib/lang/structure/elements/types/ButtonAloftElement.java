@@ -58,14 +58,14 @@ public class ButtonAloftElement extends AloftElement {
     @Override
     protected void subtypes(ArrayList<AloftElementSubtype> subtypes) {
         //NAMES ARE IN THIS FORMAT UNTIL FURTHER WORK
-        this.subtypes.add(new AloftElementSubtype(constructSubtype("__button_default__")) {
+        this.subtypes.add(new AloftElementSubtype(constructSubtype("__button__")) {
             @Override
             public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
                 HtmlElement root = createElement("button");
                 Content content = new Content(var("text"));
                 root.addChild(content);
                 applyStyle("button", ButtonAloftElement.class, root, theme);
-                applyListeners("button", root);
+                applyListeners("button", "button", root);
                 return root;
             }
             @Override

@@ -2,7 +2,10 @@ package org.extendedweb.aloft.server.compiler.compile.base.objects;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.extendedweb.aloft.lib._AloftPage;
+import org.extendedweb.aloft.lib.lang.structure.AloftPage;
+import org.extendedweb.aloft.lib.lang.structure.components.AloftComponent;
 import org.extendedweb.aloft.lib.lang.supporting.MountableComponent;
+import org.extendedweb.aloft.lib.lang.types.t.NamedT;
 import org.extendedweb.aloft.lib.lang.types.t.PathT;
 import org.extendedweb.aloft.lib.lang.types.t.StringT;
 import org.extendedweb.aloft.server.compiler.compile.base.register.CompiledObjectsRegister;
@@ -18,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PageAloftObject extends AloftObject {
+
+    private AloftComponent mount;
 
     public PageAloftObject(ParserRuleContext ctx, CompiledObjectsRegister register, File file) throws CompilerException {
         super(ctx, register, file);
@@ -36,14 +41,14 @@ public class PageAloftObject extends AloftObject {
 
     @Override
     public void properties(ArrayList<AloftObjectProperty> properties) {
-        properties.add(new AloftObjectProperty("root", new BuiltComponentContainerT(), true));
         properties.add(new AloftObjectProperty("favicon", new PathT(), false));
         properties.add(new AloftObjectProperty("title", new StringT(),false));
+        properties.add(new AloftObjectProperty("mount", new NamedT(),true));
     }
 
     @Override
     public boolean allowsWildcardProperties() {
-        return false;
+        return true;
     }
 
     @Override
@@ -52,20 +57,33 @@ public class PageAloftObject extends AloftObject {
     }
 
     @Override
-    public ArrayList<AloftObject> compile(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) throws CompilerException {
+    public void compile(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) throws CompilerException {
         parseVariables(syntax, register);
-        parseProperties(syntax);
+        parseProperties(syntax, register);
 //        parseFunctions(syntax, register); //TODO remove for page
-        return null;
+        this.mount = register.getComponentsRegister().getComponent(getProperty("mount").get());
+        register.register(PageAloftObject.class, this, new ContextContainer(ctx, file));
+        System.out.println(this.mount);
     }
 
-    public _AloftPage getCompiled() {
-        return new _AloftPage("", "Test Page", "/") {
-            @Override
-            protected MountableComponent buildTree() throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
-                return null;
-            }
-        };
+    @Override
+    public ArrayList<String> imports() {
+        ArrayList<String> imports = new ArrayList<>();
+        imports.add("org.extendedweb.aloft.lib._AloftPage");
+        imports.add("org.extendedweb.aloft.lib.lang.supporting.MountableComponent");
+        imports.add("org.extendedweb.aloft.lib.tests.components._MyLoginForm");
+        imports.add("java.lang.reflect.InvocationTargetException"); //FIXME
+        return imports;
+    }
+
+    @Override
+    public String extendsClassName() {
+        return "_AloftPage";
+    }
+
+    @Override
+    public String[] constructorArgs() {
+        return new String[]{"null", "\"Hello World\"", "\"/\""};
     }
 
     public static String getMethod() {
@@ -79,4 +97,15 @@ public class PageAloftObject extends AloftObject {
     public static Class<?> getObjectClass() {
         return null;
     }
+
+    public _AloftPage getCompilerPage() {
+        return new _AloftPage(null, "Hello World", "/") {
+            @Override
+            protected MountableComponent buildTree() throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+                System.out.println(PageAloftObject.this.mount);
+                return mountable(PageAloftObject.this.mount.getClass());
+            }
+        };
+    }
+
 }
