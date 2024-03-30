@@ -49,10 +49,10 @@ public class Html {
     public String string() {
         System.out.println(type.name());
         System.out.println(object.getClass().getSimpleName());
-        if(type == RenderType.PAGE && object.getClass() == AloftPage.class)
-            return renderPage((AloftPage) object);
         if(type == RenderType.PAGE && object.getClass() == _AloftPage.class)
             return renderPage((_AloftPage) object);
+        if(type == RenderType.PAGE && object.getClass() == AloftPage.class)
+            return renderPage((AloftPage) object);
         if(type == RenderType.COMPONENT && object.getClass() == AloftComponent.class)
             return renderComponent((AloftComponent) object);
         if(type == RenderType.COMPONENT && object.getClass() == _AloftComponent.class)
@@ -80,7 +80,10 @@ public class Html {
         return "";
     }
 
-    private String renderPage(AloftPage page) { return page.html(theme, new ElementMapper(false, this.config)).getHtml(); }
+    private String renderPage(AloftPage page) {
+        System.out.println("RENDER PAGE");
+        return page.html(theme, new ElementMapper(false, this.config)).getHtml();
+    }
 
     private String renderComponent(AloftComponent component) {
         return "";

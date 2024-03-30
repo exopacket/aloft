@@ -325,34 +325,13 @@ public abstract class AloftElement extends AloftComponent {
         String[] arr = new String[moduleSubclasses.size()];
         this.moduleSubclasses.toArray(arr);
         subtype.addSubclasses(arr);
-//        subtype.applyOverrides();
+//        getList.applyOverrides();
         return subtype.html(theme, mapper);
     }
 
     protected void registerBuilder(AloftBuilder builder) { }
 
     protected void registerSubtypes(ArrayList<AloftElementSubtype> subtypes) { }
-
-    protected HtmlElement createElement(String key, ModuleElementAttributes attributes) {
-        HtmlElement element = createElement(key, createId(String.valueOf(System.currentTimeMillis())), this.getName());
-        attributes.apply(element);
-        return element;
-    }
-
-    protected HtmlElement createElement(String key) {
-        return createElement(key, this.uniqueId, this.getName());
-    }
-
-    protected static HtmlElement createElement(String key, String id, String name) {
-        HtmlElement el = new HtmlElement(id) {
-            @Override
-            public String getKey() {
-                return key;
-            }
-        };
-        el.setParentComponent(name);
-        return el;
-    }
 
     protected <Any> Any var(String key) {
         AloftObjectProperty property = null;

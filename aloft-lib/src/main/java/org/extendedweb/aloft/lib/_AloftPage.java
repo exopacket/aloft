@@ -89,12 +89,29 @@ public abstract class _AloftPage implements AloftPageImpl {
                 for(int i=0; i<comp.length; i++) {
                     if(comp[i] instanceof DynamicMountableComponent) {
                         classes[i] = MountPoint.class;
+                        AloftComponent[] mountableComponents = cy(classes);
+                        components.addAll(Arrays.asList(mountableComponents));
+                    } else if(comp[i] instanceof AloftComponent) {
+                        components.add((AloftComponent) comp[i]);
                     } else if(comp[i] instanceof Class<?>) {
                         classes[i] = (Class<?>) comp[i];
+                        AloftComponent[] mountableComponents = cy(classes);
+                        components.addAll(Arrays.asList(mountableComponents));
                     }
                 }
-                AloftComponent[] mountableComponents = cy(classes);
-                components.addAll(Arrays.asList(mountableComponents));
+                return components;
+            };
+        };
+    }
+
+    protected MountableComponent mountable(AloftComponent... comp) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+        return new MountableComponent() {
+            @Override
+            protected ArrayList<AloftComponent> build() throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+                ArrayList<AloftComponent> components = new ArrayList<>();
+                for(AloftComponent component : comp) {
+                    components.add(component);
+                }
                 return components;
             };
         };

@@ -15,25 +15,8 @@ public class TextAloftElement extends AloftElement {
 
     public TextAloftElement() { super(); init(); }
 
-    public TextAloftElement(String text) {
-        super();
-        init();
-        vars.replace("text", text);
-    }
-
-    public TextAloftElement(String text, String friendlyId) {
-        super();
-        this.friendlyId = friendlyId;
-        init();
-        vars.replace("text", text);
-    }
-
-    public TextAloftElement(String text, String friendlyId, String uniqueId) {
-        super();
-        this.friendlyId = friendlyId;
-        this.veryUniqueId = uniqueId;
-        init();
-        vars.replace("text", text);
+    public void setText(String text) {
+        this.vars.replace("text", text);
     }
 
     public void addSpan(TextAloftElement element) {
@@ -97,7 +80,7 @@ public class TextAloftElement extends AloftElement {
     }
 
     @Override
-    protected AloftObjectProperties getProperties() {
+    public AloftObjectProperties getProperties() {
         return properties();
     }
 

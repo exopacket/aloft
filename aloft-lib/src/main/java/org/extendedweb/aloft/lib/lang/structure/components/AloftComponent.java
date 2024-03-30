@@ -1,5 +1,6 @@
 package org.extendedweb.aloft.lib.lang.structure.components;
 
+import org.extendedweb.aloft.lib.ModuleElementAttributes;
 import org.extendedweb.aloft.lib.lang.base.BuildsAppJavascript;
 import org.extendedweb.aloft.lib.lang.base.BuildsHtml;
 import org.extendedweb.aloft.lib.lang.base.ElementMapper;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
+public abstract class AloftComponent implements BuildsHtml, BuildsAppJavascript {
 
     protected ArrayList<AloftComponent> children = new ArrayList<>();
     private int currentIndex = 0;
@@ -42,16 +43,32 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
 
     public AloftComponent() {
         this.name = getName();
-        setIds("__root__");
+        setIds(this.name);
         vars = getProperties();
     }
 
     public AloftComponent(HashMap<String, Object> properties) {
         this.name = getName();
-        setIds("__root__");
+        setIds(this.name);
         vars = getProperties();
         resetProperties(properties);
     }
+
+    public void setVars(ArrayList<AloftObjectProperty> properties) {
+        ArrayList<AloftObjectProperty> defaultProps = this.vars.getList(this.name);
+        for (AloftObjectProperty prop : defaultProps) {
+            String defName = prop.getName();
+            for (AloftObjectProperty _prop : properties) {
+                String name = _prop.getName();
+                if (__.same(defName, name)) {
+                    this.vars.replace(name, _prop.value());
+                    break;
+                }
+            }
+        }
+    }
+
+    //TODO get default properties and dynamic building of a component
 
     public void addChild(AloftComponent component) {
         component.setParentComponent(getName());
@@ -139,7 +156,7 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
         }
     }
 
-    protected AloftObjectProperties getProperties() {
+    public AloftObjectProperties getProperties() {
         return new AloftObjectProperties();
     }
 
@@ -215,6 +232,27 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
         return A32.casified(hash);
     }
 
+    protected HtmlElement createElement(String key, ModuleElementAttributes attributes) {
+        HtmlElement element = createElement(key, createId(String.valueOf(System.currentTimeMillis())), this.getName());
+        attributes.apply(element);
+        return element;
+    }
+
+    protected HtmlElement createElement(String key) {
+        return createElement(key, this.uniqueId, this.getName());
+    }
+
+    protected static HtmlElement createElement(String key, String id, String name) {
+        HtmlElement el = new HtmlElement(id) {
+            @Override
+            public String getKey() {
+                return key;
+            }
+        };
+        el.setParentComponent(name);
+        return el;
+    }
+
     private ArrayList<AloftStyleConditionalClass> getConditionalClasses() {
         ArrayList<AloftStyleConditionalClass> conditionalClasses = new ArrayList<>();
         for(AloftStyleClass c : classes) if(c.isConditional()) conditionalClasses.add((AloftStyleConditionalClass) c);
@@ -224,7 +262,7 @@ public class AloftComponent implements BuildsHtml, BuildsAppJavascript {
     @Override
     public HtmlElement html(AloftTheme theme, ElementMapper mapper) {
         HtmlElement root = create(theme, mapper);
-        if(!__.isset(root)) System.out.println(this.getName());
+        if(!__.isset(root)) System.out.println("root(unset)=" + this.getName());
         root.setConditionalClasses(getConditionalClasses());
         root.setParentComponent(parentComponent);
         for(HtmlElement child : root.getChildren()) {

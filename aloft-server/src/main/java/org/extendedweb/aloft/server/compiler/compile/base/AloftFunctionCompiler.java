@@ -101,7 +101,7 @@ public class AloftFunctionCompiler {
     private static ArrayList<String> argCheck(ArrayList<String> args, CompiledObjectsRegister register) {
         ArrayList<String> problems = new ArrayList<>();
         for(String arg : args) {
-            if(register.existsInScope(arg)) problems.add(arg);
+//            if(register.exists(arg)) problems.add(arg);
         }
         return problems;
     }

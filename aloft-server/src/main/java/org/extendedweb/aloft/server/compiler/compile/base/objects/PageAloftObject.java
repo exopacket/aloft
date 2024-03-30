@@ -60,10 +60,8 @@ public class PageAloftObject extends AloftObject {
     public void compile(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) throws CompilerException {
         parseVariables(syntax, register);
         parseProperties(syntax, register);
-//        parseFunctions(syntax, register); //TODO remove for page
         this.mount = register.getComponentsRegister().getComponent(getProperty("mount").get());
         register.register(PageAloftObject.class, this, new ContextContainer(ctx, file));
-        System.out.println(this.mount);
     }
 
     @Override
@@ -102,8 +100,7 @@ public class PageAloftObject extends AloftObject {
         return new _AloftPage(null, "Hello World", "/") {
             @Override
             protected MountableComponent buildTree() throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
-                System.out.println(PageAloftObject.this.mount);
-                return mountable(PageAloftObject.this.mount.getClass());
+                return page(PageAloftObject.this.mount);
             }
         };
     }

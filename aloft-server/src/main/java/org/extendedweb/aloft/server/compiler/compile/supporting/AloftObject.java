@@ -70,11 +70,11 @@ public abstract class AloftObject implements CompilesAloftObjects {
 
     @Override
     public void parseVariables(List<AloftParser.SyntaxContext> syntax, CompiledObjectsRegister register) {
-        System.out.println("PARSE VARS");
         for(AloftParser.SyntaxContext ctx : syntax) {
             AloftParser.Declare_variableContext declareCtx = ctx.declare_variable();
             if(!__.isset(declareCtx)) continue;
-            variables.addAll(AloftVariable.fromContext(declareCtx));
+            ArrayList<AloftVariable> vars = AloftVariable.fromContext(declareCtx);
+            variables.addAll(vars);
         }
         System.out.println("DONE");
     }

@@ -24,7 +24,6 @@ public class AloftRoot extends MountableComponent {
 
     @Override
     protected ArrayList<AloftComponent> build() throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
-        System.out.println("size == " + this.children.size());
         return this.children;
     }
 

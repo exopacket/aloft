@@ -15,8 +15,14 @@ public class AloftElementSubtype extends AloftElement {
     private boolean _requiresBuilder;
     private boolean _isExtensible;
     private boolean _acceptsChild;
+    private AloftObjectProperties _properties;
 
     public AloftElementSubtype() { super();}
+
+    @Override
+    public AloftObjectProperties getProperties() {
+        return _properties;
+    }
 
     public AloftElementSubtype(String name,
                                boolean acceptsIterator,

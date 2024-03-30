@@ -1,5 +1,8 @@
 component MyHomeComponent {
+
+    *text string
+
     mount: Centered(
-        child: Button(text: "Alert Me!")
+        child: Text(text: this.text)
     )
 }

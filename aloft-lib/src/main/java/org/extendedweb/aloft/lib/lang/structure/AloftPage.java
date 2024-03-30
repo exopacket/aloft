@@ -27,6 +27,7 @@ import org.extendedweb.aloft.utils.global.__;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -111,8 +112,8 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
             icon.setSize(48);
             icon.setColor(theme.color("primary", Colors.Shade.DARK).getHex());
 ////            centered.addChild(icon);
-            TextAloftElement textElement = new TextAloftElement("404");
-            TextAloftElement textSpan = new TextAloftElement(Emoji.FACE_WITH_MONOCLE + " PAGE NOT FOUND");
+            TextAloftElement textElement = new TextAloftElement();// new TextAloftElement("404");
+            TextAloftElement textSpan =  new TextAloftElement(); // new TextAloftElement(Emoji.FACE_WITH_MONOCLE + " PAGE NOT FOUND");
 //            TextAloftElement textElement = new TextAloftElement("500");
 //            TextAloftElement textSpan = new TextAloftElement(Emoji.BUG + " SERVER ERROR");
             textSpan.addStyle("color", "#ffffff");
@@ -188,7 +189,9 @@ public class AloftPage extends Endpoint implements BuildsJava, AssertsLanguage, 
 
     private Page buildPage(AloftTheme theme, ElementMapper mapper) {
         Page page = new Page();
+        System.out.println("PRE BUILD BODY");
         Body body = buildBody(theme, mapper);
+        System.out.println("BUILD BODY");
         page.addChild(buildHead());
         page.addChild(body);
         System.out.println("NO BODY");

@@ -1,9 +1,12 @@
 package org.extendedweb.aloft.server.compiler.compile.supporting;
 
+import org.extendedweb.aloft.lib.lang.structure.components.AloftComponent;
 import org.extendedweb.aloft.lib.lang.types.base.T;
 import org.extendedweb.aloft.lib.lang.types.base.V;
 import org.extendedweb.aloft.server.compiler.compile.base.register.CompiledObjectsRegister;
 import org.extendedweb.aloft.server.compiler.exceptions.CompilerException;
+
+import java.util.ArrayList;
 
 public class AloftComponentBuilder extends V {
 
@@ -16,6 +19,11 @@ public class AloftComponentBuilder extends V {
     @Override
     public <Any> Any get() {
         return (Any) root.component();
+    }
+
+    public <Any> Any get(CompiledObjectsRegister compiledObjectsRegister, ArrayList<AloftVariable> variables) {
+        System.out.println("BUILD");
+        return (Any) root.build(compiledObjectsRegister, variables);
     }
 
     @Override

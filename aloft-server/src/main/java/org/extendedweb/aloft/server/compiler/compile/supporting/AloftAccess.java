@@ -14,7 +14,7 @@ public class AloftAccess {
         FUNCTION_ARG
     }
 
-    public AloftAccess(AloftAccessType type, boolean ss, boolean cs) {
+    public AloftAccess(AloftAccessType type) {
 
     }
 

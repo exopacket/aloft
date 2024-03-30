@@ -7,12 +7,8 @@ import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElement;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElementSubtype;
 import org.extendedweb.aloft.lib.html.elements.HtmlElement;
 import org.extendedweb.aloft.lib.html.elements.types.Content;
-import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftInstance;
-import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftInstanceConstant;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.styles.AloftHeaderInstance;
 import org.extendedweb.aloft.lib.lang.types.base.T;
-import org.extendedweb.aloft.lib.lang.types.base.V;
-import org.extendedweb.aloft.lib.lang.types.v.InstanceV;
 
 import java.util.ArrayList;
 
@@ -90,7 +86,7 @@ public class HeaderAloftElement extends AloftElement {
     }
 
     @Override
-    protected AloftObjectProperties getProperties() {
+    public AloftObjectProperties getProperties() {
         return properties();
     }
 

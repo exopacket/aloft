@@ -31,7 +31,8 @@ public class AloftCompiler {
     public AloftCompiler(String dir, boolean debug) {
         this.dir = new File(dir);
         this.debug = debug;
-        this.compiledObjects = new CompiledObjectsRegister("", new ComponentObjectRegister());
+        ComponentObjectRegister components = new ComponentObjectRegister();
+        this.compiledObjects = new CompiledObjectsRegister(components);
         compileAll();
         if(this.debug) {
             watcher = new FileWatcher(this.dir) {
@@ -47,7 +48,7 @@ public class AloftCompiler {
         this.dir = new File(config.getProjectRootPath());
         this.config = config;
         this.debug = debug;
-        this.compiledObjects = new CompiledObjectsRegister(config, new ComponentObjectRegister());
+        this.compiledObjects = new CompiledObjectsRegister(new ComponentObjectRegister());
         compileFile(config.getEntryPoint());
         this.config.buildCache(compiledObjects.getRouteCache());
         System.out.println(compiledObjects.getRouteCache().getRouteList().getAllRoutes().size());

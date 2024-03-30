@@ -28,7 +28,7 @@ public class AloftObjectProperties {
         return base();
     }
 
-    public ArrayList<AloftObjectProperty> subtype(String subtype) {
+    public ArrayList<AloftObjectProperty> getList(String subtype) {
         ArrayList<AloftObjectProperty> list = new ArrayList<>();
         list.addAll(base());
         if(!collection.containsKey(subtype)) return list;
@@ -45,7 +45,7 @@ public class AloftObjectProperties {
     }
 
     public AloftObjectProperty get(String subtype, String property) {
-        ArrayList<AloftObjectProperty> list = subtype(subtype);
+        ArrayList<AloftObjectProperty> list = getList(subtype);
         for(AloftObjectProperty prop : list) {
             if(__.same(prop.getName(), property)) return prop;
         }
@@ -66,9 +66,9 @@ public class AloftObjectProperties {
         return put(collection.get(subtype), name, v);
     }
 
-//    public boolean replace(AloftObjectProperty prop, String subtype) {
-//        if(!collection.containsKey(subtype)) return false;
-//        return put(collection.get(subtype), prop);
+//    public boolean replace(AloftObjectProperty prop, String getList) {
+//        if(!collection.containsKey(getList)) return false;
+//        return put(collection.get(getList), prop);
 //    }
 //
 //    public boolean replace(AloftObjectProperty prop) {

@@ -1,21 +1,36 @@
 package org.extendedweb.aloft.server.compiler.compile.supporting;
 
+import org.extendedweb.aloft.lib.ModuleElementAttributes;
+import org.extendedweb.aloft.lib.html.Html;
+import org.extendedweb.aloft.lib.html.elements.HtmlElement;
+import org.extendedweb.aloft.lib.lang.base.ElementMapper;
+import org.extendedweb.aloft.lib.lang.structure.AloftTheme;
 import org.extendedweb.aloft.lib.lang.structure.components.AloftComponent;
+import org.extendedweb.aloft.lib.lang.structure.components.AloftObjectProperties;
+import org.extendedweb.aloft.lib.lang.structure.components.AloftObjectProperty;
 import org.extendedweb.aloft.lib.lang.structure.elements.types.TextAloftElement;
+import org.extendedweb.aloft.lib.lang.types.base.A;
 import org.extendedweb.aloft.lib.lang.types.base.V;
 import org.extendedweb.aloft.lib.lang.types.t.ArrayT;
 import org.extendedweb.aloft.lib.lang.types.t.DynamicT;
 import org.extendedweb.aloft.server.compiler.compile.base.TypeCompiler;
+import org.extendedweb.aloft.server.compiler.compile.base.objects.ComponentAloftObject;
+import org.extendedweb.aloft.server.compiler.compile.base.objects.PageAloftObject;
 import org.extendedweb.aloft.server.compiler.compile.base.register.CompiledObjectsRegister;
+import org.extendedweb.aloft.server.compiler.compile.base.register.ComponentObjectRegister;
 import org.extendedweb.aloft.server.compiler.exceptions.CompilerException;
 import org.extendedweb.aloft.server.grammar.antlr.AloftParser;
+import org.extendedweb.aloft.utils.encryption.A32;
+import org.extendedweb.aloft.utils.encryption.Rand;
+import org.extendedweb.aloft.utils.encryption.SHA;
+import org.extendedweb.aloft.utils.global.__;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AloftComponentNode {
 
-    private String component;
+    private String name;
     private String id;
     private ArrayList<AloftComponentProperty> properties = new ArrayList<>();
     private ArrayList<AloftComponentNode> children = new ArrayList<>();
@@ -24,54 +39,98 @@ public class AloftComponentNode {
     public AloftComponentNode(ContextContainer container, CompiledObjectsRegister register) throws CompilerException {
         AloftParser.Component_treeContext ctx = (AloftParser.Component_treeContext) container.context();
         AloftParser.Var_nameContext varCtx = ctx.var_name();
-        component = varCtx.getText();
+        name = varCtx.getText();
+        if(!register.getComponentsRegister().exists(name)) new ContextContainer(varCtx, container.getFile()).e("Component '" + name + "' not found within scope.", CompilerException.ExceptionType.FATAL);
+        ArrayList<AloftVariable> vars = register.getComponentsRegister().get(name).getVariables();
         List<AloftParser.PropertyContext> properties = ctx.property();
+        int requiredSize = 0;
+        int requiredCompiled = 0;
+        for(AloftVariable variable : vars) if(variable.isRequired()) requiredSize++;
         for(AloftParser.PropertyContext property : properties) {
             AloftParser.Var_nameContext nameCtx = property.var_name();
             String name = nameCtx.getText();
-            AloftParser.Property_valueContext valueCtx = property.property_value();
-            if(name.equals("children")) {
-                AloftComponentBuilder[] children = TypeCompiler.compile(new ArrayT(), new ContextContainer(valueCtx, container.getFile())).get();
-                for(int i=0; i<children.length; i++) this.children.add(children[i].get());
-            } else if(name.equals("child")) {
-                this.children.add(TypeCompiler.compile(new BuiltComponentContainerT(), new ContextContainer(valueCtx, container.getFile())).get());
-            } else {
-                this.properties.add(new AloftComponentProperty(name, TypeCompiler.compile(new DynamicT(), new ContextContainer(valueCtx, container.getFile()))));
+            AloftVariable variable = null;
+            for(AloftVariable var : vars) {
+                if(__.same(var.getIdentifier(), name)) {
+                    variable = var;
+                    break;
+                }
             }
+            if(!__.isset(variable)) {
+                new ContextContainer(varCtx, container.getFile()).e("Component property '" + name + "' not found within the component.", CompilerException.ExceptionType.CRITICAL);
+                continue;
+            }
+            AloftParser.Property_valueContext valueCtx = property.property_value();
+            this.properties.add(new AloftComponentProperty(name, TypeCompiler.compile(variable.getType(), new ContextContainer(valueCtx, container.getFile()))));
+            if(variable.isRequired()) requiredCompiled++;
+        }
+        if(requiredCompiled < requiredSize) {
+            container.e("Required properties missing.", CompilerException.ExceptionType.FATAL);
         }
     }
 
-    public AloftComponentNode(ContextContainer container, CompiledObjectsRegister register, AloftRenderConditions conditions) throws CompilerException {
-        this.conditions = conditions;
-        AloftParser.Component_treeContext ctx = (AloftParser.Component_treeContext) container.context();
-        AloftParser.Var_nameContext varCtx = ctx.var_name();
-        component = varCtx.getText();
-        List<AloftParser.PropertyContext> properties = ctx.property();
-        for(AloftParser.PropertyContext property : properties) {
-            AloftParser.Var_nameContext nameCtx = property.var_name();
-            String name = nameCtx.getText();
-            AloftParser.Property_valueContext valueCtx = property.property_value();
-            if(name.equals("children")) {
-                AloftComponentBuilder[] children = TypeCompiler.compile(new ArrayT(), new ContextContainer(valueCtx, container.getFile())).get();
-                for(int i=0; i<children.length; i++) this.children.add(children[i].get());
-            } else if(name.equals("child")) {
-                this.children.add(TypeCompiler.compile(new BuiltComponentContainerT(), new ContextContainer(valueCtx, container.getFile())).get());
-            } else {
-                this.properties.add(new AloftComponentProperty(name, TypeCompiler.compile(new DynamicT(), new ContextContainer(valueCtx, container.getFile()))));
+    public AloftComponent build(CompiledObjectsRegister register, ArrayList<AloftVariable> variables) {
+        AloftComponent c = new AloftComponent() {
+            @Override
+            public String getName() {
+                return name;
             }
+
+            @Override
+            public AloftObjectProperties getProperties() {
+                AloftObjectProperties props = new AloftObjectProperties();
+                for(AloftVariable variable : variables) {
+                    if(variable.isRequired()) {
+                        props.put(variable.getIdentifier(), variable.getType(), true);
+                        if(variable.isset()) {
+                            props.get(variable.getIdentifier()).replace(variable.value().get());
+                        }
+                    } else if(!variable.isRequired()) {
+                        props.put(variable.getIdentifier(), variable.getType(), false);
+                        if(variable.isset()) {
+                            props.get(variable.getIdentifier()).replace(variable.value().get());
+                        }
+                    }
+                }
+                return props;
+            }
+        };
+        ArrayList<AloftObjectProperty> objectProps = new ArrayList<>();
+        for(AloftComponentProperty prop : properties) {
+              objectProps.add(new AloftObjectProperty(prop.getName(), prop.getValue()));
         }
+        c.setVars(objectProps);
+        for(AloftComponentNode node : children) {
+            c.addChild(node.build(register, variables));
+        }
+        return c;
     }
 
-    private void build(CompiledObjectsRegister register) {
-
-    }
-
-    private void registration(CompiledObjectsRegister register) {
-
+    public AloftComponent build(CompiledObjectsRegister register) {
+        AloftComponent c = new AloftComponent() {
+            @Override
+            public String getName() {
+                return name;
+            }
+        };
+        ArrayList<AloftObjectProperty> objectProps = new ArrayList<>();
+        for(AloftComponentProperty prop : properties) {
+            objectProps.add(new AloftObjectProperty(prop.getName(), prop.getValue().get()));
+        }
+        c.setVars(objectProps);
+        for(AloftComponentNode node : children) {
+            c.addChild(node.build(register));
+        }
+        return c;
     }
 
     public AloftComponent component() {
-        return new TextAloftElement("Test");
+        return new AloftComponent() {
+            @Override
+            public String getName() {
+                return name;
+            }
+        };
     }
 
     private static class AloftComponentProperty {

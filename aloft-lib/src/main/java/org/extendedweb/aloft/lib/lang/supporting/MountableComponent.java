@@ -41,9 +41,12 @@ public abstract class MountableComponent extends AloftComponent {
 
     @Override
     public HtmlElement html(AloftTheme theme, ElementMapper mapper) {
+        System.out.println("children.size = " + this.children.size());
+        System.out.println("components.size = " + this.components.size());
         this.children.clear();
-        //TODO apply dynamic slots
+//        //TODO apply dynamic slots
         this.children.addAll(this.components);
+        System.out.println("children.size = " + this.children.size());
         return super.html(theme, mapper);
     }
 

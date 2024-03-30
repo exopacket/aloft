@@ -3,6 +3,7 @@ package org.extendedweb.aloft.server.compiler.compile.base.objects;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.extendedweb.aloft.lib.lang.structure.components.AloftComponent;
 import org.extendedweb.aloft.lib.lang.structure.elements.types.TextAloftElement;
+import org.extendedweb.aloft.lib.lang.types.base.A;
 import org.extendedweb.aloft.server.compiler.compile.base.register.CompiledObjectsRegister;
 import org.extendedweb.aloft.server.compiler.compile.supporting.*;
 import org.extendedweb.aloft.server.compiler.exceptions.CompilerException;
@@ -20,7 +21,6 @@ public class ComponentAloftObject extends AloftObject {
 
     public ComponentAloftObject(ParserRuleContext ctx, CompiledObjectsRegister register, File file) throws CompilerException {
         super(ctx, register, file);
-        System.out.println("MADE IT x2");
     }
 
     public static ComponentAloftObject createIf(List<AloftParser.SyntaxContext> root, CompiledObjectsRegister register, int index, File file) {
@@ -58,6 +58,7 @@ public class ComponentAloftObject extends AloftObject {
         parseFunctions(syntax, register);
         parseProperties(syntax, register);
         register.getComponentsRegister().register(getName(), this.mount);
+        register.register(ComponentAloftObject.class, this, new ContextContainer(ctx, file));
     }
 
     @Override
@@ -78,11 +79,26 @@ public class ComponentAloftObject extends AloftObject {
                 valueCtx.e("Invalid component tree.", CompilerException.ExceptionType.FATAL);
                 continue;
             }
-            AloftComponent component = new BuiltComponentContainerT().value(new ContextContainer(componentCtx, file), register).get();
-            AloftComponentClass aloftComponentClass = new AloftComponentClass(component);
-            this.mount = aloftComponentClass;
+            AloftComponentBuilder builder = (AloftComponentBuilder) new BuiltComponentContainerT().value(new ContextContainer(componentCtx, file), register, getPublicVariables());
+            this.mount = new AloftComponentClass(builder, register, getPublicVariables());
         }
         System.out.println("DONE");
+    }
+
+    public ArrayList<AloftVariable> getPublicVariables() {
+        return getPublicVariables(false);
+    }
+
+    public ArrayList<AloftVariable> getPublicVariables(boolean includeStatic) {
+        ArrayList<AloftVariable> publicVars = new ArrayList<>();
+        for(AloftVariable variable : variables) {
+            if(includeStatic && variable.getAccess() == AloftAccess.AloftAccessType.PUBLIC_STATIC) publicVars.add(variable);
+            if(variable.getAccess() == AloftAccess.AloftAccessType.PUBLIC ||
+                    variable.getAccess() == AloftAccess.AloftAccessType.PUBLIC_REQUIRED) {
+                publicVars.add(variable);
+            }
+        }
+        return publicVars;
     }
 
     @Override

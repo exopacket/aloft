@@ -55,7 +55,6 @@ public class RouteGroupAloftObject extends AloftObject {
         System.out.println("PARSE PROPS - ROUTES");
         parseProperties(syntax, register);
         register.register(RouteGroupAloftObject.class, this, new ContextContainer(ctx, file));
-        System.out.println(register.get(RouteGroupAloftObject.class, "default"));
         System.out.println("DONE WITH ROUTES");
     }
 
@@ -90,11 +89,10 @@ public class RouteGroupAloftObject extends AloftObject {
         return routes;
     }
 
-    private static Route buildRoute(AloftObjectProperty route, CompiledObjectsRegister register) {
+    private Route buildRoute(AloftObjectProperty route, CompiledObjectsRegister register) {
         String named = route.getName();
         String path = route.getValue().get();
-        _AloftPage page = ((PageAloftObject) register.get(PageAloftObject.class, named)).getCompilerPage();
-        System.out.println(page);
+        _AloftPage page = ((PageAloftObject) register.getList(PageAloftObject.class, named).get(0)).getCompilerPage();
         return new Route(path, "GET", page);
     }
 

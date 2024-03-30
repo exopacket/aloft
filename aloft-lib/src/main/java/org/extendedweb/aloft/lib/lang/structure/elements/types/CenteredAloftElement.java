@@ -7,6 +7,7 @@ import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElement;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.AloftElementSubtype;
 import org.extendedweb.aloft.lib.lang.structure.elements.base.TextAlign;
 import org.extendedweb.aloft.lib.html.elements.HtmlElement;
+import org.extendedweb.aloft.lib.lang.types.base.T;
 
 import java.util.ArrayList;
 
@@ -17,12 +18,13 @@ public class CenteredAloftElement extends AloftElement {
     @Override
     public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
         HtmlElement root = createElement("div");
-        HtmlElement child = createElement("div");
-        addAll(child, theme, mapper);
-        root.addChild(child);
-        child.addStyle("text-align", "center");
+        HtmlElement container = createElement("div");
+        container.addChild(var("child"));
+        addAll(container, theme, mapper);
+        root.addChild(container);
+        container.addStyle("text-align", "center");
         applyStyle("root", CenteredAloftElement.class, root, theme);
-        applyStyle("child", CenteredAloftElement.class, child, theme);
+        applyStyle("child", CenteredAloftElement.class, container, theme);
         return root;
     }
 
@@ -68,5 +70,16 @@ public class CenteredAloftElement extends AloftElement {
 
     @Override
     protected void subtypes(ArrayList<AloftElementSubtype> subtypes) { }
+
+    @Override
+    public AloftObjectProperties getProperties() {
+        return properties();
+    }
+
+    public static AloftObjectProperties properties() {
+        AloftObjectProperties props = new AloftObjectProperties();
+        props.put("child", T.child(), true);
+        return props;
+    }
 
 }
