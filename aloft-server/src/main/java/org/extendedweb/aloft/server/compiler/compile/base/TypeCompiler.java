@@ -15,6 +15,7 @@ import java.util.List;
 
 public class TypeCompiler {
 
+
     public static V compile(ContextContainer ctx) {
         ParserRuleContext o = ctx.context();
         if(o instanceof AloftParser.Property_valueContext) return property(ctx);
@@ -23,6 +24,7 @@ public class TypeCompiler {
 
     public static V compile(T type, ContextContainer ctx) throws CompilerException {
         ParserRuleContext o = ctx.context();
+        System.out.println("type@compile=" + type.getClass());
         if(o instanceof AloftParser.Property_valueContext)
             if(type instanceof DynamicT) return property(ctx);
             else return property(type, ctx);
@@ -59,11 +61,15 @@ public class TypeCompiler {
             Object[] arr = array(ctx);
             return type.value(arr);
         }
-//        if(type instanceof BuiltComponentContainerT) {
-//            if(!assertComponent(ctx)) val.e("Property value got unexpected data type, expected component.", CompilerException.ExceptionType.CRITICAL);
-//            return type.value(new ContextContainer(((AloftParser.Property_optionalContext) val.context()).component_tree(), val.getFile()));
-//        }
+        if(type instanceof AloftComponentT) {
+            if(!assertComponent(ctx)) val.e("Property value got unexpected data type, expected component.", CompilerException.ExceptionType.CRITICAL);
+            return new BuiltComponentContainerT().value(new ContextContainer(((AloftParser.Property_valueContext) val.context()).component_tree(), val.getFile()));
+        }
         return new NullV();
+    }
+
+    private static boolean assertComponent(AloftParser.Property_valueContext ctx) {
+        return __.isset(ctx.component_tree());
     }
 
     private static boolean assertVariable(AloftParser.Property_valueContext ctx) {

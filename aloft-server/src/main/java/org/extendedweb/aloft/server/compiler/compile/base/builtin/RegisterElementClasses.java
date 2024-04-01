@@ -21,9 +21,9 @@ import java.util.HashMap;
 public class RegisterElementClasses {
 
     public static void register(HashMap<String, AloftComponentClass> list, CompiledObjectsRegister register) {
-        put("Button", new AloftBuiltInComponentClass(ButtonAloftElement.class), list, register, "__buton_default__");
+//        put("Button", new AloftBuiltInComponentClass(ButtonAloftElement.class), list, register, "__buton_default__");
         put("Text", new AloftBuiltInComponentClass(TextAloftElement.class), list, register);
-        put("Column", new AloftBuiltInComponentClass(ColumnAloftElement.class), list, register);
+//        put("Column", new AloftBuiltInComponentClass(ColumnAloftElement.class), list, register);
         put("Centered", new AloftBuiltInComponentClass(CenteredAloftElement.class), list, register);
     }
 

@@ -22,7 +22,6 @@ public class AloftComponentBuilder extends V {
     }
 
     public <Any> Any get(CompiledObjectsRegister compiledObjectsRegister, ArrayList<AloftVariable> variables) {
-        System.out.println("BUILD");
         return (Any) root.build(compiledObjectsRegister, variables);
     }
 

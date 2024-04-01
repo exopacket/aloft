@@ -176,7 +176,9 @@ public abstract class AloftElement extends AloftComponent {
     }
 
     protected void addAll(HtmlElement element, AloftTheme theme, ElementMapper mapper) {
-        for (AloftComponent child : children) element.addChild(child.html(theme, mapper));
+        for (AloftComponent child : children) {
+            element.addChild(child.html(theme, mapper));
+        }
     }
 
     protected void addProperty(String variable, Object v) {
@@ -318,16 +320,16 @@ public abstract class AloftElement extends AloftComponent {
         return super.html(theme, mapper);
     }
 
-    @Override
-    public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
-        if(!__.isset(subtype)) return null;
-        if(!listeners.isEmpty()) subtype.setListeners(listeners);
-        String[] arr = new String[moduleSubclasses.size()];
-        this.moduleSubclasses.toArray(arr);
-        subtype.addSubclasses(arr);
-//        getList.applyOverrides();
-        return subtype.html(theme, mapper);
-    }
+//    @Override
+//    public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
+//        if(!__.isset(subtype)) return null;
+//        if(!listeners.isEmpty()) subtype.setListeners(listeners);
+//        String[] arr = new String[moduleSubclasses.size()];
+//        this.moduleSubclasses.toArray(arr);
+//        subtype.addSubclasses(arr);
+////        getList.applyOverrides();
+//        return subtype.html(theme, mapper);
+//    }
 
     protected void registerBuilder(AloftBuilder builder) { }
 
@@ -350,6 +352,7 @@ public abstract class AloftElement extends AloftComponent {
     }
 
     public void refresh() {
+        System.out.println("REFRESH");
         setupExtensions();
         if(this.isExtensible) assert !this.requiredElements.isEmpty();
         setupProperties(this.vars);

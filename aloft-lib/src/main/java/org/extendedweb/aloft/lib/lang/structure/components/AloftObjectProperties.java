@@ -78,7 +78,7 @@ public class AloftObjectProperties {
 
 
     public void put(String name, T type) {
-        put(name, type, V.nothing());
+        put(name, type, false);
     }
 
     public void put(String name, T type, boolean required) {

@@ -66,6 +66,7 @@ public abstract class AloftComponent implements BuildsHtml, BuildsAppJavascript 
                 }
             }
         }
+        System.out.println("SET VARS");
     }
 
     //TODO get default properties and dynamic building of a component
@@ -262,7 +263,10 @@ public abstract class AloftComponent implements BuildsHtml, BuildsAppJavascript 
     @Override
     public HtmlElement html(AloftTheme theme, ElementMapper mapper) {
         HtmlElement root = create(theme, mapper);
-        if(!__.isset(root)) System.out.println("root(unset)=" + this.getName());
+        if(!__.isset(root)) {
+            System.out.println("root(unset)=" + this.getName());
+            System.out.println(this.getProperties().all().size());
+        }
         root.setConditionalClasses(getConditionalClasses());
         root.setParentComponent(parentComponent);
         for(HtmlElement child : root.getChildren()) {
@@ -277,8 +281,8 @@ public abstract class AloftComponent implements BuildsHtml, BuildsAppJavascript 
         return html(theme, mapper);
     }
 
-    @Override
     public HtmlElement create(AloftTheme theme, ElementMapper mapper) {
+        System.out.println("ChildSize=" + children.size());
         if(this.children.size() == 1) {
             HtmlElement element = children.get(0).html(theme, mapper);
             return element;
